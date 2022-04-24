@@ -5,32 +5,49 @@ MATCH (e:Employee)-[:assigned_to]->(t:Team),(m:Employee)-[:manages]->(t:Team),(e
 
 
 
-mutation addCrisisAlertQuery($crisisAlertQuery: ContinuousQueryInput!) {
-  addContinuousQuery(continuousQuery: $crisisAlertQuery) {
-    id name query materialize
+mutation addManagerIncidentAlert($managerIncidentAlertInput: ContinuousQueryInput!) {
+  addContinuousQuery(continuousQuery: $managerIncidentAlertInput) {
+    id name query
+  } 
+}
+
+mutation addEmployeeIncidentAlert($employeeIncidentAlertInput: ContinuousQueryInput!) {
+  addContinuousQuery(continuousQuery: $employeeIncidentAlertInput) {
+    id name query
   } 
 }
 
 {
-  "crisisAlertQuery": {
-    "name": "Crisis Alert",
+  "managerIncidentAlertInput": {
+    "name": "Manager Incident Alert",
     "db": "Contoso.HumanResources",
     "query": "MATCH (e:Employee)-[:assigned_to]->(t:Team),(m:Employee)-[:manages]->(t:Team),(e:Employee)-[:located_in]->(:Building)-[:located_in]->(r:Region),(i:Incident)-[:occurs_in]->(r:Region) WHERE i.severity = \"critical\" AND e.name <> m.name RETURN m.name AS ManagerName, m.email AS ManagerEmail, e.name AS EmployeeName, i.description AS IncidentDescription",
     "materialize": true,
     "subscriptions": [{
-      "name" : "Crisis Alert",
+      "name" : "Manager Incident Alert",
       "reactions": [{
-      	"type": "file",
-        "fileReactionConfig": {
-          "batchOutput": false,
-          "fileName": "crisis_alert_demo"
-        }
-      },{
       	"type": "sendGrid",
         "sendGridReactionConfig": {
           "templateId": "d-bfda3e69eaad4d81b262ece093311df8",
           "emailFromAddress": "alljones@microsoft.com",
           "emailToAddress": "$ManagerEmail"
+        }      
+      }]
+    }]
+  },
+    "employeeIncidentAlertInput": {
+    "name": "Employee Incident Alert",
+    "db": "Contoso.HumanResources",
+    "query": "MATCH (e:Employee)-[:located_in]->(:Building)-[:located_in]->(r:Region),(i:Incident)-[:occurs_in]->(r:Region) WHERE i.severity = \"critical\" RETURN e.email AS EmployeeEmail, e.name AS EmployeeName, i.description AS IncidentDescription",
+    "materialize": true,
+    "subscriptions": [{
+      "name" : "Employee Incident Alert",
+      "reactions": [{
+      	"type": "sendGrid",
+        "sendGridReactionConfig": {
+          "templateId": "d-bd9353f428024e00b8d6174f307c163c",
+          "emailFromAddress": "alljones@microsoft.com",
+          "emailToAddress": "$EmployeeEmail"
         }      
       }]
     }]
