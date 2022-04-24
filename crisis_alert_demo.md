@@ -40,7 +40,9 @@ mutation addCrisisAlertQuery($crisisAlertQuery: ContinuousQueryInput!) {
 
 
 ADD ANOTHER EMPLOYEE
-
 g.addV('Employee').property('id', 'anya').property('name', 'Anya').property('gender', 'Female').property('email', 'alljones@microsoft.com')
 
+g.V('anya').addE('assigned_to').to(g.V('azinc'))
+
 g.V('anya').addE('located_in').to(g.V('allens_house'))
+
