@@ -27,8 +27,9 @@
     joins: [
       {
         id: "<string - query relation name>",
-        start: "<string - source>:<string - type>:<string - prop>",
-        end: "<string - source>:<string - type>:<string - prop>"
+        keys [
+          { label:<string>, propertyName: <string> }
+        ]
       }
     ]  
   },
