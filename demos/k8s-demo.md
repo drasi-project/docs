@@ -95,7 +95,7 @@ insert into "RiskyImage" ("Id", "Image", "Reason") values (101, 'reactivegraph.a
 
 Now, a both instances of the app should appear on the dashboard.
 
-Now use kubectl to apply upgrade `my-app-2`to version `0.3`
+Now use kubectl to upgrade `my-app-2`to version `0.3`
 
 ```bash
 kubectl set image pod/my-app-2 app=reactivegraph.azurecr.io/my-app:0.3
