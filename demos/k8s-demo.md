@@ -95,23 +95,10 @@ insert into "RiskyImage" ("Id", "Image", "Reason") values (101, 'reactivegraph.a
 
 Now, a both instances of the app should appear on the dashboard.
 
-Saving the following yaml a a file named `my-app.yaml`
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-app-2
-spec:
-  containers:
-    - name: app
-      image: "reactivegraph.azurecr.io/my-app:0.3"
-```
-
 Now use kubectl to apply upgrade `my-app-2`to version `0.3`
 
 ```bash
-kubectl apply -f my-app.yaml
+kubectl set image pod/my-app-2 app=reactivegraph.azurecr.io/my-app:0.3
 ```
 
 Now `my-app-2` should disappear from the dashboard, since version `0.3` is not marked as a risk.
@@ -122,13 +109,6 @@ After the demo, reset the data
 delete from "RiskyImage" where "Id" = 101
 ```
 
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-app-2
-spec:
-  containers:
-    - name: app
-      image: "reactivegraph.azurecr.io/my-app:0.2"
+```bash
+kubectl set image pod/my-app-2 app=reactivegraph.azurecr.io/my-app:0.2
 ```
