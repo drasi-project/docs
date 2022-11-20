@@ -3,6 +3,7 @@
   id: "<string>",
   name: "<string>",
   mode: "<query | filter>",
+  indexType: "<default | memory | persisted>
   sources: {
     subscriptions: [
       {
