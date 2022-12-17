@@ -2,7 +2,7 @@
 type: "docs"
 title: "Architecture"
 linkTitle: "Architecture"
-weight: 10
+weight: 20
 description: >
     Reactive Graph Architecture
 ---
