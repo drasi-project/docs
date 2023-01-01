@@ -1,0 +1,22 @@
+# Site Configuration
+baseURL = "https://reactive-graph-docs.azurewebsites.net/"
+title = "Reactive Graph"
+theme = "docsy"
+
+# Attribution
+author = "Allen Jones"
+copyright = "Copyright © 2022, Microsoft; all rights reserved."
+
+# Language Configuration
+languageCode = "en"
+DefaultContentLanguage = "en"
+
+# Top Nav Bar
+[[menu.main]]
+    name = "ADO"
+    weight = 40
+    url = "https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents"
+
+[module]
+  [module.hugoVersion]
+    extended = true
