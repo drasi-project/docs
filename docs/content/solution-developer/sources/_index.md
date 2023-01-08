@@ -11,8 +11,8 @@ Sources provide connectivity to the systems that Reactive Graph can observe as s
 
 Reactive Graph currently provides Source implementations for the following source systems:
 
-- [Azure Cosmos DB Gremlin API](#azure-cosmos-db-gremlin-api)
-- [PostgreSQL](#postgresql)
+- [Azure Cosmos DB Gremlin API](#azure-cosmos-db-gremlin-api-source)
+- [PostgreSQL](#postgresql-source)
 
 *To create a Source for other sources, see the [Platform Developer Guide](/platform-developer)*
 
@@ -24,7 +24,7 @@ To create a Source instance, you must:
 
 The Kubernetes resource definition for a Source has the following structure:
 
-```
+```yaml
 apiVersion: query.reactive-graph.io/v1
 kind: Source
 metadata:
@@ -37,11 +37,11 @@ spec:
   - ...
 ```
 
-The *source-id* must be unique within the scope of the Reactive Graph envionment, and is the ID used in a Continuous Query definition to describe which Sources the Continuous Query uses as input.
+The **source-id** must be unique within the scope of the Reactive Graph envionment, and is the ID used in a Continuous Query definition to describe which Sources the Continuous Query uses as input.
 
 The following sections describe the configuration of the Source types currently supported by Reactive Graph.
 
-## Azure Cosmos DB Gremlin API
+## Azure Cosmos DB Gremlin API Source
 
 The Azure Cosmos DB Gremlin API Source requires the following properties be set:
 
@@ -55,9 +55,9 @@ The Azure Cosmos DB Gremlin API Source requires the following properties be set:
 |SourceContainerPartitionKey| |
 |SourceKey| |
 
-The folloing is an example of a fully configured Azure Cosmos DB Gremlin API Source using Kubernetes Secrets to securely store database credentials:
+The following is an example of a fully configured Azure Cosmos DB Gremlin API Source using Kubernetes Secrets to securely store database credentials:
 
-```
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -94,7 +94,7 @@ spec:
         key: SourceKey
 ```
 
-## PostgreSQL
+## PostgreSQL Source
 
 The PostgreSQL Source requires the following properties be set:
 
@@ -108,9 +108,9 @@ The PostgreSQL Source requires the following properties be set:
 |database.dbname| |
 |tables| |
 
-The folloing is an example of a fully configured PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
+The following is an example of a fully configured PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
 
-```
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
