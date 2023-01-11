@@ -26,10 +26,15 @@ dapr init -k
 
 ## Install Reactive Graph control plane
 
+### Prerequisites 
+ * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+ * Bash
+ * sed
+
 From `/devops/deploy/kubernetes` run
 
 ```bash
 ./install-drasi.sh drasi preview.1
 ```
 
-* Note: You need to part of the `Project Drasi Preview Users` group to run this script as it will attempt to retrieve secrets from our key vault.
+> Note: You need to part of the `Project Drasi Preview Users` group to run this script as it will attempt to retrieve secrets from our key vault.
