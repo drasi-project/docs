@@ -31,3 +31,5 @@ From `/devops/deploy/kubernetes` run
 ```bash
 ./install-drasi.sh drasi preview.1
 ```
+
+* Note: You need to part of the `Project Drasi Preview Users` group to run this script as it will attempt to retrieve secrets from our key vault.
