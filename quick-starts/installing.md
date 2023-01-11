@@ -26,14 +26,15 @@ dapr init -k
 
 ## Install Reactive Graph control plane
 
-```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/deploy-default-infra.yaml
-```
+### Prerequisites 
+ * [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+ * Bash
+ * sed
+
+From `/devops/deploy/kubernetes` run
 
 ```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/deploy-operator.yaml
+./install-drasi.sh drasi preview.1
 ```
 
-```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/default_querycontainer.yaml
-```
+> Note: You need to part of the `Project Drasi Preview Users` group to run this script as it will attempt to retrieve secrets from our key vault.
