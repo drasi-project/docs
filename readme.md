@@ -1,6 +1,12 @@
 # Documentation WebSite
 The documentation website, located in the ```docs/docs``` folder is created with the [Hugo](https://gohugo.io/) framework using the [Docsy](https://www.docsy.dev/) theme as described in the Azure Incubations [internal project setup documentation](https://dev.azure.com/azure-octo/Incubations/_wiki/wikis/Incubations.wiki/171/Project-Website).
 
+## Requirements
+
+1. Install [Hugo](https://gohugo.io/)
+1. Run ```git submodule update --init --recursive``` to pull Docsy code that is configured as a submodule.
+1. In the ```docs/docs/themes/docsy``` folder, run the command ```npm i```
+
 ## Running Locally
 To run the documentation website locally:
 
