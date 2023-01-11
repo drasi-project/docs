@@ -26,14 +26,8 @@ dapr init -k
 
 ## Install Reactive Graph control plane
 
-```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/deploy-default-infra.yaml
-```
+From `/devops/deploy/kubernetes` run
 
 ```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/deploy-operator.yaml
-```
-
-```bash
-kubectl apply -f https://reactivegraph.blob.core.windows.net/scripts/default_querycontainer.yaml
+./install-drasi.sh drasi preview.1
 ```
