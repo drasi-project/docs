@@ -4,7 +4,5 @@ title: "Administrator Guides"
 linkTitle: "Administrator Guides"
 weight: 40
 description: >
-    Learn about operating Reactive Graph
+    Learn about deploying and operating Reactive Graph
 ---
-
-Coming Soon
