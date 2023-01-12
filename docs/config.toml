@@ -13,7 +13,7 @@ DefaultContentLanguage = "en"
 
 # Top Nav Bar
 [[menu.main]]
-    name = "ADO"
+    name = "CODE"
     weight = 40
     url = "https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents"
 

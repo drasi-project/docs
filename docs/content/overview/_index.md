@@ -1,8 +1,8 @@
 ---
 type: "docs"
-title: "Concepts"
-linkTitle: "Concepts"
-weight: 1
+title: "Overview"
+linkTitle: "Overview"
+weight: 10
 description: >
     Learn about Reactive Graph goals, core concepts, and architecture
 ---

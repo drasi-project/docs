@@ -2,7 +2,7 @@
 type: "docs"
 title: "Continuous Queries"
 linkTitle: "Continuous Queries"
-weight: 10
+weight: 20
 description: >
-    Reactive Graph Continuous Queries
+    Continuous Queries for Solution Developers
 ---
