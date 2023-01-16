@@ -7,6 +7,8 @@ description: >
     What Problem Does Reactive Graph Solve and How?
 ---
 
+**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+
 # The Problem
 
 Organizations continue to create ever more sophisticated software systems to model, reason about, and control dynamic, real-world systems in domains like supply chain management, transportation, connected environments, and AR/VR. These software systems, common in IoT and digital twin solutions, can be large and complex, regularly containing millions of digital entities that represent things in the real-world such as people, vehicles, products, orders, processes, and incidents. They can also contain millions of relationships between entities that describe how things in the real world are physically or logically related to each other.

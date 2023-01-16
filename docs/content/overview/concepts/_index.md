@@ -7,6 +7,8 @@ description: >
     Understanding Reactive Graph's Core Concepts
 ---
 
+**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+
 Reactive Graph is built around three simple concepts: [Sources](#sources), [Continuous Queries](#continuous-queries), and [Reactions](#reactions). 
 
  
