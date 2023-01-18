@@ -9,11 +9,13 @@ description: >
 
 **The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
 
-Reactive Graph is built around three simple concepts: [Sources](#sources), [Continuous Queries](#continuous-queries), and [Reactions](#reactions). 
+Reactive Graph is built around three core concepts: [Sources](#sources), [Continuous Queries](#continuous-queries), and [Reactions](#reactions). 
 
  
 # Sources
-Sources provide connectivity to the systems that Reactive Graph can observe as sources of change. These would typically be either relational databases or graph databases in which the system of interest stores its data, but a Source could be implemented for any system that provides a low-level change feed and a way to query the current state of the system. Reactive Graph’s input data schema is modeled on Debezium (https://debezium.io). Debezium is an open-source change data capture platform that has adapters for many common data sources. By embracing Debezium, Reactive Graph will be able to use many existing Debezium sources as input. Reactive Graph is in an early phase of incubation and currently provides Sources for Azure Cosmos Gremlin API, PostgreSQL, and Kubernetes. We’ll add additional Sources in the future.
+Sources provide connectivity to the systems that Reactive Graph can observe as sources of change. These would typically be either relational databases or graph databases in which the system of interest stores its data, but a Source could be implemented for any system that provides:
+
+ a low-level change feed and a way to query the current state of the system. Reactive Graph’s input data schema is modeled on Debezium (https://debezium.io). Debezium is an open-source change data capture platform that has adapters for many common data sources. By embracing Debezium, Reactive Graph will be able to use many existing Debezium sources as input. Reactive Graph is in an early phase of incubation and currently provides Sources for Azure Cosmos Gremlin API, PostgreSQL, and Kubernetes. We’ll add additional Sources in the future.
 
  
 
