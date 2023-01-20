@@ -7,6 +7,8 @@ description: >
     Sources for Solution Developers
 ---
 
+**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+
 Sources provide connectivity to the systems that Reactive Graph can observe as sources of change. Sources are the inputs to Continuous Queries.
 
 Reactive Graph currently provides Source implementations for the following source systems:

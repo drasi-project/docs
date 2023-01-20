@@ -4,8 +4,10 @@ title: "Architecture"
 linkTitle: "Architecture"
 weight: 20
 description: >
-    Reactive Graph Architecture
+    Overview of the Reactive Graph Architecture
 ---
+
+**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
 
 The following diagram shows the end-to-end service-level architecture of Reactive Graph.
 
