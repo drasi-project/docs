@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Introduction"
-linkTitle: "Introduction"
+title: "Introduction A"
+linkTitle: "Introduction A"
 weight: 1
 description: >
     What is Reactive Graph and what problem does it solve?
