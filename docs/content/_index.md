@@ -14,8 +14,8 @@ The next step depends on what you want to do...
 
 - If you are interested in **discussing** Drasi, having a **demonstration**, or getting access to a live demo environment so you can **explore** solutions built using Drasi, email [Allen Jones (alljones)](mailto:alljones@microsoft.com).
 
-- If you are a **developer** that wants to **use** Drasi in a solution you are creating, go to the [Solution Developer Guides](/solution-developer).
+- If you are a **developer** that wants to **use** Drasi to add Continuous Queries to a solution you are creating, go to the [Solution Developer Guides](/solution-developer).
 
-- If you are a **developer** that wants to **contribute** to Drasi or **create custom extensions** for Drasi, go to the [Platform Developer Guides](/platform-developer).
+- If you are a **developer** that wants to **contribute** to Drasi or **create custom Reactions** for Drasi, go to the [Platform Developer Guides](/platform-developer).
 
-- If you want to **deploy** a Drasi environment of your own or **manage** an existing environment, go to the [Administrator Guides](/administrator)
+- If you want to **deploy** or **manage** a Drasi environment, go to the [Administrator Guides](/administrator)
