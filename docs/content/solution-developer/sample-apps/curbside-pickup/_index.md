@@ -4,7 +4,7 @@ title: "Curbside Pickup"
 linkTitle: "Curbside Pickup"
 weight: 10
 description: >
-    Curbside Pickup sample application for Reactive Graph
+    Curbside Pickup sample application for Drasi
 ---
 
 Coming Soon

@@ -7,11 +7,11 @@ description: >
     Custom Reactions for Platform Developers
 ---
 
-You can develop custom reactions by writing an application in any language that adheres to a certain specification and publish it as a docker image to the registry serving Reactive Graph images to your cluster.
+You can develop custom reactions by writing an application in any language that adheres to a certain specification and publish it as a docker image to the registry serving Drasi images to your cluster.
 
 ## Query configuration
 
-The Reactive Graph control plane will mount a folder at `/etc/queries` where each file will be named after each queryId that is configured for the reaction.  The contents of each file will be the `options` field from the config.
+The Drasi control plane will mount a folder at `/etc/queries` where each file will be named after each queryId that is configured for the reaction.  The contents of each file will be the `options` field from the config.
 
 Consider the following reaction configuration, this will result in 3 empty files named `query1`, `query2` and `query3` under `/etc/queries`.
 

@@ -4,7 +4,7 @@ title: "Solution Developer Guides"
 linkTitle: "Solution Developer Guides"
 weight: 20
 description: >
-    Learn about developing solutions using Reactive Graph
+    Learn about developing solutions using Drasi
 ---
 
-**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+**The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**

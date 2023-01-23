@@ -7,10 +7,10 @@ description: >
     Continuous Queries for Solution Developers
 ---
 
-**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+**The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**
 
 ## How to Use Continuous Queries
-The [Overview](/solution-developer/overview) section called out 3 high-level approaches to using Reactive Graph:
+The [Overview](/solution-developer/overview) section called out 3 high-level approaches to using Drasi:
 
 1. Observing Changes
 1. Observing Conditions
@@ -35,7 +35,7 @@ Database change logs are an obvious examples of this approach; they simply outpu
 
 But this is also the approach with many systems. Although they may contain events that are more related to the domain (not dependent on the underlying data model), the events are often of a fixed schema and represent a single change to a single element.
 
-Reactive Graph can be used to handle this simple case by:
+Drasi can be used to handle this simple case by:
 1. Creating a Source to handle the source
 2. Creating a Continuous Query that describes the elements you want
 3. Reactions
@@ -67,7 +67,7 @@ In RG you have the ability to specify
 - aggregates
 
 ### Observing Collections
-Each time a Source propagates a change into Reactive Graph, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the COntinuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
+Each time a Source propagates a change into Drasi, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the COntinuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
 
 As a Solution Developer, this enables you to think in terms of dynamic collections defined using rich declarative queries that you can incorporate into your solution.
 
