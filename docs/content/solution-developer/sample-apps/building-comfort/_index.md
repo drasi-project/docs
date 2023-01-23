@@ -4,7 +4,7 @@ title: "Building Comfort"
 linkTitle: "Building Comfort"
 weight: 20
 description: >
-    Building Comfort sample application for Reactive Graph
+    Building Comfort sample application for Drasi
 ---
 
 Coming Soon

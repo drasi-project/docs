@@ -4,7 +4,7 @@ title: "Venue Occupancy"
 linkTitle: "Venue Occupancy"
 weight: 40
 description: >
-    Venue Occupancy sample application for Reactive Graph
+    Venue Occupancy sample application for Drasi
 ---
 
 Coming Soon

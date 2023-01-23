@@ -7,11 +7,11 @@ description: >
     Sources for Solution Developers
 ---
 
-**The Reactive Graph Preview is a prototype and is only suitable for experimentation, not for production systems.**
+**The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**
 
-Sources provide connectivity to the systems that Reactive Graph can observe as sources of change. Sources are the inputs to Continuous Queries.
+Sources provide connectivity to the systems that Drasi can observe as sources of change. Sources are the inputs to Continuous Queries.
 
-Reactive Graph currently provides Source implementations for the following source systems:
+Drasi currently provides Source implementations for the following source systems:
 
 - [Azure Cosmos DB Gremlin API](#azure-cosmos-db-gremlin-api-source)
 - [PostgreSQL](#postgresql-source)
@@ -22,7 +22,7 @@ To create a Source instance, you must:
 
 1. Have credentials and endpoint addresses that provide access to the change log of the source system you want to use.
 1. Create a file containing the Kubernetes resource definition for the Source. This will include the configuration settings that enable the Source to connect to the source system.
-1. Apply the Source resource definition to the Kubernetes cluster where your Reactive Graph environment is deployed.
+1. Apply the Source resource definition to the Kubernetes cluster where your Drasi environment is deployed.
 
 The Kubernetes resource definition for a Source has the following structure:
 
@@ -39,9 +39,9 @@ spec:
   - ...
 ```
 
-The **source-id** must be unique within the scope of the Reactive Graph envionment, and is the ID used in a Continuous Query definition to describe which Sources the Continuous Query uses as input.
+The **source-id** must be unique within the scope of the Drasi envionment, and is the ID used in a Continuous Query definition to describe which Sources the Continuous Query uses as input.
 
-The following sections describe the configuration of the Source types currently supported by Reactive Graph.
+The following sections describe the configuration of the Source types currently supported by Drasi.
 
 ## Azure Cosmos DB Gremlin API Source
 
