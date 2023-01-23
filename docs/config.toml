@@ -1,11 +1,11 @@
 # Site Configuration
-baseURL = "https://reactive-graph-docs.azurewebsites.net/"
-title = "Reactive Graph"
+baseURL = "https://project-drasi-docs.azurewebsites.net/"
+title = "Project Drasi"
 theme = "docsy"
 
 # Attribution
-author = "Allen Jones"
-copyright = "Copyright © 2022, Microsoft; all rights reserved."
+author = "Azure Incubations"
+copyright = "Copyright © 2023, Microsoft; all rights reserved."
 
 # Language Configuration
 languageCode = "en"
