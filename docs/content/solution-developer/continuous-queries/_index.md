@@ -7,70 +7,67 @@ description: >
     Continuous Queries for Solution Developers
 ---
 
-**The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**
+Continuous Queries, as the name implies, are queries that run continuously. To understand this, it is useful to contrast them with a the kind of **instantaneous queries** people are accustomed to running against databases, such as SQL queries against a SQL server. 
 
-## How to Use Continuous Queries
-The [Overview](/solution-developer/overview) section called out 3 high-level approaches to using Drasi:
+When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query.
 
-1. Observing Changes
-1. Observing Conditions
-1. Observing Collections
+If you run the same instantaneous query periodically, the results will be different each time if changes have been made to the database. If you need to use instantaneous queries periodically to detect change, you must compare the most recent and previous query results to determine what has changed. This can be complex, inefficient, and imprecise.
 
-The following sections explore each of these in more detail and provide examples. 
+Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes the precise changes description to all Reactions that have subscribed to the Continuous Query.
 
-### Observing Changes
-Most systems that provide the capability for you as a Solution Developer to observe and react to change do so by propagating events (sometimes called notifications) that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
-- a Retail Operations system might generate create, update, and delete events related to:
-  - Orders
-  - Products
-  - Customers
-  - Deliveries
-  - Invoices
-- a Human Resources system might generate create, update, and delete events related to:
-  - Employees
-  - Teams
-  - Contractors
+ ![Continuous Queries](queries.png)
 
-Database change logs are an obvious examples of this approach; they simply output the details of the entity/record that was created, updated, or deleted. It is the responsibility of the consumer to decide what to do with those changes, including which events can be ignored and which to process.
+Continuous Queries are implemented as graph queries written in [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. Continuous Queries also enable you to create queries that span data across multiple Sources, even when there is no natural connection between data in the Source systems.
 
-But this is also the approach with many systems. Although they may contain events that are more related to the domain (not dependent on the underlying data model), the events are often of a fixed schema and represent a single change to a single element.
+## An Example
+First, Reactive Graph enables developers to use declarative graph query syntax, like the Cypher query shown here, to simultaneously define what changes are of interest (using the Match and Where clauses of the query) as well as what data to use to describe those changes when they occur (using the RETURN clause of the query).
 
-Drasi can be used to handle this simple case by:
-1. Creating a Source to handle the source
-2. Creating a Continuous Query that describes the elements you want
-3. Reactions
-
-The CQ in this instance would be very somple:
+This query identifies all Employees located in Buildings within Regions where there are active Incidents that have a severity of ‘critical’ or ‘extreme’. The query generates output containing the name and email address of the employee and their manager, as well as details about the incident and where it is. If run against a graph database, this query might return an array of results like this:
 
 ```
-MATCH [:Order]
+[
+  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
+  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Claire”, “EmployeeEmail”: “claire@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
+]
 ```
 
-But if you wanted to resshape the output, it is a s simple as:
+Reactive Graph, instead of returning a result when the query is run, executes the query as a long-lived process and maintains a consistently up-to-date query result based on all the relevant changes that have occurred in the source system. When source changes occur that cause the query result to change, Reactive Graph generates notifications describing the effect on the query result, including exactly which elements were added, updated, or deleted. These incremental query results are then distributed to consumers for them to process.
+
+For example, when the above Continuous Query is first run, there might be no results that satisfy the query. But as soon as an extreme severity Forest Fire in Southern California is added to the database, the query might generate the following output showing that two records had been added to the query result:
 
 ```
-MATCH [o:Order]
-RETURN 
-  o.id AS OrderNumber,
-  o.customerId AS CustomerId
-  o.total AS OrderTotal
+{
+ “added”: [
+  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
+  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Claire”, “EmployeeEmail”: “claire@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
+ ],
+ “updated”: [],
+ “deleted”: []
+}
 ```
 
+If Bob was removed from the Southern Californian Region while the Forest Fire was still active, the query would generate the following output, showing that Bob’s record had been deleted from the query result:
 
-### Observing Conditions
-More flexible systems allow consumers greater control over which events they received, this is often done using filters or rules. The consumer only reveis events that match the rules criteria. 
+```
+{
+ “added”: [],
+ “updated”: [],
+ “deleted”: [
+  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
+ ]
+}
+```
 
-In RG you have the ability to specify 
-- graph
-- properties
-- connects that dont exist in the source data
-- aggregates
+And then, if the severity of the Forest Fire changed from extreme to critical, the query would immediately generate the following output showing a that Claire’s result had been updated, and including what the result was both before and after the change:
 
-### Observing Collections
-Each time a Source propagates a change into Drasi, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the COntinuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
-
-As a Solution Developer, this enables you to think in terms of dynamic collections defined using rich declarative queries that you can incorporate into your solution.
-
-It might help to think of these as 
-For example, 
-
+```
+{
+ “added”: [],
+ “updated”: [
+  { 
+   “before”: { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
+   “after”: { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “critical”, “IncidentDescription”: “Forest Fire” }
+ ],
+ “deleted”: []
+}
+```
