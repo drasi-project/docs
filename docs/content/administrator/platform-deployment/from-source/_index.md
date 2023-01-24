@@ -86,10 +86,10 @@ dapr init -k
 
 Drasi has a dependency on MongoDb, Redis, and some Dapr components that must be installed before Drasi.
 
-From the `/devops/deploy/developer` folder, execute the following:
+From the `/devops/deploy/kubernetes` folder, execute the following:
 
 ```bash
-kubectl apply -f default-infra.yaml
+kubectl apply -f deploy-default-infra.yaml
 ```
 
 
@@ -112,7 +112,7 @@ make deploy IMG=reactive-graph/operator
 
 ### Deploy a default query container
 
-To deploy a default Query Container, from the `/devops/deploy/developer` folder, execute the following:
+To deploy a default Query Container, from the `/devops/deploy/kubernetes` folder, execute the following:
 
 ```bash
 kubectl apply -f default-query-container.yaml

@@ -2,7 +2,7 @@
 type: "docs"
 title: "Architecture"
 linkTitle: "Architecture"
-weight: 20
+weight: 10
 description: >
     Overview of the Drasi Architecture
 ---
