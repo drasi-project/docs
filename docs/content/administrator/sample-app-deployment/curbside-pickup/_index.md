@@ -8,13 +8,48 @@ description: >
 ---
 
 ## Prerequsites
+- [NodeJs](https://nodejs.org/)
 - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools)
-- Node
+- Azure Account
+- Kubectl
+- An instance of Reactive Graph, deployed to the Kubernetes cluster that your kubectl context points to
+- The source repo cloned to a folder on your local machine
+
 
 ## Overview of the app
 
+This demo consists of
+  - 2 sources, each watching a different database
+  - Several continuous queries against each database
+  - A continuous query that joins across the 2 databases
+  - A SignalR reaction that recieves changes and forwards them to any connected front end clients
+  - An Azure Function App that provides Http endpoints that directly manuipulate the data in each database
+  - A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction
 
-## Setup Database
+
+![Architecture](demo-arch.png)
+
+## Setup a Gremlin Database
+
+### Create a CosmosDb account
+
+From the `/apps/curbside-pickup/devops` folder, use the Azure CLI to deploy `database.bicep`
+
+```bash
+az deployment group create -f database.bicep --resource-group <your resource group> -p cosmosAccountName=<your account name>
+```
+
+Insert your resource group name and pick a name for your CosmosDb account, for example:
+
+```bash
+az deployment group create -f database.bicep --resource-group my-resource-group -p cosmosAccountName=my-drasi-db
+```
+
+This will create a new CosmosDb account with the Gremlin API and a database named `Contoso` with 2 empty graphs, named `PhysicalOperations` and `RetailOperations`.
+
+### Request FFCF feature
+
+The FFCF feature is required to be enabled on your CosmosDb account.  Currently, this needs to be manually requested by [filling out this form](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR9ecQmQM5J5LlXYOPoIbyzdUOFVRNUlLUlpRV0dXMjFRNVFXMDNRRjVDNy4u)
 
 ### Add the Pickup zone data
 
@@ -82,6 +117,9 @@ From the `/apps/curbside-pickup/functions` folder, create a file named `local.se
     "PHYSICAL_OPS_DB_NAME": "Contoso",
     "PHYSICAL_OPS_CNT_NAME": "PhysicalOperations",
     "PHYSICAL_OPS_KEY": "<access key>"
+  },
+  "Host": {
+    "LocalHttpPort": 7071
   }
 }
 ```
@@ -109,11 +147,13 @@ Double check the `config.json` file under `/app/src` to ensure the Urls are corr
 }
 ```
 
-From the `curbside-pickup/app` folder, build the react app
+From the `curbside-pickup/app` folder, start the react app
 
 ```bash
 npm install
 npm start
 ```
 
-The front-end should be accessible at http://localhost:3000
+The front-end should be accessible at [http://localhost:3000](http://localhost:3000)
+
+![UI Overview](ui-overview.png)
