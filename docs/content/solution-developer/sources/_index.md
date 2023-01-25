@@ -4,7 +4,7 @@ title: "Sources"
 linkTitle: "Sources"
 weight: 10
 description: >
-    Sources for Solution Developers
+    How to Use Sources
 ---
 
 **The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**

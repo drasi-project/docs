@@ -61,11 +61,13 @@ Drasi provides capabilities that most existing change event/notification solutio
 
 
 As a Solution Developer, there are multiple approaches you can take to use Drasi depending on what you need to achieve and how you choose to model the data and services in your solution. When starting to learn how to use Drasi, it can be useful to think in terms of the following 3 increasingly sophisticated approaches:
-1. **Observing Changes**, where you use Drasi to detect the creation, modification, or deletion of data elements in one or more source systems and take some action in response to those changes.
-1. **Observing Conditions**, where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition to be met and take some action in response.
+1. **Observing Changes**, where you use Drasi to detect the simple creation, modification, or deletion of data elements in one or more source systems and take some action in response to those changes.
+1. **Observing Conditions**, where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition, often including multil to be met and take some action in response.
 1. **Observing Collections**, where you use Drasi to define collections of data elements that meet some criteria, and you use those collections and the changes to those collections over time to drive your solution behavior.
 
 Each of these approaches is described in more detail in the below. However, it is important to understand that the only difference in these approaches is the degree to which you embrace the capabilities of Drasi. The more sophisticated approaches often require you to include more sources and/or write richer queries, but they also allow you to push more responsibility onto Drasi, meaning you write and maintain less code.
+
+The 3 approaches above are focused on the observation of data from an existing source system were your solution is the consumer. You might also consider adopting Drasi if you are creating a solution that you expect other systems will need to observe for change. Under such circumstances, you might consider Drasi as an alternative to implementing your own eventing solution. Just as most people do not implement their own database, messaging solution, or web framework, using Drasi means you do not need to implement your own Change Detection and Response solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work and the downstream developers get a richer and more flexible way to observe your system.
 
 ## Approaches
 ### Observing Changes
@@ -125,7 +127,7 @@ It might help to think of these as
 For example, 
 
 ### AND ALSO
-The 3 approaches above are focused on the observation of data from an existing source system were your solution is the consumer. You might also consider Drasi if you are creating a solution that you expect other systems will need to observe for change. 
+The 3 approaches above are focused on the observation of data from an existing source system were your solution is the consumer. You might also consider adopting Drasi if you are creating a solution that you expect other systems will need to observe for change. 
 
 Under such circumstances, you might consider Drasi as an alternative to implementing your own eventing solution. Just as most people do not implement their own database, messaging solution, or web framework, using Drasi means you do not need to implement your own Change Detection and Response solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work and the downstream developers get a richer and more flexible way to observe your system.
 

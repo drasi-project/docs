@@ -21,11 +21,11 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 Drasi’s Source input schema is modeled on Debezium (https://debezium.io), an open-source Change Data Capture platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will be able to use many existing Debezium sources as input. 
 
 ## Continuous Queries
-Continuous Queries, as the name implies, are queries that run continuously. To understand this, it is useful to contrast them with a the kind of **instantaneous queries** people are accustomed to running against databases, such as SQL queries against a SQL server. 
+Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** people are accustomed to running against databases or search engines. 
 
 When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query.
 
-If you run the same instantaneous query periodically, the results will be different each time if changes have been made to the database. If you need to use instantaneous queries periodically to detect change, you must compare the most recent and previous query results to determine what has changed. This can be complex, inefficient, and imprecise.
+If you run the same instantaneous query periodically, if changes have been made to the database, the query results might be different each time. If you use instantaneous queries periodically to detect change, you must compare the most recent and previous query results to determine what has changed. This can be complex, inefficient, and imprecise.
 
 Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes the precise changes description to all Reactions that have subscribed to the Continuous Query.
 
