@@ -23,6 +23,7 @@ description: >
     - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
     - [Minikube](https://minikube.sigs.k8s.io/docs/)
     - [Kind](https://kind.sigs.k8s.io/)
+    - An x64/amd64 machine.  The preview images are built for amd64 and are known to have issues running under QEMU on an arm64 host.
 
 **If you are deploying to an AKS cluster**, you can use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:
 
