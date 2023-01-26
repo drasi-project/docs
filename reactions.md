@@ -4,11 +4,11 @@ A custom reaction can be deployed by packaging it as a docker container, and app
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: (your reaction name)
 spec:
-  reactorImage: (your docker image)
+  reactionImage: (your docker image)
   queries:
     - queryId: (a query you want to react to)
       options: >
@@ -39,11 +39,11 @@ spec:
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: debug1
 spec:
-  reactorImage: reactive-graph/debug-reactor
+  reactionImage: reactive-graph/reaction-debug
   endpoints:
     - name: gateway
       port: 8080
@@ -55,11 +55,11 @@ spec:
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: eventgrid1
 spec:
-  reactorImage: reactive-graph/eventgrid-reactor
+  reactionImage: reactive-graph/reaction-eventgrid
   properties:
     - name: EventGridUri
       value: https://reactive-graph-daniel.westus-1.eventgrid.azure.net/api/events
@@ -73,11 +73,11 @@ spec:
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: gql1
 spec:
-  reactorImage: reactive-graph/graphql-reactor
+  reactionImage: reactive-graph/reaction-graphql
   endpoints:
     - name: gateway
       port: 8080
@@ -95,11 +95,11 @@ spec:
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: signalr1
 spec:
-  reactorImage: reactive-graph/signalr-reactor
+  reactionImage: reactive-graph/reaction-signalr
   properties:
     - name: AzureSignalRConnectionString
       value: xxxxxx
@@ -114,11 +114,11 @@ spec:
 
 ```yaml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: storedproc1
 spec:
-  reactorImage: reactive-graph/storedproc-reactor
+  reactionImage: reactive-graph/reaction-storedproc
   properties:
     - name: SqlCommand
       value: insert into "Item" ("ItemId", "Name", "Category") values (@Id + 1000, @Name, @Category)

@@ -86,15 +86,15 @@ From the `/apps/curbside-pickup/devops` folder, use kubectl to deploy the contin
 kubectl apply -f queries-with-gremlin.yaml
 ```
 
-## Deploy the reactor
+## Deploy the reaction
 
-From the `/apps/curbside-pickup/devops` folder, use kubectl to deploy the SignalR reactor
+From the `/apps/curbside-pickup/devops` folder, use kubectl to deploy the SignalR reaction
 
 ```bash
-kubectl apply -f signalr-reactor.yaml
+kubectl apply -f signalr-reaction.yaml
 ```
 
-Create a port forward for the SignalR reactor to a port on your local machine.
+Create a port forward for the SignalR reaction to a port on your local machine.
 
 ```bash
 kubectl port-forward services/signalr1-gateway 5001:80 -n default
