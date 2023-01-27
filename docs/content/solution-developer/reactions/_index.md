@@ -120,7 +120,7 @@ The Event Grid Reaction requires the following configuration settings:
 
 The following is an example of a fully configured Event Grid Reaction using Kubernetes Secrets to securely store sensitive information:
 
-```yaml
+```
 apiVersion: v1
 kind: Secret
 metadata:
@@ -158,7 +158,7 @@ The SignalR Reaction requires the following configuration settings:
 
 The following is an example of a fully configured Event Grid Reaction using Kubernetes Secrets to securely store sensitive information:
 
-```yaml
+```
 apiVersion: v1
 kind: Secret
 metadata:

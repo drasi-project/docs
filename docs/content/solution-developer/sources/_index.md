@@ -104,7 +104,7 @@ The Azure Cosmos DB Gremlin API Source requires the following properties be set:
 
 The following is an example of a fully configured Azure Cosmos DB Gremlin API Source using Kubernetes Secrets to securely store database credentials:
 
-```yaml
+```
 apiVersion: v1
 kind: Secret
 metadata:
@@ -157,7 +157,7 @@ The PostgreSQL Source requires the following properties be set:
 
 The following is an example of a fully configured PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
 
-```yaml
+```
 apiVersion: v1
 kind: Secret
 metadata:

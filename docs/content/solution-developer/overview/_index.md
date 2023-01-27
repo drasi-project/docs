@@ -11,6 +11,7 @@ description: >
 
 To use Drasi as part of a solution you must do the following three things:
 
+1. Have access to a Drasi environment where you can deploy the Sources, Continuous Queries, and Reactions that are part of your solution. If you need to deploy your own Drasi environment for dev/test, the [Administrator Guides](/administrator) describe a number of self hosting options for both local and cloud deployments.
 1. Define [Sources](/solution-developer/sources) for each of the source databases or systems from which you want to detect and react to change.
 1. Define [Continuous Queries](/solution-developer/continuous-queries) for each of the queries you want to run across those sources.
 1. Define [Reactions](/solution-developer/reactions) to handle the output from each of your Continuous Queries. Either handling the change in the Reaction, or using the Reaction to push the change into your broader solution for processing by your application, service, or function logic.
