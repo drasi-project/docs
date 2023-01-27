@@ -105,7 +105,10 @@ The easiest way to create a Continuous Query, and the way you will often create 
 1. Create a YAML file containing the Continuous Query Resource Definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
 1. Run Kubectl to apply the YAML file, creating the Continuous Query
 
-As soon as the Continuous Query is created it will start running, monitoring its sources for changes and generating results in response to changes.
+When a new Continuous Query is created it:
+1. Subscribes to its Sources, describing the types of change it wants to receive.
+1. Queries its Sources to load the initial data for its query result.
+1. Begins processing the stream of SourceChangeEvents from its Sources that represent the sequence of low-level database changes that have occurred (inserts, updated, deletes) and translates them into changes to its query result.  
 
 Here is a simple example of the resource definition for the Incident Alerting Continuous Query used in the example above:
 
@@ -170,11 +173,12 @@ In addition to the id and Cypher query, there are a number of configuration sett
 |metadata.name|The **id** of the Continuous Query. Must be unique. Is used to manage the Continuous Query through Kubectl and in Reactions to identify the Continuous Queries they should subscribe to.|
 |spec.mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
 |spec.indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. using memory-based indexes is good for testing and is also OK for Continuos Queries that do not require significant bootstrapping when they start.|
-|query|The Cypher query that defines what the change the Continuous Query is detecting and the output it generates. Explained in [Queries](#queries) section.|
+|spec.params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
+|spec.query|The Cypher query that defines what the change the Continuous Query is detecting and the output it generates. Explained in [Queries](#queries) section.|
 |spec.sources.subscriptions|Describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels/Types to the Label names used in the Cypher Query. Explained in [Source Subscriptions](#source-subscriptions) section.|
 |spec.sources.joins|Describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Explained in [Source Joins](#source-joins) section.|
 
-### Cypher Queries
+### Cypher Queries 
 Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
 - [Getting Started](https://neo4j.com/developer/cypher/)
 - [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
@@ -198,7 +202,14 @@ Using Drasi Continuous Queries effectively requires that you know the schema of 
 
 ### Source Subscriptions
 
-### Source Joins
+spec.sources.subscriptions
+
+•	A list of the node and relation labels from a source and how the Continuous Query should map them to labels in the query. This supports name remapping in situations where there are name collisions across multiple sources, or where the query benefits from using more readable labels than are used in the source.
+
+### Source Joins 
+spec.sources.joins
+
+•	A list of Source Joins that the Continuous Query will use during query evaluation to connect data from multiple sources. This defines which values from one source should be considered synonymous with values from another source. Currently only simple equality is supported between named properties, however it is planned to support functions that can modify property values before joins occur.
 
 ## Examples
 
