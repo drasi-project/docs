@@ -2,7 +2,7 @@
 type: "docs"
 title: "Reactions"
 linkTitle: "Reactions"
-weight: 30
+weight: 60
 description: >
     How to Use Reactions
 ---

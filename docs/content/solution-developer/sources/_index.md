@@ -2,7 +2,7 @@
 type: "docs"
 title: "Sources"
 linkTitle: "Sources"
-weight: 10
+weight: 40
 description: >
     How to Use Sources
 ---
