@@ -101,6 +101,8 @@ To build the docker images of all the Drasi services, from the `/devops/build` f
 ./local-build-images.sh
 ```
 
+> Note:  If you are running a local cluster with `Kind`, you also need to run `load-images-to-kind.sh` to load the built images into your Kind cluster.
+
 ### Build and deploy the control plane
 
 To build and install the Drasi Kubernetes Operator, from the `/src/platform/kubernetes-operator` folder, execute the following:
