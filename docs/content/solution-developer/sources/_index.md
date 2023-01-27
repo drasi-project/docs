@@ -7,6 +7,8 @@ description: >
     How to Use Sources
 ---
 
+## Introduction
+
 Sources provide connectivity to the systems that Drasi can observe as sources of change. Sources are the inputs to Continuous Queries.
 
  ![End to End](simple-end-to-end.png)
@@ -69,9 +71,24 @@ You can then use the standard Kubectl commands to query the existence and status
 kubectl get sources
 ```
 
+
+## Deletion
+To delete an active Source, run the following command:
+
+```
+kubectl delete source <source-id>
+```
+
+For example, if the Source id is `human-resources`, you would run,
+
+```
+kubectl delete source human-resources
+```
+
+## Configuring Sources
 The following sections describe the configuration of the Source types currently supported by Drasi.
 
-## Azure Cosmos DB Gremlin API Source
+### Azure Cosmos DB Gremlin API Source
 
 The Azure Cosmos DB Gremlin API Source requires the following properties be set:
 
@@ -124,7 +141,7 @@ spec:
         key: SourceKey
 ```
 
-## PostgreSQL Source
+### PostgreSQL Source
 
 The PostgreSQL Source requires the following properties be set:
 
@@ -173,15 +190,4 @@ spec:
     value: public.Vehicle,public.Zone
 ```
 
-## Deletion
-To delete an active Source, run the following command:
-
-```
-kubectl delete source <source-id>
-```
-
-For example, if the Source id is `human-resources`, you would run,
-
-```
-kubectl delete source human-resources
-```
+### Kubernetes Source

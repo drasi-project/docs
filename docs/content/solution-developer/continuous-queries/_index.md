@@ -8,6 +8,11 @@ description: >
 ---
 
 ## Introduction
+
+Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push data query result changes to the Reactions subscribed to them.
+
+ ![End to End](simple-end-to-end.png)
+
 Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
 
 When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
@@ -23,7 +28,7 @@ Continuous Queries are implemented as graph queries written in the [Cypher Query
 - easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
 - create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems. 
 
-## Example
+## Example: Incident Alerts
 Imagine an Incident Alerting Service which notifies managers if any of the employees in their team are at risk due to dangerous incidents happening in their location (e.g. fires, storms, protests, etc). For this example, assume the source data is a property graph of nodes (rectangles) and relations (lines) shown in the following diagram:
 
 ![Incident Alerting](incident-alerting-graph.png)
@@ -142,6 +147,19 @@ You can then use the standard Kubectl commands to query the existence and status
 kubectl get continuousqueries
 ```
 
+## Deletion
+To delete an active Continuous Query, run the following command:
+
+```
+kubectl delete continuousqueries <query-id>
+```
+
+For example, if the Continuous Query id from the `metadata.name` property of the resource definition is `manager-incident-alert`, you would run,
+
+```
+kubectl delete continuousqueries manager-incident-alert
+```
+
 ## Configuration
 In addition to the id and Cypher query, there are a number of configuration settings that are required when creating a Continuous Query, as well as some optional settings that allow you to control how Drasi processes the query, what data is cached, and what data is generated. The following table provides a summary of these configuration settings:
 
@@ -156,7 +174,7 @@ In addition to the id and Cypher query, there are a number of configuration sett
 |spec.sources.subscriptions|Describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels/Types to the Label names used in the Cypher Query. Explained in [Source Subscriptions](#source-subscriptions) section.|
 |spec.sources.joins|Describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Explained in [Source Joins](#source-joins) section.|
 
-### Queries
+### Cypher Queries
 Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
 - [Getting Started](https://neo4j.com/developer/cypher/)
 - [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
@@ -181,19 +199,6 @@ Using Drasi Continuous Queries effectively requires that you know the schema of 
 ### Source Subscriptions
 
 ### Source Joins
-
-## Deletion
-To delete an active Continuous Query, run the following command:
-
-```
-kubectl delete continuousqueries <query-id>
-```
-
-For example, if the Continuous Query id from the `metadata.name` property of the resource definition is `manager-incident-alert`, you would run,
-
-```
-kubectl delete continuousqueries manager-incident-alert
-```
 
 ## Examples
 
