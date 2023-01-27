@@ -11,7 +11,7 @@ Drasi is a **Data Change Processing** platform that makes it easier to build dyn
 
  ![End to End](simple-end-to-end.png)
 
-A single Drasi environment can host many Sources, Continuous Queries, and Reactions, composing them together to build scalable Data Change Processing capabilities to power dynamic business solutions. 
+A single Drasi environment can host many Sources, Continuous Queries, and Reactions, composing them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
 
 ## Sources
 Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases in which the system of interest stores its data. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current state of the system. 
@@ -21,19 +21,23 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 Drasi’s Source input schema is modeled on Debezium (https://debezium.io), an open-source Change Data Capture platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will be able to use many existing Debezium sources as input. 
 
 ## Continuous Queries
-Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** people are accustomed to running against databases or search engines. 
 
-When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query.
+Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
+
+When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
 ![Instantaneous Query](instantaneous-query.png)
 
-If you run the same instantaneous query periodically, if changes have been made to the database, the query results might be different each time. If you use instantaneous queries periodically to detect change, you must compare the most recent and previous query results to determine what has changed. This can be complex, inefficient, and imprecise.
-
-Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes the precise changes description to all Reactions that have subscribed to the Continuous Query.
+Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query.
 
  ![Continuous Query](continuous-query.png)
 
- Continuous Queries are implemented as graph queries written in [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. Continuous Queries also enable you to create queries that span data across multiple Sources, even when there is no natural connection between data in the Source systems. Multiple Continuous Queries can use the same Source.
+Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
+- describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
+- easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
+- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems. 
+
+The following diagram shows where Continuous Queries fit in the data flow of a Drasi environment in relation to Sources. Note that a Continuous Query can draw from multiple Sources and multiple Continuous Queries can also make use of a single Source.
 
  ![Continuous Queries Component](queries-component.png)
 
