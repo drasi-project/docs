@@ -8,21 +8,32 @@ description: >
 ---
 
 ## Introduction
-Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases, such as SQL queries against a SQL server. 
 
-When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically and changes are being made to the database, the query results might be different each time, depending on how the changes overlap with the query. 
+Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push data query result changes to the Reactions subscribed to them.
 
-If you want to detect changes in a database and the only tool you have is instantaneous queries, you must run a query periodically and compare the most recent with the previous query results to determine what has changed. This can be complex, inefficient, and imprecise.
+ ![End to End](simple-end-to-end.png)
 
-Continuous Queries, once started, continue to run until you stop them. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result at any point in time after they were started, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query.
+Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
 
- ![Continuous Queries](end_to_end.png)
+When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. Also, you can express which changes you are interested in detecting and how you want notifications of those changes to be described in a single expression.
+![Instantaneous Query](instantaneous-query.png)
 
-These concepts are best understood using an example...
+Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query.
 
-Imagine an Incident Alerting Service which notifies managers if any of the employees in their team are at risk due to dangerous incidents happening in their location (e.g. fires, storms, protests, etc). Using Drasi, the following Cypher query could be used to do this.
+ ![Continuous Query](continuous-query.png)
+
+Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
+- describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
+- easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
+- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems. 
+
+## Example: Incident Alerts
+Imagine an Incident Alerting Service which notifies managers if any of the employees in their team are at risk due to dangerous incidents happening in their location (e.g. fires, storms, protests, etc). For this example, assume the source data is a property graph of nodes (rectangles) and relations (lines) shown in the following diagram:
+
+![Incident Alerting](incident-alerting-graph.png)
+
+Using Drasi, the following Cypher query could be used to to identify each employee at risk:
 
 ```
 MATCH
@@ -39,22 +50,15 @@ RETURN
   elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
 ```
 
-The `MATCH` and `WHERE` clauses of the query identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' that have a **severity** level of ‘critical’ or ‘extreme’. This means that any combination of correctly connected nodes with the required property values should be included in the result.
+The `MATCH` and `WHERE` clauses of the query describe a pattern that identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' that have a **severity** level of ‘critical’ or ‘extreme’. This means that any combination of correctly connected nodes with the required property values should be included in the result.
 
-The `RETURN` clause of the query generates output containing the name and email address of the at risk employee and their manager, as well as details about the incident and the region in which it is located. This defines the schema results coming out of the Continuous Query will have.
+The `RETURN` clause of the query generates output containing the name and email address of the at risk employee and their manager, as well as details about the incident and the region in which it is located. This defines the schema for results generated by the Continuous Query.
 
-If run as an instantaneous query against a graph database (that has a suitable schema), this query might return an array of results like this:
+When the above Continuous Query is first run, there are no results that satisfy the query, because there are no Incidents. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added to the database, as follows:
 
-```
-[
-  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
-  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Claire”, “EmployeeEmail”: “claire@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
-]
-```
+![Incident Added](incident-alerting-graph-with-incident.png)
 
-Drasi, instead of returning a result when the Continuous Query is run, executes the query as a long-lived process and maintains a consistently up-to-date query result based on all the relevant changes that have occurred in the source system. 
-
-For example, when the above Continuous Query is first run, there might be no results that satisfy the query. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added to the database, the query might generate the following output showing that two records (for employees Bob and Claire) now meet the query criteria and have been **added** to the query result:
+The query would generate the following output showing that two records (for employees Bob and Claire) now meet the query criteria and have been **added** to the query result:
 
 ```
 {
@@ -67,7 +71,7 @@ For example, when the above Continuous Query is first run, there might be no res
 }
 ```
 
-If Bob's subsequently location changed, removing him from the Southern Californian Region while the Forest Fire was still active, the Continuous Query would generate the following output, showing that Bob’s record had been **deleted** from the query result:
+If Bob subsequently changed location, removing him from the Southern Californian Region while the Forest Fire was still active, the Continuous Query would generate the following output, showing that Bob’s record had been **deleted** from the query result:
 
 ```
 {
@@ -79,7 +83,7 @@ If Bob's subsequently location changed, removing him from the Southern Californi
 }
 ```
 
-Finally, if the severity of the Forest Fire changed from 'extreme' to 'critical', the Continuous Query would spontaneously generate the following output showing a that the result for Employee Claire been updated. The update includes what the result was both **before** and **after** the change:
+If the severity of the Forest Fire then changed from 'extreme' to 'critical', the Continuous Query would spontaneously generate the following output showing a that the result for Claire had been **updated**. The update includes what the result was both **before** and **after** the change:
 
 ```
 {
@@ -93,39 +97,20 @@ Finally, if the severity of the Forest Fire changed from 'extreme' to 'critical'
 }
 ```
 
-## Cypher Language
-Drasi Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
-- [Getting Started](https://neo4j.com/developer/cypher/)
-- [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
-- [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
-
-Drasi Continuous Queries currently support the following subset of Cypher:
-- MATCH, WHERE, and RETURN clauses
-  - Property and Label patterns on MATCH clause elements
-  - Aliases on RETURN values
-  - Only fixed length MATCH paths with non-anonymous nodes and relations
-- Mathematical operators: +, -, *, /
-- Comparison operators: =, !=, >, >=, <, <=, IS NULL, IS NOT NULL
-- Arithmetic functions: floor, ceil, round, abs 
-- Logic operators : AND, OR, NOT
-- List operators: IN
-- Scalar functions: elementId
-- Aggregating functions: count, sum, avg, min, max
-- CASE expression
-
-We will continue to expand the Cypher support provided by Drasi, but even with a reduced language, it is possible to create powerful queries. Below are some examples:
-
 ## Creation
 Continuous Queries are custom Kubernetes resources that you can create and manage using `Kubectl`. 
 
 The easiest way to create a Continuous Query, and the way you will often create one as part of a broader software solution, is to:
 
-1. Create a YAML file containing the Continuous Query Resource Definition
+1. Create a YAML file containing the Continuous Query Resource Definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
 1. Run Kubectl to apply the YAML file, creating the Continuous Query
 
-As soon as the Continuous Query is created it will start running, monitoring its sources for changes and generating results in response to changes.
+When a new Continuous Query is created it:
+1. Subscribes to its Sources, describing the types of change it wants to receive.
+1. Queries its Sources to load the initial data for its query result.
+1. Begins processing the stream of SourceChangeEvents from its Sources that represent the sequence of low-level database changes that have occurred (inserts, updated, deletes) and translates them into changes to its query result.  
 
-Here is an example of YAML describing the Incident Alerting Continuous Query described above:
+Here is a simple example of the resource definition for the Incident Alerting Continuous Query used in the example above:
 
 ```
 apiVersion: query.reactive-graph.io/v1
@@ -151,7 +136,7 @@ spec:
       elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
 ```
 
-In this simple example, the `spec.sources.subscriptions` property identifies the Source with the id `human-resources` as the source of data for the Continuous Query. The `spec.query` property contains the text of the Cypher query. Full details of the Continuous Query configuration options are described in the following section.
+In this example, the `spec.sources.subscriptions` property identifies the Source with the id `human-resources` as the source of data for the Continuous Query. The `spec.query` property contains the text of the Cypher query. Full details of the Continuous Query configuration options are described in the [Configuration](#configuration) section.
 
 If this Continuous Query resource definition was contained in a file called `query.yaml`, to create this query on a Drasi environment that was the current Kubectl context, you would run the command:
 
@@ -165,20 +150,6 @@ You can then use the standard Kubectl commands to query the existence and status
 kubectl get continuousqueries
 ```
 
-## Configuration
-In addition to the Cypher query, there are a number of configuration settings that are required when creating a Continuous Query, as well as some optional settings that allow you to control how Drasi processes the query, what data is cached, and what data is generated. The following table provides a summary of these configuration settings:
-
-|Name|Description|
-|-|-|
-|apiVersion|Must have the value **query.reactive-graph.io/v1**|
-|kind|Must have the value **ContinuousQuery**|
-|metadata.name|The **id** of the Continuous Query. Must be unique. Is used to manage the Continuous Query through Kubectl and as the name from Reactions to subscribe to the Continuous Query.|
-|spec.mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that when evaluated results in a result that satisfies the query causes the Continuous Query to output the result.|
-|spec.indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. using memory-based indexes is good for testing and is also OK for Continuos Queries that to not require significant bootstrapping when they start.|
-|spec.sources.subscriptions|Describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels/Types to the Label names used in the Cypher Query. Explained in detail below.|
-|spec.sources.joins|Describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries across the unified data. Explained in detail below.|
-|query|The Cypher query that defines what the change the Continuous Query is detecting and the output it generates.|
-
 ## Deletion
 To delete an active Continuous Query, run the following command:
 
@@ -191,6 +162,54 @@ For example, if the Continuous Query id from the `metadata.name` property of the
 ```
 kubectl delete continuousqueries manager-incident-alert
 ```
+
+## Configuration
+In addition to the id and Cypher query, there are a number of configuration settings that are required when creating a Continuous Query, as well as some optional settings that allow you to control how Drasi processes the query, what data is cached, and what data is generated. The following table provides a summary of these configuration settings:
+
+|Name|Description|
+|-|-|
+|apiVersion|Must have the value **query.reactive-graph.io/v1**|
+|kind|Must have the value **ContinuousQuery**|
+|metadata.name|The **id** of the Continuous Query. Must be unique. Is used to manage the Continuous Query through Kubectl and in Reactions to identify the Continuous Queries they should subscribe to.|
+|spec.mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
+|spec.indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. using memory-based indexes is good for testing and is also OK for Continuos Queries that do not require significant bootstrapping when they start.|
+|spec.params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
+|spec.query|The Cypher query that defines what the change the Continuous Query is detecting and the output it generates. Explained in [Queries](#queries) section.|
+|spec.sources.subscriptions|Describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels/Types to the Label names used in the Cypher Query. Explained in [Source Subscriptions](#source-subscriptions) section.|
+|spec.sources.joins|Describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Explained in [Source Joins](#source-joins) section.|
+
+### Cypher Queries 
+Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
+- [Getting Started](https://neo4j.com/developer/cypher/)
+- [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
+- [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
+
+Continuous Queries currently support the following subset of Cypher:
+- MATCH, WHERE, and RETURN clauses
+  - Property and Label patterns on MATCH clause elements
+  - Aliases on RETURN values
+  - Only fixed length MATCH paths with non-anonymous nodes and relations
+- Mathematical operators: +, -, *, /
+- Comparison operators: =, !=, >, >=, <, <=, IS NULL, IS NOT NULL
+- Arithmetic functions: floor, ceil, round, abs 
+- Logic operators : AND, OR, NOT
+- List operators: IN
+- Scalar functions: elementId
+- Aggregating functions: count, sum, avg, min, max
+- CASE expression
+
+Using Drasi Continuous Queries effectively requires that you know the schema of the Sources that you plan to use, but you can write your queries using Labels that make the query easier to understand
+
+### Source Subscriptions
+
+spec.sources.subscriptions
+
+•	A list of the node and relation labels from a source and how the Continuous Query should map them to labels in the query. This supports name remapping in situations where there are name collisions across multiple sources, or where the query benefits from using more readable labels than are used in the source.
+
+### Source Joins 
+spec.sources.joins
+
+•	A list of Source Joins that the Continuous Query will use during query evaluation to connect data from multiple sources. This defines which values from one source should be considered synonymous with values from another source. Currently only simple equality is supported between named properties, however it is planned to support functions that can modify property values before joins occur.
 
 ## Examples
 

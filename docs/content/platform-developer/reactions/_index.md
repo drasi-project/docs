@@ -2,9 +2,9 @@
 type: "docs"
 title: "Custom Reactions"
 linkTitle: "Custom Reactions"
-weight: 1
+weight: 40
 description: >
-    Custom Reactions for Platform Developers
+    Developing Custom Reactions for Drasi
 ---
 
 You can develop custom reactions by writing an application in any language that adheres to a certain specification and publish it as a docker image to the registry serving Drasi images to your cluster.

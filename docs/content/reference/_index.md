@@ -7,4 +7,4 @@ description: >
     Reference documentation for Drasi
 ---
 
-Coming Soon
+**The Drasi Preview is a prototype and is only suitable for experimentation, not for production systems.**

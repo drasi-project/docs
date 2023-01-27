@@ -4,7 +4,7 @@ title: "Using MiniKube"
 linkTitle: "Using MiniKube"
 weight: 20
 description: >
-    Hosting Drasi on Kinikube
+    Hosting Drasi on Minikube
 ---
 
 Install Minikube using the instructions at:
