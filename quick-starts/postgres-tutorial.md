@@ -106,28 +106,28 @@ Now use kubectl to deploy the query
 kubectl apply -f my-query1.yaml
 ```
 
-## Deploy the debug reactor
+## Deploy the debug reaction
 
-In order to view live results of the query we need a reactor that will provide a UI to see them, this is the purpose of the debug reactor.  Create a file named `debug-reactor.yaml` with the following Kubernetes resources.
+In order to view live results of the query we need a reaction that will provide a UI to see them, this is the purpose of the debug reaction.  Create a file named `debug-reaction.yaml` with the following Kubernetes resources.
 
 ```yml
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: debug
 spec:
-  reactorType: Debug
+  reactionType: Debug
   queries:
     - queryId: my-query1
 ```
 
-Now use kubectl to deploy the debug reactor
+Now use kubectl to deploy the debug reaction
 
 ```bash
-kubectl apply -f debug-reactor.yaml
+kubectl apply -f debug-reaction.yaml
 ```
 
-In order to access the UI of the debug reactor from a local machine, we can forward the port to a local one.
+In order to access the UI of the debug reaction from a local machine, we can forward the port to a local one.
 
 ```bash
 kubectl port-forward services/debug-gateway 81:80 -n default
@@ -135,4 +135,4 @@ kubectl port-forward services/debug-gateway 81:80 -n default
 
 Now open your browser and navigate to `http://localhost:81`, where you should see a UI with menu options for each query on the left.  Select `my-query1`.
 
-Use a tool such as [pgAdmin](https://www.pgadmin.org/) to add/remove/update rows in the `Item` table and you should see the debug reactor UI update in realtime with all the rows with Category = `A`.
+Use a tool such as [pgAdmin](https://www.pgadmin.org/) to add/remove/update rows in the `Item` table and you should see the debug reaction UI update in realtime with all the rows with Category = `A`.

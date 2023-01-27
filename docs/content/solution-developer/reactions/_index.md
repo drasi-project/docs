@@ -42,7 +42,7 @@ kind: Reaction
 metadata:
   name: (your reaction name)
 spec:
-  reactorImage: (your docker image)
+  reactionImage: (your docker image)
   queries:
     - queryId: (a query you want to react to)
       options: >
@@ -114,7 +114,7 @@ The Event Grid Reaction requires the following configuration settings:
 
 |Name|Type|Description|
 |-|-|-|
-|reactorImage| | Must have the value **reactive-graph/eventgrid-reactor**|
+|reactionImage| | Must have the value **reactive-graph/reaction-eventgrid**|
 |EventGridUri| Property | |
 |EventGridKey| Property | |
 
@@ -130,11 +130,11 @@ stringData:
   access-key: xxxxxx
 ---
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: eventgrid1
 spec:
-  reactorImage: reactive-graph/eventgrid-reactor
+  reactionImage: reactive-graph/reaction-eventgrid
   properties:
     - name: EventGridUri
       value: https://reactive-graph-daniel.westus-1.eventgrid.azure.net/api/events
@@ -152,7 +152,7 @@ The SignalR Reaction requires the following configuration settings:
 
 |Name|Type|Description|
 |-|-|-|
-|reactorImage| | Must have the value **reactive-graph/signalr-reactor**|
+|reactionImage| | Must have the value **reactive-graph/reaction-signalr**|
 |AzureSignalRConnectionString| Property | |
 |gateway| Endpoint | |
 
@@ -168,11 +168,11 @@ stringData:
   connection-string: xxxxxx
 ---
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: signalr1
 spec:
-  reactorImage: reactive-graph/signalr-reactor
+  reactionImage: reactive-graph/reaction-signalr
   properties:
     - name: AzureSignalRConnectionString
       valueFrom:

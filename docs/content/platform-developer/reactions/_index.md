@@ -17,11 +17,11 @@ Consider the following reaction configuration, this will result in 3 empty files
 
 ```yaml {hl_lines=["7-11"]}
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: my-reaction
 spec:
-  reactorImage: my-reaction
+  reactionImage: my-reaction
   queries:
     - queryId: query1
     - queryId: query2
@@ -32,11 +32,11 @@ The following reaction configuration shows how to include additional metadata pe
 
 ```yaml{hl_lines=["9-10","12-13"]}
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
   name: my-reaction
 spec:
-  reactorImage: my-reaction
+  reactionImage: my-reaction
   queries:
     - queryId: query1
       options: >
@@ -160,11 +160,11 @@ For example, the following manifest will
 
 ```yaml {hl_lines=["9-16"]}
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
-  name: my-reactor
+  name: my-reaction
 spec:
-  reactorImage: my-reactor
+  reactionImage: my-reaction
   queries:
     - queryId: query1
   properties:
@@ -183,11 +183,11 @@ If your reaction has a port that needs to be exposed, you can specify them in th
 
 ```yaml {hl_lines=["7-9"]}
 apiVersion: query.reactive-graph.io/v1
-kind: Reactor
+kind: Reaction
 metadata:
-  name: my-reactor
+  name: my-reaction
 spec:
-  reactorImage: my-reactor
+  reactionImage: my-reaction
   endpoints:
     - name: gateway
       port: 8080
@@ -195,7 +195,7 @@ spec:
     - queryId: query1
 ```
 
-This will create a Kubernetes service called `my-reactor-gateway` that will resolve to port 8080 on your reaction container.
+This will create a Kubernetes service called `my-reaction-gateway` that will resolve to port 8080 on your reaction container.
 
 ## Samples
 
