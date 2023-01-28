@@ -7,9 +7,9 @@ description: >
     Drasi Demo Environment
 ---
 
-The Drasi Demo Dnvironment contains the following sample applications:
+The Drasi Demo Environment contains the following sample applications:
 
-- [Building Comfort](https://drasibuildingcomfort.z5.web.core.windows.net/
+- [Building Comfort](https://drasibuildingcomfort.z5.web.core.windows.net/)
 - [Curbside Pickup](https://drasicurbside.z5.web.core.windows.net/)
 - More coming soon...
 
