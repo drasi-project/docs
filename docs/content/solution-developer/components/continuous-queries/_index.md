@@ -4,10 +4,8 @@ title: "Continuous Queries"
 linkTitle: "Continuous Queries"
 weight: 50
 description: >
-    How to Use Continuous Queries
+    What are Continuous Queries and How to Use Them 
 ---
-
-## Introduction
 
 Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push data query result changes to the Reactions subscribed to them.
 

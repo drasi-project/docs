@@ -9,9 +9,9 @@ description: >
 
 To use Drasi as part of a solution you must do the following three things:
 
-1. Define [Sources](/solution-developer/sources) for each of the source databases or systems from which you want to detect and react to change.
-1. Define [Continuous Queries](/solution-developer/continuous-queries) for each of the queries you want to run across those sources.
-1. Define [Reactions](/solution-developer/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
+1. Define [Sources](/solution-developer/components/sources) for each of the source databases or systems from which you want to detect and react to change.
+1. Define [Continuous Queries](/solution-developer/components/continuous-queries) for each of the queries you want to run across those sources.
+1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
 
 Each of these steps is straightforward, requiring no code; full details are provided in the linked sections. 
 

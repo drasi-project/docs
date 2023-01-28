@@ -2,15 +2,10 @@
 type: "docs"
 title: "Solution Patterns"
 linkTitle: "Solution Patterns"
-weight: 30
+weight: 65
 description: >
-    How to Build Solutions with Drasi
+    How to Design Solutions with Drasi
 ---
-
-## Capabilities
-Drasi is a **Data Change Processing** infrastructure that makes it easier to build dynamic solutions that detect and react to change in source systems. As illustrated in the diagram below, Drasi processes change logs from source systems and enables you to run Continuous Queries across the changing data. When changes occur that affect the Continuous Query result, Drasi pushes the result updates to one or more Reactions that are subscribed to the Continuous Query. These Reactions can act on the updates themselves, use them to update a source system, or forward the updates to your apps and services for processing.
-
- ![Solution Overview](complex-end-to-end.png)
 
 Drasi provides capabilities that most existing change event/notification solutions do not, including:
 - The ability to use Continuous Queries, which are rich declarative graph queries written in the Cypher Query Language, to both describe the changes you want to detect and the way you want to describe those changes. 
@@ -19,7 +14,6 @@ Drasi provides capabilities that most existing change event/notification solutio
 - Out of the box Reactions that use Continuous Query result updates to run commands on source systems, or forward them using existing messaging infrastructure such as Azure Event Grid.
 - The ability to write custom Reactions (and Sources in the future).
 
-## Solution Patterns
 As a Solution Developer, there are multiple approaches you can take to use Drasi depending on what you need to achieve and how you choose to model the data and services in your solution. When starting to learn how to use Drasi, it can be useful to think in terms of the following 3 increasingly sophisticated approaches:
 1. **Observing Changes**, where you use Drasi to detect the simple creation, modification, or deletion of data elements in one or more source systems and take some action in response to those changes.
 1. **Observing Conditions**, where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition, often including multil to be met and take some action in response.
@@ -29,7 +23,7 @@ Each of these approaches is described in more detail in the below. However, it i
 
 The 3 approaches above are focused on the observation of data from an existing source system were your solution is the consumer. You might also consider adopting Drasi if you are creating a solution that you expect other systems will need to observe for change. Under such circumstances, you might consider Drasi as an alternative to implementing your own eventing solution. Just as most people do not implement their own database, messaging solution, or web framework, using Drasi means you do not need to implement your own Change Detection and Response solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work and the downstream developers get a richer and more flexible way to observe your system.
 
-### Observing Changes
+## Observing Changes
 Most systems that provide the capability for you as a Solution Developer to observe and react to change do so by propagating events (sometimes called notifications) that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
 - a Retail Operations system might generate create, update, and delete events related to:
   - Orders
@@ -68,7 +62,7 @@ RETURN
 ```
 
 
-### Observing Conditions
+## Observing Conditions
 More flexible systems allow consumers greater control over which events they received, this is often done using filters or rules. The consumer only reveis events that match the rules criteria. 
 
 In RG you have the ability to specify 
@@ -77,7 +71,7 @@ In RG you have the ability to specify
 - connects that dont exist in the source data
 - aggregates
 
-### Observing Collections
+## Observing Collections
 Each time a Source propagates a change into Drasi, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the COntinuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
 
 As a Solution Developer, this enables you to think in terms of dynamic collections defined using rich declarative queries that you can incorporate into your solution.
@@ -85,7 +79,7 @@ As a Solution Developer, this enables you to think in terms of dynamic collectio
 It might help to think of these as 
 For example, 
 
-### AND ALSO
+## AND ALSO
 The 3 approaches above are focused on the observation of data from an existing source system were your solution is the consumer. You might also consider adopting Drasi if you are creating a solution that you expect other systems will need to observe for change. 
 
 Under such circumstances, you might consider Drasi as an alternative to implementing your own eventing solution. Just as most people do not implement their own database, messaging solution, or web framework, using Drasi means you do not need to implement your own Change Detection and Response solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work and the downstream developers get a richer and more flexible way to observe your system.

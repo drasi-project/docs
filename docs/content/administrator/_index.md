@@ -1,7 +1,7 @@
 ---
 type: "docs"
 title: "Administrator Guides"
-linkTitle: "Administrator Guides"
+linkTitle: "Administrator"
 weight: 40
 description: >
     Learn about deploying and operating Drasi
