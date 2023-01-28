@@ -77,6 +77,9 @@ There are, of course, situations where it does not make sense to use Drasi, or w
 
 - If a source system already has a mature change notification capability, it might be a more suitable choice. This is particularly true if the system's underlying data model is extremely complicated and the events it generates significantly abstract the complexity away from the consumer. It might be easier to consume the in-built events and/or the in-built eventing mechanism might be optimized for the systems data-model.
 - When you need to take action when something didn't happen. Drasi relies on changes in source systems to activate it, if something doesn't happen, there is no trigger.
+- When your Continuous Query includes data types for which there is a lot of data. Drasi will create an optimized index of the data it needs from the source system, but if there are millions of nodes/records that need to be bootstrapped and index, you might need to consider the cost/benefit of the query you are considering.
+- If you really want to do stream analytics or streaming data transformation over high volume data streams there are technologies optimized for these use cases.
+
 
 
 
