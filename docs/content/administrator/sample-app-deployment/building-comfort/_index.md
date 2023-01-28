@@ -37,6 +37,8 @@ The app will provide a dashboard frontend to visualize the comfort levels of roo
 
 ### App Architecture
 
+![Architecture](building-comfort-arch.png)
+
 This app consists of:
 
 - A Source getting changes to building environment data from Cosmos DB.
@@ -125,7 +127,7 @@ Apply the updated yaml file with `kubectl` to your Kubernetes cluster running Dr
 kubectl apply -f source-facilities.yaml
 ```
 
-### Deploy the queries
+#### Deploy the queries
 
 From the `apps/building-comfort/devops/reactive-graph` folder, use `kubectl` to deploy the continuous queries:
 
@@ -143,7 +145,7 @@ Breaking down the Continuous Queries specified in each file:
 
 - `query-ui.yaml` query gets the relevant properties and the relationships between rooms, floors and the building for visualization in the frontend React app.
 
-### Deploy the reactions
+#### Deploy the reactions
 
 From the `apps/building-comfort/devops/reactive-graph` folder, edit the `reaction-gremlin.yaml` file to specify your Gremlin graph in the Cosmos DB instance:
 
@@ -194,7 +196,7 @@ npm install
 npm start -- --javascript
 ```
 
-## Configure and start the frontend React app
+#### Configure and start the frontend React app
 
 From the `apps/building-comfort/app` folder, edit the `config.json` file to specify the local URLs for your deployment:
 
@@ -213,4 +215,18 @@ npm install
 npm start
 ```
 
-The front-end should launch at [http://localhost:3000](http://localhost:3000)
+The front-end should launch at [http://localhost:3000](http://localhost:3000) by default.
+
+#### Using the frontend app
+
+![Building Comfort UI](building-comfort-ui.png)
+
+The UI shows the measured levels of temperature, humidity, and CO2 levels in each room, and the comfort level calculated from those values for each room, floor, and the building. Any alerts for rooms, floors, of the building are show under Comfort Alerts on the left, for example:
+
+![Building Comfort UI with alerts](building-comfort-ui-alerts.png)
+
+You can use the buttons associated with each room to change the temperature, humidity, and CO2 levels in each room, and see the comfort level and alerts update in real time:
+
+- The `BREAK` button sets the temperature to 40, humidity to 20, and CO2 to 700, which will result in a room comfort level outside the acceptable range of 40-50. It will set each property individually with a slight delay between them to simulate a real scenario and show the how the comfort level calculations done by the Continuous Queries are affected in real time.
+
+- The `RESET` button sets the temperature to 70, humidity to 40, and CO2 to 10, which will restore the room to an acceptable comfort level. As with the `BREAK` button, it will set each property individually with a slight delay between them.
