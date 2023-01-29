@@ -14,7 +14,7 @@ Drasi provides capabilities that most existing change notification solutions do 
 
 Each of these approaches is described in more detail in the linked sections below. However, it is important to understand that the only difference in these approaches is the degree to which you embrace the capabilities of Drasi. The more sophisticated approaches require you to include more Sources; write richer Continuous Queries; and take a greater dependency on the no-code Reactions. But they also allow you to push more responsibility onto Drasi, meaning you write and maintain less code.
 
-The three approaches above are focused on the observation of data from an existing source system that you want your solution to react to. You might also consider adopting Drasi if you are creating a solution that you expect other systems will need to observe for change. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own Data Change Processing solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
+The three approaches above are focused on the observation of data from an existing source system that you want your solution to react to. You might also consider adopting Drasi if you are creating a solution that you want to be a [Source of Change](#source-of-change) for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own Data Change Processing solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
 
 ## Observing Changes
 Most systems that provide the capability for you as a Solution Developer to observe and react to change do so by propagating events (sometimes called notifications) that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
@@ -29,34 +29,73 @@ Most systems that provide the capability for you as a Solution Developer to obse
   - Teams
   - Contractors
 
-Database change logs are an obvious examples of this approach; they simply output the details of the entity/record that was created, updated, or deleted. It is the responsibility of the consumer to decide what to do with those changes, including which events can be ignored and which to process.
+Database change logs are an obvious examples of this approach; they simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but might generate change events for higher level domain objects that are not directly represented in the underlying database schema.
 
-But this is also the approach with many systems. Although they may contain events that are more related to the domain (not dependent on the underlying data model), the events are often of a fixed schema and represent a single change to a single element.
+In this approach, the source system generates a fixed set of events, at specific times, and with a predefined schema, all designed by the system developer. It is the responsibility of the consumer to decide what to do with those changes, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function.
 
 Drasi can be used to handle this simple case by:
 1. Creating a Source to handle the source
-2. Creating a Continuous Query that describes the elements you want
-3. Reactions
+1. Creating a Continuous Query that describes the elements you want
+1. Creating a Reaction to process the output of the Continuous Query
 
-The CQ in this instance would be very somple:
+All of this is down without the need to write any code, or deploy and manage services to filter the event stream.
 
-```
-MATCH [:Order]
-```
-
-But if you wanted to resshape the output, it is a s simple as:
+The Continuous Query to handle simple change observation is straighforward, you
 
 ```
-MATCH [o:Order]
-RETURN 
-  o.id AS OrderNumber,
-  o.customerId AS CustomerId
-  o.total AS OrderTotal
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: order-query
+spec:
+  sources:    
+    subscriptions:
+      - id: retail-ops
+  query: > 
+    MATCH
+      (:Order)
+```
+
+
+
+```
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: order-query
+spec:
+  sources:    
+    subscriptions:
+      - id: retail-ops
+  query: > 
+    MATCH
+      (:Order)
+    RETURN 
+      o.id AS OrderNumber,
+      o.customerId AS CustomerId
+      o.total AS OrderTotal
+```
+
+
+
+
+```
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: order-items-query
+spec:
+  sources:    
+    subscriptions:
+      - id: retail-ops
+  query: > 
+    MATCH
+      (o:Order)<-[:PART_OF]-(i:Item)
 ```
 
 
 ## Observing Conditions
-More flexible systems allow consumers greater control over which events they received, this is often done using filters or rules. The consumer only reveis events that match the rules criteria. 
+More flexible change notification systems allow consumers greater control over which events they receive so they dont have to take the entire feed and filter it themselves in code, this is often done using filters or rules. The consumer only reveis events that match the rules criteria. 
 
 In RG you have the ability to specify 
 - graph
@@ -65,12 +104,15 @@ In RG you have the ability to specify
 - aggregates
 
 ## Observing Collections
-Each time a Source propagates a change into Drasi, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the COntinuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
+Each time a Source propagates a change into Drasi, the change is evaluated by each Continuous Query and the impact of the change on the query result is calculated. This means at any point in time, each Continuous Query has an accurate result, and for each change the Continuous Query generates a descriptions of exactly which result elements where added, updated, or deleted.
+
 
 As a Solution Developer, this enables you to think in terms of dynamic collections defined using rich declarative queries that you can incorporate into your solution.
 
 It might help to think of these as 
 For example, 
+
+## Source of Change
 
 ## When Not to Use Drasi
 There are, of course, situations where it does not make sense to use Drasi, or where you need to carefully consider the benefits and disadvantages of other alternatives. Some of these situations are related to the current experimental status of Drasi but some are related to the challenges or complexities of specific environments or data models. Here are a few examples:
