@@ -2,7 +2,7 @@
 type: "docs"
 title: "Recipes"
 linkTitle: "Recipes"
-weight: 65
+weight: 60
 description: >
     Solving Problems with Drasi
 ---
@@ -11,7 +11,7 @@ description: >
 ## Write a Single Source Query
 
 #### Problem
-
+You need to write a Continuous Query that runs across a single source.
 
 #### Solution 
 ```
