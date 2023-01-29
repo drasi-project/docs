@@ -2,7 +2,7 @@
 type: "docs"
 title: "Solution Patterns"
 linkTitle: "Solution Patterns"
-weight: 65
+weight: 50
 description: >
     How to Design Solutions with Drasi
 ---
@@ -10,14 +10,14 @@ description: >
 Drasi provides capabilities that most existing change notification solutions do not. As a Solution Developer, there are multiple approaches you can take to use Drasi depending on what you need to achieve and how you choose to model the data and services in your solution. When starting to learn how to use Drasi, it can be useful to think in terms of the following 3 increasingly sophisticated approaches:
 1. [Observing Changes](#observing-changes), where you use Drasi to detect the simple creation, modification, and deletion of data elements in one or more source systems and take some action in response to those changes. This approach is the most similar to existing change notification solutions and is the easiest, but least valuable, way in which to use Drasi.
 1. [Observing Conditions](#observing-conditions), where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition to be met. These conditions can be simple property constraints, but more interestingly they can describe conditions that include multiple entities and the relationships that exist between them. Without Drasi, doing this usually requires the development of a service or function that periodically checks for the condition, or which takes multiple source feeds and performs checks to determine if the condition is met.
-1. [Observing Collections](#observing-collections), where you use Drasi to define collections of data elements that meet some criteria, and you use those collections and the changes to those collections over time to drive your solution behavior.
+1. [Observing Collections](#observing-collections), where you use Drasi to define collections of data elements that meet some criteria, and you use those collections and the changes to those collections over time to drive your solution behavior. For example, using Drasi to identify `all orders that are ready for which there is a vehicles waiting in the curbside pickup zone` with a simple query. Then as items are added to this collection, your app can notify a server to take the order out, and as items are deleted from the collection, you can mark the order as complete.
 
 Each of these approaches is described in more detail in the linked sections below. However, it is important to understand that the only difference in these approaches is the degree to which you embrace the capabilities of Drasi. The more sophisticated approaches require you to include more Sources; write richer Continuous Queries; and take a greater dependency on the no-code Reactions. But they also allow you to push more responsibility onto Drasi, meaning you write and maintain less code.
 
-The three approaches above are focused on the observation of data from an existing source system that you want your solution to react to. You might also consider adopting Drasi if you are creating a solution that you want to be a [Source of Change](#source-of-change) for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own Data Change Processing solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
+[Source of Change](#source-of-change) - The three approaches above are focused on the observation of data from an existing source system that you want your solution to react to. You might also consider adopting Drasi if you are creating a solution that you want to be a Source of Change for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own Data Change Processing solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
 
 ## Observing Changes
-Most systems that provide the capability for you as a Solution Developer to observe and react to change do so by propagating events (sometimes called notifications) that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
+Most systems that provide the capability for you as a Solution Developer to detect and react to change do so by propagating events/notifications that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
 - a Retail Operations system might generate create, update, and delete events related to:
   - Orders
   - Products
@@ -29,70 +29,80 @@ Most systems that provide the capability for you as a Solution Developer to obse
   - Teams
   - Contractors
 
-Database change logs are an obvious examples of this approach; they simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but might generate change events for higher level domain objects that are not directly represented in the underlying database schema.
+Database change logs are an obvious examples of this approach; they simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but because the change notification functionality is implemented in custom services and components, it can generate change events for higher level domain objects, not just the data that are directly represented in the underlying database schema.
 
-In this approach, the source system generates a fixed set of events, at specific times, and with a predefined schema, all designed by the system developer. It is the responsibility of the consumer to decide what to do with those changes, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function.
+In this approach, the source system generates a fixed set of events with schema defined by the system developer. It is the responsibility of the consumer to decide what to do with those changes, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function. And if the consumer needs more information, they must call back into the source system to get it, dealing with the possibility that the source data has changed during the time between the change event and the consumer querying for more data.
 
-Drasi can be used to handle this simple case by:
-1. Creating a Source to handle the source
-1. Creating a Continuous Query that describes the elements you want
-1. Creating a Reaction to process the output of the Continuous Query
+Drasi can be used to handle this simple case by creating a Source, creating a Continuous Query that describes the elements you want to observe changes in, and creating a Reaction to process the output of the Continuous Query. All of this is done without the need to write any code, or deploy and manage services to filter the event stream.
 
-All of this is down without the need to write any code, or deploy and manage services to filter the event stream.
-
-The Continuous Query to handle simple change observation is straighforward, you
+Using the following Continuous Query named **observe-incident**, you would get notified of all nodes in the Source with an Incident label that are created or deleted, as well as the **before** and **after** version if an Incident changed.
 
 ```
 apiVersion: query.reactive-graph.io/v1
 kind: ContinuousQuery
 metadata:
-  name: order-query
+  name: observe-incident
 spec:
   sources:    
     subscriptions:
-      - id: retail-ops
+      - id: risk-mgmt
   query: > 
     MATCH
-      (:Order)
+      (:Incident)
 ```
 
-
+By default, this will return all data for each Incident, but if you want to limit the data to select properties, assign the Incident an identifier ('i' in the example) and specify a RETURN clause, like this:
 
 ```
 apiVersion: query.reactive-graph.io/v1
 kind: ContinuousQuery
 metadata:
-  name: order-query
+  name: observe-incident
 spec:
   sources:    
     subscriptions:
-      - id: retail-ops
+      - id: risk-mgmt
   query: > 
     MATCH
-      (:Order)
+      (i:Incident)
+    RETURN
+      elementId(i) AS IncidentId, 
+      i.severity AS IncidentSeverity, 
+      i.description AS IncidentDescription
+```
+
+Further, if you wanted to filter the types of Incident you are notified about, you can filter using:
+- cypher query paths to filter based on graph relations
+- element properties, for filters based in simple element property values
+- WHERE clauses for more complex filter criteria
+
+For example, the following Continuous Query only notifies about Incidents that meet the following criteria:
+- has **type** property with the value **environmental** 
+- connected via an **OCCURS_IN** relation to a node with a **Region** label 
+- the connected Region has a **continent** propery with the value **usa**
+
+```
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: observe-incident
+spec:
+  sources:    
+    subscriptions:
+      - id: risk-mgmt
+  query: > 
+    MATCH
+      (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region {continent:'usa'}) 
+    WHERE
+      i.severity IN [‘critical’, ‘extreme’] AND i.endTimeMs IS NULL
     RETURN 
-      o.id AS OrderNumber,
-      o.customerId AS CustomerId
-      o.total AS OrderTotal
+      elementId(i) AS IncidentId, 
+      i.severity AS IncidentSeverity, 
+      i.description AS IncidentDescription,
+      r.name AS RegionName
 ```
 
-
-
-
-```
-apiVersion: query.reactive-graph.io/v1
-kind: ContinuousQuery
-metadata:
-  name: order-items-query
-spec:
-  sources:    
-    subscriptions:
-      - id: retail-ops
-  query: > 
-    MATCH
-      (o:Order)<-[:PART_OF]-(i:Item)
-```
-
+Now, with a single Continuous Query and no coding, you are dynamically detecting change based on custom filter criteria, generating custom change notifications all over a system that doesn't inherently support change notification.
 
 ## Observing Conditions
 More flexible change notification systems allow consumers greater control over which events they receive so they dont have to take the entire feed and filter it themselves in code, this is often done using filters or rules. The consumer only reveis events that match the rules criteria. 
