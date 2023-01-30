@@ -2,12 +2,10 @@
 type: "docs"
 title: "Continuous Queries"
 linkTitle: "Continuous Queries"
-weight: 20
+weight: 50
 description: >
-    How to Use Continuous Queries
+    What are Continuous Queries and How to Use Them 
 ---
-
-## Introduction
 
 Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push data query result changes to the Reactions subscribed to them.
 
@@ -210,91 +208,6 @@ spec.sources.subscriptions
 spec.sources.joins
 
 •	A list of Source Joins that the Continuous Query will use during query evaluation to connect data from multiple sources. This defines which values from one source should be considered synonymous with values from another source. Currently only simple equality is supported between named properties, however it is planned to support functions that can modify property values before joins occur.
-
-## Examples
-
-### Single Source Queries
-
-
-```
-apiVersion: query.reactive-graph.io/v1
-kind: ContinuousQuery
-metadata:
-  name: room-comfort-level-calc
-spec:
-  mode: query
-  sources:    
-    subscriptions:
-      - id: facilities
-  query: > 
-    MATCH 
-      (r:Room) 
-    RETURN 
-      r.id As RoomId, 
-      floor( 50 + (r.temp - 72) + (r.humidity - 42) + CASE WHEN r.co2 > 500 THEN (r.co2 - 500) / 25 ELSE 0 END ) AS ComfortLevel
-```
-
-### Multi Source Queries
-
-```
-apiVersion: query.reactive-graph.io/v1
-kind: ContinuousQuery
-metadata:
-  name: orders-matched-vehicle
-spec:
-  mode: query
-  sources:    
-    subscriptions:
-      - id: phys-ops
-        nodes:
-          - sourceLabel: Vehicle
-          - sourceLabel: Zone
-      - id: retail-ops
-        nodes:
-          - sourceLabel: Driver
-          - sourceLabel: Order
-          - sourceLabel: OrderPickup
-        relations:
-          - sourceLabel: PICKUP_DRIVER
-          - sourceLabel: PICKUP_ORDER
-    joins:
-      - id: LOCATED_IN
-        keys:
-          - label: Vehicle
-            property: ZoneId
-          - label: Zone
-            property: ZoneId
-      - id: VEHICLE_TO_DRIVER
-        keys:
-          - label: Vehicle
-            property: Plate
-          - label: Driver
-            property: plate
-  query: > 
-    MATCH 
-      (o:Order {status:'ready'})<-[:PICKUP_ORDER]-(:OrderPickup)-[:PICKUP_DRIVER]->(d:Driver)-[:VEHICLE_TO_DRIVER]-(v:Vehicle)-[:LOCATED_IN]->(:Zone {type:'Curbside Queue'}) 
-    RETURN o.id AS OrderNumber, d.name AS DriverName, v.Plate AS LicensePlate
-```
-
-### Aggregating Queries
-
-```
-apiVersion: query.reactive-graph.io/v1
-kind: ContinuousQuery
-metadata:
-  name: floor-comfort-level-calc
-spec:
-  mode: query
-  sources:    
-    subscriptions:
-      - id: facilities
-  query: > 
-    MATCH 
-      (r:Room)-[:PART_OF]->(f:Floor) 
-    RETURN 
-      f.id As FloorId, avg(r.comfortLevel) AS ComfortLevel
-```
-
 
 
 

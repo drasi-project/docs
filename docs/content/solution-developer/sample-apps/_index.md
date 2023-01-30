@@ -2,9 +2,9 @@
 type: "docs"
 title: "Sample Applications"
 linkTitle: "Sample Applications"
-weight: 40
+weight: 80
 description: >
-    Sample applications using Drasi
+    Drasi Sample Applications
 ---
 
 The [apps](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?version=GBdevelop&path=/apps) folder in the Drasi source repo contains a number of example applications that demonstrate the full range of capabilities provided by Drasi. The following links provide documentation about how those applications are designed and how they use Drasi.

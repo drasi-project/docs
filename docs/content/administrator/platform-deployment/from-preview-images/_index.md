@@ -1,7 +1,7 @@
 ---
 type: "docs"
 title: "Deploying Drasi from Preview Images"
-linkTitle: "From Preview Images"
+linkTitle: "From Images"
 weight: 10
 description: >
     Self-hosting Drasi on Kubernetes from Preview Images

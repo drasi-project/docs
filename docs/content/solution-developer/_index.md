@@ -1,7 +1,7 @@
 ---
 type: "docs"
 title: "Solution Developer Guides"
-linkTitle: "Solution Developer Guides"
+linkTitle: "Solution Developer"
 weight: 20
 description: >
     Learn about developing solutions using Drasi
