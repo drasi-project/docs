@@ -161,9 +161,3 @@ There are, of course, situations where it does not make sense to use Drasi, or w
 - When you need to take action when something didn't happen. Drasi relies on changes in source systems to activate it, if something doesn't happen, there is no trigger.
 - When your Continuous Query includes data types for which there is a lot of data. Drasi will create an optimized index of the data it needs from the source system, but if there are millions of nodes/records that need to be bootstrapped and index, you might need to consider the cost/benefit of the query you are considering.
 - If you really want to do stream analytics or streaming data transformation over high volume data streams there are technologies optimized for these use cases.
-
-
-
-
-
-
