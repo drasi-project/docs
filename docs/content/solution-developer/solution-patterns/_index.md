@@ -17,7 +17,7 @@ Each of these approaches is described in more detail in the linked sections belo
 **In addition** to these three approaches, which are focused on the detection and processing of change in existing systems, you might also consider adopting Drasi if you are creating a solution that you want to be a source of change for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own Data Change Processing solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
 
 ## Observing Changes
-Most systems that provide the capability for you as a Solution Developer to detect and react to change do so by propagating events/notifications that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
+Most systems that provide the capability for you as a Solution Developer to react to change do so by propagating events/notifications that describe the creation, deletion, or update to some data entity that is modelled in the system. For example: 
 - a Retail Operations system might generate create, update, and delete events related to:
   - Orders
   - Products
@@ -27,11 +27,11 @@ Most systems that provide the capability for you as a Solution Developer to dete
   - Teams
   - Contractors
 
-Database change logs are an obvious examples of this approach that simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but because the change events are generated in custom services and components, the system can generate change events for higher level domain objects, not just the lower level data that are directly represented in the underlying database schema.
+Database change logs are an obvious examples of this approach that simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but because the change events are generated in custom services and components, the system can generate change events for higher level domain objects, not just the lower level data that are directly represented in the underlying database.
 
-In this approach, the source system generates a fixed set of events with schema defined by the system developer. To maximize the utility of these events, the system developer often adopts a very generic but broad event taxonomy, creating similar events for large numbers of data types, even if there is no specific use case for their creation. It becomes the responsibility of the consumer to decide what to do with high volume of change events, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function. And if the consumer needs more information, they must call back into the source system to get it, dealing with the possibility that the source data has changed during the time between the change event and the consumer querying for more data.
+In this approach, the source system generates a fixed set of events with schema defined by the system developer at design time. To maximize the utility of these events, the system developer often adopts a very generic but broad event taxonomy, creating similar events for large numbers of data types, even if there is no specific use case for their creation. It becomes the responsibility of the consumer to decide what to do with the potentially high volume of change events, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function. And if the consumer needs more information, they must call back into the source system to get it, dealing with the possibility that the source data has changed during the time between the change event and the consumer querying for more data.
 
-Drasi can be used to handle this simple case by creating a Source, creating a Continuous Query that describes the elements you want to observe changes in, and creating a Reaction to process the output of the Continuous Query. All of this is done without the need to write any code, or deploy and manage services to filter the event stream.
+Drasi can support this simple case by creating a Source, creating a Continuous Query that describes the elements you want to observe changes in, and creating a Reaction to process the output of the Continuous Query. All of this is done without the need to write any code, or deploy and manage services to filter the event stream.
 
 Using the following Continuous Query named **observe-incident**, you would get notified of all nodes in the Source with an Incident label that are created or deleted, as well as the **before** and **after** version if an Incident changed.
 
@@ -69,13 +69,12 @@ spec:
       i.description AS IncidentDescription
 ```
 
-
-Now, with a single Continuous Query and no coding, you are dynamically detecting change based on custom filter criteria, generating custom change notifications all over a system that doesn't inherently support change notification.
+Now, with a single Continuous Query and no coding, you are dynamically detecting simple changes and generating custom change notifications on a source system that doesn't inherently support change notification.
 
 ## Observing Conditions
-More flexible change notification systems allow consumers greater control over which events they receive so they dont have to take the entire feed and filter it themselves in code, in the simplest form this is done using property filters or logic predicates. The consumer only reveis events that match the rules criteria. 
+More flexible change notification systems allow consumers greater control over which events they receive so they don't have to take the entire feed and filter it themselves in code. In the simplest form this is done using property filters or predicates. These enables scenarios where you can be notified when certain conditions are true. For example, when an Incident is critical, or an order is ready for pickup.
 
-In Drasi, you have access to the rich and expressive Cypher language when making it trivial to filter based on properties and WHERE cluaseif you wanted to filter the types of Incident you are notified about, you can filter using:
+In Drasi, you have access to the rich and expressive Cypher language making it trivial to implement simple property filters based on properties and WHERE cluaseif you wanted to filter the types of Incident you are notified about, you can filter using:
 - cypher query paths to filter based on graph relations
 - element properties, for filters based in simple element property values
 - WHERE clauses for more complex filter criteria

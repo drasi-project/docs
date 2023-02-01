@@ -2,7 +2,7 @@
 type: "docs"
 title: "Using MiniKube"
 linkTitle: "Using MiniKube"
-weight: 20
+weight: 30
 description: >
     Hosting Drasi on Minikube
 ---

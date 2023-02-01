@@ -2,7 +2,7 @@
 type: "docs"
 title: "Demo Environment"
 linkTitle: "Demo Environment"
-weight: 10
+weight: 20
 description: >
     Drasi Demo Environment
 ---
