@@ -19,8 +19,9 @@ description: >
 - If you are interested in **discussing** Drasi, having a **demonstration** of Drasi's capabilities, or getting access to a live demo environment so you can **explore** solutions built using Drasi, contact [Allen Jones (alljones)](mailto:alljones@microsoft.com).
 
 ## Introduction
-Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in databases and software systems. Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations on database tables, as you would typically get from transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect. 
+Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in databases and software systems. Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations, as you would typically get from database transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect. 
 
+## Components
 Drasi is built around three simple components: **Sources**, **Continuous Queries**, and **Reactions**. In the simplest scenario, data flows through these components from left to right as shown in the diagram below. But, a single Drasi environment can host many Sources, Continuous Queries, and Reactions, allowing you to connect them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
 
  ![End to End](simple-end-to-end.png)

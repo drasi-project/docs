@@ -13,7 +13,7 @@ To use Drasi as part of a solution you must do the following three things:
 1. Define [Continuous Queries](/solution-developer/components/continuous-queries) for each of the queries you want to run across those sources.
 1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
 
-Each of these steps is straightforward, requiring no code; full details are provided in the linked sections. 
+Each of these steps is straightforward, requiring no code, only configuration; full details are provided in the linked sections. 
 
 However, as with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today with significant development efforts. 
 

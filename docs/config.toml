@@ -11,6 +11,11 @@ copyright = "Copyright © 2023, Microsoft; all rights reserved."
 languageCode = "en"
 DefaultContentLanguage = "en"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+      
 # Top Nav Bar
 [[menu.main]]
     name = "SUPPORT"
