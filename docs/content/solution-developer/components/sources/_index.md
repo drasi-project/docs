@@ -164,29 +164,21 @@ Cosmos DB Gremlin already uses a property graph data model and so the Source doe
 |Edge|Relation|
 
 ### PostgreSQL Source
+The PostgreSQL Source enables Drasi connectivity to PostgreSQL databases. It uses the PostgreSQL replication log as the source of database change events, and calls the SQL API to retrieve data required to bootstrap Continuous Queries at creation.
 
 #### Source Requirements
 
+TODO - Daniel
+
 #### Configuration Settings
-The PostgreSQL Source requires the following properties be set:
+The following is an example of a full resource definition for a PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
 
-|Property|Description|
-|-|-|
-|sourceType| Must be the value 'PostgreSQL' |
-|database.hostname| |
-|database.port| |
-|database.user| |
-|database.password| |
-|database.dbname| |
-|tables| |
-
-The following is an example of a fully configured PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
 
 ```
 apiVersion: v1
 kind: Secret
 metadata:
-  name: pg-creds
+  name: creds
 type: Opaque
 stringData:
   password: xxxxxx
@@ -207,7 +199,7 @@ spec:
   - name: database.password
     valueFrom:
       secretKeyRef:
-        name: pg-creds
+        name: creds
         key: password
   - name: database.dbname
     value: phys-ops
@@ -215,7 +207,35 @@ spec:
     value: public.Vehicle,public.Zone
 ```
 
+In the Source resource definition:
+- **apiVersion** must be **query.reactive-graph.io/v1**
+- **kind** must be **Source**
+- **metadata.name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.sourceType** must be **PostgreSQL**
+
+The following table describes the properties that must be configured in the **spec.properties** array:
+|Property|Description|
+|-|-|
+|database.hostname|The **host name** of the PostgreSQL database server.|
+|database.port|The **port** number used to communicate with the PostgreSQL database server.|
+|database.user|The **user id** to use for authentication against the PostgreSQL database server.|
+|database.password|The **password** for the user account specified in the **database.user** property.|
+|database.dbname|The name of the PostgreSQL database.|
+|tables| A comma separated list of table names that the Source should process changes for. Tables must have a **public.** prefix.|
+
+#### Data Transformation
+The PostgreSQL Source translates the relational data from change events to more closely resemble property graph data change events so that they can be processed by subscribed Continuous Queries. To achieve this, the PostgreSQL Source represents table rows as graph Nodes, as follows:
+- Each row gets represented as a Node with the table columns as properties of the Node.
+- The Node is assigned an id the is a composite of the table id and the row's primary key. This is Node metadata, not a property of the Node.
+- The name of the table is assigned as a **Label** of the Node.
+
+The PostgreSQL Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/solution-developer/components/continuous-queries/#source-subscriptions) topic in the [Continuous Queries](/solution-developer/components/continuous-queries) section for details. 
+
 ### Kubernetes Source
+TODO - Daniel
+
 #### Source Requirements
 
 #### Configuration Settings
+
+#### Data Transformation
