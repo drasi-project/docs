@@ -7,24 +7,24 @@ description: >
     What are Continuous Queries and How to Use Them 
 ---
 
-Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push data query result changes to the Reactions subscribed to them.
+Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push query result changes to the Reactions subscribed to them.
 
  ![End to End](simple-end-to-end.png)
 
 Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
 
-When you issue an instantaneous query, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
+When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
 ![Instantaneous Query](instantaneous-query.png)
 
-Continuous Queries, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the current query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query.
+**Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
  ![Continuous Query](continuous-query.png)
 
 Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
-- easily express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
-- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems. 
+- express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
+- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
 
 ## Example: Incident Alerts
 Imagine an Incident Alerting Service which notifies managers if any of the employees in their team are at risk due to dangerous incidents happening in their location (e.g. fires, storms, protests, etc). For this example, assume the source data is a property graph of nodes (rectangles) and relations (lines) shown in the following diagram:
@@ -48,15 +48,15 @@ RETURN
   elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
 ```
 
-The `MATCH` and `WHERE` clauses of the query describe a pattern that identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' that have a **severity** level of ‘critical’ or ‘extreme’. This means that any combination of correctly connected nodes with the required property values should be included in the result.
+The `MATCH` and `WHERE` clauses of the query describe a pattern that identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' that have a **severity** level of ‘critical’ or ‘extreme’. This means that any combination of correctly connected nodes with the required property values should be included in the query result.
 
 The `RETURN` clause of the query generates output containing the name and email address of the at risk employee and their manager, as well as details about the incident and the region in which it is located. This defines the schema for results generated by the Continuous Query.
 
-When the above Continuous Query is first run, there are no results that satisfy the query, because there are no Incidents. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added to the database, as follows:
+When the above Continuous Query is first run, there are no results that satisfy the query, because there are no Incidents in the data. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added to the database, as follows:
 
 ![Incident Added](incident-alerting-graph-with-incident.png)
 
-The query would generate the following output showing that two records (for employees Bob and Claire) now meet the query criteria and have been **added** to the query result:
+The query would generate the following output showing that two records (for employees **Bob** and **Claire**) now meet the query criteria and have been **added** to the query result:
 
 ```
 {
@@ -69,7 +69,7 @@ The query would generate the following output showing that two records (for empl
 }
 ```
 
-If Bob subsequently changed location, removing him from the Southern Californian Region while the Forest Fire was still active, the Continuous Query would generate the following output, showing that Bob’s record had been **deleted** from the query result:
+If **Bob** subsequently changed location, removing him from the Southern Californian Region while the Forest Fire was still active, the Continuous Query would generate the following output, showing that Bob’s record had been **deleted** from the query result:
 
 ```
 {
@@ -81,7 +81,7 @@ If Bob subsequently changed location, removing him from the Southern Californian
 }
 ```
 
-If the severity of the Forest Fire then changed from 'extreme' to 'critical', the Continuous Query would spontaneously generate the following output showing a that the result for Claire had been **updated**. The update includes what the result was both **before** and **after** the change:
+If the **severity** of the Forest Fire then changed from 'extreme' to 'critical', the Continuous Query would spontaneously generate the following output showing a that the result for Claire had been **updated**. The update includes what the result was both **before** and **after** the change:
 
 ```
 {
@@ -94,6 +94,8 @@ If the severity of the Forest Fire then changed from 'extreme' to 'critical', th
  “deleted”: []
 }
 ```
+
+In some instances, a single source change can result in multiple changes to the query result e.g. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes. This enables subscribed Reactions to treat the related changes atomically given they all arose from a single source change.
 
 ## Creation
 Continuous Queries are custom Kubernetes resources that you can create and manage using `Kubectl`. 

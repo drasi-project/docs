@@ -49,7 +49,7 @@ When you execute an **instantaneous query**, you are running the query against t
 Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
 - express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
-- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorproate both relational and graph sources.
+- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
 
 The following diagram shows where Continuous Queries fit in the data flow of a Drasi environment in relation to Sources. Note that a Continuous Query can take input from multiple Sources and multiple Continuous Queries can also make use of a single Source.
 
