@@ -13,8 +13,12 @@ DefaultContentLanguage = "en"
 
 # Top Nav Bar
 [[menu.main]]
+    name = "SUPPORT"
+    weight = 10
+    url = "/support"
+[[menu.main]]
     name = "CODE"
-    weight = 40
+    weight = 20
     url = "https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents"
 
 [module]
