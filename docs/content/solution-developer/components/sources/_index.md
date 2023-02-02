@@ -232,10 +232,51 @@ The PostgreSQL Source translates the relational data from change events to more 
 The PostgreSQL Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/solution-developer/components/continuous-queries/#source-subscriptions) topic in the [Continuous Queries](/solution-developer/components/continuous-queries) section for details. 
 
 ### Kubernetes Source
-TODO - Daniel
+The Kubernetes Source is an early stage experimental Source that enables Drasi connectivity to Kubernetes clusters, enabling Drasi to support Continuous Queries that incorporate changes to Kubernetes resources.
 
 #### Source Requirements
 
+TODO - Daniel
+
 #### Configuration Settings
+The following is an example of a full resource definition for a Kubernetes Source using Kubernetes Secrets to securely store credentials:
+
+TODO - Daniel please review secret/properties
+
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k8s-context
+type: Opaque
+stringData:
+  demo-credentials.yaml: xxxxxx
+---
+apiVersion: query.reactive-graph.io/v1
+kind: Source
+metadata:
+  name: k8s
+spec:
+  sourceType: Kubernetes
+  properties: 
+  - name: KUBECONFIG
+    valueFrom:
+      secretKeyRef:
+        name: k8s-context
+        key: demo-credentials.yaml
+```
+
+In the Source resource definition:
+- **apiVersion** must be **query.reactive-graph.io/v1**
+- **kind** must be **Source**
+- **metadata.name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.sourceType** must be **Kubernetes**
+
+The following table describes the properties that must be configured in the **spec.properties** array:
+|Property|Description|
+|-|-|
+|TODO|Daniel|
 
 #### Data Transformation
+
+TODO - Daniel
