@@ -168,7 +168,33 @@ The PostgreSQL Source enables Drasi connectivity to PostgreSQL databases. It use
 
 #### Source Requirements
 
-TODO - Daniel
+Your PostgreSQL database must be running at least version 10 and have `LOGICAL` replication enabled. You also need a PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+
+##### Azure Database for PostgreSQL
+
+If you are using Azure Database for PostgreSQL, you can configure the replication to `LOGICAL` from the Azure portal under the `Replication` tab, or you can use the CLI as follows:
+
+```azurecli
+az postgres server configuration set --resource-group mygroup --server-name myserver --name azure.replication_support --value logical
+
+az postgres server restart --resource-group mygroup --name myserver
+```
+
+##### Self Hosted PostgreSQL
+
+First set the configuration options in postgresql.conf:
+
+```
+wal_level = logical
+```
+
+The other required settings have default values that are sufficient for a basic setup.
+
+pg_hba.conf needs to be adjusted to allow replication (the values here depend on your actual network configuration and user you want to use for connecting):
+
+```
+host     all     repuser     0.0.0.0/0     md5
+```
 
 #### Configuration Settings
 The following is an example of a full resource definition for a PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
@@ -236,22 +262,26 @@ The Kubernetes Source is an early stage experimental Source that enables Drasi c
 
 #### Source Requirements
 
-TODO - Daniel
+You will need a client side credentials that can be used to authenticate against your Kubernetes cluster and has permission to watch resources.
 
 #### Configuration Settings
 The following is an example of a full resource definition for a Kubernetes Source using Kubernetes Secrets to securely store credentials:
 
-TODO - Daniel please review secret/properties
+To get the credentials, export the Kubernetes credentials to a file named `credentials.yaml`
+
+- For self hosted clusters, you can find this in your [kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) file
+- For AKS, you can use this command
+```bash
+az aks get-credentials --resource-group <resource group> --name <cluster name> --file credentials.yaml
+```
+
+Create a secret named `k8s-context` from the `credentials.yaml` file
+
+```bash
+kubectl create secret generic k8s-context --from-file=credentials.yaml
+```
 
 ```
-apiVersion: v1
-kind: Secret
-metadata:
-  name: k8s-context
-type: Opaque
-stringData:
-  demo-credentials.yaml: xxxxxx
----
 apiVersion: query.reactive-graph.io/v1
 kind: Source
 metadata:
@@ -263,7 +293,7 @@ spec:
     valueFrom:
       secretKeyRef:
         name: k8s-context
-        key: demo-credentials.yaml
+        key: credentials.yaml
 ```
 
 In the Source resource definition:
@@ -275,8 +305,32 @@ In the Source resource definition:
 The following table describes the properties that must be configured in the **spec.properties** array:
 |Property|Description|
 |-|-|
-|TODO|Daniel|
+|KUBECONFIG|A [kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig) containing the credentials to connect to your cluster|
 
 #### Data Transformation
 
-TODO - Daniel
+Currently, only Pods and Containers are projected onto a graph schema.  The relation between them is labeled `HOSTS` and flows from the `Pod` to the `Container`.  A MATCH cypher clause that connects these would look as follows
+
+```cypher
+MATCH (p:Pod)-[:HOSTS]->(c:Container) 
+```
+
+The following properties are projected to the graph nodes
+
+|Node Label|Property|Origin|
+|-|-|-|
+|Container|name|Pod.status.containerStatuses[].name|
+|Container|image|Pod.status.containerStatuses[].image|
+|Container|started|Pod.status.containerStatuses[].started|
+|Container|ready|Pod.status.containerStatuses[].ready|
+|Container|restartCount|Pod.status.containerStatuses[].restartCount|
+|Container|state|Pod.status.containerStatuses[].state|
+|Container|message|Pod.status.containerStatuses[].state.message|
+|Container|reason|Pod.status.containerStatuses[].state.reason|
+|Container|terminationMessage|Pod.status.containerStatuses[].lastState.terminated.message|
+|Pod|name|Pod.metadata.name|
+|Pod|podIP|Pod.status.podIP|
+|Pod|phase|Pod.status.phase|
+|Pod|message|Pod.status.message|
+|Pod|hostIP|Pod.status.hostIP|
+|Pod|reason|Pod.status.reason|
