@@ -71,9 +71,9 @@ az postgres server restart --resource-group mygroup --name myserver
 ### 1. PostgreSQL Source
 
 #### Create Database Table
-Create a new database called `hello-world`.
+Create a new database named `hello-world`.
 
-Use the following SQL script to create a table named `Message`.
+Create a table named `Message` using the following SQL script.
 
 ```
 CREATE TABLE "Message" (
@@ -183,7 +183,7 @@ This table describes the most important configuration settings in this resource 
 |kind|Specifies that we want to create Continuous Queries|
 |metadata.name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
 |spec.source.subscriptions.id| Identifies the Source the Continuous Query will subscribe to.|
-|spec.query|Contains the Cypher Query that defines both which changes the COntinuous Query is detecting and the output it should generate.|
+|spec.query|Contains the Cypher Query that defines both which changes the Continuous Query is detecting and the output it should generate.|
 
 Use `kubectl` to deploy the queries with the following command:
 
@@ -192,37 +192,56 @@ kubectl apply -f hello-world-queries.yaml
 ```
 
 ### 3. Deploy the Debug Reaction
-In order to view results of the Continuous Queries you will deploy an instance of the Debug Reaction. The Debug Reaction provides a simple web-based UI that lets you see the current result set of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
+In order to view results of the Continuous Queries you will deploy an instance of the Debug Reaction. The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
-Create a file named `debug-reaction.yaml` containing the following Kubernetes resource definition.
+Create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
 
 ```
 apiVersion: query.reactive-graph.io/v1
 kind: Reaction
 metadata:
-  name: debug
+  name: hello-world-debug-reaction
 spec:
-  reactionType: Debug
+  reactionImage: reactive-graph/reaction-debug
+  endpoints:
+    - name: gateway
+      port: 8080
   queries:
     - queryId: hello-world-from-query
     - queryId: message-count-query
 ```
 
-Now use kubectl to deploy the debug reaction:
+This table describes the most important configuration settings in this resource definition:
+|Property|Description|
+|-|-|
+|kind|Specifies that we want to create Reaction|
+|metadata.name|Provides the **id** of the Reaction.|
+|spec.reactionImage|Identifies the container image to use for the Reaction.|
+|spec.endpoints|Specifies the port through which the Debug reaction Web UI is accessible.|
+|spec.queries|Subscribes this Reaction to the two Continuous Queries we created earlier.|
+
+Use `kubectl` to deploy the Debug reaction with the following command:
 
 ```
-kubectl apply -f debug-reaction.yaml
+kubectl apply -f hello-world-reaction.yaml
 ```
 
-In order to access the UI of the debug reaction from a local machine, we can forward the port to a local one.
+In order to access the UI of the debug reaction from a local machine, we must forward the port to a local one using the following command:
 
 ```
-kubectl port-forward services/debug-gateway 81:80 -n default
+kubectl port-forward services/debug-gateway 8080:80 -n default
 ```
 
-Now open your browser and navigate to `http://localhost:81`, where you should see a UI with menu options for each query on the left.  Select `my-query1`.
+### 4. Test the Solution
+Now open your browser and navigate to `http://localhost:8080`, where you will see the UI shown here:
 
-Use a tool such as [pgAdmin](https://www.pgadmin.org/) to add/remove/update rows in the `Item` table and you should see the debug reaction UI update in realtime with all the rows with Category = `A`.
+{{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
+
+On the left hand side is a menu containing the two Continuous Queries created earlier. Select `hello-world-from-query`. You will see that the Query Results are initially empty.
+
+Use a tool such as [pgAdmin](https://www.pgadmin.org/) to add, update, and delete Message records in the PostgreSQL database. Each time you add the Message "Hello World" it will appear in the query result, and each time you change or delete the message, it will disappear.
+
+Switch to the `message-count-query` Continuous Query and you will see a list of the unique messages and the frequency with which they occur in the database. As you add, update, and delete messages, the list of messages and frequencies will change.
 
 ## Next Steps...
 As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today with significant development efforts. 
