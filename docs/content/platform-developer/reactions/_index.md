@@ -200,3 +200,10 @@ This will create a Kubernetes service called `my-reaction-gateway` that will res
 ## Samples
 
 TODO: How do we link to samples?
+
+
+**INCORPORATE THIS**
+ - A volume will be mounted at `/etc/queries` where each file will be the name of a query and the contents of each file will be custom metadata.
+- All the key/value pairs from `properties` will be mounted as environment variables.  You can also reference secrets and config maps as you would normally do with environment variables.
+- Any entries in `endpoints` will create a network service with the name `<reaction name>-<endpoint name>` and map to the container port specified in `port`
+- The Dapr server within your reaction should listen on port 80, this can be overridden with `daprAppPort`

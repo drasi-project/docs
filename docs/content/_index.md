@@ -8,7 +8,7 @@ description: >
 ---
 
 ## Getting Started
-- If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) below.
+- If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) sections below.
 
 - If you are a **developer** who wants to **use** Drasi to add Continuous Queries to a solution you are creating, go to the [Solution Developer Guides](/solution-developer).
 

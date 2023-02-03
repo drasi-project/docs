@@ -12,7 +12,7 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 - Translate source change data into a consistent property graph data model so that subscribed Continuous Queries can use that data as if it where a graph of Nodes and Relations. For graph sources, such as Gremlin, no translation is necessary. But for non-graph sources, such as PostgreSQL and Kubernetes, the Source transforms the data (more detail is provided in the individual Sources sections below).
 - Provide a way for Continuous Queries to query the source system at startup to initialize the state of the Continuous Query result.
 
- ![End to End](simple-end-to-end.png)
+{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
 
 Drasi currently provides Sources for the following source systems:
 
@@ -67,8 +67,6 @@ You can then use the standard `Kubectl` commands to query the existence and stat
 kubectl get sources
 ```
 
-**Note**: Drasi does not currently enforce dependency integrity between Sources and Continuous Queries. If you delete a Source that is used by one or more Continuous Queries, they will stop getting change events and stop producing results.
-
 ## Deletion
 To delete an active Source, run the following command:
 
@@ -76,11 +74,13 @@ To delete an active Source, run the following command:
 kubectl delete source <id>
 ```
 
-For example, if the Source id is `human-resources`, you would run,
+For example, if the Source ID is `human-resources`, you would run,
 
 ```
 kubectl delete source human-resources
 ```
+
+**Note**: Drasi does not currently enforce dependency integrity between Sources and Continuous Queries. If you delete a Source that is used by one or more Continuous Queries, they will stop getting change events and stop producing results.
 
 ## Configuring Sources
 The following sections describe the configuration of the Source types currently supported by Drasi.

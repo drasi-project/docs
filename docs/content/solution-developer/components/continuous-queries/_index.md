@@ -163,6 +163,9 @@ For example, if the Continuous Query id from the `metadata.name` property of the
 kubectl delete continuousqueries manager-incident-alert
 ```
 
+**Note**: Drasi does not currently enforce dependency integrity between Continuous Queries and Reactions. If you delete a Continuous Query that is used by one or more Reactions, they will stop getting query result changes.
+
+
 ## Configuration
 The Kubernetes resource definition for a Continuous Query has the following basic structure:
 
