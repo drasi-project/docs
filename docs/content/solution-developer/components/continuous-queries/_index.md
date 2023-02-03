@@ -7,19 +7,19 @@ description: >
     What are Continuous Queries and How to Use Them 
 ---
 
-Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. Continuous Queries are provided source changes by the Sources they subscribe to, and push query result changes to the Reactions subscribed to them.
+Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/solution-developer/components/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/solution-developer/components/reactions).
 
- ![End to End](simple-end-to-end.png)
+{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
 
 Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
 
 When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
-![Instantaneous Query](instantaneous-query.png)
+{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="50%" >}}
 
 **Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
- ![Continuous Query](continuous-query.png)
+{{< figure src="/continuous-query.png" alt="Continuous Query" width="50%" >}}
 
 Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
@@ -163,20 +163,66 @@ For example, if the Continuous Query id from the `metadata.name` property of the
 kubectl delete continuousqueries manager-incident-alert
 ```
 
+**Note**: Drasi does not currently enforce dependency integrity between Continuous Queries and Reactions. If you delete a Continuous Query that is used by one or more Reactions, they will stop getting query result changes.
+
+
 ## Configuration
-In addition to the id and Cypher query, there are a number of configuration settings that are required when creating a Continuous Query, as well as some optional settings that allow you to control how Drasi processes the query, what data is cached, and what data is generated. The following table provides a summary of these configuration settings:
+The Kubernetes resource definition for a Continuous Query has the following basic structure:
+
+```
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: <continuous_query_id>
+spec:
+  mode: <QUERY | filter>
+  indexType: <PERSISTED | memory>
+  sources:    
+    subscriptions:
+      - id: <source_1_id>
+        nodes:
+          - sourceLabel: <source_1_node_1_source_label>, 
+            queryLabel: <source_1_node_1_query_label>,
+            suppressIndex: <true | FALSE>
+          - ...
+        relations:
+          - sourceLabel: <source_1_rel_1_source_label>, 
+            queryLabel: <source_1_rel_1_query_label>,
+            suppressIndex: <true | FALSE>
+          - ...
+      - id: <source_2_id>
+        nodes: ...
+        relations: ...
+    joins:
+      - id: <join_1_id>
+        keys:
+          - label: <key_1_label_name>
+            property: <key_1_property_name>
+          - label: <key_2_label_name>
+            property: <key_2_property_name>
+      - id: <join_2_id>
+        keys: ...
+  params:
+    <param_1_key>: <param_1_value>
+    <param_2_key>: <param_2_value>
+    ...
+  query: MATCH ... WHERE ... RETURN ...
+```
+
+In the Continuous Query resource definition:
+- **apiVersion** must be **query.reactive-graph.io/v1**
+- **kind** must be **ContinuousQuery**
+- **metadata.name** is the **id** of the Continuous Query and must be unique. Is used to manage the Continuous Query through Kubectl and in Reactions to identify the Continuous Queries they should subscribe to..
+
+The following table provides a summary of the other configuration settings from the **spec** section of the resource definition:
 
 |Name|Description|
 |-|-|
-|apiVersion|Must have the value **query.reactive-graph.io/v1**|
-|kind|Must have the value **ContinuousQuery**|
-|metadata.name|The **id** of the Continuous Query. Must be unique. Is used to manage the Continuous Query through Kubectl and in Reactions to identify the Continuous Queries they should subscribe to.|
-|spec.mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
-|spec.indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. using memory-based indexes is good for testing and is also OK for Continuos Queries that do not require significant bootstrapping when they start.|
-|spec.params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
-|spec.query|The Cypher query that defines what the change the Continuous Query is detecting and the output it generates. Explained in [Queries](#queries) section.|
-|spec.sources.subscriptions|Describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels/Types to the Label names used in the Cypher Query. Explained in [Source Subscriptions](#source-subscriptions) section.|
-|spec.sources.joins|Describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Explained in [Source Joins](#source-joins) section.|
+|mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
+|indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. Using memory-based indexes is good for testing and is also OK for Continuos Queries that do not require significant bootstrapping when they start.|
+|sources|Contains two sections: **subscriptions** and **joins**. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Both sections are described in more detail in the [Sources](#sources) section.|
+|params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
+|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Cypher Queries](#cypher-queries) section.|
 
 ### Cypher Queries 
 Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
@@ -184,7 +230,7 @@ Continuous Queries are written using the Cypher Graph Query Language. If you are
 - [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
 - [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
 
-Continuous Queries currently support the following subset of Cypher:
+Continuous Queries currently support the following subset of the Cypher Graph Query Language:
 - MATCH, WHERE, and RETURN clauses
   - Property and Label patterns on MATCH clause elements
   - Aliases on RETURN values
@@ -195,24 +241,52 @@ Continuous Queries currently support the following subset of Cypher:
 - Logic operators : AND, OR, NOT
 - List operators: IN
 - Scalar functions: elementId
-- Aggregating functions: count, sum, avg, min, max
+- Aggregating functions: count, sum, avg, min, max (only in **RETURN** clauses)
 - CASE expression
 
-Using Drasi Continuous Queries effectively requires that you know the schema of the Sources that you plan to use, but you can write your queries using Labels that make the query easier to understand
+### Sources
 
-### Source Subscriptions
+The configuration settings in the **spec.sources.subscriptions** section of the Continuous Query resource definition do the following:
+- Define the Sources the Continuous Query will subscribe to for its change data.
+- Within each Source, define the Labels of the Nodes and Relations that the the Continuous Query expects from that Source. If you do not map a Node/Relation Label used in the query to a specific Source, it is assumed to come from the first Source configured. 
+- For each Node and Relation, create a mapping between the Label name used in the Source data and the Label name used in the Query. This allows you to write queries independent of the Label/Type names used in the source data, easily use the same Query against multiple sources, and deal with the name collisions across Sources.
+- For each Node and Relation, you also have the ability to disable element level caching. This can be useful when processing append only logs where the main element being processed (i.e. the log record) will never change once created, and will not be referenced in query future query results. 
 
-spec.sources.subscriptions
+The configuration settings in the **spec.sources.joins** section of the Continuous Query resource definition create a mapping between a Label and Property name pair from one source, with a Label and Property Name pair in another source.
+This allows the Continuous Query to be written as a single unified query without consideration from which Source data is originating from. Drasi will use the mapping to create synthetic relations between Nodes as required.
 
-•	A list of the node and relation labels from a source and how the Continuous Query should map them to labels in the query. This supports name remapping in situations where there are name collisions across multiple sources, or where the query benefits from using more readable labels than are used in the source.
+Here is an example of a Continuous Query from the [Curbside Pickup](/solution-developer/sample-apps/curbside-pickup/) demo app that defines two Sources: **phys-ops** and **retail-ops**:
 
-### Source Joins 
-spec.sources.joins
-
-•	A list of Source Joins that the Continuous Query will use during query evaluation to connect data from multiple sources. This defines which values from one source should be considered synonymous with values from another source. Currently only simple equality is supported between named properties, however it is planned to support functions that can modify property values before joins occur.
-
-
-
-
-
-
+```
+apiVersion: query.reactive-graph.io/v1
+kind: ContinuousQuery
+metadata:
+  name: curbside-pickup
+spec:
+  mode: query
+  indexType: persisted
+  sources:    
+    subscriptions:
+      - id: phys-ops
+        nodes:
+          - sourceLabel: Vehicle
+          - sourceLabel: Zone
+        relations:
+          - sourceLabel: LOCATED_IN
+      - id: retail-ops
+        nodes:
+          - sourceLabel: Driver
+          - sourceLabel: Order
+          - sourceLabel: OrderPickup
+        relations:
+          - sourceLabel: PICKUP_DRIVER
+          - sourceLabel: PICKUP_ORDER
+    joins:
+      - id: VEHICLE_TO_DRIVER
+        keys:
+          - label: Vehicle
+            property: plate
+          - label: Driver
+            property: plate
+  query: ...
+```

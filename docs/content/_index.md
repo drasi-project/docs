@@ -8,7 +8,7 @@ description: >
 ---
 
 ## Getting Started
-- If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) below.
+- If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) sections below.
 
 - If you are a **developer** who wants to **use** Drasi to add Continuous Queries to a solution you are creating, go to the [Solution Developer Guides](/solution-developer).
 
@@ -19,16 +19,17 @@ description: >
 - If you are interested in **discussing** Drasi, having a **demonstration** of Drasi's capabilities, or getting access to a live demo environment so you can **explore** solutions built using Drasi, contact [Allen Jones (alljones)](mailto:alljones@microsoft.com).
 
 ## Introduction
-Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in databases and software systems. Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations on database tables, as you would typically get from transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect. 
+Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in databases and software systems. Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations, as you would typically get from database transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect. 
 
+## Components
 Drasi is built around three simple components: **Sources**, **Continuous Queries**, and **Reactions**. In the simplest scenario, data flows through these components from left to right as shown in the diagram below. But, a single Drasi environment can host many Sources, Continuous Queries, and Reactions, allowing you to connect them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
 
- ![End to End](simple-end-to-end.png)
+{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
 
 ### Sources
 Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current data in the system. This diagram shows three Sources, providing Drasi with access to changes from an Azure Cosmos Gremlin database, a PostreSQL database, and a Kubernetes cluster.
 
- ![Sources Component](sources-component.png)
+{{< figure src="sources-component.png" alt="Sources Component" width="50%" >}}
 
 Drasi’s Source input schema is modeled on Debezium (https://debezium.io), an open-source Change Data Capture platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will more easily integrate with the many existing Debezium sources. 
 
@@ -40,11 +41,11 @@ Continuous Queries, as the name implies, are queries that run continuously. To u
 
 When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
-![Instantaneous Query](instantaneous-query.png)
+{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="50%" >}}
 
 **Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
- ![Continuous Query](continuous-query.png)
+{{< figure src="/continuous-query.png" alt="Continuous Query" width="50%" >}}
 
 Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
@@ -53,7 +54,7 @@ Continuous Queries are implemented as graph queries written in the [Cypher Query
 
 The following diagram shows where Continuous Queries fit in the data flow of a Drasi environment in relation to Sources. Note that a Continuous Query can take input from multiple Sources and multiple Continuous Queries can also make use of a single Source.
 
- ![Continuous Queries Component](queries-component.png)
+{{< figure src="queries-component.png" alt="Continuous Queries Component" width="50%" >}}
 
 More detail about Continuous Queries is available in the [Continuous Queries](/solution-developer/components/continuous-queries) section of the [Solution Developer Guide](/solution-developer). 
 
@@ -62,7 +63,7 @@ Reactions receive a stream of query result changes generated by one or more Cont
 - forward the query result changes to Azure Event Grid or SignalR so they can be processed by solution specific code in applications, services, and functions.
 - use the query result changes as input to configurable Stored Procedures or Gremlin commands to update databases without the need to integrate additional intermediary software services.
 
- ![Reactions Component](reactions-component.png)
+{{< figure src="reactions-component.png" alt="Reactions Component" width="50%" >}}
 
 More detail about Reactions is available in the [Reactions](/solution-developer/components/reactions) section of the [Solution Developer Guide](/solution-developer). 
 
