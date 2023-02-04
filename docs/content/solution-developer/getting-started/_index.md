@@ -13,77 +13,77 @@ To use Drasi as part of a solution you must do the following three things:
 1. Define [Continuous Queries](/solution-developer/components/continuous-queries) for each of the queries you want to run across those sources.
 1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
 
-The links above take you to sections that provide in-depth discussion of each of the three main Drasi components. But if this is your first exposure to Drasi, the [Tutorial](#tutorial) section below is the best place to start; it provides step-by-step instruction for getting a simple end-to-end Drasi-based solution running. 
+The links above take you to sections that provide in-depth discussion of each of the three main Drasi components and how to configure them. But if this is your first exposure to Drasi, the [Tutorial](#tutorial) section below is the best place to start; it provides step-by-step instruction for getting a simple end-to-end Drasi-based solution running. 
 
 To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
 
 ## Tutorial: Hello World
 The following is a step-by-step tutorial that will walk you through the creation of a simple Drasi-based solution, basically the *Hello World* of Drasi solutions. 
 
-In this solution, there will be a `Message` table on a PostgreSQL database that contains three fields:
-- a `MessageId` field containing a unique id for each message. 
-- a `From` field containing the name of who the message is from.
-- a `Message` field containing the message.
+### Solution Overview
+In this solution, the source of data (and change) will be a `Message` table on a PostgreSQL database that contains three fields:
 
-For example:
+|Field Name|Type|Allow Nulls|Description|
+|-|-|-|-|
+|MessageId|integer|No|A unique id for each message.|
+|From|character varying(50)|No|The name of who the message is from.|
+|Message|character varying(200)|No|The text of the message.|
+
+We will start with the `Message` table containing the following messages:
 
 |MessageId|From|Message|
 |-|-|-|
 |1|Buzz Lightyear|To infinity and beyond!|
 |2|Brian Kernighan|Hello World|
-|3|Terminator|I'll be back|
+|3|Antoninus|I am Spartacus|
+|4|David|I am Spartacus|
 
 Two Continuous Queries will use the `Message` table as a source of change:
-1. The first will identify when the message "Hello World" is present in the Message table and report who it is from.
-1. The second will maintain the frequency of each unique message in the Message table and output results when the frequencies change.
+1. The first will identify whenever the message "Hello World" is present in the Message table and report who it is from.
+1. The second will calculate frequency of each unique message in the Message table and output results as the frequencies change.
 
-The Debug Reaction, representing a downstream consumer of the Continuous Query results, is used as an easy way to view the results of the Continuous Queries in a Web browser.
+For simplicity, the solution will use the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction) to  represent a downstream consumer of the Continuous Query results. The Debug Reaction provides a Solution Developer with an easy way to view the results of the Continuous Queries in a Web browser.
+
+After describing the prerequisites that must be in place to complete the tutorial, the sections below guide you through the three simple steps common to creating any Drasi-based solution:
+
+1. **Create Sources**. In this case a PostgreSQL Source to provide access to changes in the `Message` table.
+1. **Create Continuous Queries**. In this case there will be two Continuous Queries both using the PostgreSQL Source as their source of change.
+1. **Create Reactions**. In this case the Debug Reaction will handle the output of both Continuous Queries.
 
 When complete, the Hello World solution will have the component architecture shown in this diagram:
 
 {{< figure src="hello-world-solution.png" alt="Hello World Solution" width="70%" >}}
 
-The tutorial steps below explain how to:
-1. Create the PostgreSQL Source.
-1. Create the two Continuous Queries, subscribing to the PostgreSQL Source as their source of change.
-1. Deploy the Debug Reaction that subscribes to the two Continuous Queries and displays their results.
-1. Test the solution by changing the data in the Message table so you can observe the changing Continuous Query results in the Debug Reaction.
-
-Each of these steps is straightforward, requiring no code, only configuration. 
-
 ### Prerequisites
 To complete the tutorial, you will need:
-- Access to a Drasi environment. If you don't have access to a Drasi environment, see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator) for instructions.
+- Access to a Drasi environment. If you don't have access to a Drasi environment, see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator) for instructions. If you want a quick and easy deployment just for the tutorial, deploy from [Preview Images](/administrator/platform-deployment/from-preview-images/) to a local [Kind](https://kind.sigs.k8s.io/) cluster.
 - A PostgreSQL database to use as a source of change:
   - Version 10 or greater.
-  - Configured to support `LOGICAL` replication.
+  - Configured to support `LOGICAL` replication. See the notes on [configuring PostgreSQL replication](/reference/postgresql-replication) for assistance.
   - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
-- A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run commands against your PostgreSQL server to create tables and add/update data.
+- A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
-If you are using **Azure Database for PostgreSQL**, you can configure the replication to `LOGICAL` from the Azure portal on the **Replication** page, or you can use the CLI as follows:
+### Step 1 - PostgreSQL Source
 
-```azurecli
-az postgres server configuration set --resource-group mygroup --server-name myserver --name azure.replication_support --value logical
-
-az postgres server restart --resource-group mygroup --name myserver
-```
-
-### 1. PostgreSQL Source
-
-#### Create Database Table
+#### Create Database and Table
 On your PostgreSQL server, create a new database named `hello-world`.
 
-Then, create a table named `Message` using the following SQL script.
+Then, create a table named `Message` and add some initial data using the following SQL script:
 
 ```
 CREATE TABLE "Message" (
     "MessageId" integer NOT NULL,
-    "From" character varying(10) NOT NULL,
-    "Message" character varying(100) NOT NULL
+    "From" character varying(50) NOT NULL,
+    "Message" character varying(200) NOT NULL
 );
 
 ALTER TABLE "Message" ADD CONSTRAINT pk_message
   PRIMARY KEY ("MessageId");
+
+INSERT INTO public."Message" VALUES (1, 'Buzz Lightyear', 'To infinity and beyond!');
+INSERT INTO public."Message" VALUES (2, 'Brian Kernighan', 'Hello World');
+INSERT INTO public."Message" VALUES (3, 'Antoninus', 'I am Spartacus');
+INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ```
 
 #### Create a PostgreSQL Source
@@ -101,7 +101,7 @@ stringData:
 apiVersion: query.reactive-graph.io/v1
 kind: Source
 metadata:
-  name: hello-world-source
+  name: hello-world
 spec:
   sourceType: PostgreSQL
   properties: 
@@ -126,8 +126,8 @@ You must replace the values described in this table with values for your Postgre
 
 |Value|Description|
 |-|-|
-|\<db-host-name>|The DNS hostname of the PostgreSQL database.|
-|\<db-port>|The port through which you communicate with the PostgreSQL database. Must be enclosed in quotes.|
+|\<db-host-name>|The DNS host name of the PostgreSQL server.|
+|\<db-port>|The port through which you communicate with the PostgreSQL server. Must be enclosed in quotes.|
 |\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.|
 |\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.|
 
@@ -139,19 +139,19 @@ kubectl apply -f hello-world-source.yaml
 
 Your PostgreSQL Source is now created and ready to use.
 
-### 2. Create Continuous Queries
-To define your Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
+### Step 2 - Continuous Queries
+To define the two Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
 
 ```
 apiVersion: query.reactive-graph.io/v1
 kind: ContinuousQuery
 metadata:
-  name: hello-world-from-query
+  name: hello-world-from
 spec:
   mode: query
   sources:    
     subscriptions:
-      - id: hello-world-source
+      - id: hello-world
   query: > 
     MATCH 
       (m:Message {Message: 'Hello World'})
@@ -162,12 +162,12 @@ spec:
 apiVersion: query.reactive-graph.io/v1
 kind: ContinuousQuery
 metadata:
-  name: message-count-query
+  name: message-count
 spec:
   mode: query
   sources:    
     subscriptions:
-      - id: hello-world-source
+      - id: hello-world
   query: > 
     MATCH 
       (m:Message)
@@ -176,12 +176,12 @@ spec:
       count(m.Message) AS Frequency
 ```
 
-This table describes the most important configuration settings in this resource definition:
+You don't need to change anything in this file, but this table describes the most important configuration settings in this resource definition:
 |Property|Description|
 |-|-|
-|kind|Specifies that we want to create Continuous Queries|
+|kind|Specifies that the resource is a **Continuous Queries**|
 |metadata.name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
-|spec.source.subscriptions.id| Identifies the Source the Continuous Query will subscribe to. In this instance, this refers to the PostgreSQL Source created in the previous step.|
+|spec.source.subscriptions.id| Identifies the Source the Continuous Query will subscribe to as a source of change data. In this instance, these refer to the PostgreSQL Source created in the previous step.|
 |spec.query|Contains the Cypher Query that defines both which changes the Continuous Query is detecting and the output it should generate.|
 
 Use `kubectl` to deploy the Continuous Queries with the following command:
@@ -190,8 +190,8 @@ Use `kubectl` to deploy the Continuous Queries with the following command:
 kubectl apply -f hello-world-queries.yaml
 ```
 
-### 3. Deploy the Debug Reaction
-In order to view the results of the Continuous Queries you will deploy an instance of the Debug Reaction. The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
+### Step 3 - Debug Reaction
+In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
 To define your Debug Reaction, create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
 
@@ -199,48 +199,93 @@ To define your Debug Reaction, create a file named `hello-world-reaction.yaml` c
 apiVersion: query.reactive-graph.io/v1
 kind: Reaction
 metadata:
-  name: hello-world-debug-reaction
+  name: hello-world-debug
 spec:
   reactionImage: reactive-graph/reaction-debug
   endpoints:
     - name: gateway
       port: 8080
   queries:
-    - queryId: hello-world-from-query
-    - queryId: message-count-query
+    - queryId: hello-world-from
+    - queryId: message-count
 ```
 
-This table describes the most important configuration settings in this resource definition:
+You don't need to change anything in this file, but this table describes the most important configuration settings in this resource definition:
 |Property|Description|
 |-|-|
-|kind|Specifies that we want to create Reaction|
+|kind|Specifies that the resource is a **Reaction**|
 |metadata.name|Provides the **id** of the Reaction.|
 |spec.reactionImage|Identifies the container image to use for the Reaction.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
 
-Use `kubectl` to deploy the Debug reaction with the following command:
+Use `kubectl` to deploy the Debug Reaction with the following command:
 
 ```
 kubectl apply -f hello-world-reaction.yaml
 ```
 
-In order to access the UI of the debug reaction from a local machine, we must forward the port to a local one using the following command:
+The Hello World Drasi solution is now fully deployed.
+
+### Test the Solution
+In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
 
 ```
-kubectl port-forward services/hello-world-debug-reaction-gateway 8080:80 -n default
+kubectl port-forward services/hello-world-debug-gateway 8080:80 -n default
 ```
 
-### 4. Test the Solution
-Now open your browser and navigate to `http://localhost:8080`, where you will see the UI shown here:
+Now open your browser and navigate to **http://localhost:8080**, where you will see the Debug Reaction UI shown here:
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
-On the left hand side is a menu containing the two Continuous Queries created earlier. Select `hello-world-from-query`. You will see that the Query Results are initially empty.
+On the left hand side is a menu listing the two Continuous Queries created earlier. Select `hello-world-from` and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
 
-Use a tool such as [pgAdmin](https://www.pgadmin.org/) to add, update, and delete Message records in the Message table. Each time you add the Message "Hello World" it will appear in the query result, and each time you change or delete the message, it will disappear.
+{{< figure src="hello-world-from-debug.png" alt="Hello World From" width="70%" >}}
 
-Switch to the `message-count-query` Continuous Query and you will see a list of the unique messages and the frequency with which they occur in the Message table. As you add, update, and delete messages, the list of messages and frequencies will change.
+If you add another Message to the table using the following SQL insert statement:
+
+```
+INSERT INTO public."Message" VALUES (5, 'Allen', 'Hello World');
+```
+
+You will see a second record for **Allen** appear dynamically in the query result:
+
+{{< figure src="hello-world-from-debug-updated.png" alt="Hello World From Updated" width="70%" >}}
+
+In the list of Continuous Queries select the `message-count` entry and the right hand pane will show the  current results to the `message-count` query. There are three results, as shown below. Note that because of the "Hello World" message you just added for **Allen**, both "Hello World" and "I am Spartacus" have a Frequency of 2.
+
+{{< figure src="message-count-debug.png" alt="Message Count" width="70%" >}}
+
+If you add another Message to the table using the following SQL insert statement:
+
+```
+INSERT INTO public."Message" VALUES (6, 'Allen', 'I am Spartacus');
+```
+
+You will see the "I am Spartacus" Frequency increase dynamically to 3:
+
+{{< figure src="message-count-debug-updated.png" alt="Message Count Updated" width="70%" >}}
+
+Finally, if you delete both "Hello World" messages using the following SQL statement:
+
+```
+DELETE FROM public."Message" WHERE "Message" = 'Hello World';
+```
+
+The Debug Reaction updates to show that there are no messages with the text "Hello World":
+
+{{< figure src="message-count-debug-deleted.png" alt="Message Count" width="70%" >}}
+
+And if you switch back to the `hello-world-from` Continuous Query, the current result is empty as expected:
+
+{{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
+
+### Reflection
+In completing the tutorial, using no custom code and a minimal amount of configuration information, you were able to write queries that automatically detect changes in a database and dynamically distribute a custom representation of those changes to downstream consumers for further processing or integration into a broader solution. Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what you are trying to achieve.
+
+Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. And you would need to implement unique solutions for each type of source. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. 
+
+Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system, and its ability to power solutions that are more dynamic and responsive.
 
 ## Next Steps...
 As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today with significant development efforts. 

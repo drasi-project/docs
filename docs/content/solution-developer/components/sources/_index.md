@@ -166,33 +166,9 @@ The PostgreSQL Source enables Drasi connectivity to PostgreSQL databases. It use
 
 #### Source Requirements
 
-Your PostgreSQL database must be running at least version 10 and have `LOGICAL` replication enabled. You also need a PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+Your PostgreSQL database must be running at least version 10 and have `LOGICAL` replication enabled. See the notes on [configuring PostgreSQL replication](/reference/postgresql-replication) for assistance.
 
-##### Azure Database for PostgreSQL
-
-If you are using Azure Database for PostgreSQL, you can configure the replication to `LOGICAL` from the Azure portal under the `Replication` tab, or you can use the CLI as follows:
-
-```azurecli
-az postgres server configuration set --resource-group mygroup --server-name myserver --name azure.replication_support --value logical
-
-az postgres server restart --resource-group mygroup --name myserver
-```
-
-##### Self Hosted PostgreSQL
-
-First set the configuration options in postgresql.conf:
-
-```
-wal_level = logical
-```
-
-The other required settings have default values that are sufficient for a basic setup.
-
-pg_hba.conf needs to be adjusted to allow replication (the values here depend on your actual network configuration and user you want to use for connecting):
-
-```
-host     all     repuser     0.0.0.0/0     md5
-```
+You also need a PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
 
 #### Configuration Settings
 The following is an example of a full resource definition for a PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
