@@ -118,6 +118,8 @@ spec:
         key: password
   - name: database.dbname
     value: hello-world
+  - name: database.ssl
+    value: "true"
   - name: tables
     value: public.Message
 ```

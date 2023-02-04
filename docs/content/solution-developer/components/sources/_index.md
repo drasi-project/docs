@@ -227,6 +227,8 @@ spec:
         key: password
   - name: database.dbname
     value: phys-ops
+  - name: database.ssl
+    value: "true"
   - name: tables
     value: public.Vehicle,public.Zone
 ```
@@ -245,6 +247,7 @@ The following table describes the properties that must be configured in the **sp
 |database.user|The **user id** to use for authentication against the PostgreSQL database server.|
 |database.password|The **password** for the user account specified in the **database.user** property.|
 |database.dbname|The name of the PostgreSQL database.|
+|database.ssl|Does the server require a secure connection, valid values are "true" or "false".|
 |tables| A comma separated list of table names that the Source should process changes for. Tables must have a **public.** prefix.|
 
 #### Data Transformation
