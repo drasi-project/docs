@@ -9,7 +9,7 @@ description: >
 
 You can develop custom reactions by writing an application in any language that adheres to a certain specification and publish it as a docker image to the registry serving Drasi images to your cluster.
 
-## Query configuration
+## Query Configuration
 
 The Drasi control plane will mount a folder at `/etc/queries` where each file will be named after each queryId that is configured for the reaction.  The contents of each file will be the `options` field from the config.
 
@@ -48,7 +48,7 @@ spec:
 
 The format of the content of the options field is completely up to the developer of that particular reaction, for example you could include yaml or json content and it is up to you to deserialize and make sense of it within the context of your custom reaction.
 
-## Receiving changes
+## Receiving Changes
 
 When the projection of a continuous query is changed, a message will be published to a [Dapr topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#subscribe-to-topics). The pubsub name will be available on the `PUBSUB` environment variable (default is `rg-pubsub`). The topic name will be `<queryId>-results`, so for each queryId you discover in `/etc/queries`, you should subscribe to that Dapr topic.
 
@@ -76,7 +76,7 @@ let queryIds = readdirSync(configDir);
 await daprServer.start();
 ```
 
-## Message format
+## Message Format
 
 The format of the incoming messages is a Json array, with each item itself containing an array for `addedResults`, `deletedResults` and `updatedResults`.
 
@@ -150,7 +150,7 @@ An example that row being deleted would look like this
 ]
 ```
 
-## Global configuration
+## Global Configuration
 
 Any configuration that you need to pass to your reaction can be mounted as environment variables, by listing them under the `properties` field on the reaction config.  These values can be specified inline or referenced from Kuberenetes secrets or config maps.
 
@@ -177,7 +177,7 @@ spec:
           key: my-key
 ```
 
-## Exposing custom endpoints
+## Exposing Custom Endpoints
 
 If your reaction has a port that needs to be exposed, you can specify them in the deployment manifest under `endpoints`, for example:
 

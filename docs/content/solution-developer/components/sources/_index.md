@@ -12,7 +12,7 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 - Translate source change data into a consistent property graph data model so that subscribed Continuous Queries can use that data as if it where a graph of Nodes and Relations. For graph sources, such as Gremlin, no translation is necessary. But for non-graph sources, such as PostgreSQL and Kubernetes, the Source transforms the data (more detail is provided in the individual Sources sections below).
 - Provide a way for Continuous Queries to query the source system at startup to initialize the state of the Continuous Query result.
 
-{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
+{{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
 Drasi currently provides Sources for the following source systems:
 
@@ -52,7 +52,7 @@ The following table describes these configuration settings:
 |apiVersion|Must have the value **query.reactive-graph.io/v1**|
 |kind|Must have the value **Source**|
 |metadata.name|The **id** of the Source. Must be unique within the scope of the Sources in the Drasi deployment. The  **id** is used to manage the Source through Kubectl and in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.|
-|spec.sourceType|The type of Source to create, which defines the type of database or source system the Source connects to. Must be one of [CosmosGremlin](#azure-cosmos-db-gremlin-api-source), [PostgreSQL](#postgresql-source) or [Kubernetes](#kubernetes-source). Configuration settings specific to each of these Source types is described in the linked sections below.|
+|spec.sourceType|The type of Source to create, which defines the type of database or source system the Source connects to. Must be one of [CosmosGremlin](#azure-cosmos-db-gremlin-api-source), [PostgreSQL](#postgresql-source) or [Kubernetes](#kubernetes-source).|
 |spec.properties|The configuration settings passed to the Source as name-value pairs. Properties differ depending on the Source type (**spec.sourceType**). See the individual Source sections below for the properties required by each Source type.|
 
 Once configured, to create a Source defined in a file called `source.yaml`, you would run the command:
@@ -94,7 +94,7 @@ The following sections describe the configuration of the Source types currently 
 The Azure Cosmos DB Gremlin API Source enables Drasi connectivity to Azure Cosmos DB Gremlin API. It uses the Cosmos DB Change Log as the source of database change events, and calls the Gremlin API to retrieve data required to bootstrap Continuous Queries at creation.
 
 #### Source Requirements
-For the Cosmos DB Gremlin Source to function, you must ensure the Full Fidelity Change Feed support is enabled on the Cosmos Account. Currently, this needs to be manually requested by [filling out this form](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR9ecQmQM5J5LlXYOPoIbyzdUOFVRNUlLUlpRV0dXMjFRNVFXMDNRRjVDNy4u).
+For the Cosmos DB Gremlin Source to function, you must ensure the Full Fidelity Change Feed support is enabled on the Cosmos Account you intend to use. Currently (as of 02/03/2023), this needs to be manually requested by [filling out this form](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR9ecQmQM5J5LlXYOPoIbyzdUOFVRNUlLUlpRV0dXMjFRNVFXMDNRRjVDNy4u).
 
 #### Configuration Settings
 The following is an example of a full resource definition for an Azure Cosmos DB Gremlin API Source using Kubernetes Secrets to securely store database credentials:
@@ -245,13 +245,13 @@ To get the credentials, export the Kubernetes credentials to a file named `crede
 
 - For self hosted clusters, you can find this in your [kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) file
 - For AKS, you can use this command
-```bash
+```
 az aks get-credentials --resource-group <resource group> --name <cluster name> --file credentials.yaml
 ```
 
 Create a secret named `k8s-context` from the `credentials.yaml` file
 
-```bash
+```
 kubectl create secret generic k8s-context --from-file=credentials.yaml
 ```
 

@@ -9,7 +9,7 @@ description: >
 
 Reactions process the stream of query result changes output by one or more Continuous Queries and act on them. 
 
-{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
+{{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
 The action taken depends on the Reaction type being used. Drasi currently provides the following Reactions:
 

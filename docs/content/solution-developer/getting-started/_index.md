@@ -7,6 +7,8 @@ description: >
     Building Solutions with Drasi
 ---
 
+To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
+
 To use Drasi as part of a solution you must do the following three things:
 
 1. Define [Sources](/solution-developer/components/sources) for each of the source databases or systems from which you want to detect and react to change.
@@ -14,8 +16,6 @@ To use Drasi as part of a solution you must do the following three things:
 1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
 
 The links above take you to sections that provide in-depth discussion of each of the three main Drasi components and how to configure them. But if this is your first exposure to Drasi, the [Tutorial](#tutorial) section below is the best place to start; it provides step-by-step instruction for getting a simple end-to-end Drasi-based solution running. 
-
-To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
 
 ## Tutorial: Hello World
 The following is a step-by-step tutorial that will walk you through the creation of a simple Drasi-based solution, basically the *Hello World* of Drasi solutions. 

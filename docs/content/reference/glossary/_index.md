@@ -7,10 +7,10 @@ description: >
     Glossary of Terms
 ---
 
-## Continuous Query
+**Continuous Query**:
 
-## Data Change Processing
+**Data Change Processing**:
 
-## Reaction
+**Reaction**:
 
-## Source
+**Source**:
