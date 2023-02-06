@@ -25,7 +25,7 @@ description: >
 
 **If you are deploying to an AKS cluster**, you can use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:
 
-```bash
+```
 az login
 az account set --subscription <your subscription id>
 az aks get-credentials --resource-group <your resource group> --name <your cluster name>
@@ -70,7 +70,7 @@ Standard branches are:
 ### Set Kubectl Context
 Make sure the current `kubectl` context is set to the Kubernetes cluster where you want to install Drasi:
 
-```bash
+```
 kubectl config use-context <your cluster name>
 ```
 
@@ -78,7 +78,7 @@ kubectl config use-context <your cluster name>
 
 Install Dapr in your Kubernetes cluster:
 
-```bash
+```
 dapr init -k
 ```
 
@@ -88,7 +88,7 @@ Drasi has a dependency on MongoDb, Redis, and some Dapr components that must be 
 
 From the `/devops/deploy/kubernetes` folder, execute the following:
 
-```bash
+```
 kubectl apply -f deploy-default-infra.yaml
 ```
 
@@ -97,7 +97,7 @@ kubectl apply -f deploy-default-infra.yaml
 
 To build the docker images of all the Drasi services, from the `/devops/build` folder, execute the following:
 
-```bash
+```
 ./local-build-images.sh
 ```
 
@@ -107,7 +107,7 @@ To build the docker images of all the Drasi services, from the `/devops/build` f
 
 To build and install the Drasi Kubernetes Operator, from the `/src/platform/kubernetes-operator` folder, execute the following:
 
-```bash
+```
 make docker-build IMG=reactive-graph/operator
 make deploy IMG=reactive-graph/operator
 ```
@@ -116,7 +116,7 @@ make deploy IMG=reactive-graph/operator
 
 To deploy a default Query Container, from the `/devops/deploy/kubernetes` folder, execute the following:
 
-```bash
+```
 kubectl apply -f default-query-container.yaml
 ```
 

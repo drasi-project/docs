@@ -19,7 +19,7 @@ To publish custom metrics, use the [Prometheus client library](https://prometheu
 
 ### Install Prometheus
 
-```bash
+```
 kubectl create namespace dapr-monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -28,7 +28,7 @@ helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring
 
 To explore the metrics, forward a port to the Prometheus server to your local machine.
 
-```bash
+```
 kubectl port-forward services/dapr-prom-prometheus-server 82:80 -n dapr-monitoring
 ```
 
@@ -40,14 +40,14 @@ Traces are sent by the Dapr sidecar to Zipkin.  To enable this, install Zipkin i
 
 ### Install Zipkin
 
-```bash
+```
 kubectl create deployment zipkin --image openzipkin/zipkin
 kubectl expose deployment zipkin --type ClusterIP --port 9411
 ```
 
 To explore the traces, forward a port to the Zipkin server to your local machine.
 
-```bash
+```
 kubectl port-forward svc/zipkin 9411:9411
 ```
 
