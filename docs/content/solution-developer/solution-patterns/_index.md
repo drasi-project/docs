@@ -27,9 +27,9 @@ Most systems that provide the capability for you as a Solution Developer to reac
   - Teams
   - Contractors
 
-Database change logs are an obvious examples of this approach that simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but when the change events are generated in custom services and components, the system can generate change events for higher level domain objects or include data for parent and child entities in a single event, making them easier and more efficient to consume.
+Database change logs are an obvious examples of this approach that simply output the details of every entity/record that is created, updated, or deleted. Many other software system that generate change events follow a similar approach, but when the change events are generated in custom services and components, the system can generate change events for higher level domain objects or include data for closely related entities in a single event (e.g. an order with customer and product details), making them easier and more efficient to consume.
 
-However, the source system generates a fixed set of events with schema defined by the developer at design time. To maximize the utility of these events, the developer often adopts a very generic but broad event taxonomy, creating similar events for large numbers of data types, even if there is no specific use case for their creation. It becomes the responsibility of the consumer to decide what to do with the potentially high volume of change events, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function. And if the consumer needs more information related to the change, they must call back into the source system to get it, somehow dealing with the possibility that the source data has changed during the time between the change event and the consumer querying for more data.
+However, the source system generates a fixed set of events with schema defined by the developer at design time. To maximize the utility of these events, the developer often adopts a very generic but broad event taxonomy, creating similar events for large numbers of data types, even if there is no specific use case for their creation. It becomes the responsibility of the consumer to decide what to do with the potentially high volume of change events, including which events can be ignored and which to process. The logic to filter and process the required changes must be written and maintained by the consumer, usually in a service or function. And if the consumer needs more information related to a specific change, they must call back into the source system to get it, somehow dealing with the possibility that the source data has changed during the time between the change event and the consumer querying for more data.
 
 Using Drasi to observe these types of changes is trivial without the need for you to write any code, or deploy and manage services to process the source change stream. For example, using the following Continuous Query named **observe-incident**, which is subscribed to the **risk-mgmt** Source, you would get notified when any Node with an **Incident** label was created or deleted, as well as the **before** and **after** version if an **Incident** was updated.
 
@@ -76,9 +76,9 @@ More flexible change notification systems allow consumers greater control over w
 - a Room's temperature exceeds 80 degrees.
 - the occupancy of a Store exceeds 100 people.
 
-In Drasi, you have access to the rich and expressive Cypher language making it trivial to implement condition-based filters. For example, the following Continuous Query generates results for added, updated, and deleted **Incidents** but only when the following criteria are true:
-- a **type** property with the value **environmental**.
-- a **severity** property with the value **critical** or **extreme**.
+In Drasi, you have access to the rich and expressive Cypher language making it trivial to implement condition-based filters. For example, the following Continuous Query generates results when an **Incident** is **added** or **updated** so that it:
+- has a **type** property with the value **environmental**.
+- has a **severity** property with the value **critical** or **extreme**.
 
 ```
 apiVersion: query.reactive-graph.io/v1
@@ -100,7 +100,7 @@ spec:
       i.description AS IncidentDescription
 ```
 
-Going beyond simple property value filtering is also possible; Drasi enables you to think in terms of complex conditions that encompass multiple connected elements. For example, the following Continuous Query requires that the **Incident** have an **OCCURS_IN** Relation to a **Region**, which in turn has a **PART_OF** Relation to a **Continent**. And that the **Continent** have an id of 'NA'.
+Going beyond simple property value filtering is also possible; Drasi enables you to think in terms of complex conditions that encompass multiple connected elements. For example, the following Continuous Query requires that the **Incident** have an **OCCURS_IN** Relation to a **Region**, which in turn has a **PART_OF** Relation to a **Continent**. And that the **Continent** have an **id** of 'NA'.
 
 ```
 apiVersion: query.reactive-graph.io/v1
@@ -124,7 +124,11 @@ spec:
 ```
 
 ## Observing Collections
-Many business solutions can be thought of as systems that let people and organizations manage and manipulate collections of things in order to transition the individual things from one collection to another. For example:
+Many software solutions are built to enable people to manage, or in some cases automate, the day-to-day operations or processes of a business. For example:
+- an Order Management system deals with the receipt, packing, dispatch and delivery of orders to customers.
+- a Patient Management system deals with the scheduling of patient appointments, checking them in on arrival, updating patient notes, scheduling follow-up tests and appointments, and processing payments.
+
+In general, such systems enable people and organizations to manage and manipulate collections of things in order to transition the individual things from one state (or collection of things) to another. For example:
 - In an e-commerce system:
   - There are new customer orders. These need to be picked from stock.
   - Once picked, orders need to be packed and prepared for dispatch.
@@ -138,11 +142,9 @@ Many business solutions can be thought of as systems that let people and organiz
   - Once the doctor is finished, they go into a checkout process, where payment is collected and follow up visits are organized.
   - Finally the patient leaves and their visit is complete.
 
-In these kind of system, it is common to both need to get the current things in the collection and to know when the collection changes so that processes can be started and UIs updated. Modern databases make it easy to track and retrieve the things currently in a collection through simple queries or views, but they do not provide the capability to notify the consumer when the things in the collection change. So developers build custom change notification solutions, processing low level change feeds, or poll the database periodically.
+When implementing these kind of system, it is common to both need to get the current things in the collection and to know when the collection changes so that processes can be started and UIs updated. Modern databases make it easy to track and retrieve the things currently in a collection through simple queries or views, but they do not provide the capability to notify the consumer when the things in the collection change. So developers build custom change notification solutions, processing low level change feeds, or poll the database periodically.
 
-But this need to get the current collection and subsequent changes to that collection are exactly the capabilities that Drasi provides. As such, Drasi provides a new opportunity for creating query-based dynamic collections with integrated change notifications that can power certain types of business solutions.
-
-For example, the following Continuous Query maintains a collection of all Employees currently located in Buildings that are in Regions where there are active high risk Incidents. 
+Drasi provides a new opportunity for creating query-based dynamic collections with integrated change notifications that can power these types of business solutions. For example, the following Continuous Query maintains a collection of all Employees currently located in Buildings that are in Regions where there are active high risk Incidents. 
 
 ```
 apiVersion: query.reactive-graph.io/v1
