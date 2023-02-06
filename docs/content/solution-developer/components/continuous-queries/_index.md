@@ -9,17 +9,17 @@ description: >
 
 Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/solution-developer/components/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/solution-developer/components/reactions).
 
-{{< figure src="simple-end-to-end.png" alt="End to End" width="50%" >}}
+{{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
 Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
 
 When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
-{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="50%" >}}
+{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="60%" >}}
 
 **Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
-{{< figure src="/continuous-query.png" alt="Continuous Query" width="50%" >}}
+{{< figure src="/continuous-query.png" alt="Continuous Query" width="60%" >}}
 
 Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.

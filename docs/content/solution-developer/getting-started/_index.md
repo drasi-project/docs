@@ -7,6 +7,8 @@ description: >
     Building Solutions with Drasi
 ---
 
+To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
+
 To use Drasi as part of a solution you must do the following three things:
 
 1. Define [Sources](/solution-developer/components/sources) for each of the source databases or systems from which you want to detect and react to change.
@@ -14,8 +16,6 @@ To use Drasi as part of a solution you must do the following three things:
 1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
 
 The links above take you to sections that provide in-depth discussion of each of the three main Drasi components and how to configure them. But if this is your first exposure to Drasi, the [Tutorial](#tutorial) section below is the best place to start; it provides step-by-step instruction for getting a simple end-to-end Drasi-based solution running. 
-
-To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
 
 ## Tutorial: Hello World
 The following is a step-by-step tutorial that will walk you through the creation of a simple Drasi-based solution, basically the *Hello World* of Drasi solutions. 
@@ -283,16 +283,16 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 ### Reflection
 In completing the tutorial, using no custom code and a minimal amount of configuration information, you were able to write queries that automatically detect changes in a database and dynamically distribute a custom representation of those changes to downstream consumers for further processing or integration into a broader solution. Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what you are trying to achieve.
 
-Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. And you would need to implement unique solutions for each type of source. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. 
+Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement unique solutions for each type of source you wanted to support. 
 
-Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system, and its ability to power solutions that are more dynamic and responsive.
+Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system as well as its ability to power solutions that are more dynamic and responsive.
 
 ## Next Steps...
 As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today with significant development efforts. 
 
 Once you understand the basics of Drasi, the following sections will help you master Drasi quickly so you can start using it to build more responsive solutions that detect and react to change:
 - The [Background](/solution-developer/background) section explores in more detail the problems Drasi was created to solve. This will be useful if you are looking for more context and trying to relate the benefits of Drasi to other alternatives for building solutions that detect and react to change.
-- The [Solution Patterns](/solution-developer/solution-patterns) section describes how to use Drasi most effectively in your solutions. It describes multiple ways to think about and apply the functionality provided by Continuous Queries and Reactions. Some are improved alternatives to existing patterns, while others are unique to Drasi. 
+- The [Solution Design](/solution-developer/solution-design) section describes how to use Drasi most effectively in your solutions. It describes multiple ways to think about and apply the functionality provided by Continuous Queries and Reactions. Some are improved alternatives to existing patterns, while others are unique to Drasi. 
 - The Drasi repo includes multiple [Sample Applications](/solution-developer/sample-apps/) that are fully functional solutions that demonstrate the use of Drasi in realistic scenarios. These sample apps contain working implementations of the patterns described in the [Solution Pattern](/solution-developer/solution-patterns) section.
 - The [Recipes](/solution-developer/recipes) section provides code-based solutions to common problems. These recipes will be useful as you start to implement Drasi in your solution and need quick answers to specific questions.
 - The [Troubleshooting](/solution-developer/troubleshooting) section provides guidance on how to investigate problems if they occur when you are creating the Sources, Continuous Queries, and Reactions that you will use as part of your solution.

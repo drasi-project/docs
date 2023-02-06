@@ -27,7 +27,7 @@ description: >
 
 **If you are deploying to an AKS cluster**, you can use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:
 
-```bash
+```
 az login
 az account set --subscription <your subscription id>
 az aks get-credentials --resource-group <your resource group> --name <your cluster name>
@@ -38,13 +38,13 @@ az aks get-credentials --resource-group <your resource group> --name <your clust
 
 Make sure the current `kubectl` context is set to the Kubernetes cluster where you want to install Drasi:
 
-```bash
+```
 kubectl config use-context <your cluster name>
 ```
 
 Run the following command:
 
-```bash
+```
 curl -s https://drasi.blob.core.windows.net/installs/install-preview.sh | bash
 ```
 

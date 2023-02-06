@@ -8,7 +8,7 @@ description: >
 ---
 
 ## Debug Reactor
-Coming Soon...
+**Coming Soon...**
 
 ## Known Issues
 

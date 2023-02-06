@@ -7,4 +7,4 @@ description: >
     Curbside Pickup sample application for Drasi
 ---
 
-Coming Soon
+**Coming Soon...**
