@@ -137,7 +137,7 @@ npm start
 
 ## Configure and start the App frontend
 
-Double check the `config.json` file under `apps/curbside-pickup/app/src` to ensure the Urls are correct.
+Double check the `config.json` file under `/apps/curbside-pickup/app/src` to ensure the Urls are correct.
 
 ```json
 {
