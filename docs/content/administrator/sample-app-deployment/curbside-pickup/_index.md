@@ -147,7 +147,7 @@ Double check the `config.json` file under `apps/curbside-pickup/app/src` to ensu
 }
 ```
 
-From the `curbside-pickup/app` folder, start the react app
+From the `/apps/curbside-pickup/app` folder, start the react app
 
 ```bash
 npm install
