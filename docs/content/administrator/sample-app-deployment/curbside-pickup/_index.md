@@ -102,7 +102,7 @@ kubectl port-forward services/signalr1-gateway 5001:80 -n default
 
 ## Configure and start the App backend
 
-From the `/apps/curbside-pickup/functions` folder, create a file named `local.settigns.json` and paste the following content, replacing the values for `RETAIL_OPS_URL`, `RETAIL_OPS_KEY`, `PHYSICAL_OPS_URL` and `PHYSICAL_OPS_KEY` with the values from the `Keys` blade in the Azure Portal from your CosmosDb account.
+From the `/apps/curbside-pickup/functions` folder, create a file named `local.settings.json` and paste the following content, replacing the values for `RETAIL_OPS_URL`, `RETAIL_OPS_KEY`, `PHYSICAL_OPS_URL` and `PHYSICAL_OPS_KEY` with the values from the `Keys` blade in the Azure Portal from your CosmosDb account.
 
 ```json
 {
@@ -137,7 +137,7 @@ npm start
 
 ## Configure and start the App frontend
 
-Double check the `config.json` file under `/app/src` to ensure the Urls are correct.
+Double check the `config.json` file under `apps/curbside-pickup/app/src` to ensure the Urls are correct.
 
 ```json
 {
