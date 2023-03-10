@@ -62,7 +62,7 @@ az deployment group create -f cosmosdb.bicep --resource-group <your resource gro
 Fill in the name of the resource group you want deploy the demo (you will need to [create a new resource group](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#create-resource-groups) first if you don't already have one), and a name of your choice for the Cosmos DB account. For example:
 
 ```bash
-az deployment group create -f database.bicep --resource-group my-resource-group -p cosmosAccountName=my-drasi-db
+az deployment group create -f cosmosdb.bicep --resource-group my-resource-group -p cosmosAccountName=my-drasi-db
 ```
 
 The bicep deployment will create a new CosmosDb account with the Gremlin API enabled and a database named `Contoso` with an empty `Facilities` graph.
