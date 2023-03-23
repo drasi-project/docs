@@ -14,10 +14,10 @@ description: >
   - A terminal environment that supports Bash
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
-  - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) if you are deploying to AKS.
+  - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
 - A Kubernetes cluster. Common options include:
   - Cloud:
-    - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/)
+    - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/)
   - Local (for dev/test):
     - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
     - [Minikube](https://minikube.sigs.k8s.io/docs/)
@@ -33,7 +33,7 @@ az aks get-credentials --resource-group <your resource group> --name <your clust
 
 ## Installing Drasi
 
-The process to deploy Drasi from source code requires you perfrom the following steps:
+The process to deploy Drasi from source code requires you perform the following steps:
 
 1. Get the Source Code
 1. Set Kubectl Context
@@ -41,13 +41,13 @@ The process to deploy Drasi from source code requires you perfrom the following 
 1. Deploy Standard Software Infrastructure
 1. Build Drasi Component Images
 1. Build and Deploy Drasi Control Plane
-1. Deploy a Default Query cCntainer
+1. Deploy a Default Query container
 
 These steps are described below.
 
 ### Get the Source Code
 
-The scripts used to do the build and deployment will use the files from the currently checked out source code branch. 
+The scripts used to do the build and deployment will use the files from the currently checked out source code branch.
 
 First, clone the Drasi repo:
 
@@ -158,8 +158,8 @@ To connect to the debug Reaction:
 ```bash
 kubectl port-forward svc/smoke-debug-gateway 8080:80
 ```
-  
-You can then open a browser and navigate to http://localhost:8080/query/smoke-query to see the results of the test query, which should display `Item 1` and `Item 3`. You can also modify the test database directly to verify that the query is updating as expected:
+
+You can then open a browser and navigate to <http://localhost:8080/query/smoke-query> to see the results of the test query, which should display `Item 1` and `Item 3`. You can also modify the test database directly to verify that the query is updating as expected:
 
 ```bash
 kubectl run smoke-postgresql-client --rm --tty -i --restart='Never' --namespace default \
@@ -168,7 +168,7 @@ kubectl run smoke-postgresql-client --rm --tty -i --restart='Never' --namespace 
   -c "INSERT INTO item (id, name, category) VALUES (4, 'Item 4', 'A');"
 ```
 
-The new item should show up in the `smoke-query`, and the event that was generated should show up under  http://localhost:8080/stream with `Item 4` in `addedResults`.
+The new item should show up in the `smoke-query`, and the event that was generated should show up under <http://localhost:8080/stream> with `Item 4` in `addedResults`.
 
 ### Uninstall the smoke test workload
 
