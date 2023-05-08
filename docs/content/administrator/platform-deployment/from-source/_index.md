@@ -14,6 +14,7 @@ description: >
   - A terminal environment that supports Bash
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
+  - [helm](https://helm.sh/docs/intro/install/)
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
 - A Kubernetes cluster. Common options include:
   - Cloud:
@@ -82,7 +83,8 @@ kubectl config use-context <your cluster name>
 Install Dapr in your Kubernetes cluster:
 
 ```bash
-dapr init -k
+helm repo add dapr https://dapr.github.io/helm-charts/
+helm upgrade --install dapr dapr/dapr --create-namespace --namespace dapr-system --set dapr_operator.watchInterval=45s --wait
 ```
 
 ### Deploy Standard Software Infrastructure

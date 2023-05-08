@@ -16,6 +16,7 @@ description: >
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
   - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+  - [helm](https://helm.sh/docs/intro/install/)
 - A Kubernetes cluster. Common options include:
   - Cloud:
     - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/)
