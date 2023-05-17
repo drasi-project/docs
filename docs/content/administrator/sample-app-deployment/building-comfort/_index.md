@@ -112,8 +112,6 @@ python load_graph.py
 From the `apps/building-comfort/devops/reactive-graph` folder, edit the `source-facilities.yaml` file to specify your Cosmos DB instance:
 
 - `SourceAccountEndpoint` with the primary connection string
-- `SourceKey` with the primary key, same as the `cosmosPassword` in `config.py`
-- `SourceConnectionString` with the Gremlin endpoint, same as the `cosmosUri` in `config.py`
 
 You can also look up the `SourceAccountEndpoint` value in the Azure portal or by using the Azure CLI:
 

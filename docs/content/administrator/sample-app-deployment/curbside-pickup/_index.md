@@ -69,7 +69,7 @@ g.addV('Zone').property('name','Parking Lot').property('type','Parking Lot')
 
 ## Deploy the sources
 
-From the `/apps/curbside-pickup/devops` folder, edit the `phys-ops-source.yaml` and `retail-ops-source.yaml` files to include the keys/connections strings of your CosmosDb account.  The fields to update include `SourceAccountEndpoint`, `SourceKey` and `SourceConnectionString`, you can retrieve these values from the `Keys` blade in the Azure Portal.
+From the `/apps/curbside-pickup/devops` folder, edit the `phys-ops-source.yaml` and `retail-ops-source.yaml` files to include the keys/connections strings of your CosmosDb account. You need to update the value of `SourceAccountEndpoint` with the  `PRIMARY CONNECTION STRING` from the `Keys` blade in the Azure Portal.
 
 Use kubectl to deploy the 2 sources
 
