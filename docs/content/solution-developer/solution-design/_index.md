@@ -34,10 +34,9 @@ However, the source system generates a fixed set of events with schema defined b
 Using Drasi to observe these types of changes is trivial without the need for you to write any code, or deploy and manage services to process the source change stream. For example, using the following Continuous Query named **observe-incident**, which is subscribed to the **risk-mgmt** Source, you would get notified when any Node with an **Incident** label was created or deleted, as well as the **before** and **after** version if an **Incident** was updated.
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: observe-incident
+name: observe-incident
 spec:
   sources:    
     subscriptions:
@@ -50,10 +49,9 @@ spec:
 By default, this Continuous Query will return all data for each Incident, but if you want to limit the data to select properties, you could assign the Incident an identifier ('i' in the example) and project desired properties using a RETURN clause, like this:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: observe-incident
+name: observe-incident
 spec:
   sources:    
     subscriptions:
@@ -81,10 +79,9 @@ In Drasi, you have access to the rich and expressive Cypher language making it t
 - has a **severity** property with the value **critical** or **extreme**.
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: observe-incident
+name: observe-incident
 spec:
   sources:    
     subscriptions:
@@ -103,10 +100,9 @@ spec:
 Going beyond simple property value filtering is also straightforward; Drasi enables you to think in terms of complex conditions that encompass multiple connected elements. For example, the following Continuous Query requires that the **Incident** have an **OCCURS_IN** Relation to a **Region**, which in turn has a **PART_OF** Relation to a **Continent**. And that the **Continent** have an **id** of 'NA'.
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: observe-incident
+name: observe-incident
 spec:
   sources:    
     subscriptions:
@@ -147,10 +143,9 @@ Drasi provides a new opportunity for creating query-based dynamic collections wi
 For example, the following Continuous Query maintains a collection of all Employees currently located in Buildings that are in Regions where there are active high risk Incidents. 
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: observe-incident
+name: observe-incident
 spec:
   sources:    
     subscriptions:

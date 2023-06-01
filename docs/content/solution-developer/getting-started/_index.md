@@ -91,37 +91,18 @@ To define your PostgreSQL Source, create a file named `hello-world-source.yaml` 
 
 ```
 apiVersion: v1
-kind: Secret
-metadata:
-  name: db-creds
-type: Opaque
-stringData:
-  password: <db-password>
----
-apiVersion: query.reactive-graph.io/v1
 kind: Source
-metadata:
-  name: hello-world
+name: hello-world
 spec:
-  sourceType: PostgreSQL
-  properties: 
-  - name: database.hostname
-    value: <db-host-name>
-  - name: database.port
-    value: "<db-port>"
-  - name: database.user
-    value: <db-user>
-  - name: database.password
-    valueFrom:
-      secretKeyRef:
-        name: db-creds
-        key: password
-  - name: database.dbname
-    value: hello-world
-  - name: database.ssl
-    value: "true"
-  - name: tables
-    value: public.Message
+  kind: PostgreSQL
+  host: <db-host-name>
+  port: 5432
+  user: <db-user>
+  password: <db-password>
+  database: hello-world
+  ssl: true
+  tables:
+    - public.Message
 ```
 
 You must replace the values described in this table with values for your PostgreSQL database:
@@ -129,14 +110,13 @@ You must replace the values described in this table with values for your Postgre
 |Value|Description|
 |-|-|
 |\<db-host-name>|The DNS host name of the PostgreSQL server.|
-|\<db-port>|The port through which you communicate with the PostgreSQL server. Must be enclosed in quotes.|
 |\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.|
-|\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.|
+|\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.  Note: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
 
-Once the values are updated and the `hello-world-source.yaml` saved, use `kubectl` to create the Source with the following command:
+Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
 
 ```
-kubectl apply -f hello-world-source.yaml
+drasi apply -f hello-world-source.yaml
 ```
 
 Your PostgreSQL Source is now created and ready to use.
@@ -145,10 +125,9 @@ Your PostgreSQL Source is now created and ready to use.
 To define the two Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: hello-world-from
+name: hello-world-from
 spec:
   mode: query
   sources:    
@@ -161,10 +140,9 @@ spec:
       m.MessageId AS MessageId,
       m.From AS MessageFrom
 ---
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: message-count
+name: message-count
 spec:
   mode: query
   sources:    
@@ -182,14 +160,14 @@ You don't need to change anything in this file, but this table describes the mos
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Continuous Queries**|
-|metadata.name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
+|name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
 |spec.source.subscriptions.id| Identifies the Source the Continuous Query will subscribe to as a source of change data. In this instance, these refer to the PostgreSQL Source created in the previous step.|
 |spec.query|Contains the Cypher Query that defines both which changes the Continuous Query is detecting and the output it should generate.|
 
-Use `kubectl` to deploy the Continuous Queries with the following command:
+Use `drasi` to deploy the Continuous Queries with the following command:
 
 ```
-kubectl apply -f hello-world-queries.yaml
+drasi apply -f hello-world-queries.yaml
 ```
 
 ### Step 3 - Debug Reaction
@@ -198,33 +176,31 @@ In order to view the results of the Continuous Queries you will deploy an instan
 To define your Debug Reaction, create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: Reaction
-metadata:
-  name: hello-world-debug
+name: hello-world-debug
 spec:
-  reactionImage: reactive-graph/reaction-debug
-  endpoints:
-    - name: gateway
-      port: 8080
+  image: reaction-debug
   queries:
-    - queryId: hello-world-from
-    - queryId: message-count
+    hello-world-from:
+    message-count:
+  endpoints:
+    gateway: 8080  
 ```
 
 You don't need to change anything in this file, but this table describes the most important configuration settings in this resource definition:
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
-|metadata.name|Provides the **id** of the Reaction.|
-|spec.reactionImage|Identifies the container image to use for the Reaction.|
+|name|Provides the **id** of the Reaction.|
+|spec.image|Identifies the container image to use for the Reaction.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
 
-Use `kubectl` to deploy the Debug Reaction with the following command:
+Use `drasi` to deploy the Debug Reaction with the following command:
 
 ```
-kubectl apply -f hello-world-reaction.yaml
+drasi apply -f hello-world-reaction.yaml
 ```
 
 The Hello World Drasi solution is now fully deployed.
@@ -233,7 +209,7 @@ The Hello World Drasi solution is now fully deployed.
 In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
 
 ```
-kubectl port-forward services/hello-world-debug-gateway 8080:80 -n default
+kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n default
 ```
 
 Now open your browser and navigate to **http://localhost:8080**, where you will see the Debug Reaction UI shown here:

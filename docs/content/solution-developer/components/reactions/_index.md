@@ -21,51 +21,46 @@ The action taken depends on the Reaction type being used. Drasi currently provid
 *To create custom Reactions, see the [Custom Reactions](/platform-developer/reactions/) section of the [Platform Developer Guide](/platform-developer)*
 
 ## Creation
-Reactions are custom Kubernetes resources that you can create and manage using `Kubectl`. 
+Reactions can be created and managed using the `drasi` CLI tool. 
 
 The easiest way to create a Reaction, and the way you will often create one as part of a broader software solution, is to:
 
 1. Collect ID's of the Continuous Queries the Reaction will subscribe to.
 1. Collect credentials and endpoint addresses that provide access to any external system the Reaction interacts with.
 1. Create a YAML file containing the Reaction Resource Definition. This will include the configuration settings that enable the Reaction to connect to external systems. This can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run Kubectl to apply the Reaction resource definition to the Kubernetes cluster where your Drasi environment is deployed.
+1. Run `drasi apply` to apply the Reaction resource definition to the Kubernetes cluster where your Drasi environment is deployed.
 
 As soon as the Reaction is created it will start running, subscribing to its Continuous Queries and processing query result changes.
 
-The Kubernetes resource definition for a Reaction has the following structure:
+The definition for a Reaction has the following structure:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: Reaction
-metadata:
-  name: <reaction-id>
+name: <reaction-id>
 spec:
-  reactionImage: <reaction-image>
+  image: <reaction-image>
   queries:
-    - queryId: <query_id_1
-    - queryId: <query_id_2
-      options: <custom metadata for query_id_2 (optional)>
+    query1: <custom metadata for query1 (optional)>
+    query2: <custom metadata for query2 (optional)>
   properties:
-    - name: <property_1_name>
-      value: <property_1_value>
-    - name: <property_2_value>
-      valueFrom:
-        secretKeyRef:
-          name: <secret_id>
-          key: <secret_key>
+    <property_1_name>: <property_1_value>
+    <property_2_name>: 
+      kind: Secret
+      name: <secret_id>
+      key: <secret_key>          
   endpoints:
-    - name: <endpoint_name (optional)>
-      port: <enpoint_port_num>
+    <endpoint_name>: <enpoint_port_num>
 ```
 
 The following table provides a summary of these configuration settings:
 
 |Name|Description|
 |-|-|
-|apiVersion|Must have the value **query.reactive-graph.io/v1**|
+|apiVersion|Must have the value **v1**|
 |kind|Must have the value **Reaction**|
-|metadata.name|The **id** of the Reaction. Must be unique within the scope of the Reactions in the Drasi deployment. The  **id** is used to manage the Reaction through Kubectl.|
-|spec.reactionImage|The name of the docker image for the Reaction.|
+|name|The **id** of the Reaction. Must be unique within the scope of the Reactions in the Drasi deployment. The  **id** is used to manage the Reaction.|
+|spec.image|The name of the docker image for the Reaction.|
 |spec.queries|The list of Continuous Query IDs the Reaction will subscribe to. Some Reactions also need per-query configuration, which can be passed using the options property of the queryId. These are unique to the type of Reaction and are detailed in the sections below.|
 |spec.properties|Name/value pairs used to configure the Reaction. These are unique to the type of Reaction and are detailed in the sections below.|
 |spec.endpoints|Names and port numbers to use for Reactions that expose accessible ports for clients to connect to.|  
@@ -73,26 +68,26 @@ The following table provides a summary of these configuration settings:
 Once configured, to create a Reaction defined in a file called `reaction.yaml`, you would run the command:
 
 ```
-kubectl apply -f reaction.yaml
+drasi apply -f reaction.yaml
 ```
 
-You can then use the standard Kubectl commands to query the existence and status of the Reaction resource. For example, to see a list of the active Reactions, run the following command:
+You can then use additional `drasi` commands to query the existence and status of the Reaction resource. For example, to see a list of the active Reactions, run the following command:
 
 ```
-kubectl get reactions
+drasi list reaction
 ```
 
 ## Deletion
 To delete an active Reaction, run the following command:
 
 ```
-kubectl delete reaction <reaction-id>
+drasi delete reaction <reaction-id>
 ```
 
 For example, if the Reaction ID is `update-gremlin`, you would run,
 
 ```
-kubectl delete reaction update-gremlin
+drasi delete reaction update-gremlin
 ```
 
 ## Configuring Reactions
@@ -103,37 +98,29 @@ The Event Grid Reaction requires the following configuration settings:
 
 |Name|Type|Description|
 |-|-|-|
-|reactionImage| | Must have the value **reactive-graph/reaction-eventgrid**|
+|image| | Must have the value **reaction-eventgrid**|
 |EventGridUri| Property | |
 |EventGridKey| Property | |
 
 The following is an example of a fully configured Event Grid Reaction using Kubernetes Secrets to securely store sensitive information:
 
+```bash
+kubectl create secret generic credentials --from-literal=access-key=xxxxxx
+```
+
 ```
 apiVersion: v1
-kind: Secret
-metadata:
-  name: credentials
-type: Opaque
-stringData:
-  access-key: xxxxxx
----
-apiVersion: query.reactive-graph.io/v1
 kind: Reaction
-metadata:
-  name: eventgrid1
+name: eventgrid1
 spec:
-  reactionImage: reactive-graph/reaction-eventgrid
-  properties:
-    - name: EventGridUri
-      value: https://reactive-graph-daniel.westus-1.eventgrid.azure.net/api/events
-    - name: EventGridKey
-      valueFrom:
-        secretKeyRef:
-          name: credentials
-          key: access-key
+  image: reaction-eventgrid
+  EventGridUri: https://reactive-graph-daniel.westus-1.eventgrid.azure.net/api/events
+  EventGridKey: 
+    kind: Secret
+    name: credentials
+    key: access-key      
   queries:
-    - queryId: my-query1
+    my-query1:
 ```
 
 ### Gremlin Reaction
@@ -144,38 +131,30 @@ The SignalR Reaction requires the following configuration settings:
 
 |Name|Type|Description|
 |-|-|-|
-|reactionImage| | Must have the value **reactive-graph/reaction-signalr**|
+|image| | Must have the value **reaction-signalr**|
 |AzureSignalRConnectionString| Property | |
 |gateway| Endpoint | |
 
 The following is an example of a fully configured Event Grid Reaction using Kubernetes Secrets to securely store sensitive information:
 
+```bash
+kubectl create secret generic credentials --from-literal=connection-string=xxxxxx
+```
+
 ```
 apiVersion: v1
-kind: Secret
-metadata:
-  name: credentials
-type: Opaque
-stringData:
-  connection-string: xxxxxx
----
-apiVersion: query.reactive-graph.io/v1
 kind: Reaction
-metadata:
-  name: signalr1
+name: signalr1
 spec:
-  reactionImage: reactive-graph/reaction-signalr
-  properties:
-    - name: AzureSignalRConnectionString
-      valueFrom:
-        secretKeyRef:
-          name: credentials
-          key: connection-string
+  image: reaction-signalr
+  AzureSignalRConnectionString:
+    kind: Secret
+    name: credentials
+    key: connection-string          
   endpoints:
-    - name: gateway
-      port: 8080
+    gateway: 8080
   queries:
-    - queryId: my-query1
+    my-query1:
 ```
 
 ### Debug Reaction
