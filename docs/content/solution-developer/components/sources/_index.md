@@ -27,11 +27,11 @@ The easiest way to create a Source, and the way you will often create one as par
 
 1. Collect credentials and endpoint addresses that provide access to the change log and query API of the source system you want to connect to.
 1. Create a YAML file containing the Source resource definition. This will include the configuration settings that enable the Source to connect to the source system. This file can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run `drasi` to apply the Source resource definition to the Kubernetes cluster where your Drasi environment is deployed.
+1. Run `drasi apply` to apply the Source resource definition to the Kubernetes cluster where your Drasi environment is deployed.
 
 As soon as the Source is created it will start running, monitoring its source system for changes and pushing them to subscribed Continuous Queries.
 
-The Kubernetes resource definition for a Source has the following basic structure:
+The definition for a Source has the following basic structure:
 
 ```
 apiVersion: v1
@@ -104,49 +104,39 @@ For the Cosmos DB Gremlin Source to function, you must ensure the Full Fidelity 
 #### Configuration Settings
 The following is an example of a full resource definition for an Azure Cosmos DB Gremlin API Source using Kubernetes Secrets to securely store database credentials:
 
-
 ```
 apiVersion: v1
 kind: Source
 name: retail-ops
 spec:
-  sourceType: CosmosGremlin
-  properties: 
-  - name: SourceAccountEndpoint
-    valueFrom:
-      secretKeyRef:
-        name: creds
-        key: SourceAccountEndpoint
-  - name: SourceConnectionString
-    value: wss://reactive-graph.gremlin.cosmos.azure.com:443/
-  - name: SourceDatabaseName
-    value: Contoso
-  - name: SourceContainerName
-    value: RetailOperations
-  - name: SourceContainerPartitionKey
-    value: name
-  - name: SourceKey
-    valueFrom:
-      secretKeyRef:
-        name: creds
-        key: SourceKey
+  kind: CosmosGremlin
+  accountEndpoint: 
+    kind: Secret
+    name: creds
+    key: account-endpoint
+  database: Contoso
+  container: RetailOperations
+  partitionKey: name
 ```
 
-In the Source resource definition:
-- **apiVersion** must be **query.reactive-graph.io/v1**
-- **kind** must be **Source**
-- **metadata.name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
-- **spec.sourceType** must be **CosmosGremlin**
+> Note: You could use the following command to easily create the seret referenced here:
+  ```bash
+  kubectl create secret generic creds --from-literal=account-endpoint=...
+  ```
 
-The following table describes the properties that must be configured in the **spec.properties** array:
+In the Source resource definition:
+- **apiVersion** must be **v1**
+- **kind** must be **Source**
+- **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.kind** must be **CosmosGremlin**
+
+The following table describes the Cosmos Gremlin specific properties that must be configured in the **spec** object:
 |Property|Description|
 |-|-|
-|SourceAccountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal.|
-|SourceKey|The **PRIMARY** or **SECONDARY KEY** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal. Must match the **SourceAccountEndpoint**.|
-|SourceConnectionString|The **GREMLIN ENDPOINT** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal.|
-|SourceDatabaseName|**Database Id** from the Cosmos DB account.|
-|SourceContainerName|**Graph Id** from the Cosmos DB Database.|
-|SourceContainerPartitionKey|The **Partition Key** configured on the **Graph**.|
+|accountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal.|
+|database|**Database Id** from the Cosmos DB account.|
+|container|**Graph Id** from the Cosmos DB Database.|
+|partitionKey|The **Partition Key** configured on the **Graph**.|
 
 #### Data Transformation
 Cosmos DB Gremlin already uses a property graph data model and so the Source does not need to do any data transformation as it processes the inbound changes. The only thing to note is the terminology differences between Gremlin and Drasi summarized in this table:
@@ -168,58 +158,46 @@ You also need a PostgreSQL user that has at least the LOGIN, REPLICATION and CRE
 #### Configuration Settings
 The following is an example of a full resource definition for a PostgreSQL Source using Kubernetes Secrets to securely store database credentials:
 
+```bash
+kubectl create secret generic pg-creds --from-literal=password=my-password
+```
 
 ```
 apiVersion: v1
-kind: Secret
-metadata:
-  name: creds
-type: Opaque
-stringData:
-  password: xxxxxx
----
-apiVersion: query.reactive-graph.io/v1
 kind: Source
-metadata:
-  name: phys-ops
+name: phys-ops
 spec:
-  sourceType: PostgreSQL
-  properties: 
-  - name: database.hostname
-    value: reactive-graph.postgres.database.azure.com
-  - name: database.port
-    value: "5432"
-  - name: database.user
-    value: postgres@reactive-graph
-  - name: database.password
-    valueFrom:
-      secretKeyRef:
-        name: creds
-        key: password
-  - name: database.dbname
-    value: phys-ops
-  - name: database.ssl
-    value: "true"
-  - name: tables
-    value: public.Vehicle,public.Zone
+  kind: PostgreSQL
+  host: reactive-graph.postgres.database.azure.com
+  port: 5432
+  user: postgres@reactive-graph
+  password:
+    kind: Secret
+    name: creds
+    key: password
+  database: phys-ops
+  ssl: true
+  tables:
+    - public.Vehicle
+    - public.Zone
 ```
 
 In the Source resource definition:
-- **apiVersion** must be **query.reactive-graph.io/v1**
+- **apiVersion** must be **v1**
 - **kind** must be **Source**
-- **metadata.name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
-- **spec.sourceType** must be **PostgreSQL**
+- **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.kind** must be **PostgreSQL**
 
-The following table describes the properties that must be configured in the **spec.properties** array:
+The following table describes the PostgrSQL specific properties that must be configured in the **spec** object:
 |Property|Description|
 |-|-|
-|database.hostname|The **host name** of the PostgreSQL database server.|
-|database.port|The **port** number used to communicate with the PostgreSQL database server.|
-|database.user|The **user id** to use for authentication against the PostgreSQL database server.|
-|database.password|The **password** for the user account specified in the **database.user** property.|
-|database.dbname|The name of the PostgreSQL database.|
-|database.ssl|Does the server require a secure connection, valid values are "true" or "false".|
-|tables| A comma separated list of table names that the Source should process changes for. Tables must have a **public.** prefix.|
+|host|The **host name** of the PostgreSQL database server.|
+|port|The **port** number used to communicate with the PostgreSQL database server.|
+|user|The **user id** to use for authentication against the PostgreSQL database server.|
+|password|The **password** for the user account specified in the **user** property.|
+|database|The name of the PostgreSQL database.|
+|ssl|Does the server require a secure connection, valid values are "true" or "false".|
+|tables| An array of table names that the Source should process changes for. Tables must have a **public.** prefix.|
 
 #### Data Transformation
 The PostgreSQL Source translates the relational data from change events to more closely resemble property graph data change events so that they can be processed by subscribed Continuous Queries. To achieve this, the PostgreSQL Source represents table rows as graph Nodes, as follows:
@@ -249,35 +227,32 @@ az aks get-credentials --resource-group <resource group> --name <cluster name> -
 
 Create a secret named `k8s-context` from the `credentials.yaml` file
 
-```
+```bash
 kubectl create secret generic k8s-context --from-file=credentials.yaml
 ```
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: Source
-metadata:
-  name: k8s
+name: k8s
 spec:
-  sourceType: Kubernetes
-  properties: 
-  - name: KUBECONFIG
-    valueFrom:
-      secretKeyRef:
-        name: k8s-context
-        key: credentials.yaml
+  kind: Kubernetes
+  kubeconfig:
+    kind: Secret
+    name: k8s-context
+    key: credentials.yaml
 ```
 
 In the Source resource definition:
-- **apiVersion** must be **query.reactive-graph.io/v1**
+- **apiVersion** must be **v1**
 - **kind** must be **Source**
-- **metadata.name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
-- **spec.sourceType** must be **Kubernetes**
+- **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.kind** must be **Kubernetes**
 
-The following table describes the properties that must be configured in the **spec.properties** array:
+The following table describes the properties that must be configured in the **spec** object:
 |Property|Description|
 |-|-|
-|KUBECONFIG|A [kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig) containing the credentials to connect to your cluster|
+|kubeconfig|A [kubeconfig](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig) containing the credentials to connect to your cluster|
 
 #### Data Transformation
 

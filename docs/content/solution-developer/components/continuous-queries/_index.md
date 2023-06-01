@@ -98,25 +98,24 @@ If the **severity** of the Forest Fire then changed from 'extreme' to 'critical'
 In some instances, a single source change can result in multiple changes to the query result e.g. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes. This enables subscribed Reactions to treat the related changes atomically given they all arose from a single source change.
 
 ## Creation
-Continuous Queries are custom Kubernetes resources that you can create and manage using `Kubectl`. 
+Continuous Queries can be created and managed using the `drasi` CLI tool. 
 
 The easiest way to create a Continuous Query, and the way you will often create one as part of a broader software solution, is to:
 
-1. Create a YAML file containing the Continuous Query Resource Definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run Kubectl to apply the YAML file, creating the Continuous Query
+1. Create a YAML file containing the Continuous Query definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
+1. Run `drasi apply` to apply the YAML file, creating the Continuous Query
 
 When a new Continuous Query is created it:
 1. Subscribes to its Sources, describing the types of change it wants to receive.
 1. Queries its Sources to load the initial data for its query result.
 1. Begins processing the stream of SourceChangeEvents from its Sources that represent the sequence of low-level database changes that have occurred (inserts, updated, deletes) and translates them into changes to its query result.  
 
-Here is a simple example of the resource definition for the Incident Alerting Continuous Query used in the example above:
+Here is a simple example of the definition for the Incident Alerting Continuous Query used in the example above:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: manager-incident-alert
+name: manager-incident-alert
 spec:
   sources:    
     subscriptions:
@@ -141,26 +140,26 @@ In this example, the `spec.sources.subscriptions` property identifies the Source
 If this Continuous Query resource definition was contained in a file called `query.yaml`, to create this query on a Drasi environment that was the current Kubectl context, you would run the command:
 
 ```
-kubectl apply -f query.yaml
+drasi apply -f query.yaml
 ```
 
-You can then use the standard Kubectl commands to query the existence and status of the Continuous Query resource. For example, to see a list of the active Continuous Queries, run the following command:
+You can then use additional `drasi` commands to query the existence and status of the Continuous Query resource. For example, to see a list of the active Continuous Queries, run the following command:
 
 ```
-kubectl get continuousqueries
+drasi list continuousqueries
 ```
 
 ## Deletion
 To delete an active Continuous Query, run the following command:
 
 ```
-kubectl delete continuousqueries <query-id>
+drasi delete continuousqueries <query-id>
 ```
 
-For example, if the Continuous Query id from the `metadata.name` property of the resource definition is `manager-incident-alert`, you would run,
+For example, if the Continuous Query id from the `name` property of the resource definition is `manager-incident-alert`, you would run,
 
 ```
-kubectl delete continuousqueries manager-incident-alert
+drasi delete continuousqueries manager-incident-alert
 ```
 
 **Note**: Drasi does not currently enforce dependency integrity between Continuous Queries and Reactions. If you delete a Continuous Query that is used by one or more Reactions, they will stop getting query result changes.
@@ -170,10 +169,9 @@ kubectl delete continuousqueries manager-incident-alert
 The Kubernetes resource definition for a Continuous Query has the following basic structure:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: <continuous_query_id>
+name: <continuous_query_id>
 spec:
   mode: <QUERY | filter>
   indexType: <PERSISTED | memory>
@@ -210,16 +208,16 @@ spec:
 ```
 
 In the Continuous Query resource definition:
-- **apiVersion** must be **query.reactive-graph.io/v1**
+- **apiVersion** must be **v1**
 - **kind** must be **ContinuousQuery**
-- **metadata.name** is the **id** of the Continuous Query and must be unique. Is used to manage the Continuous Query through Kubectl and in Reactions to identify the Continuous Queries they should subscribe to..
+- **name** is the **id** of the Continuous Query and must be unique. Is used to identify the Continuous Query through the CLI/API and in Reactions to identify the Continuous Queries they should subscribe to..
 
 The following table provides a summary of the other configuration settings from the **spec** section of the resource definition:
 
 |Name|Description|
 |-|-|
 |mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
-|indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. Using memory-based indexes is good for testing and is also OK for Continuos Queries that do not require significant bootstrapping when they start.|
+|indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. Using memory-based indexes is good for testing and is also OK for Continuous Queries that do not require significant bootstrapping when they start.|
 |sources|Contains two sections: **subscriptions** and **joins**. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Both sections are described in more detail in the [Sources](#sources) section.|
 |params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
 |query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Cypher Queries](#cypher-queries) section.|
@@ -258,10 +256,9 @@ This allows the Continuous Query to be written as a single unified query without
 Here is an example of a Continuous Query from the [Curbside Pickup](/solution-developer/sample-apps/curbside-pickup/) demo app that defines two Sources: **phys-ops** and **retail-ops**:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: ContinuousQuery
-metadata:
-  name: curbside-pickup
+name: curbside-pickup
 spec:
   mode: query
   indexType: persisted
