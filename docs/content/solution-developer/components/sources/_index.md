@@ -21,63 +21,68 @@ Drasi currently provides Sources for the following source systems:
 - [Kubernetes](#kubernetes-source) (experimental)
 
 ## Creation
-Sources are custom Kubernetes resources that you can create and manage using `Kubectl`. 
+Sources can be creates and manages using the `drasi` CLI tool. 
 
 The easiest way to create a Source, and the way you will often create one as part of a broader software solution, is to:
 
 1. Collect credentials and endpoint addresses that provide access to the change log and query API of the source system you want to connect to.
 1. Create a YAML file containing the Source resource definition. This will include the configuration settings that enable the Source to connect to the source system. This file can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run `Kubectl` to apply the Source resource definition to the Kubernetes cluster where your Drasi environment is deployed.
+1. Run `drasi` to apply the Source resource definition to the Kubernetes cluster where your Drasi environment is deployed.
 
 As soon as the Source is created it will start running, monitoring its source system for changes and pushing them to subscribed Continuous Queries.
 
 The Kubernetes resource definition for a Source has the following basic structure:
 
 ```
-apiVersion: query.reactive-graph.io/v1
+apiVersion: v1
 kind: Source
-metadata:
-  name: <id>
+name: <id>
 spec:
-  sourceType: <type>
-  properties: 
-  - name: <property-name>
-    value: <property-value>
-  - ...
+  kind: <type>
+  (source kind specific fields)...
 ```
 The following table describes these configuration settings:
 
 |Name|Description|
 |-|-|
-|apiVersion|Must have the value **query.reactive-graph.io/v1**|
+|apiVersion|Must have the value **v1**|
 |kind|Must have the value **Source**|
-|metadata.name|The **id** of the Source. Must be unique within the scope of the Sources in the Drasi deployment. The  **id** is used to manage the Source through Kubectl and in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.|
-|spec.sourceType|The type of Source to create, which defines the type of database or source system the Source connects to. Must be one of [CosmosGremlin](#azure-cosmos-db-gremlin-api-source), [PostgreSQL](#postgresql-source) or [Kubernetes](#kubernetes-source).|
-|spec.properties|The configuration settings passed to the Source as name-value pairs. Properties differ depending on the Source type (**spec.sourceType**). See the individual Source sections below for the properties required by each Source type.|
+|name|The **id** of the Source. Must be unique within the scope of the Sources in the Drasi deployment. The  **id** is used to identify the Source through the CLI/API and in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.|
+|spec.kind|The type of Source to create, which defines the type of database or source system the Source connects to. Must be one of [CosmosGremlin](#azure-cosmos-db-gremlin-api-source), [PostgreSQL](#postgresql-source) or [Kubernetes](#kubernetes-source).|
+|spec.*|The configuration settings passed to the Source as name-value pairs. Properties differ depending on the Source type (**spec.kind**). See the individual Source sections below for the properties required by each Source type.  Any of these properties can either be specified inline or reference a secret. eg. 
+```yaml
+  kind: PostgreSQL
+  user: my-user
+  password:
+    kind: Secret
+    name: pg-creds
+    key: password
+```
+|
 
 Once configured, to create a Source defined in a file called `source.yaml`, you would run the command:
 
 ```
-kubectl apply -f source.yaml
+drasi apply -f source.yaml
 ```
 
-You can then use the standard `Kubectl` commands to query the existence and status of the Source resource. For example, to see a list of the active Sources, run the following command:
+You can then use the standard `drasi` commands to query the existence and status of the Source resource. For example, to see a list of the active Sources, run the following command:
 
 ```
-kubectl get sources
+drasi list source
 ```
 
 ## Deletion
 To delete an active Source, run the following command:
 
 ```
-kubectl delete source <id>
+drasi delete source <id>
 ```
 
 For example, if the Source ID is `human-resources`, you would run,
 
 ```
-kubectl delete source human-resources
+drasi delete source human-resources
 ```
 
 **Note**: Drasi does not currently enforce dependency integrity between Sources and Continuous Queries. If you delete a Source that is used by one or more Continuous Queries, they will stop getting change events and stop producing results.
@@ -102,18 +107,8 @@ The following is an example of a full resource definition for an Azure Cosmos DB
 
 ```
 apiVersion: v1
-kind: Secret
-metadata:
-  name: creds
-type: Opaque
-stringData:
-  SourceAccountEndpoint: AccountEndpoint=...
-  SourceKey: ...
----
-apiVersion: query.reactive-graph.io/v1
 kind: Source
-metadata:
-  name: retail-ops
+name: retail-ops
 spec:
   sourceType: CosmosGremlin
   properties: 
