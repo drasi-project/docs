@@ -8,6 +8,7 @@ description: >
 ---
 ## Prerequisites
 
+- Drasi CLI
 - A dev environment with [Node.js 18](https://nodejs.org/).
 - [Python 3.8](https://www.python.org/downloads/) or higher.
 - An Azure Subscription with permissions to create resources.
@@ -67,9 +68,6 @@ az deployment group create -f cosmosdb.bicep --resource-group my-resource-group 
 
 The bicep deployment will create a new CosmosDb account with the Gremlin API enabled and a database named `Contoso` with an empty `Facilities` graph.
 
-#### Enable Full Fidelity Change Feed (FFCF) on the Cosmos DB account
-
-The FFCF feature for Cosmos DB needs to be enabled for it to work with Project Drasi. You can submit a request for this through the [private preview enrollment form](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR9ecQmQM5J5LlXYOPoIbyzdUOFVRNUlLUlpRV0dXMjFRNVFXMDNRRjVDNy4u) for your newly created Cosmos DB account.
 
 #### Populate the sample data
 
@@ -109,9 +107,11 @@ python load_graph.py
 
 #### Deploy the sources
 
-From the `apps/building-comfort/devops/reactive-graph` folder, edit the `source-facilities.yaml` file to specify your Cosmos DB instance:
+Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
 
-- `SourceAccountEndpoint` with the primary connection string
+```bash
+kubectl create secret generic comfy-creds --from-literal=accountEndpoint='${PRIMARY CONNECTION STRING}'
+````
 
 You can also look up the `SourceAccountEndpoint` value in the Azure portal or by using the Azure CLI:
 
@@ -119,20 +119,20 @@ You can also look up the `SourceAccountEndpoint` value in the Azure portal or by
 az cosmosdb keys list --name my-drasi-db -g my-resource-group --type connection-strings --query "connectionStrings[?contains(description, 'Primary Gremlin Connection String')].[connectionString]" -o tsv
 ```
 
-Apply the updated yaml file with `kubectl` to your Kubernetes cluster running Drasi:
+From the `apps/building-comfort/devops/reactive-graph` folder, apply the `source-facilities.yaml` file with the drasi CLI to your cluster:
 
 ```bash
-kubectl apply -f source-facilities.yaml
+drasi apply -f source-facilities.yaml
 ```
 
 #### Deploy the queries
 
-From the `apps/building-comfort/devops/reactive-graph` folder, use `kubectl` to deploy the continuous queries:
+From the `apps/building-comfort/devops/reactive-graph` folder, use the drasi CLI to deploy the continuous queries:
 
 ```bash
-kubectl apply -f query-alert.yaml
-kubectl apply -f query-comfort-calc.yaml
-kubectl apply -f query-ui.yaml
+drasi apply -f query-alert.yaml
+drasi apply -f query-comfort-calc.yaml
+drasi apply -f query-ui.yaml
 ```
 
 Breaking down the Continuous Queries specified in each file:
@@ -145,16 +145,20 @@ Breaking down the Continuous Queries specified in each file:
 
 #### Deploy the reactions
 
-From the `apps/building-comfort/devops/reactive-graph` folder, edit the `reaction-gremlin.yaml` file to specify your Gremlin graph in the Cosmos DB instance:
+To deploy the gremlin reaction, we need to create another secret using `kubectl` to specify your Gremlin graph in the Cosmos DB instance:
+
+```bash
+kubectl create secret generic comfy-creds --from-literal=DatabaseHost=${DatabaseHost} --from-literal=DatabasePrimaryKey='${DatabasePrimaryKey}'
+```
 
 - `DatabaseHost` with the host DNS name for the Gremlin endpoint. This is the same as the `cosmosUri` in `config.py` without the `wss://` prefix or the port number.
 - `DatabasePrimaryKey` with the primary key, same as the `cosmosPassword` in `config.py`.
 
-Apply the updated yaml file and the SignalR reaction yaml file with `kubectl` to your Kubernetes cluster running Drasi:
+Apply the `reaction-gremlin.yaml` file and the `reaction-signalr.yaml` file with the drasi CLI to your cluster:
 
 ```bash
-kubectl apply -f reaction-gremlin.yaml
-kubectl apply -f reaction-signalr.yaml
+drasi apply -f reaction-gremlin.yaml
+drasi apply -f reaction-signalr.yaml
 ```
 
 The Gremlin Reaction is used to update the graph in Cosmos DB with the latest comfort level for each room, floor, and building. The SignalR Reaction is used to send the updates of the UI query to the frontend React app.
@@ -162,7 +166,7 @@ The Gremlin Reaction is used to update the graph in Cosmos DB with the latest co
 To connect the React app to the SignalR Reaction, forward the gateway port for the SignalR reaction to a port on your local machine:
 
 ```bash
-kubectl port-forward services/signalr-building-gateway 5001:80 -n default
+kubectl port-forward services/signalr-building-gateway 5001:8080 -n default
 ```
 
 ### 3. Run the demo backend and frontend
@@ -215,6 +219,14 @@ npm start
 
 The front-end should launch at [http://localhost:3000](http://localhost:3000) by default.
 
+**NOTE**: If you are experiencing issues with CORS policy (e.g. clicking a button and not seeing any changes), you can follow this workaround solution:
+
+1. Install Chrome
+2. In a terminal, execute the following line:
+```bash
+open /Applications/Google\ Chrome.app --args --user-data-dir="/var/tmp/chrome-dev-disabled-security" --disable-web-security --disable-site-isolation-trials
+```
+3. Navigate to `localhost:3000`
 #### Using the frontend app
 
 ![Building Comfort UI](building-comfort-ui.png)

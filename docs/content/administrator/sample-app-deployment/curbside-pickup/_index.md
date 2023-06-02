@@ -11,6 +11,7 @@ description: >
 - [NodeJs](https://nodejs.org/)
 - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools)
 - Azure Account
+- Drasi CLI
 - Kubectl
 - An instance of Reactive Graph, deployed to the Kubernetes cluster that your kubectl context points to
 - The source repo cloned to a folder on your local machine
@@ -47,10 +48,6 @@ az deployment group create -f database.bicep --resource-group my-resource-group 
 
 This will create a new CosmosDb account with the Gremlin API and a database named `Contoso` with 2 empty graphs, named `PhysicalOperations` and `RetailOperations`.
 
-### Request FFCF feature
-
-The FFCF feature is required to be enabled on your CosmosDb account.  Currently, this needs to be manually requested by [filling out this form](https://forms.office.com/pages/responsepage.aspx?id=v4j5cvGGr0GRqy180BHbR9ecQmQM5J5LlXYOPoIbyzdUOFVRNUlLUlpRV0dXMjFRNVFXMDNRRjVDNy4u)
-
 ### Add the Pickup zone data
 
 Login to the Azure portal and navigate to the Data explorer blade of your CosmosDb account.
@@ -68,36 +65,58 @@ g.addV('Zone').property('name','Parking Lot').property('type','Parking Lot')
 ```
 
 ## Deploy the sources
-
-From the `/apps/curbside-pickup/devops` folder, edit the `phys-ops-source.yaml` and `retail-ops-source.yaml` files to include the keys/connections strings of your CosmosDb account. You need to update the value of `SourceAccountEndpoint` with the  `PRIMARY CONNECTION STRING` from the `Keys` blade in the Azure Portal.
-
-Use kubectl to deploy the 2 sources
+Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
 
 ```bash
-kubectl apply -f phys-ops-source.yaml
-kubectl apply -f retail-ops-source.yaml
+kubectl create secret generic phys-ops-creds --from-literal=accountEndpoint='${PRIMARY CONNECTION STRING}'
+kubectl create secret generic retail-ops-creds --from-literal=accountEndpoint='${PRIMARY CONNECTION STRING}'
 ```
 
+Navigate to the `/apps/curbside-pickup/devops` folder, and from there, you can deploy the two sources using the Drasi CLI:
+
+```bash
+drasi apply -f phys-ops-source.yaml
+drasi apply -f retail-ops-source.yaml
+```
+
+To verify that both sources are deployed successfully, run `drasi list source`. The expected output should be as follows:
+
+```
+      ID     | AVAILABLE  
+-------------+------------
+  phys-ops   | true       
+  retail-ops | true  
+```
 ## Deploy the queries
 
-From the `/apps/curbside-pickup/devops` folder, use kubectl to deploy the continuous queries
+From the `/apps/curbside-pickup/devops` folder, use the drasi CLI to deploy the continuous queries
 
 ```bash
-kubectl apply -f queries-with-gremlin.yaml
+drasi apply -f queries-with-gremlin.yaml
 ```
 
+Similarly, run `drasi list query` to verify the status of the continuous queries. The expected output should be as follows:
+```
+           ID            | ERRORMESSAGE |              HOSTNAME               | STATUS  | CONTAINER  
+--------------------------+--------------+-------------------------------------+---------+------------
+  vehicles-in-parking-lot |              | default-query-host-...-... | RUNNING | default    
+  vehicles-in-queue       |              | default-query-host-...-... | RUNNING | default    
+  orders-prep             |              | default-query-host-...-... | RUNNING | default    
+  orders-ready            |              | default-query-host-...-... | RUNNING | default    
+  orders-matched-vehicle  |              | default-query-host-...-... | RUNNING | default
+```
 ## Deploy the reaction
 
-From the `/apps/curbside-pickup/devops` folder, use kubectl to deploy the SignalR reaction
+From the `/apps/curbside-pickup/devops` folder, use the drasi CLI to deploy the SignalR reaction
 
 ```bash
-kubectl apply -f signalr-reaction.yaml
+drasi apply -f signalr-reaction.yaml
 ```
 
-Create a port forward for the SignalR reaction to a port on your local machine.
+Create a port forward for the SignalR reaction to a port on your local machine. Currently we have to use `kubectl` to achieve this.
 
 ```bash
-kubectl port-forward services/signalr1-gateway 5001:80 -n default
+kubectl port-forward services/signalr1-reaction-gateway 5001:8080 -n default
 ```
 
 ## Configure and start the App backend
