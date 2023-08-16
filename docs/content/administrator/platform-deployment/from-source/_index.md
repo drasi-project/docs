@@ -107,3 +107,27 @@ Run the following command, this will install Drasi in local mode, which means it
 ```bash
 drasi init --local
 ```
+
+## Testing the Deployment
+To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.
+
+
+Execute the following command:
+```bash
+bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh)
+```
+
+This shell script accomplishes the following tasks:
+- Sets up a PostgreSQL database in your Kubernetes cluster
+- Adds the following entries to your database
+| id |  name  | category |
+|----|--------|----------|
+|  1 | Item 1 | A        |
+|  2 | Item 2 | B        |
+|  3 | Item 3 | A        |
+
+- Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
+- Verifies the initial bootstrap
+- Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
+- Verifies the new entries got propagated from the source to the reaction
+- Cleans-up by deleting all of the components
