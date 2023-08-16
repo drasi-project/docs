@@ -16,7 +16,7 @@ description: >
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
 - A Kubernetes cluster (with Dapr installed). Common options include:
   - Cloud:
-    - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/)
+    - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli)
   - Local (for dev/test):
     - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
     - [Minikube](https://minikube.sigs.k8s.io/docs/)
