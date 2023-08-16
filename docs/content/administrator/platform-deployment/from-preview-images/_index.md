@@ -12,7 +12,6 @@ description: >
 - You need to be member of the **Project Drasi Preview Users** security group. Contact [Allen Jones (alljones)](mailto:alljones@microsoft.com) to request access.
 - On the computer where you will run the install process:
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
-  - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/) if Dapr is not yet installed on your cluster.
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
 - A Kubernetes cluster (with Dapr installed). Common options include:
   - Cloud:
@@ -30,15 +29,6 @@ az login
 az account set --subscription <your subscription id>
 az aks get-credentials --resource-group <your resource group> --name <your cluster name>
 ```
-
-### Installing Dapr
-
-If Dapr in not already installed in your Kubernetes cluster, you can use the Dapr CLI to install it.  It is recommended to enable the injector watchdog as follows: 
-
-```bash
-dapr init -k --set dapr_operator.watchInterval=10s --wait
-```
-
 
 ## Installing Drasi
 
@@ -59,6 +49,8 @@ Run the following command:
 ```bash
 drasi init --version preview.1
 ```
+
+Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
 ## Testing the Deployment
 To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.

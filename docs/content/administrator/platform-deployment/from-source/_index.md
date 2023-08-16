@@ -13,7 +13,6 @@ description: >
   - A copy of the [source code repo](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents)
   - A terminal environment that supports Bash
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
-  - [Dapr CLI](https://docs.dapr.io/getting-started/install-dapr-cli/)
   - [helm](https://helm.sh/docs/intro/install/)
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
 - A Kubernetes cluster. Common options include:
@@ -76,14 +75,6 @@ Make sure the current `kubectl` context is set to the Kubernetes cluster where y
 kubectl config use-context <your cluster name>
 ```
 
-### Install Dapr
-
-If Dapr in not already installed in your Kubernetes cluster, you can use the Dapr CLI to install it.  It is recommended to enable the injector watchdog as follows: 
-
-```bash
-dapr init -k --set dapr_operator.watchInterval=10s --wait
-```
-
 ### Build Drasi Component Images
 
 To build the docker images of all the Drasi services, from the `/devops/build` folder, execute the following:
@@ -107,6 +98,8 @@ Run the following command, this will install Drasi in local mode, which means it
 ```bash
 drasi init --local
 ```
+
+Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
 ## Testing the Deployment
 To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.
