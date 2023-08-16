@@ -13,7 +13,7 @@ description: >
 - On the computer where you will run the install process:
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.
-- A Kubernetes cluster (with Dapr installed). Common options include:
+- A Kubernetes cluster. Common options include:
   - Cloud:
     - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli)
   - Local (for dev/test):

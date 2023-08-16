@@ -37,7 +37,6 @@ The process to deploy Drasi from source code requires you perform the following 
 
 1. Get the Source Code
 1. Set Kubectl Context
-1. Install Dapr
 1. Build Drasi Component Images
 1. Install Drasi in local mode
 
