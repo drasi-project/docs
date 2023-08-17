@@ -32,7 +32,7 @@ az aks get-credentials --resource-group <your resource group> --name <your clust
 
 ## Installing Drasi
 
-Download the CLI for your platform, and optionally add it to your system path
+Download the CLI for your platform, and add it to your system path
 
 - [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
 - [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-amd64/drasi)

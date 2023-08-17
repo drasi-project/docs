@@ -86,7 +86,7 @@ To build the docker images of all the Drasi services, from the `/devops/build` f
 
 ### Install Drasi in local mode
 
-Download the CLI for your platform, and optionally add it to your system path
+Download the CLI for your platform, and add it to your system path
 
 - [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
 - [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-amd64/drasi)
