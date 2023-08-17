@@ -115,8 +115,8 @@ Now, launch pgAdmin4 and follow the following steps to connect to the Postgres d
 
 3. Navigate to the General tab:
    - Name: Give your server a name, such as "Local PostgreSQL."
-   - Host name/address: Enter 127.0.0.1.
-   - Port: Enter 5002.
+   - Host name/address: Enter `127.0.0.1`.
+   - Port: Enter `5002`.
 
 4. Navigate to the Connection Tab:
    - Username: Enter `test`
