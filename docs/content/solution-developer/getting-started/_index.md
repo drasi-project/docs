@@ -59,7 +59,7 @@ To complete the tutorial, you will need:
 - Access to a Drasi environment. If you don't have access to a Drasi environment, see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator) for instructions. If you want a quick and easy deployment just for the tutorial, deploy from [Preview Images](/administrator/platform-deployment/from-preview-images/) to a local [Kind](https://kind.sigs.k8s.io/) cluster.
 - A PostgreSQL database to use as a source of change:
   - Version 10 or greater.
-  - Configured to support `LOGICAL` replication. See the notes on [configuring PostgreSQL replication](/reference/postgresql-replication) for assistance.
+  - Configured to support `LOGICAL` replication. See the notes on [Setup PostgreSQL for Drasi Development](/reference/setup-postgres) for assistance.
   - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
 - A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
