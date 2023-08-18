@@ -1,15 +1,15 @@
 ---
 type: "docs"
-title: "Setup PostgreSQL for Drasi Development"
-linkTitle: "Setup PostgreSQL for Drasi Development"
+title: "Using PostgreSQL"
+linkTitle: "Using PostgreSQL"
 weight: 50
 description: >
-    Configuring Replication on PostgreSQL
+    Setup and Configure PostgreSQL for Drasi Solution Development
 ---
 
-For PostgreSQL to generate the change feed that Drasi needs, you must configure a PostgreSQL database for replication. The following sections describe how to do this for PostgreSQL in a number of hosting environments.
+This page describes how to setup and configure a PostgreSQL database to use in the development and testing of Drasi solutions.
 
-## Deploying PostgreSQL in your cluster
+## Deploying PostgreSQL in a Kubernetes Cluster
 
 ### Prerequisites
 
@@ -17,11 +17,10 @@ For PostgreSQL to generate the change feed that Drasi needs, you must configure 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [pgAdmin 4](https://www.pgadmin.org/download/)
 
-
 ### Setting up PostgreSQL deployment
-To set up a PostgreSQL database in your Kubernetes cluster, you can use the following command. Copy and paste it into your terminal:
-```bash
-echo '
+To set up a PostgreSQL database in your Kubernetes cluster suitable for Drasi test/dev, create a file named `drasi-postgres.yaml` containing the following Kubernetes resource definition.
+
+```
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -37,8 +36,8 @@ data:
     ALTER TABLE "Item" ADD CONSTRAINT pk_item
       PRIMARY KEY ("ItemId");
 
-    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (1, '\''Foo'\'', '\''1'\'');
-    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (2, '\''Foo'\'', '\''1'\'');
+    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (1, 'Foo', '1');
+    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (2, 'Foo', '1');
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -94,31 +93,38 @@ spec:
    - port: 5432
   selector:
    app: postgres
-' | kubectl apply -f -
 
 ```
 
 The YAML content specifies the creation of a ConfigMap with database schema and data, along with a Deployment for the PostgreSQL instance and a Service for communication.
 
+Then run the following command.
+
+```bash
+kubectl apply -f drasi-postgres.yaml
+```
+
+
+
 ### Connecting to the PostgreSQL database
-To establish a local connection to the PostgreSQL database, execute the following command in your terminal:
+To manage the PostgreSQL database using pgAdmin, you need to expose a port that pgAdmin can access. To expose port 5002, execute the following command in your terminal:
+
 ```bash
 kubectl port-forward svc/postgres 5002:5432
 ```
-This command allows you to access the PostgreSQL service locally on port 5002.
 
-Now, launch pgAdmin4 and follow the following steps to connect to the Postgres database:
+Now, launch pgAdmin and follow the following steps to connect to the Postgres database:
 
-1. In the pgAdmin 4 interface, locate the "Servers" section on the left-hand side.
+1. In the pgAdmin interface, locate the "Servers" section on the left-hand side.
 
-2. Right-click on the "Servers" node and select "Create" > "Server..."
+2. Right-click on the "Servers" node and select "Register" > "Server..."
 
 3. Navigate to the General tab:
-   - Name: Give your server a name, such as "Local PostgreSQL."
-   - Host name/address: Enter `127.0.0.1`.
-   - Port: Enter `5002`.
+   - Name: Give your server a name, such as "Drasi PostgreSQL"
 
 4. Navigate to the Connection Tab:
+   - Host name/address: Enter `127.0.0.1`
+   - Port: Enter `5002`
    - Username: Enter `test`
    - Password: Enter `test`
 
@@ -128,7 +134,7 @@ Now, launch pgAdmin4 and follow the following steps to connect to the Postgres d
 
 You should now be connected to your locally deployed PostgreSQL server.
 
-## Azure Database for PostgreSQL
+## Azure Database for PostgreSQL (out of date)
 If you are using **Azure Database for PostgreSQL**, you can configure the replication to `LOGICAL` from the Azure portal on the **Replication** page, or you can use the CLI as follows:
 
 ```azurecli

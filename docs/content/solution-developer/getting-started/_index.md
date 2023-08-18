@@ -56,10 +56,10 @@ When complete, the Hello World solution will have the component architecture sho
 
 ### Prerequisites
 To complete the tutorial, you will need:
-- Access to a Drasi environment. If you don't have access to a Drasi environment, see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator) for instructions. If you want a quick and easy deployment just for the tutorial, deploy from [Preview Images](/administrator/platform-deployment/from-preview-images/) to a local [Kind](https://kind.sigs.k8s.io/) cluster.
-- A PostgreSQL database to use as a source of change:
+- Access to a Drasi environment. If you don't have access to a Drasi environment and you want a quick and easy deployment just for the tutorial, create a local [Kind](/reference/using-kind/) cluster and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). For other options see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator).
+- A PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
   - Version 10 or greater.
-  - Configured to support `LOGICAL` replication. See the notes on [Setup PostgreSQL for Drasi Development](/reference/setup-postgres) for assistance.
+  - Configured to support `LOGICAL` replication.
   - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
 - A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
@@ -109,9 +109,9 @@ You must replace the values described in this table with values for your Postgre
 
 |Value|Description|
 |-|-|
-|\<db-host-name>|The DNS host name of the PostgreSQL server.|
-|\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.|
-|\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.  Note: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|\<db-host-name>|The DNS host name of the PostgreSQL server.<br />This will be '**postgres**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
+|\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
+|\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
 
 Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
 
@@ -212,7 +212,7 @@ In order to access the Web UI of the Debug Reaction from a local machine, we mus
 kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n default
 ```
 
-Now open your browser and navigate to **http://localhost:8080**, where you will see the Debug Reaction UI shown here:
+Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
