@@ -101,6 +101,7 @@ spec:
 |Name|Description|
 |-|-|
 |connectionString|The Redis connection string, eg. redis://rg-redis:6379|
+|cacheSize (optional)| Use an in-memory LRU cache|
 
 
 ### RocksDb storage options
