@@ -46,7 +46,7 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: test-db
+  POSTGRES_DB: hello-world
   POSTGRES_USER: test
   POSTGRES_PASSWORD: test
 ---
