@@ -4,23 +4,14 @@ title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 10
 description: >
-    Building Solutions with Drasi
+    Drasi Quickstart Tutorial
 ---
 
-To develop solutions that use Drasi, you will need a Drasi deployment for dev/test. The [Deploying Drasi](/administrator/platform-deployment) section of the [Administration Guides](/administrator) describe how to deploy Drasi, providing a number of options for both local and cloud deployments. 
+This section will get you up and running with Drasi in 10 minutes by following a simple step-by-step tutorial to build the *Hello World* of Drasi solutions. 
 
-To use Drasi as part of a solution you must do the following three things:
+After completing this tutorial, you will have a simple end-to-end Drasi-based solution running, and a Drasi environment suitable for further exploration as a dev/test environment. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
 
-1. Define [Sources](/solution-developer/components/sources) for each of the source databases or systems from which you want to detect and react to change.
-1. Define [Continuous Queries](/solution-developer/components/continuous-queries) for each of the queries you want to run across those sources.
-1. Define [Reactions](/solution-developer/components/reactions) to handle the output from each of your Continuous Queries and integrate the results into your broader solution.
-
-The links above take you to sections that provide in-depth discussion of each of the three main Drasi components and how to configure them. But if this is your first exposure to Drasi, the [Tutorial](#tutorial) section below is the best place to start; it provides step-by-step instruction for getting a simple end-to-end Drasi-based solution running. 
-
-## Tutorial: Hello World
-The following is a step-by-step tutorial that will walk you through the creation of a simple Drasi-based solution, basically the *Hello World* of Drasi solutions. 
-
-### Solution Overview
+## Hello World Solution Overview
 In this solution, the source of data (and change) will be a `Message` table on a PostgreSQL database that contains three fields:
 
 |Field Name|Type|Allow Nulls|Description|
@@ -54,7 +45,7 @@ When complete, the Hello World solution will have the component architecture sho
 
 {{< figure src="hello-world-solution.png" alt="Hello World Solution" width="70%" >}}
 
-### Prerequisites
+## Prerequisites
 To complete the tutorial, you will need:
 - Access to a Drasi environment. If you don't have access to a Drasi environment and you want a quick and easy deployment just for the tutorial, create a local [Kind](/reference/using-kind/) cluster and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). For other options see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator).
 - A PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
@@ -63,9 +54,9 @@ To complete the tutorial, you will need:
   - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
 - A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
-### Step 1 - PostgreSQL Source
+## Step 1 - PostgreSQL Source
 
-#### Create Database and Table
+### Create Database and Table
 On your PostgreSQL server, create a new database named `hello-world`.
 
 Then, create a table named `Message` and add some initial data using the following SQL script:
@@ -86,7 +77,7 @@ INSERT INTO public."Message" VALUES (3, 'Antoninus', 'I am Spartacus');
 INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ```
 
-#### Create a PostgreSQL Source
+### Create a PostgreSQL Source
 To define your PostgreSQL Source, create a file named `hello-world-source.yaml` containing the following Kubernetes resource definition. 
 
 ```
@@ -121,7 +112,7 @@ drasi apply -f hello-world-source.yaml
 
 Your PostgreSQL Source is now created and ready to use.
 
-### Step 2 - Continuous Queries
+## Step 2 - Continuous Queries
 To define the two Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
 
 ```
@@ -170,7 +161,7 @@ Use `drasi` to deploy the Continuous Queries with the following command:
 drasi apply -f hello-world-queries.yaml
 ```
 
-### Step 3 - Debug Reaction
+## Step 3 - Debug Reaction
 In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
 To define your Debug Reaction, create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
@@ -205,7 +196,7 @@ drasi apply -f hello-world-reaction.yaml
 
 The Hello World Drasi solution is now fully deployed.
 
-### Test the Solution
+## Test the Solution
 In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
 
 ```
@@ -258,7 +249,7 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
-### Reflection
+## Reflection
 In completing the tutorial, using no custom code and a minimal amount of configuration information, you were able to write queries that automatically detect changes in a database and dynamically distribute a custom representation of those changes to downstream consumers for further processing or integration into a broader solution. Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what you are trying to achieve.
 
 Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement unique solutions for each type of source you wanted to support. 

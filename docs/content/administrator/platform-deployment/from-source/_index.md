@@ -110,16 +110,16 @@ bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.
 ```
 
 This shell script accomplishes the following tasks:
-- Sets up a PostgreSQL database in your Kubernetes cluster
-- Adds the following entries to your database
+1. Sets up a PostgreSQL database in your Kubernetes cluster
+1. Adds the following entries to your database
 | id |  name  | category |
 |----|--------|----------|
 |  1 | Item 1 | A        |
 |  2 | Item 2 | B        |
 |  3 | Item 3 | A        |
 
-- Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
-- Verifies the initial bootstrap
-- Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
-- Verifies the new entries got propagated from the source to the reaction
-- Cleans-up by deleting all of the components
+1. Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
+1. Verifies the initial bootstrap
+1. Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
+1. Verifies the new entries got propagated from the source to the reaction
+1. Cleans-up by deleting all of the components

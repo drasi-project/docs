@@ -4,17 +4,17 @@ title: "Project Drasi"
 linkTitle: "Home"
 weight: 1
 description: >
-    Mission: Make it easier to detect and react to change in dynamic systems
+    Mission: Make it easy and efficient to detect and react to changes in databases
 ---
 
 ## Getting Started
 - If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) sections below.
 
-- If you are a **developer** who wants to **use** Drasi to add Continuous Queries to a solution you are creating, go to the [Solution Developer Guides](/solution-developer).
+- If you are a **developer** who needs to **detect** changes to the data in a database so that the application or solution you are creating can **react** as those changes occur, go to the [Solution Developer Guides](/solution-developer). To get started using Drasi quickly, there is a tutorial in the [Getting Started](/solution-developer/getting-started) section that can have you up and running with Drasi in 10 minutes.
 
 - If you are a **developer** who wants to **contribute** to Drasi or **create custom Reactions** for Drasi, go to the [Platform Developer Guides](/platform-developer).
 
-- If you want to **deploy** or **manage** a Drasi environment, go to the [Administrator Guides](/administrator)
+- If you need to **deploy** or **manage** a Drasi environment, go to the [Administrator Guides](/administrator)
 
 - If you are interested in **discussing** Drasi, having a **demonstration** of Drasi's capabilities, or getting access to a live demo environment so you can **explore** solutions built using Drasi, contact [Allen Jones (alljones)](mailto:alljones@microsoft.com).
 
