@@ -102,7 +102,9 @@ You must replace the values described in this table with values for your Postgre
 |-|-|
 |\<db-host-name>|The DNS host name of the PostgreSQL server.<br />This will be '**postgres**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
 |\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
-|\<password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|\<db-password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+
+**Note:** If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. 
 
 Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
 
