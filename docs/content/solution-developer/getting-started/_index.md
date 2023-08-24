@@ -163,6 +163,20 @@ Use `drasi` to deploy the Continuous Queries with the following command:
 drasi apply -f hello-world-queries.yaml
 ```
 
+To verify the status of the Continuous Queries, execute the following command: 
+
+```
+drasi list query
+```
+
+Expected output:
+```
+         ID        | STATUS  | CONTAINER | ERRORMESSAGE |              HOSTNAME                
+-------------------+---------+-----------+--------------+--------------------------------------
+  hello-world-from | Running | default   |              | default-query-host-xxx-xxx
+  message-count    | Running | default   |              | default-query-host-xxx-xxx
+```
+
 ## Step 3 - Debug Reaction
 In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
