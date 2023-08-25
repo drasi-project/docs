@@ -86,11 +86,27 @@ To build the docker images of all the Drasi services, from the `/devops/build` f
 
 ### Install Drasi in local mode
 
-Download the CLI for your platform, and add it to your system path
-
+Download the CLI for your platform
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="MacOS" lang="Bash" >}}
+curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+{{< /tab >}}
+{{< tab header="Linux" lang="Bash" >}}
+curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+{{< /tab >}}
+{{< tab header="Windows Powershell" lang="Bash" >}}
+iwr -useb "https://drasi.blob.core.windows.net/installs/install.ps1" | iex
+# You may need to refresh your $PATH environment variable:
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","User")
+{{< /tab >}}
+{{% tab header="Binaries" text=true %}}
+Download the CLI for your platform, and add it to your system path:
 - [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
-- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-amd64/drasi)
-- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-amd64/drasi.exe)
+- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-x64/drasi)
+- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe)
+- [Linux x64](https://drasi.blob.core.windows.net/installs/linux-x64/drasi)
+{{% /tab %}}
+{{< /tabpane >}}
 
 Run the following command, this will install Drasi in local mode, which means it won't try pull images from a container registry but rather use your local image cache, this is ideal for dev workflows:
 

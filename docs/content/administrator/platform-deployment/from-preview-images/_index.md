@@ -31,12 +31,28 @@ az aks get-credentials --resource-group <your resource group> --name <your clust
 ```
 
 ## Installing Drasi
-
-Download the CLI for your platform, and add it to your system path
-
+Download the CLI for your platform
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="MacOS" lang="Bash" >}}
+curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+{{< /tab >}}
+{{< tab header="Linux" lang="Bash" >}}
+curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+{{< /tab >}}
+{{< tab header="Windows Powershell" lang="Bash" >}}
+iwr -useb "https://drasi.blob.core.windows.net/installs/install.ps1" | iex
+# You may need to refresh your $PATH environment variable:
+$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","User")
+{{< /tab >}}
+{{% tab header="Binaries" text=true %}}
+Download the CLI for your platform, and add it to your system path:
 - [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
-- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-amd64/drasi)
-- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-amd64/drasi.exe)
+- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-x64/drasi)
+- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe)
+- [Linux x64](https://drasi.blob.core.windows.net/installs/linux-x64/drasi)
+{{% /tab %}}
+{{< /tabpane >}}
+
 
 Make sure the current `kubectl` context is set to the Kubernetes cluster where you want to install Drasi:
 
@@ -44,11 +60,20 @@ Make sure the current `kubectl` context is set to the Kubernetes cluster where y
 kubectl config use-context <your cluster name>
 ```
 
-Run the following command:
 
-```bash
+For deploying Drasi within your Kubernetes cluster, execute the following command based on your cluster configuration:
+
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="AKS Cluster" lang="Bash" >}}
 drasi init --version preview.1
-```
+{{< /tab >}}
+{{< tab header="Kind (x64 arch)" lang="Bash" >}}
+drasi init --version preview.1
+{{< /tab >}}
+{{< tab header="Kind (arm64 arch)" lang="Bash" >}}
+drasi init --version preview_arm
+{{< /tab >}}
+{{< /tabpane >}}
 
 Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
