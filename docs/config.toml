@@ -11,10 +11,16 @@ copyright = "Copyright © 2023, Microsoft; all rights reserved."
 languageCode = "en"
 DefaultContentLanguage = "en"
 
+[params]
+  prism_syntax_highlighting = true
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.highlight]
+    style = 'monokailight'
+
       
 # Top Nav Bar
 [[menu.main]]

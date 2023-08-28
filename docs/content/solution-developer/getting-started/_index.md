@@ -61,7 +61,7 @@ On your PostgreSQL server, create a new database named `hello-world`.
 
 Then, create a table named `Message` and add some initial data using the following SQL script:
 
-```
+```sql
 CREATE TABLE "Message" (
     "MessageId" integer NOT NULL,
     "From" character varying(50) NOT NULL,
@@ -80,7 +80,7 @@ INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ### Create a PostgreSQL Source
 To define your PostgreSQL Source, create a file named `hello-world-source.yaml` containing the following Kubernetes resource definition. 
 
-```
+```yaml
 apiVersion: v1
 kind: Source
 name: hello-world
@@ -108,7 +108,7 @@ You must replace the values described in this table with values for your Postgre
 
 Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
 
-```
+```bash
 drasi apply -f hello-world-source.yaml
 ```
 
@@ -117,7 +117,7 @@ Your PostgreSQL Source is now created and ready to use.
 ## Step 2 - Continuous Queries
 To define the two Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
 
-```
+```yaml
 apiVersion: v1
 kind: ContinuousQuery
 name: hello-world-from
@@ -159,7 +159,7 @@ You don't need to change anything in this file, but this table describes the mos
 
 Use `drasi` to deploy the Continuous Queries with the following command:
 
-```
+```bash
 drasi apply -f hello-world-queries.yaml
 ```
 
@@ -182,7 +182,7 @@ In order to view the results of the Continuous Queries you will deploy an instan
 
 To define your Debug Reaction, create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
 
-```
+```yaml
 apiVersion: v1
 kind: Reaction
 name: hello-world-debug
@@ -206,7 +206,7 @@ You don't need to change anything in this file, but this table describes the mos
 
 Use `drasi` to deploy the Debug Reaction with the following command:
 
-```
+```bash
 drasi apply -f hello-world-reaction.yaml
 ```
 
@@ -229,7 +229,7 @@ On the left hand side is a menu listing the two Continuous Queries created earli
 
 If you add another Message to the table using the following SQL insert statement:
 
-```
+```sql
 INSERT INTO public."Message" VALUES (5, 'Allen', 'Hello World');
 ```
 
@@ -243,7 +243,7 @@ In the list of Continuous Queries select the `message-count` entry and the right
 
 If you add another Message to the table using the following SQL insert statement:
 
-```
+```sql
 INSERT INTO public."Message" VALUES (6, 'Allen', 'I am Spartacus');
 ```
 
@@ -253,7 +253,7 @@ You will see the "I am Spartacus" Frequency increase dynamically to 3:
 
 Finally, if you delete both "Hello World" messages using the following SQL statement:
 
-```
+```sql
 DELETE FROM public."Message" WHERE "Message" = 'Hello World';
 ```
 

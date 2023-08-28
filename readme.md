@@ -4,7 +4,7 @@ The documentation website, located in the ```docs/docs``` folder is created with
 ## Requirements
 
 1. Install [Hugo](https://gohugo.io/)
-1. Run ```git submodule update --init --recursive``` to pull Docsy code that is configured as a submodule.
+1. Run ```git submodule update --init --recursive --remote``` to pull Docsy code that is configured as a submodule.
 1. In the ```docs/docs/themes/docsy``` folder, run the command ```npm i```
 
 ## Running Locally
