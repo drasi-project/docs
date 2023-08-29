@@ -18,9 +18,14 @@ This page describes how to setup and configure a PostgreSQL database to use in t
 - [pgAdmin 4](https://www.pgadmin.org/download/)
 
 ### Setting up PostgreSQL deployment
-To set up a PostgreSQL database in your Kubernetes cluster suitable for Drasi test/dev, create a file named `drasi-postgres.yaml` containing the following Kubernetes resource definition.
+To set up a PostgreSQL database in your Kubernetes cluster suitable for Drasi test/dev, you can either execute the following command
 
+```bash
+kubectl apply -f https://drasi.blob.core.windows.net/installs/drasi-postgres.yaml
 ```
+
+or create a file named `drasi-postgres.yaml` containing the following Kubernetes resource definition:
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

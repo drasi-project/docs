@@ -57,7 +57,7 @@ To complete the tutorial, you will need:
 ## Step 1 - PostgreSQL Source
 
 ### Create Database and Table
-On your PostgreSQL server, create a new database named `hello-world`.
+On your PostgreSQL server, select the `hello-world` database. 
 
 Then, create a table named `Message` and add some initial data using the following SQL script:
 
@@ -78,7 +78,7 @@ INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ```
 
 ### Create a PostgreSQL Source
-To define your PostgreSQL Source, create a file named `hello-world-source.yaml` containing the following Kubernetes resource definition. 
+The following yaml file contains the necessary Kubernetes resource definitions for the Continuous Queries.
 
 ```yaml
 apiVersion: v1
@@ -95,16 +95,20 @@ spec:
   tables:
     - public.Message
 ```
+if you deployed your PostgreSQL database in your cluster by following the instructions in [Using PostgreSQL](/reference/setup-postgres), use `drasi` to create the Source with the following command:
 
-You must replace the values described in this table with values for your PostgreSQL database:
+```bash
+drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml
+```
+
+Otherwise, create a file named `drasi-postgres.yaml` and configure the values based on the following information:
 
 |Value|Description|
 |-|-|
 |\<db-host-name>|The DNS host name of the PostgreSQL server.<br />This will be '**postgres**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
 |\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
 |\<db-password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
-
-**Note:** If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. 
+|ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
 
 Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
 
@@ -115,7 +119,7 @@ drasi apply -f hello-world-source.yaml
 Your PostgreSQL Source is now created and ready to use.
 
 ## Step 2 - Continuous Queries
-To define the two Continuous Queries, create a file named `hello-world-queries.yaml` containing the following Kubernetes resource definitions.
+The following yaml file contains the necessary Kubernetes resource definitions for the Continuous Queries.
 
 ```yaml
 apiVersion: v1
@@ -160,12 +164,12 @@ You don't need to change anything in this file, but this table describes the mos
 Use `drasi` to deploy the Continuous Queries with the following command:
 
 ```bash
-drasi apply -f hello-world-queries.yaml
+drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-queries.yaml
 ```
 
 To verify the status of the Continuous Queries, execute the following command: 
 
-```
+```bash
 drasi list query
 ```
 
@@ -180,7 +184,7 @@ Expected output:
 ## Step 3 - Debug Reaction
 In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
-To define your Debug Reaction, create a file named `hello-world-reaction.yaml` containing the following Kubernetes resource definition.
+The following yaml file contains the necessary Kubernetes resource definitions for the Debug Reaction.
 
 ```yaml
 apiVersion: v1
@@ -207,7 +211,7 @@ You don't need to change anything in this file, but this table describes the mos
 Use `drasi` to deploy the Debug Reaction with the following command:
 
 ```bash
-drasi apply -f hello-world-reaction.yaml
+drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-reaction.yaml
 ```
 
 The Hello World Drasi solution is now fully deployed.
@@ -215,7 +219,7 @@ The Hello World Drasi solution is now fully deployed.
 ## Test the Solution
 In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
 
-```
+```bash
 kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n default
 ```
 
