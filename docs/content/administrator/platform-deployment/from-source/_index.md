@@ -78,11 +78,18 @@ kubectl config use-context <your cluster name>
 
 To build the docker images of all the Drasi services, from the `/devops/build` folder, execute the following:
 
-```bash
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="MacOS" lang="Bash" >}}
 ./local-build-images.sh
-```
+{{< /tab >}}
+{{< tab header="Windows Powershell" lang="Bash" >}}
+./local-build-images.bat
+{{< /tab >}}
+{{< /tabpane >}}
 
-> Note:  If you are running a local cluster with `Kind`, you also need to run `load-images-to-kind.sh` to load the built images into your Kind cluster.
+
+
+> Note:  If you are running a local cluster with `Kind`, you also need to run `load-images-to-kind.sh` (`load-images-to-kind.bat` if you are running on Windows) to load the built images into your Kind cluster.
 
 ### Install Drasi in local mode
 
@@ -121,9 +128,14 @@ To test that Drasi has been correctly deployed to your Kubernetes cluster, you c
 
 
 Execute the following command:
-```bash
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="MacOS" lang="Bash" >}}
 bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh)
-```
+{{< /tab >}}
+{{< tab header="Windows Powershell" lang="Bash" >}}
+iwr -useb "https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.ps1" | iex
+{{< /tab >}}
+{{< /tabpane >}}
 
 This shell script accomplishes the following tasks:
 1. Sets up a PostgreSQL database in your Kubernetes cluster

@@ -82,13 +82,18 @@ To test that Drasi has been correctly deployed to your Kubernetes cluster, you c
 
 
 Execute the following command:
-```bash
+{{< tabpane langEqualsHeader=true >}}
+{{< tab header="MacOS" lang="Bash" >}}
 bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh)
-```
+{{< /tab >}}
+{{< tab header="Windows Powershell" lang="Bash" >}}
+iwr -useb "https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.ps1" | iex
+{{< /tab >}}
+{{< /tabpane >}}
 
 This shell script accomplishes the following tasks:
 1. Sets up a PostgreSQL database in your Kubernetes cluster
-1. Adds the following entries to your database
+2. Adds the following entries to your database
 | id |  name  | category |
 |----|--------|----------|
 |  1 | Item 1 | A        |
@@ -96,7 +101,7 @@ This shell script accomplishes the following tasks:
 |  3 | Item 3 | A        |
 
 1. Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
-1. Verifies the initial bootstrap
-1. Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
-1. Verifies the new entries got propagated from the source to the reaction
-1. Cleans-up by deleting all of the components
+2. Verifies the initial bootstrap
+3. Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
+4. Verifies the new entries got propagated from the source to the reaction
+5. Cleans-up by deleting all of the components
