@@ -125,7 +125,10 @@ Dapr should be automatically installed to your cluster. You can verify this by r
 
 ## Testing the Deployment
 To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.
-
+### Prerequisites
+- [Helm](https://helm.sh/docs/intro/install/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
+- Drasi CLI
 
 Execute the following command:
 {{< tabpane langEqualsHeader=true >}}
