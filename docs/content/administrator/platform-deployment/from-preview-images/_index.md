@@ -30,7 +30,7 @@ az account set --subscription <your subscription id>
 az aks get-credentials --resource-group <your resource group> --name <your cluster name>
 ```
 
-**If you are using Linux a WSL distro**, you can install k3s which is very light weight and has zero dependencies.
+**If you are using Linux or a WSL distro**, you can install k3s which is very light weight and has zero dependencies.
 ```bash
 curl -sfL https://get.k3s.io | sh -
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
