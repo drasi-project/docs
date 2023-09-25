@@ -20,7 +20,7 @@ description: >
     - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
     - [Minikube](https://minikube.sigs.k8s.io/docs/)
     - [Kind](https://kind.sigs.k8s.io/)
-    - An x64/amd64 machine.  The preview images are built for amd64 and are known to have issues running under QEMU on an arm64 host.
+    - [k3s](https://k3s.io/) (If you have a linux machine or WSL instance on Windows)
 
 **If you are deploying to an AKS cluster**, you can use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:
 
@@ -28,6 +28,13 @@ description: >
 az login
 az account set --subscription <your subscription id>
 az aks get-credentials --resource-group <your resource group> --name <your cluster name>
+```
+
+**If you are using Linux a WSL distro**, you can install k3s which is very light weight and has zero dependencies.
+```bash
+curl -sfL https://get.k3s.io | sh -
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+sudo chown $(whoami) /etc/rancher/k3s/k3s.yaml
 ```
 
 ## Installing Drasi
