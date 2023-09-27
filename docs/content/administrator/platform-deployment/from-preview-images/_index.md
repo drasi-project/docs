@@ -71,7 +71,7 @@ drasi init --version preview.1
 drasi init --version preview.1
 {{< /tab >}}
 {{< tab header="Kind (arm64 arch)" lang="Bash" >}}
-drasi init --version preview_arm
+drasi init --version preview.arm.1
 {{< /tab >}}
 {{< /tabpane >}}
 
