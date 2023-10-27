@@ -16,12 +16,14 @@ This page describes how to setup and configure a PostgreSQL database to use in t
 - A Kubernetes cluster.
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [pgAdmin 4](https://www.pgadmin.org/download/)
+- 
+**NOTE:** This tutorial assumes that you have installed Drasi to the `drasi-system` namespace. If you installed Drasi different namespace, please replace all occurences of `-n drasi-system` in the command with `-n <your-namespace>`.
 
 ### Setting up PostgreSQL deployment
 To set up a PostgreSQL database in your Kubernetes cluster suitable for Drasi test/dev, you can either execute the following command
 
 ```bash
-kubectl apply -f https://drasi.blob.core.windows.net/installs/drasi-postgres.yaml
+kubectl apply -f https://drasi.blob.core.windows.net/installs/drasi-postgres.yaml -n drasi-system
 ```
 
 or create a file named `drasi-postgres.yaml` containing the following Kubernetes resource definition:
@@ -115,7 +117,7 @@ kubectl apply -f drasi-postgres.yaml
 To manage the PostgreSQL database using pgAdmin, you need to expose a port that pgAdmin can access. To expose port 5002, execute the following command in your terminal:
 
 ```bash
-kubectl port-forward svc/postgres 5002:5432
+kubectl port-forward svc/postgres 5002:5432 -n drasi-system
 ```
 
 Now, launch pgAdmin and follow the following steps to connect to the Postgres database:

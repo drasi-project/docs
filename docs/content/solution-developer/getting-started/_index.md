@@ -54,6 +54,7 @@ To complete the tutorial, you will need:
   - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
 - A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
+
 ## Step 1 - PostgreSQL Source
 
 ### Create Database and Table
@@ -217,10 +218,12 @@ drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-r
 The Hello World Drasi solution is now fully deployed.
 
 ## Test the Solution
+**NOTE:** This tutorial assumes that you have installed Drasi to the `drasi-system` namespace. If you installed Drasi different namespace, please replace all occurences of `-n drasi-system` in the command with `-n <your-namespace>`.
+
 In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
 
 ```bash
-kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n default
+kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
 ```
 
 Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
