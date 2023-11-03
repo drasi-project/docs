@@ -50,7 +50,7 @@ The format of the content of the options field is completely up to the developer
 
 ## Receiving Changes
 
-When the projection of a continuous query is changed, a message will be published to a [Dapr topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#subscribe-to-topics). The pubsub name will be available on the `PUBSUB` environment variable (default is `rg-pubsub`). The topic name will be `<queryId>-results`, so for each queryId you discover in `/etc/queries`, you should subscribe to that Dapr topic.
+When the projection of a continuous query is changed, a message will be published to a [Dapr topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#subscribe-to-topics). The pubsub name will be available on the `PUBSUB` environment variable. The topic name will be `<queryId>-results`, so for each queryId you discover in `/etc/queries`, you should subscribe to that Dapr topic.
 
 A skeleton implementation in Javascript would look something like this
 
@@ -68,7 +68,7 @@ let queryIds = readdirSync(configDir);
     if (!queryId || queryId.startsWith("."))
       continue;
 
-    await daprServer.pubsub.subscribe(pubsubName, queryId + "-results", (events) => {
+    await daprServer.pubsub.subscribe(pubsubName, queryId + "-results", (changes) => {
         //implement code that reacts to changes here
     });
 }
@@ -78,76 +78,88 @@ await daprServer.start();
 
 ## Message Format
 
-The format of the incoming messages is a Json array, with each item itself containing an array for `addedResults`, `deletedResults` and `updatedResults`.
+There are two classes of events that can be read on this stream.  Inspect the `kind` field to determine which one it is.
+
+### Control signals
+
+If the `kind` field is `control`, then this event is a control signal and not a data change.
+
+Inspect the `controlSignal` field to determine the type:
+
+- bootstrapStarted
+- bootstrapCompleted
+- running
+- stopped
+- deleted
+
+### Data changes
+
+If the `kind` field is `change`, then this event is a data change.
+
+The format of the of each item itself contains an array for `addedResults`, `deletedResults` and `updatedResults`.
 
 The basic structure looks like this
 
-```json
-[
-    {
-        "addedResults": [],
-        "deletedResults": [],
-        "updatedResults": [],
-        "metadata": {}
-    }
-]
+```js
+{
+    "kind": "change",
+    "queryId": "",
+    "addedResults": [],
+    "deletedResults": [],
+    "updatedResults": [],
+    "metadata": {}
+}
 ```
 
 An example of a row being added to the continuous query projection would look like this
 
-```json {hl_lines=["3-8"]}
-[
-    {
-        "addedResults": [
-            {
-                "Id": 1,
-                "Name": "Foo"
-            }
-        ],
-        "deletedResults": [],
-        "updatedResults": []
-    }
-]
+```json {hl_lines=["2-7"]}
+{
+    "addedResults": [
+        {
+            "Id": 1,
+            "Name": "Foo"
+        }
+    ],
+    "deletedResults": [],
+    "updatedResults": []
+}
 ```
 
 An example that row being updated would look like this
 
-```json {hl_lines=["5-16"]}
-[
-    {
-        "addedResults": [],
-        "deletedResults": [],
-        "updatedResults": [
-            {
-                "before": {
-                    "Id": 1,
-                    "Name": "Foo"
-                },
-                "after": {
-                    "Id": 1,
-                    "Name": "Bar"
-                }
+```json {hl_lines=["4-15"]}
+{
+    "addedResults": [],
+    "deletedResults": [],
+    "updatedResults": [
+        {
+            "before": {
+                "Id": 1,
+                "Name": "Foo"
+            },
+            "after": {
+                "Id": 1,
+                "Name": "Bar"
             }
-        ]
-    }
-]
+        }
+    ]
+}
 ```
 
 An example that row being deleted would look like this
 
-```json {hl_lines=["4-9"]}
-[
-    {
-        "addedResults": [],
-        "deletedResults": [
-            {
-                "Id": 1,
-                "Name": "Bar"
-            }
-        ],
-        "updatedResults": []
-    }
-]
+```json {hl_lines=["3-8"]}
+{
+    "addedResults": [],
+    "deletedResults": [
+        {
+            "Id": 1,
+            "Name": "Bar"
+        }
+    ],
+    "updatedResults": []
+}
 ```
 
 ## Global Configuration
