@@ -70,8 +70,8 @@ Use "drasi [command] --help" for more information about a command.
       - `drasi list continuousquery`
       - `drasi list query`
 - ### Namespace
-    - This command has one subcommand: `set`. It is used to set the current namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that drasi has been installed.
-    - e.g. `drasi namespace set default`
+    - This command has one subcommand: `set`. It is used to set the current Drasi namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that Drasi has been installed.
+    - e.g. `drasi namespace set demo` will set the current Drasi namespace to `demo`.
 
 - ### Wait
     - The `wait` is used when you want to wait for a resource to be ready. The command can accept either a combination of the resource type and name intended for deletion, or it can process a directory containing a YAML file.
