@@ -31,7 +31,9 @@ Use "drasi [command] --help" for more information about a command.
 - ### Apply
     - The `apply` command is used to create or update resources from provided manifests. Currently, a `-f` flag is required, and the command takes in a directory of a YAML file.
     - When executed successfully, it will output `Apply operation successful`. Otherwise, it will return the status code of the operation.
-    - e.g. `drasi apply -f resources/source.yaml`
+      - e.g. `drasi apply -f resources/source.yaml`
+    - You can also specify the namespace that you want the component to be applied in using the `-n` or `--namespace` flag:
+      - e.g. `drasi apply -f resources/source.yaml -n demo`
 
 - ### Delete
     - The `delete` command is used to delete a specific resource. The command can accept either a combination of the resource type and name intended for deletion, or it can process a directory containing a YAML file.
@@ -39,10 +41,14 @@ Use "drasi [command] --help" for more information about a command.
     - e.g. 
       - `drasi delete reaction debug-reaction`
       - `drasi delete -f resources/source.yaml`
+    - You can also specify the namespace using the `-n` or `--namespace` flag:
+      - e.g. `drasi delete -f resources/source.yaml -n demo`
 
 - ### Describe
     - The `describe` command is used to retrieve the spec and status of a resource. The command accept a combination of the resource type and name.
-    - e.g. `drasi describe source test-source`
+      - e.g. `drasi describe source test-source`
+    - You can use describe on a resource that is deployed in a different namespace using the `-n` or `--namespace` flag:
+      - e.g. `drasi describe source test-source -n demo`
 
 - ### Init
     - The `init` command is used to install Drasi to a kubernetes cluster. By default, Drasi components will be installed to the `drasi-system` namespace and this could be overridden.
@@ -69,9 +75,15 @@ Use "drasi [command] --help" for more information about a command.
       - `drasi list source`
       - `drasi list continuousquery`
       - `drasi list query`
+    - You can list the resources that are deployed in a different namespace using the `-n` or `--namespace` flag:
+      - e.g. `drasi list source -n demo`
+
 - ### Namespace
     - This command has one subcommand: `set`. It is used to set the current Drasi namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that Drasi has been installed.
-    - e.g. `drasi namespace set demo` will set the current Drasi namespace to `demo`.
+    - Additionally, you can also specify the namespace using the `-n` or `--namespace` flags. If both an argument and a flag value are provided, the value from the namespace flag will have a higher precedence.
+      - e.g. 
+        - `drasi namespace set demo` will set the current Drasi namespace to `demo`. 
+        - `drasi namespace set ns1 -n ns2` will set the current Drasi namespace to `ns2`.
 
 - ### Wait
     - The `wait` is used when you want to wait for a resource to be ready. The command can accept either a combination of the resource type and name intended for deletion, or it can process a directory containing a YAML file.
