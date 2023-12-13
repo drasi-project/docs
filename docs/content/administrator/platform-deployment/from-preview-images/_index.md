@@ -70,17 +70,9 @@ kubectl config use-context <your cluster name>
 
 For deploying Drasi within your Kubernetes cluster, execute the following command based on your cluster configuration:
 
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="AKS Cluster" lang="Bash" >}}
+```bash
 drasi init --version preview.1
-{{< /tab >}}
-{{< tab header="Kind (x64 arch)" lang="Bash" >}}
-drasi init --version preview.1
-{{< /tab >}}
-{{< tab header="Kind (arm64 arch)" lang="Bash" >}}
-drasi init --version preview.arm.1
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
