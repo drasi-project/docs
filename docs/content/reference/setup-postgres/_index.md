@@ -34,17 +34,19 @@ metadata:
   name: test-data-init
 data:
   init.sql: >
-    CREATE TABLE "Item" (
-        "ItemId" integer NOT NULL,
-        "Name" character varying(100) NOT NULL,
-        "Category" character varying(10) NOT NULL
+    CREATE TABLE "Message" (
+        "MessageId" integer NOT NULL,
+        "From" character varying(50) NOT NULL,
+        "Message" character varying(200) NOT NULL
     );
 
-    ALTER TABLE "Item" ADD CONSTRAINT pk_item
-      PRIMARY KEY ("ItemId");
+    ALTER TABLE "Message" ADD CONSTRAINT pk_message
+      PRIMARY KEY ("MessageId");
 
-    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (1, 'Foo', '1');
-    INSERT INTO "Item" ("ItemId", "Name", "Category") VALUES (2, 'Foo', '1');
+    INSERT INTO public."Message" VALUES (1, 'Buzz Lightyear', 'To infinity and beyond!');
+    INSERT INTO public."Message" VALUES (2, 'Brian Kernighan', 'Hello World');
+    INSERT INTO public."Message" VALUES (3, 'Antoninus', 'I am Spartacus');
+    INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -108,7 +110,7 @@ The YAML content specifies the creation of a ConfigMap with database schema and 
 Then run the following command.
 
 ```bash
-kubectl apply -f drasi-postgres.yaml
+kubectl apply -f drasi-postgres.yaml -n drasi-system
 ```
 
 
@@ -117,7 +119,7 @@ kubectl apply -f drasi-postgres.yaml
 To manage the PostgreSQL database using pgAdmin, you need to expose a port that pgAdmin can access. To expose port 5002, execute the following command in your terminal:
 
 ```bash
-kubectl port-forward svc/postgres 5002:5432 -n drasi-system
+kubectl port-forward svc/postgres 5432:5432 -n drasi-system
 ```
 
 Now, launch pgAdmin and follow the following steps to connect to the Postgres database:
@@ -131,7 +133,7 @@ Now, launch pgAdmin and follow the following steps to connect to the Postgres da
 
 4. Navigate to the Connection Tab:
    - Host name/address: Enter `127.0.0.1`
-   - Port: Enter `5002`
+   - Port: Enter `5432`
    - Username: Enter `test`
    - Password: Enter `test`
 
