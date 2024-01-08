@@ -13,6 +13,14 @@ DefaultContentLanguage = "en"
 
 [params]
   prism_syntax_highlighting = true
+  [params.prism]
+    languages = [
+      "markup",
+      "css",
+      "clike",
+      "javascript",
+      "json"
+    ]
 
 [markup]
   [markup.goldmark]
