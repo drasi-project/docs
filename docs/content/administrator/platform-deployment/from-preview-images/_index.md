@@ -91,7 +91,7 @@ Execute the following command (if you deployed Drasi to a namespace other than t
 bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh drasi-system)
 {{< /tab >}}
 {{< tab header="Windows Powershell" lang="Bash" >}}
-iwr -useb "https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.ps1" | iex -args "drasi-system"
+Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://drasi.blob.core.windows.net/smoke-tests/cleanup-smoke-test.ps1')))) -ArgumentList 'drasi-system'
 {{< /tab >}}
 {{< /tabpane >}}
 
