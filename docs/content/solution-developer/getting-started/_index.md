@@ -46,13 +46,19 @@ When complete, the Hello World solution will have the component architecture sho
 {{< figure src="hello-world-solution.png" alt="Hello World Solution" width="70%" >}}
 
 ## Prerequisites
-To complete the tutorial, you will need:
-- Access to a Drasi environment. If you don't have access to a Drasi environment and you want a quick and easy deployment just for the tutorial, create a local [Kind](/reference/using-kind/) cluster and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). For other options see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator).
-- A PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
-  - Version 10 or greater.
-  - Configured to support `LOGICAL` replication.
-  - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
-- A tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
+To complete the tutorial, you can either use a VS Code Dev Container to quickly setup the environment, or prepare the environment and resources on your own:
+
+- VS Code Dev Container:
+   - Follow the instructions for setting up the [Dev Container](/reference/dev-container)
+
+- Manual approach:
+   - Access to a Drasi environment. If you don't have access to a Drasi environment and you want a quick and easy deployment just for the tutorial, create a local [Kind](/reference/using-kind/) cluster and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). For other options see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator).
+   - A PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
+     - Version 10 or greater.
+     - Configured to support `LOGICAL` replication.
+     - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+
+Regardless of the approach, you would also need a tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
 
 
 ## Step 1 - PostgreSQL Source
