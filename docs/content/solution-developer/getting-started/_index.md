@@ -123,6 +123,18 @@ Once the values are updated and the `hello-world-source.yaml` saved, use `drasi`
 drasi apply -f hello-world-source.yaml
 ```
 
+It may take a minute or two for the source to startup and become available. You can use the `drasi list` command to inspect the status of all deployed sources:
+
+```bash
+drasi list source
+```
+
+If your source is not yet available, use the `drasi wait` command to wait for it to become available:
+
+```bash
+drasi wait source hello-world -t 120
+```
+
 Your PostgreSQL Source is now created and ready to use.
 
 ## Step 2 - Continuous Queries
