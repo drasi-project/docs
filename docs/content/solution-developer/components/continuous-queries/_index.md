@@ -21,7 +21,7 @@ When you execute an **instantaneous query**, you are running the query against t
 
 {{< figure src="/continuous-query.png" alt="Continuous Query" width="60%" >}}
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
+Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/solution-developer/query-language). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
 - express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
 - create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
@@ -225,27 +225,7 @@ The following table provides a summary of the other configuration settings from 
 |sources|Contains two sections: **subscriptions** and **joins**. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Both sections are described in more detail in the [Sources](#sources) section.|
 |params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
 |view|(Optional). Defines the behaviour of the results view.  **enabled** controls if the results of the query are cached in the results view. **retentionPolicy** determines how long the results will be stored for.  **latest** (default) only holds the most recent version, **all** holds all previous versions and allows querying at a time point in the past, **expire** holds the non current results for a limited time.|
-|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Cypher Queries](#cypher-queries) section.|
-
-### Cypher Queries 
-Continuous Queries are written using the Cypher Graph Query Language. If you are new to Cypher, here are some useful references:
-- [Getting Started](https://neo4j.com/developer/cypher/)
-- [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
-- [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
-
-Continuous Queries currently support the following subset of the Cypher Graph Query Language:
-- MATCH, WHERE, and RETURN clauses
-  - Property and Label patterns on MATCH clause elements
-  - Aliases on RETURN values
-  - Only fixed length MATCH paths with non-anonymous nodes and relations
-- Mathematical operators: +, -, *, /
-- Comparison operators: =, !=, >, >=, <, <=, IS NULL, IS NOT NULL
-- Arithmetic functions: floor, ceil, round, abs 
-- Logic operators : AND, OR, NOT
-- List operators: IN
-- Scalar functions: elementId
-- Aggregating functions: count, sum, avg, min, max (only in **RETURN** clauses)
-- CASE expression
+|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Continuous Query Syntax](/solution-developer/query-language).|
 
 ### Sources
 

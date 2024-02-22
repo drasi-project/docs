@@ -19,9 +19,10 @@ description: >
   - Cloud:
     - [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/azure/aks/)
   - Local (for dev/test):
-    - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
-    - [Minikube](https://minikube.sigs.k8s.io/docs/)
     - [Kind](https://kind.sigs.k8s.io/)
+    - [Minikube](https://minikube.sigs.k8s.io/docs/)
+    - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with [Kubernetes enabled](https://docs.docker.com/desktop/kubernetes/)
+
 
 **If you are deploying to an AKS cluster**, you can use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:
 
