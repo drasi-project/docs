@@ -39,17 +39,15 @@ sudo chown $(whoami) /etc/rancher/k3s/k3s.yaml
 
 ## Installing Drasi
 Download the CLI for your platform
-{{< tabpane langEqualsHeader=true >}}
+{{< tabpane >}}
 {{< tab header="MacOS" lang="Bash" >}}
 curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
 {{< /tab >}}
 {{< tab header="Linux" lang="Bash" >}}
 curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows Powershell" lang="Bash" >}}
-iwr -useb "https://drasi.blob.core.windows.net/installs/install.ps1" | iex
-# You may need to refresh your $PATH environment variable:
-$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","User")
+{{% tab header="Windows" text=true %}}
+Please download the CLI through this [link]("https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe") and then add it to your system path.
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
 Download the CLI for your platform, and add it to your system path:
@@ -76,36 +74,5 @@ drasi init --version preview.1
 
 Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
-## Testing the Deployment
-To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.
-### Prerequisites
-- [Helm](https://helm.sh/docs/intro/install/)
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
-- Drasi CLI
-
-
-
-Execute the following command (if you deployed Drasi to a namespace other than the default value of `drasi-system`, replace `drasi-system` in the following commands with the name of your namespace):
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="MacOS" lang="Bash" >}}
-bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh drasi-system)
-{{< /tab >}}
-{{< tab header="Windows Powershell" lang="Bash" >}}
-Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://drasi.blob.core.windows.net/smoke-tests/cleanup-smoke-test.ps1')))) -ArgumentList 'drasi-system'
-{{< /tab >}}
-{{< /tabpane >}}
-
-This shell script accomplishes the following tasks:
-1. Sets up a PostgreSQL database in your Kubernetes cluster
-2. Adds the following entries to your database
-| id |  name  | category |
-|----|--------|----------|
-|  1 | Item 1 | A        |
-|  2 | Item 2 | B        |
-|  3 | Item 3 | A        |
-
-1. Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
-2. Verifies the initial bootstrap
-3. Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
-4. Verifies the new entries got propagated from the source to the reaction
-5. Cleans-up by deleting all of the components
+## Optional: Testing the Deployment
+To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick [smoke test](/reference/smoke-test) workload.
