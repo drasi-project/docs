@@ -16,11 +16,11 @@ description: >
 
 Execute the following command (if you deployed Drasi to a namespace other than the default value of `drasi-system`, replace `drasi-system` in the following commands with the name of your namespace):
 {{< tabpane langEqualsHeader=true >}}
-{{< tab header="MacOS" lang="Bash" >}}
+{{< tab header="MacOS/VS Code Dev Container" lang="Bash" >}}
 bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh drasi-system)
 {{< /tab >}}
 {{< tab header="Windows Powershell" lang="Bash" >}}
-Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://drasi.blob.core.windows.net/smoke-tests/cleanup-smoke-test.ps1')))) -ArgumentList 'drasi-system'
+Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.ps1')))) -ArgumentList 'drasi-system'
 {{< /tab >}}
 {{< /tabpane >}}
 
