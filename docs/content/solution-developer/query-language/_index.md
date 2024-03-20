@@ -281,3 +281,38 @@ More formally:
 | expression_true_time + duration > change_time AND expression == TRUE | n/a | drasi.awaiting |
 | expression_true_time + duration > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 
+## Drasi STATISTICAL Functions
+
+### drasi.linearGradient()
+The `drasi.linearGradient` function is an aggregating function that fits a straight line to a set of X and Y coordinates, and returns the slope of that line.  As values are added, removed or updated, the line will be adjusted to reflect the relationship between the X and Y values.  The slope of the line can be used to predict a value for Y given a known value of X, by multiplying the slope by the X value.
+
+#### Synax
+```cypher
+drasi.linearGradient(x, y)
+```
+
+#### Arguments
+The `drasi.linearGradient` function accepts two arguments:
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| x | expression | An expression that returns the X value (independent variable) |
+| y | expression | An expression that returns the Y value (dependent variable) |
+
+#### Returns
+The slope or gradient of the line that best fits the current data set. This can be used to predict the value of Y for a given value of X by multiplying it by the known X value.
+
+#### Example
+
+The following example will return the gradient of each line, given the known points associated with that line.
+
+```cypher
+MATCH
+  (l:Line)-[:HAS]->(p:Point)
+RETURN
+  l.id as LineId,
+  drasi.linearGradient(p.x, p.y) as Gradient
+```
+
+
+
