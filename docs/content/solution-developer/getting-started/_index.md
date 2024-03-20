@@ -1,26 +1,30 @@
 ---
 type: "docs"
-title: "Getting Started"
-linkTitle: "Getting Started"
+title: "Quickstart Tutorial"
+linkTitle: "Quickstart Tutorial"
 weight: 10
 description: >
-    Drasi Quickstart Tutorial
+    Get started building Drasi-based solutions quickly
 ---
 
-This section will get you up and running with Drasi in 10 minutes by following a simple step-by-step tutorial to build the *Hello World* of Drasi solutions. 
+This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 
-After completing this tutorial, you will have a simple end-to-end Drasi-based solution running, and a Drasi environment suitable for further exploration as a dev/test environment. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
+After completing this tutorial, you will have a simple end-to-end Drasi-based solution running, and a Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
 
-## Hello World Solution Overview
-In this solution, the source of data (and change) will be a `Message` table on a PostgreSQL database that contains three fields:
+## Solution Overview
+In this sample Drasi solution, the source of data (and change) will be a `Message` table in a PostgreSQL database, which holds the content of messages sent by people. The `Message` table contains these three fields:
 
-|Field Name|Type|Allow Nulls|Description|
-|-|-|-|-|
-|MessageId|integer|No|A unique id for each message.|
-|From|character varying(50)|No|The name of who the message is from.|
-|Message|character varying(200)|No|The text of the message.|
+|Field Name|Type|Description|
+|-|-|-|
+|MessageId|integer|A unique id for each message.|
+|From|character varying(50)|The name of who the message is from.|
+|Message|character varying(200)|The text of the message.|
 
-We will start with the `Message` table containing the following messages:
+You will create two Continuous Queries that observe the `Message` table to answer the following questions in real-time:
+1. Which people have sent the message "Hello World"? This demonstrates how to write a basic Continuous Query.
+1. How many times has each unique message been sent? This demonstrates how to use aggregations in Continuous Queries.
+
+Initially, the `Message` table will contain the following messages:
 
 |MessageId|From|Message|
 |-|-|-|
@@ -29,44 +33,83 @@ We will start with the `Message` table containing the following messages:
 |3|Antoninus|I am Spartacus|
 |4|David|I am Spartacus|
 
-Two Continuous Queries will use the `Message` table as a source of change:
-1. The first will identify whenever the message "Hello World" is present in the Message table and report who it is from.
-1. The second will calculate frequency of each unique message in the Message table and output results as the frequencies change.
+During the tutorial, you will add and remove messages and immediately observe the effect of those changes on your Continuous Query results using the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction subscribes to a set of Continuous Queries and provides a dynamic view of each query's result set in a Web browser. It is common to use the Debug Reaction to test your Continuous Queries prior to setting up your actual Reactions.
 
-For simplicity, the solution will use the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction) to  represent a downstream consumer of the Continuous Query results. The Debug Reaction provides a Solution Developer with an easy way to view the results of the Continuous Queries in a Web browser.
-
-After describing the prerequisites that must be in place to complete the tutorial, the sections below guide you through the three simple steps common to creating any Drasi-based solution:
-
-1. **Create Sources**. In this case a PostgreSQL Source to provide access to changes in the `Message` table.
-1. **Create Continuous Queries**. In this case there will be two Continuous Queries both using the PostgreSQL Source as their source of change.
-1. **Create Reactions**. In this case the Debug Reaction will handle the output of both Continuous Queries.
-
+## Solution Architecture
 When complete, the Hello World solution will have the component architecture shown in this diagram:
 
 {{< figure src="hello-world-solution.png" alt="Hello World Solution" width="70%" >}}
 
-## Prerequisites
-To complete the tutorial, you can either use a VS Code Dev Container to quickly setup the environment, or prepare the environment and resources on your own:
+Although an intentionally simple example, the Hello World solution contains all the components of any Drasi-based solution, including:
+- Drasi **Sources** that provide access to external data sources
+- **Continuous Queries** that observe Sources and detect change
+- **Reactions** that take action on the Continuous Query result set changes
 
-- VS Code Dev Container:
-   - Follow the instructions for setting up the [Dev Container](/reference/dev-container)
+To complete the tutorial, you will be guided through the following steps:
+1. Deploy Drasi
+1. Create the PostgreSQL Sources
+1. Create the Continuous Queries
+1. Create the Debug Reactions
+1. Test the Solution
 
-- Manual approach:
-   - Access to a Drasi environment. If you don't have access to a Drasi environment and you want a quick and easy deployment just for the tutorial, create a local [Kind](/reference/using-kind/) cluster and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). For other options see the [Deploying Drasi](/administrator/platform-deployment/) section in the [Administrator Guides](/administrator).
-   - A PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
-     - Version 10 or greater.
-     - Configured to support `LOGICAL` replication.
-     - A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+## Step 1 - Deploy Drasi
+To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get  one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
 
-Regardless of the approach, you would also need a tool such as [pgAdmin](https://www.pgadmin.org/) with which you can run SQL commands against your PostgreSQL server to create tables and add/update/delete data.
+To use the Drasi Dev Container, you will need:
+- [Visual Studio Code](https://code.visualstudio.com/)
+- A [git CLI ](https://cli.github.com/)
 
+To download the Dev Container files:
+1. Open a terminal window
+1. Create and/or change to a folder where you want to put the Dev Container files
+1. Execute the following commands:
 
-## Step 1 - PostgreSQL Source
+```bash
+mkdir drasi-dev-container
+cd drasi-dev-container
+git init
+git remote add -f origin https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
+git sparse-checkout init
+git sparse-checkout set "tutorial/getting-started/" # Specifies the folder
+git pull origin preview
+```
+
+Then open the `drasi-dev-container` in VS Code using the following commands:
+
+```bash
+cd tutorial/getting-started
+code .
+```
+
+Once you are in VS Code, run the Dev Container as follows:
+1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
+1. Type "dev containers:"
+1. Select "Dev Containers: Rebuild and Reopen in Container"
+
+Once the Dev Container environment is ready, execute the following command in the VS Code terminal to deploy Drasi:
+
+```bash
+drasi init --version preview.1
+```
+
+You will also need a way to run commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
+- [pgAdmin](https://www.pgadmin.org/) if you want a GUI
+- [psql](https://www.postgresql.org/docs/current/app-psql.html) if you want a CLI
+
+#### Alternatives to the Drasi Dev Container
+If you cannot or do not want to use a Dev Container, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
+
+In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
+- Version 10 or greater.
+- Configured to support `LOGICAL` replication.
+- A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+
+## Step 2 - Create the PostgreSQL Source
 
 ### Create Database and Table
-On your PostgreSQL server, select the `hello-world` database. 
+On your PostgreSQL server, create a `hello-world` database. 
 
-Then, create a table named `Message` and add some initial data using the following SQL script:
+Then, in the `hello-world` database create a table named `Message` and add some initial data using the following SQL script:
 
 ```sql
 CREATE TABLE "Message" (
@@ -84,8 +127,8 @@ INSERT INTO public."Message" VALUES (3, 'Antoninus', 'I am Spartacus');
 INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
 ```
 
-### Create a PostgreSQL Source
-The following yaml file contains the necessary Kubernetes resource definitions for the Continuous Queries.
+### Create a Source for PostgreSQL
+The following YAML contains the minimal settings to create a Source that connects to your PostgreSQL database.
 
 ```yaml
 apiVersion: v1
@@ -102,13 +145,16 @@ spec:
   tables:
     - public.Message
 ```
-if you deployed your PostgreSQL database in your cluster by following the instructions in [Using PostgreSQL](/reference/setup-postgres), use `drasi` to create the Source with the following command:
+
+The configuration settings in angled brackets `<...>` are values you need to provide based on the configuration of your PostgreSQL database. 
+
+If you are using the Dev Container, it contains a fully specified Source file named `/tutorial/getting-started/resources/hello-world-source.yaml`. Run the `drasi` CLI to create the Source using the following command:
 
 ```bash
-drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml
+drasi apply -f ./resources/hello-world-source.yaml
 ```
 
-Otherwise, create a file named `drasi-postgres.yaml` and configure the values based on the following information:
+Otherwise, create a file named `hello-world-source.yaml` and configure the missing values based on the following information:
 
 |Value|Description|
 |-|-|
@@ -123,22 +169,18 @@ Once the values are updated and the `hello-world-source.yaml` saved, use `drasi`
 drasi apply -f hello-world-source.yaml
 ```
 
-It may take a minute or two for the source to startup and become available. You can use the `drasi list` command to inspect the status of all deployed sources:
+It may take a minute or two for the new Source to startup and become available. You can run the `drasi list source` command to inspect the status of all deployed sources.
 
-```bash
-drasi list source
-```
-
-If your source is not yet available, use the `drasi wait` command to wait for it to become available:
+If your Source is not yet available, use the `drasi wait` command to wait for it to become available:
 
 ```bash
 drasi wait source hello-world -t 120
 ```
 
-Your PostgreSQL Source is now created and ready to use.
+Your Drasi Source for PostgreSQL is now created and ready to use.
 
-## Step 2 - Continuous Queries
-The following yaml file contains the necessary Kubernetes resource definitions for the Continuous Queries.
+## Step 3 - Create the Continuous Queries
+The following YAML contains the settings required to create the Continuous Queries you need.
 
 ```yaml
 apiVersion: v1
@@ -172,18 +214,31 @@ spec:
       count(m.Message) AS Frequency
 ```
 
-You don't need to change anything in this file, but this table describes the most important configuration settings in this resource definition:
+Notice that the YAML describes two Continuous Queries. You can define any number of resources in a single YAML file as long as they are of the same type and you separate each definition with a line containing `---`.
+
+In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a Message field containing the value "Hello World". For records that match that pattern, it includes their **MessageId** and **From** fields in the result.
+
+In the second Continuous Query named `message-count`, the Cypher Query is aggregating the count of the number of times each message has been sent. For each message, the query result will contain the message and the frequency.
+
+You don't need to change this YAML, but this table describes the most important configuration settings in these Continuous Query definitions. 
+
 |Property|Description|
 |-|-|
-|kind|Specifies that the resource is a **Continuous Queries**|
+|kind|Specifies that the resource is a **Continuous Query**|
 |name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
-|spec.source.subscriptions.id| Identifies the Source the Continuous Query will subscribe to as a source of change data. In this instance, these refer to the PostgreSQL Source created in the previous step.|
-|spec.query|Contains the Cypher Query that defines both which changes the Continuous Query is detecting and the output it should generate.|
+|spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, these refer to the PostgreSQL Source created in the previous step.|
+|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the schema of its result set.|
 
-Use `drasi` to deploy the Continuous Queries with the following command:
+If you are using the Dev Container, run the `drasi` CLI to create the Continuous Queries using the following command:
 
 ```bash
-drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-queries.yaml
+drasi apply -f ./resources/hello-world-queries.yaml
+```
+
+Otherwise, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` command:
+
+```bash
+drasi apply -f hello-world-queries.yaml
 ```
 
 To verify the status of the Continuous Queries, execute the following command: 
@@ -192,7 +247,7 @@ To verify the status of the Continuous Queries, execute the following command:
 drasi list query
 ```
 
-Expected output:
+You should expect to see the following output:
 ```
          ID        | STATUS  | CONTAINER | ERRORMESSAGE |              HOSTNAME                
 -------------------+---------+-----------+--------------+--------------------------------------
@@ -200,10 +255,10 @@ Expected output:
   message-count    | Running | default   |              | default-query-host-xxx-xxx
 ```
 
-## Step 3 - Debug Reaction
-In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
+## Step 4 - Create the Debug Reaction
+In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
-The following yaml file contains the necessary Kubernetes resource definitions for the Debug Reaction.
+The following YAML file contains the settings necessary to create a Debug Reaction.
 
 ```yaml
 apiVersion: v1
@@ -218,27 +273,38 @@ spec:
     gateway: 8080  
 ```
 
-You don't need to change anything in this file, but this table describes the most important configuration settings in this resource definition:
+You don't need to change this YAML, but this table describes the most important configuration settings in this resource definition:
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
 |name|Provides the **id** of the Reaction.|
-|spec.image|Identifies the container image to use for the Reaction.|
-|spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
+|spec.image|Identifies the type of Reaction.|
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
+|spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 
-Use `drasi` to deploy the Debug Reaction with the following command:
+
+If you are using the Dev Container, run the `drasi` CLI to create the Debug Reaction using the following command:
 
 ```bash
-drasi apply -f https://drasi.blob.core.windows.net/getting-started/hello-world-reaction.yaml
+drasi apply -f ./resources/hello-world-reaction.yaml
 ```
 
-The Hello World Drasi solution is now fully deployed.
+Otherwise, create a file named `hello-world-reaction.yaml` from the content above and run the `drasi` command:
 
-## Test the Solution
-**NOTE:** This tutorial assumes that you have installed Drasi to the `drasi-system` namespace. If you installed Drasi different namespace, please replace all occurences of `-n drasi-system` in the command with `-n <your-namespace>`.
+```bash
+drasi apply -f hello-world-reaction.yaml
+```
 
-In order to access the Web UI of the Debug Reaction from a local machine, we must forward the container port to a local one using the following command:
+To verify the status of the Reaction, execute the following command: 
+
+```bash
+drasi list reaction
+```
+
+Once the Reaction is working, the Drasi Hello World solution is fully deployed and ready to test.
+
+## Step 5 - Test the Solution
+In order to access the Web UI of the Debug Reaction from a local machine, you must forward the container port to a local one using the following command:
 
 ```bash
 kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
@@ -248,7 +314,7 @@ Now open your browser and navigate to [http://localhost:8080](http://localhost:8
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
-On the left hand side is a menu listing the two Continuous Queries created earlier. Select `hello-world-from` and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
+On the left hand side is a menu listing the two Continuous Queries created earlier. Select `hello-world-from` entry and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
 
 {{< figure src="hello-world-from-debug.png" alt="Hello World From" width="70%" >}}
 
@@ -291,18 +357,19 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
 ## Reflection
-In completing the tutorial, using no custom code and a minimal amount of configuration information, you were able to write queries that automatically detect changes in a database and dynamically distribute a custom representation of those changes to downstream consumers for further processing or integration into a broader solution. Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what you are trying to achieve.
+In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`" and "How many times has each unique message been sent" using Continuous Queries to detect changes in a PostgreSQL database and distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
+
+Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.
 
 Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement unique solutions for each type of source you wanted to support. 
 
 Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system as well as its ability to power solutions that are more dynamic and responsive.
 
 ## Next Steps...
-As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today with significant development efforts. 
+As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today without significant development efforts. 
 
 Once you understand the basics of Drasi, the following sections will help you master Drasi quickly so you can start using it to build more responsive solutions that detect and react to change:
 - The [Background](/solution-developer/background) section explores in more detail the problems Drasi was created to solve. This will be useful if you are looking for more context and trying to relate the benefits of Drasi to other alternatives for building solutions that detect and react to change.
 - The [Solution Design](/solution-developer/solution-design) section describes how to use Drasi most effectively in your solutions. It describes multiple ways to think about and apply the functionality provided by Continuous Queries and Reactions. Some are improved alternatives to existing patterns, while others are unique to Drasi. 
 - The Drasi repo includes multiple [Sample Applications](/solution-developer/sample-apps/) that are fully functional solutions that demonstrate the use of Drasi in realistic scenarios. These sample apps contain working implementations of the patterns described in the [Solution Pattern](/solution-developer/solution-patterns) section.
-- The [Recipes](/solution-developer/recipes) section provides code-based solutions to common problems. These recipes will be useful as you start to implement Drasi in your solution and need quick answers to specific questions.
 - The [Troubleshooting](/solution-developer/troubleshooting) section provides guidance on how to investigate problems if they occur when you are creating the Sources, Continuous Queries, and Reactions that you will use as part of your solution.
