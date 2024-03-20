@@ -84,10 +84,10 @@ Once you are in VS Code, run the Dev Container as follows:
 1. Type "dev containers:"
 1. Select "Dev Containers: Rebuild and Reopen in Container"
 
-Once the Dev Container environment is ready, execute the following command in the VS Code terminal to deploy Drasi:
+Once the Dev Container environment is ready, execute the following command in a new VS Code terminal to port-forward the deployed PostgreSQL database:
 
 ```bash
-drasi init --version preview.1
+kubectl port-forward svc/postgres 5432:5432 -n drasi-system
 ```
 
 You will also need a way to run commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
@@ -105,6 +105,9 @@ In this case you must also install a PostgreSQL database to use as a source of c
 ## Step 2 - Create the PostgreSQL Source
 
 ### Create Database and Table
+
+**NOTE: If you are using the VS Code Dev Container to go through the tutorial, or if you are following our instructions to use a Kubernetes hosted PostgreSQL database, you can skip this step**
+
 On your PostgreSQL server, create a `hello-world` database. 
 
 Then, in the `hello-world` database create a table named `Message` and add some initial data using the following SQL script:
