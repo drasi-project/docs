@@ -7,4 +7,4 @@ description: >
     Getting Support During the Drasi Preview
 ---
 
-During the Drasi Preview, please contact [Allen Jones (alljones)](mailto:alljones@microsoft.com) if you have questions or issues, want to provide feedback, or want to arrange a demonstration.
+During the Drasi Preview, please email [The Drasi Team](mailto:projectdrasiteam@service.microsoft.com) if you have questions or issues, want to provide feedback, or want to arrange a demonstration.
