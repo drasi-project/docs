@@ -67,11 +67,9 @@ To download the Dev Container files:
 ```bash
 mkdir drasi-dev-container
 cd drasi-dev-container
-git init
-git remote add -f origin https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
-git sparse-checkout init
-git sparse-checkout set "tutorial/getting-started/" # Specifies the folder
-git pull origin preview
+git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
+cd ReactiveGraph
+git sparse-checkout add tutorial
 ```
 
 Then open the `drasi-dev-container` in VS Code using the following commands:

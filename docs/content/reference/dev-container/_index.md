@@ -25,11 +25,9 @@ This environment will have:
 ```bash
 mkdir drasi-dev-container
 cd drasi-dev-container
-git init
-git remote add -f origin https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
-git sparse-checkout init
-git sparse-checkout set "tutorial/getting-started/" # Specifies the folder
-git pull origin develop
+git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
+cd ReactiveGraph
+git sparse-checkout add tutorial
 ```
 2. Open the folder in VS Code through the following command:
 ```bash
