@@ -10,13 +10,11 @@ description: >
 ## Getting Started
 - If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) sections below.
 
-- If you are a **developer** who needs to **detect** changes to the data in a database so that the application or solution you are creating can **react** as those changes occur, go to the [Solution Developer Guides](/solution-developer). To get started using Drasi quickly, there is a tutorial in the [Getting Started](/solution-developer/getting-started) section that can have you up and running with Drasi in 10 minutes.
-
-- If you are a **developer** who wants to **contribute** to Drasi or **create custom Reactions** for Drasi, go to the [Platform Developer Guides](/platform-developer).
+- If you are a **developer** who wants to get started using Drasi quickly, do the [Quickstart Tutotrial](/solution-developer/getting-started). And then explore the [Solution Developer Guides](/solution-developer) to learn more about building solutions that use Drasi.
 
 - If you need to **deploy** or **manage** a Drasi environment, go to the [Administrator Guides](/administrator)
 
-- If you are interested in **discussing** Drasi, having a **demonstration** of Drasi's capabilities, or getting access to a live demo environment so you can **explore** solutions built using Drasi, contact [Allen Jones (alljones)](mailto:alljones@microsoft.com).
+- If you are interested in **discussing** Drasi, having a **demonstration** of Drasi's capabilities, or getting access to a live demo environment so you can **explore** solutions built using Drasi, email [The Drasi Team](mailto:projectdrasiteam@service.microsoft.com).
 
 ## Introduction
 Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in **existing** databases and software systems (i.e. not only new systems built using Drasi). Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations, as you would typically get from database transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect and the data you want to distribute about those changes to downstream systems. 
