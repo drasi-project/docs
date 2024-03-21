@@ -9,7 +9,7 @@ description: >
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 
-After completing this tutorial, you will have a simple end-to-end Drasi-based solution running, and a Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
+After completing this tutorial, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
 
 ## Solution Overview
 In this sample Drasi solution, the source of data (and change) will be a `Message` table in a PostgreSQL database, which holds the content of messages sent by people. The `Message` table contains these three fields:
@@ -21,8 +21,8 @@ In this sample Drasi solution, the source of data (and change) will be a `Messag
 |Message|character varying(200)|The text of the message.|
 
 You will create two Continuous Queries that observe the `Message` table to answer the following questions in real-time:
-1. Which people have sent the message "Hello World"? This demonstrates how to write a basic Continuous Query.
-1. How many times has each unique message been sent? This demonstrates how to use aggregations in Continuous Queries.
+1. Which people have sent the message "Hello World"? 
+1. How many times has each unique message been sent? 
 
 Initially, the `Message` table will contain the following messages:
 
@@ -71,7 +71,8 @@ cd drasi
 git sparse-checkout add tutorial
 {{< /tab >}}
 {{% tab header="zip" text=true %}}
-[Zip file](https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml)
+1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml)
+1. Unzip the ZIP file
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -92,10 +93,6 @@ Once you are in VS Code, run the Dev Container as follows:
 3. Select "Dev Containers: Rebuild and Reopen in Container"
 
 The Drasi Dev Container may take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
-
-You will also need a way to run SQL commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
-- [pgAdmin](https://www.pgadmin.org/) if you want a GUI
-- [psql](https://www.postgresql.org/docs/current/app-psql.html) if you want a CLI
 
 #### Alternatives to the Drasi Dev Container
 If you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
@@ -297,7 +294,24 @@ You should expect to see the following response:
 Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 
 ## Step 5 - Test the Solution
-In order to access the Web UI of the Debug Reaction from a local machine, you must forward the container port to a local one using the following command:
+To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from the Dev Container terminal you will create a session with the database in which you can enter multiple commands:
+
+```bash
+psql
+```
+
+If you prefer to use a GUI interface, you can install [pgAdmin](https://www.pgadmin.org/) on your local machine and use the following connections settings:
+
+|Setting|Value|
+|-|-|
+|Host Name|localhost|
+|Database Name|hello-world|
+|Port|5432|
+|User Id|test|
+|Password|test|
+
+
+In order to access the Web UI of the Debug Reaction from a local machine, you must forward the container port to a local one using the following command run from a terminal on the Dev Container:
 
 ```bash
 kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
