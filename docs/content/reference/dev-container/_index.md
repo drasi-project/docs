@@ -37,7 +37,4 @@ code .
 3. Type `Contrl + Shift + P`
 4. Type 'Dev container'
 5. Select 'Dev Containers: Rebuild and Reopen in Container'
-6. The environment should be ready in a short period of time. Execute the following command to deploy Drasi:
-```bash
-drasi init --version preview.1
 ```

@@ -84,11 +84,6 @@ Once you are in VS Code, run the Dev Container as follows:
 1. Type "dev containers:"
 1. Select "Dev Containers: Rebuild and Reopen in Container"
 
-Once the Dev Container environment is ready, execute the following command in a new VS Code terminal to port-forward the deployed PostgreSQL database:
-
-```bash
-kubectl port-forward svc/postgres 5432:5432 -n drasi-system
-```
 
 You will also need a way to run commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
 - [pgAdmin](https://www.pgadmin.org/) if you want a GUI
