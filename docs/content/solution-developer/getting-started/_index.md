@@ -73,7 +73,7 @@ To download the Dev Container files:
 1. Unzip the Dev Container ZIP file in the folder you created above
 {{< /tab >}}
 {{< tab header="git" lang="Bash" >}}
-git clone --filter=blob:none --sparse -b doc-review https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
+git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
 cd drasi
 git sparse-checkout add tutorial
 {{< /tab >}}
