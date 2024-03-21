@@ -56,28 +56,35 @@ To complete the tutorial, you will be guided through the following steps:
 To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get  one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
 
 To use the Drasi Dev Container, you will need:
-- [Visual Studio Code](https://code.visualstudio.com/)
-- A [git CLI ](https://cli.github.com/)
+- [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
+- A [git CLI ](https://cli.github.com/) if you are going to download the Dev Container from the Drasi repo
 
 To download the Dev Container files:
 1. Open a terminal window
 1. Create and/or change to a folder where you want to put the Dev Container files
-1. Execute the following commands:
+1. Download the Dev Container files either from the Drasi repo using `git` or as a `zip` file from Azure Storage:
 
-```bash
-mkdir drasi-dev-container
-cd drasi-dev-container
-git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
-cd ReactiveGraph
+{{< tabpane >}}
+{{< tab header="git" lang="Bash" >}}
+git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
+cd drasi
 git sparse-checkout add tutorial
-```
+{{< /tab >}}
+{{< tab header="zip" text=true lang="html">}}
+https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml
+{{< /tab >}}
+{{< /tabpane >}}
 
-Then open the `drasi-dev-container` in VS Code using the following commands:
+Then open the folder containing the Dev Container files in VS Code (or VS Code - Insiders) using the following command:
 
-```bash
-cd tutorial/getting-started
-code .
-```
+{{< tabpane >}}
+{{< tab header="VS Code" lang="Bash" >}}
+code tutorial/getting-started
+{{< /tab >}}
+{{< tab header="VS Code - Insiders" lang="Bash" >}}
+code-insiders tutorial/getting-started
+{{< /tab >}}
+{{< /tabpane >}}
 
 Once you are in VS Code, run the Dev Container as follows:
 1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
@@ -85,45 +92,16 @@ Once you are in VS Code, run the Dev Container as follows:
 1. Select "Dev Containers: Rebuild and Reopen in Container"
 
 
-You will also need a way to run commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
+You will also need a way to run SQL commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
 - [pgAdmin](https://www.pgadmin.org/) if you want a GUI
 - [psql](https://www.postgresql.org/docs/current/app-psql.html) if you want a CLI
 
 #### Alternatives to the Drasi Dev Container
-If you cannot or do not want to use a Dev Container, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
+If you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
 
-In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial. If you want to use a different PostgreSQL setup, the requirements are:
-- Version 10 or greater.
-- Configured to support `LOGICAL` replication.
-- A PostgreSQL user that has at least the LOGIN, REPLICATION and CREATE permissions on the database and SELECT permissions on the tables you are interested in.
+In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.
 
 ## Step 2 - Create the PostgreSQL Source
-
-### Create Database and Table
-
-**NOTE: If you are using the VS Code Dev Container to go through the tutorial, or if you are following our instructions to use a Kubernetes hosted PostgreSQL database, you can skip this step**
-
-On your PostgreSQL server, create a `hello-world` database. 
-
-Then, in the `hello-world` database create a table named `Message` and add some initial data using the following SQL script:
-
-```sql
-CREATE TABLE "Message" (
-    "MessageId" integer NOT NULL,
-    "From" character varying(50) NOT NULL,
-    "Message" character varying(200) NOT NULL
-);
-
-ALTER TABLE "Message" ADD CONSTRAINT pk_message
-  PRIMARY KEY ("MessageId");
-
-INSERT INTO public."Message" VALUES (1, 'Buzz Lightyear', 'To infinity and beyond!');
-INSERT INTO public."Message" VALUES (2, 'Brian Kernighan', 'Hello World');
-INSERT INTO public."Message" VALUES (3, 'Antoninus', 'I am Spartacus');
-INSERT INTO public."Message" VALUES (4, 'David', 'I am Spartacus');
-```
-
-### Create a Source for PostgreSQL
 The following YAML contains the minimal settings to create a Source that connects to your PostgreSQL database.
 
 ```yaml
@@ -144,13 +122,13 @@ spec:
 
 The configuration settings in angled brackets `<...>` are values you need to provide based on the configuration of your PostgreSQL database. 
 
-If you are using the Dev Container, it contains a fully specified Source file named `/tutorial/getting-started/resources/hello-world-source.yaml`. Run the `drasi` CLI to create the Source using the following command:
+If you are using the Dev Container, it comes with a fully specified Source file named `/tutorial/getting-started/resources/hello-world-source.yaml` that is pre-configured to connect to the PostgreSQL database running on the Dev Container. Run the `drasi` CLI to create the Drasi Source using the following command:
 
 ```bash
 drasi apply -f ./resources/hello-world-source.yaml
 ```
 
-Otherwise, create a file named `hello-world-source.yaml` and configure the missing values based on the following information:
+Otherwise, you must create a file named `hello-world-source.yaml` from the above definition and replace the missing values based on the following information:
 
 |Value|Description|
 |-|-|
@@ -159,21 +137,32 @@ Otherwise, create a file named `hello-world-source.yaml` and configure the missi
 |\<db-password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
 |ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
 
-Once the values are updated and the `hello-world-source.yaml` saved, use `drasi` to create the Source with the following command:
+Once the values are updated and the `hello-world-source.yaml` saved, use the `drasi` CLI to create the Source with the following command:
 
 ```bash
 drasi apply -f hello-world-source.yaml
 ```
 
-It may take a minute or two for the new Source to startup and become available. You can run the `drasi list source` command to inspect the status of all deployed sources.
+It may take a minute or two for the new Source to startup and become available. You can inspect the status of all deployed sources by running the command:
 
-If your Source is not yet available, use the `drasi wait` command to wait for it to become available:
+```bash
+drasi list source
+```
+
+You should expect to see a response like this:
+```
+      ID      | AVAILABLE  
+--------------+------------
+  hello-world | false     
+```
+
+If your Source is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to become available:
 
 ```bash
 drasi wait source hello-world -t 120
 ```
 
-Your Drasi Source for PostgreSQL is now created and ready to use.
+When `drasi wait` returns, your Drasi Source for PostgreSQL is created and ready to use.
 
 ## Step 3 - Create the Continuous Queries
 The following YAML contains the settings required to create the Continuous Queries you need.
@@ -210,28 +199,28 @@ spec:
       count(m.Message) AS Frequency
 ```
 
-Notice that the YAML describes two Continuous Queries. You can define any number of resources in a single YAML file as long as they are of the same type and you separate each definition with a line containing `---`.
+Notice that the YAML describes two Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
-In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a Message field containing the value "Hello World". For records that match that pattern, it includes their **MessageId** and **From** fields in the result.
+In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the result.
 
-In the second Continuous Query named `message-count`, the Cypher Query is aggregating the count of the number of times each message has been sent. For each message, the query result will contain the message and the frequency.
+In the second Continuous Query, named `message-count`, the Cypher Query is aggregating the count of the number of times each message has been sent. For each message, the query result will contain the `Message` and its `Frequency`.
 
 You don't need to change this YAML, but this table describes the most important configuration settings in these Continuous Query definitions. 
 
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Continuous Query**|
-|name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below.|
-|spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, these refer to the PostgreSQL Source created in the previous step.|
-|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the schema of its result set.|
+|name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
+|spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the **id** "hello-world" refer to the PostgreSQL Source created in the previous step.|
+|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the content of its result set.|
 
-If you are using the Dev Container, run the `drasi` CLI to create the Continuous Queries using the following command:
+If you are using the Dev Container, use the `drasi` CLI to create the Continuous Queries using the following command:
 
 ```bash
 drasi apply -f ./resources/hello-world-queries.yaml
 ```
 
-Otherwise, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` command:
+Otherwise, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` CLI command:
 
 ```bash
 drasi apply -f hello-world-queries.yaml
@@ -269,7 +258,7 @@ spec:
     gateway: 8080  
 ```
 
-You don't need to change this YAML, but this table describes the most important configuration settings in this resource definition:
+You don't need to change this YAML, but this table describes the most important configuration settings in this Reaction definition:
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
@@ -277,7 +266,6 @@ You don't need to change this YAML, but this table describes the most important 
 |spec.image|Identifies the type of Reaction.|
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
-
 
 If you are using the Dev Container, run the `drasi` CLI to create the Debug Reaction using the following command:
 
@@ -297,7 +285,15 @@ To verify the status of the Reaction, execute the following command:
 drasi list reaction
 ```
 
-Once the Reaction is working, the Drasi Hello World solution is fully deployed and ready to test.
+You should expect to see the following response:
+
+```
+         ID         | AVAILABLE  
+--------------------+------------
+  hello-world-debug | false  
+```
+
+Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 
 ## Step 5 - Test the Solution
 In order to access the Web UI of the Debug Reaction from a local machine, you must forward the container port to a local one using the following command:
