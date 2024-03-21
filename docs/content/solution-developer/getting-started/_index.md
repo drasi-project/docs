@@ -20,9 +20,10 @@ In this sample Drasi solution, the source of data (and change) will be a `Messag
 |From|character varying(50)|The name of who the message is from.|
 |Message|character varying(200)|The text of the message.|
 
-You will create two Continuous Queries that observe the `Message` table to answer the following questions in real-time:
+You will create three Continuous Queries that observe the `Message` table to answer the following questions in real-time:
 1. Which people have sent the message "Hello World"? 
 1. How many times has the same message been sent? 
+1. Which people haven't sent a message in the last 10 seconds?
 
 Initially, the `Message` table will contain the following messages:
 
@@ -55,24 +56,26 @@ To complete the tutorial, you will be guided through the following steps:
 ## Step 1 - Deploy Drasi
 To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get  one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
 
-To use the Drasi Dev Container, you will need:
+To use the Drasi Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
+- Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
 - A [git CLI ](https://cli.github.com/) if you are going to download the Dev Container from the Drasi repo
+- Docker
 
 To download the Dev Container files:
 1. Open a terminal window
 1. Create and/or change to a folder where you want to put the Dev Container files
-1. Download the Dev Container files either from the Drasi repo using `git` or as a `zip` file from Azure Storage:
+1. Download the Dev Container files either as a `zip` file from Azure Storage or from the Drasi repo using `git`:
 
 {{< tabpane >}}
+{{% tab header="zip" text=true %}}
+1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
+1. Unzip the Dev Container ZIP file in the folder you created above
+{{< /tab >}}
 {{< tab header="git" lang="Bash" >}}
 git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
 cd drasi
 git sparse-checkout add tutorial
-{{< /tab >}}
-{{% tab header="zip" text=true %}}
-1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
-1. Unzip the Dev Container ZIP file in the current folder
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -92,7 +95,13 @@ Once you are in VS Code, run the Dev Container as follows:
 2. Type "dev containers:"
 3. Select "Dev Containers: Rebuild and Reopen in Container"
 
-The Drasi Dev Container may take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
+The Drasi Dev Container will take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
+
+When you see the following message in the Dev Container terminal, the Dev Container is ready to use and you can proceed with the rest of the tutorial.
+
+```
+Done. Press any key to close the terminal.
+```
 
 #### Alternatives to the Drasi Dev Container
 If you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
@@ -108,31 +117,29 @@ kind: Source
 name: hello-world
 spec:
   kind: PostgreSQL
-  host: <db-host-name>
+  host: postgres
   port: 5432
-  user: <db-user>
-  password: <db-password>
+  user: test
+  password: test
   database: hello-world
   ssl: true
   tables:
     - public.Message
 ```
 
-The configuration settings in angled brackets `<...>` are values you need to provide based on the configuration of your PostgreSQL database. 
-
-If you are using the Dev Container, it comes with a fully specified Source file named `/tutorial/getting-started/resources/hello-world-source.yaml` that is pre-configured to connect to the PostgreSQL database running on the Dev Container. Run the `drasi` CLI to create the Drasi Source using the following command:
+If you are using the Dev Container, use the `drasi` CLI to create the Source by running the following command in a terminal window:
 
 ```bash
 drasi apply -f ./resources/hello-world-source.yaml
 ```
 
-Otherwise, you must create a file named `hello-world-source.yaml` that contains the YAML above and replace the missing values based on the following information:
+If you are not using the Dev Container, you must first create a file named `hello-world-source.yaml` that contains the YAML above and replace the connection and user settings as described in this table. These settings will already be correct if you used the PostgreSQL database configuration described in the [Using PostgreSQL](/reference/setup-postgres) section:
 
-|Value|Description|
+|Property|Description|
 |-|-|
-|\<db-host-name>|The DNS host name of the PostgreSQL server.<br />This will be '**postgres**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
-|\<db-user>|The User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.|
-|\<db-password>|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />This will be '**test**' if using the Kubernetes hosted PostgreSQL database described in the [Using PostgreSQL](/reference/setup-postgres) section.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|spec.host|The DNS host name of the PostgreSQL server.|
+|spec.user|The User ID that the Source will use to connect to the PostgreSQL database.|
+|spec.password|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
 |ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
 
 Once the values are updated and the `hello-world-source.yaml` saved, use the `drasi` CLI to create the Source with the following command:
@@ -195,13 +202,38 @@ spec:
     RETURN 
       m.Message AS Message,
       count(m.Message) AS Frequency
+---
+apiVersion: v1
+kind: ContinuousQuery
+name: inactive-people
+spec:
+  mode: query
+  sources:    
+    subscriptions:
+      - id: hello-world
+  query: >
+      MATCH
+        (m:Message)
+      WITH
+        m.From AS MessageFrom,
+        max(drasi.changeDateTime(m)) AS LastMessageTimestamp
+      WHERE
+        LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 10 })
+      OR
+        drasi.trueLater(LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 10 }), LastMessageTimestamp + duration({ seconds: 10 }))
+      RETURN
+        MessageFrom,
+        LastMessageTimestamp
 ```
 
-Notice that the YAML describes two Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
+Notice that the YAML describes three Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
-In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.
-
-In the second Continuous Query, named `message-count`, the Cypher Query is aggregating the count of the number of times each message has been sent. For each message, the query result will contain the `Message` and its `Frequency`.
+The following table describes the Cypher Query used by each of the Continuous Queries:
+|Query|Description|
+|-|-|
+|hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
+|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes with the same value in their `Message` field. For each unique message value, the query result will contain the message value and its `Frequency`.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
 
 You don't need to change this YAML, but this table describes the most important configuration settings in these Continuous Query definitions. 
 
@@ -212,13 +244,13 @@ You don't need to change this YAML, but this table describes the most important 
 |spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the **id** "hello-world" refer to the PostgreSQL Source created in the previous step.|
 |spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the content of its result set.|
 
-If you are using the Dev Container, use the `drasi` CLI to create the Continuous Queries using the following command:
+If you are using the Dev Container, use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
 
 ```bash
 drasi apply -f ./resources/hello-world-queries.yaml
 ```
 
-Otherwise, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` CLI command:
+If you are not using the Dev Container, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` CLI command:
 
 ```bash
 drasi apply -f hello-world-queries.yaml
@@ -265,13 +297,13 @@ You don't need to change this YAML, but this table describes the most important 
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 
-If you are using the Dev Container, run the `drasi` CLI to create the Debug Reaction using the following command:
+If you are using the Dev Container, use the `drasi` CLI to create the Debug Reaction by running the following command in a terminal window:
 
 ```bash
 drasi apply -f ./resources/hello-world-reaction.yaml
 ```
 
-Otherwise, create a file named `hello-world-reaction.yaml` from the content above and run the `drasi` command:
+If you are not using the Dev Container, create a file named `hello-world-reaction.yaml` from the content above and run the `drasi` command:
 
 ```bash
 drasi apply -f hello-world-reaction.yaml
@@ -321,7 +353,7 @@ Now open your browser and navigate to [http://localhost:8080](http://localhost:8
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
-On the left hand side is a menu listing the two Continuous Queries created earlier. Select `hello-world-from` entry and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
+On the left hand side is a menu listing the three Continuous Queries created earlier. Select `hello-world-from` entry and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
 
 {{< figure src="hello-world-from-debug.png" alt="Hello World From" width="70%" >}}
 
@@ -335,7 +367,7 @@ You will see a second record for **Allen** appear dynamically in the query resul
 
 {{< figure src="hello-world-from-debug-updated.png" alt="Hello World From Updated" width="70%" >}}
 
-In the list of Continuous Queries select the `message-count` entry and the right hand pane will show the  current results to the `message-count` query. There are three results, as shown below. Note that because of the "Hello World" message you just added for **Allen**, both "Hello World" and "I am Spartacus" have a Frequency of 2.
+In the list of Continuous Queries select the `message-count` entry and the right hand pane will show the current results to the `message-count` query. There are three results, as shown below. Note that because of the "Hello World" message you just added for **Allen**, both "Hello World" and "I am Spartacus" have a Frequency of 2.
 
 {{< figure src="message-count-debug.png" alt="Message Count" width="70%" >}}
 
@@ -349,7 +381,25 @@ You will see the "I am Spartacus" Frequency increase dynamically to 3:
 
 {{< figure src="message-count-debug-updated.png" alt="Message Count Updated" width="70%" >}}
 
-Finally, if you delete both "Hello World" messages using the following SQL statement:
+In the list of Continuous Queries select the `inactive-people` entry and the right hand pane will show the current results to the `inactive-people` query. Assuming you issued the last database change more than 10 seconds ago, you will see **Allen** on the list of inactive people.
+
+{{< figure src="inactive-people-debug.png" alt="Initial Inactive People" width="70%" >}}
+
+If you add another Message to the table using the following SQL insert statement:
+
+```sql
+INSERT INTO public."Message" VALUES (7, 'Allen', 'Goodbye');
+```
+
+**Allen** will disappear from the list of inactive people, because he just sent the message:
+
+{{< figure src="inactive-people-debug-is-active.png" alt="Allen is active" width="70%" >}}
+
+But, if you wait 10 seconds, **Allen** will reappear on the list of inactive people, because he has not sent a message in the allowed 10 second time interval:
+
+{{< figure src="inactive-people-debug-is-inactive.png" alt="Allen is inactive" width="70%" >}}
+
+Finally, if you return to the `message-count` Continuous Query and delete both "Hello World" messages using the following SQL statement:
 
 ```sql
 DELETE FROM public."Message" WHERE "Message" = 'Hello World';
@@ -364,7 +414,7 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
 ## Reflection
-In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`" and "How many times has each unique message been sent" using Continuous Queries to detect changes in a PostgreSQL database and distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
+In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 10 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
 
 Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.
 
