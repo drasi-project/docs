@@ -22,7 +22,7 @@ In this sample Drasi solution, the source of data (and change) will be a `Messag
 
 You will create two Continuous Queries that observe the `Message` table to answer the following questions in real-time:
 1. Which people have sent the message "Hello World"? 
-1. How many times has each unique message been sent? 
+1. How many times has the same message been sent? 
 
 Initially, the `Message` table will contain the following messages:
 
@@ -126,7 +126,7 @@ If you are using the Dev Container, it comes with a fully specified Source file 
 drasi apply -f ./resources/hello-world-source.yaml
 ```
 
-Otherwise, you must create a file named `hello-world-source.yaml` from the above definition and replace the missing values based on the following information:
+Otherwise, you must create a file named `hello-world-source.yaml` that contains the YAML above and replace the missing values based on the following information:
 
 |Value|Description|
 |-|-|
@@ -147,14 +147,14 @@ It may take a minute or two for the new Source to startup and become available. 
 drasi list source
 ```
 
-You should expect to see a response like this:
+You should expect to see a response like this until the Source is ready (AVAILABLE=true):
 ```
       ID      | AVAILABLE  
 --------------+------------
   hello-world | false     
 ```
 
-If your Source is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to become available:
+If your Source is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
 
 ```bash
 drasi wait source hello-world -t 120
@@ -199,7 +199,7 @@ spec:
 
 Notice that the YAML describes two Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
-In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the result.
+In the first Continuous Query, named `hello-world-from`, the Cypher Query is simply matching nodes with a label (type) `Message` and filtering for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.
 
 In the second Continuous Query, named `message-count`, the Cypher Query is aggregating the count of the number of times each message has been sent. For each message, the query result will contain the `Message` and its `Frequency`.
 
@@ -294,7 +294,7 @@ You should expect to see the following response:
 Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 
 ## Step 5 - Test the Solution
-To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from the Dev Container terminal you will create a session with the database in which you can enter multiple commands:
+To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from the Dev Container terminal you will create a session with the database in which you can enter SQL commands:
 
 ```bash
 psql
