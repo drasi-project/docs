@@ -70,8 +70,8 @@ git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.co
 cd drasi
 git sparse-checkout add tutorial
 {{< /tab >}}
-{{< tab header="zip" text=true lang="html">}}
-https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml
+{{% tab header="zip" text=true %}}
+[Zip file](https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml)
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -88,8 +88,8 @@ code-insiders tutorial/getting-started
 
 Once you are in VS Code, run the Dev Container as follows:
 1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
-1. Type "dev containers:"
-1. Select "Dev Containers: Rebuild and Reopen in Container"
+2. Type "dev containers:"
+3. Select "Dev Containers: Rebuild and Reopen in Container"
 
 The Drasi Dev Container may take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
 
