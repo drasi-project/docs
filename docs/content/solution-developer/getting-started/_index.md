@@ -71,8 +71,8 @@ cd drasi
 git sparse-checkout add tutorial
 {{< /tab >}}
 {{% tab header="zip" text=true %}}
-1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/getting-started/hello-world-source.yaml)
-1. Unzip the ZIP file
+1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
+1. Unzip the Dev Container ZIP file in the current folder
 {{< /tab >}}
 {{< /tabpane >}}
 
