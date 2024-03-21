@@ -73,7 +73,7 @@ To download the Dev Container files:
 1. Unzip the Dev Container ZIP file in the folder you created above
 {{< /tab >}}
 {{< tab header="git" lang="Bash" >}}
-git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
+git clone --filter=blob:none --sparse -b doc-review https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
 cd drasi
 git sparse-checkout add tutorial
 {{< /tab >}}
@@ -233,7 +233,7 @@ The following table describes the Cypher Query used by each of the Continuous Qu
 |-|-|
 |hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
 |message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes with the same value in their `Message` field. For each unique message value, the query result will contain the message value and its `Frequency`.|
-|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
 
 You don't need to change this YAML, but this table describes the most important configuration settings in these Continuous Query definitions. 
 
@@ -268,6 +268,7 @@ You should expect to see the following output:
 -------------------+---------+-----------+--------------+--------------------------------------
   hello-world-from | Running | default   |              | default-query-host-xxx-xxx
   message-count    | Running | default   |              | default-query-host-xxx-xxx
+  inactive-people  | Running | default   |              | default-query-host-xxx-xxx
 ```
 
 ## Step 4 - Create the Debug Reaction
