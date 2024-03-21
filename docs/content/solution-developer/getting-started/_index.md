@@ -91,6 +91,7 @@ Once you are in VS Code, run the Dev Container as follows:
 1. Type "dev containers:"
 1. Select "Dev Containers: Rebuild and Reopen in Container"
 
+The Drasi Dev Container may take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
 
 You will also need a way to run SQL commands against your PostgresSQL database to create tables and add/update/delete data. Some options include:
 - [pgAdmin](https://www.pgadmin.org/) if you want a GUI
