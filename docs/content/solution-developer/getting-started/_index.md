@@ -69,8 +69,8 @@ To download the Dev Container files:
 
 {{< tabpane >}}
 {{% tab header="zip" text=true %}}
-1. Download the [Dev Container ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
-1. Unzip the Dev Container ZIP file in the folder you created above
+1. Download the [Drasi Quickstart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
+1. Unzip the Drasi Quickstart ZIP file in the folder you created above
 {{< /tab >}}
 {{< tab header="git" lang="Bash" >}}
 git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
@@ -97,19 +97,21 @@ Once you are in VS Code, run the Dev Container as follows:
 
 The Drasi Dev Container will take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
 
-When you see the following message in the Dev Container terminal, the Dev Container is ready to use and you can proceed with the rest of the tutorial.
+When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
 ```
 Done. Press any key to close the terminal.
 ```
 
 #### Alternatives to the Drasi Dev Container
-If you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
+The rest of the Quickstart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
 
 In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.
 
+The files you will need to create the Drasi Sources, Continuous Queries, and Reaction in the following steps are located in the `tutorial/getting-started/resources` folder of the files you downloaded earlier. 
+
 ## Step 2 - Create the PostgreSQL Source
-The following YAML contains the minimal settings to create a Source that connects to your PostgreSQL database.
+The following YAML is the content of the `hello-world-source.yaml` file, which you will use to create a Source that connects to your PostgreSQL database.
 
 ```yaml
 apiVersion: v1
@@ -127,25 +129,24 @@ spec:
     - public.Message
 ```
 
-If you are using the Dev Container, use the `drasi` CLI to create the Source by running the following command in a terminal window:
-
-```bash
-drasi apply -f ./resources/hello-world-source.yaml
-```
-
-If you are not using the Dev Container, you must first create a file named `hello-world-source.yaml` that contains the YAML above and replace the connection and user settings as described in this table. These settings will already be correct if you used the PostgreSQL database configuration described in the [Using PostgreSQL](/reference/setup-postgres) section:
+This table describes the most important configuration settings in this Source definition. 
 
 |Property|Description|
 |-|-|
+|kind|Specifies that the resource is a **Source**|
+|name|Provides the **id** of the **Source**. This is used to manage the **Source** and in **Continuous Query** definitions to configure which Sources the Continuous Query uses as input.
+|spec.kind|Identifies this **Source** as a PostgreSQL Source.| 
 |spec.host|The DNS host name of the PostgreSQL server.|
 |spec.user|The User ID that the Source will use to connect to the PostgreSQL database.|
 |spec.password|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
-|ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
+|spec.database|The name of the Database this Source will get changes from.|
+|spec.ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
+|spec.tables|The list of database tables that the Source will observe for changes.|
 
-Once the values are updated and the `hello-world-source.yaml` saved, use the `drasi` CLI to create the Source with the following command:
+Use the `drasi` CLI to create the Source by running the following command in a terminal window:
 
 ```bash
-drasi apply -f hello-world-source.yaml
+drasi apply -f ./resources/hello-world-source.yaml
 ```
 
 It may take a minute or two for the new Source to startup and become available. You can inspect the status of all deployed sources by running the command:
@@ -170,7 +171,7 @@ drasi wait source hello-world -t 120
 When `drasi wait` returns, your Drasi Source for PostgreSQL is created and ready to use.
 
 ## Step 3 - Create the Continuous Queries
-The following YAML contains the settings required to create the Continuous Queries you need.
+The following YAML is the content of the `hello-world-queries.yaml` file, which you will use to create the Continuous Queries you need.
 
 ```yaml
 apiVersion: v1
@@ -228,14 +229,7 @@ spec:
 
 Notice that the YAML describes three Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
-The following table describes the Cypher Query used by each of the Continuous Queries:
-|Query|Description|
-|-|-|
-|hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
-|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes with the same value in their `Message` field. For each unique message value, the query result will contain the message value and its `Frequency`.|
-|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
-
-You don't need to change this YAML, but this table describes the most important configuration settings in these Continuous Query definitions. 
+This table describes the most important configuration settings in these Continuous Query definitions. 
 
 |Property|Description|
 |-|-|
@@ -244,16 +238,17 @@ You don't need to change this YAML, but this table describes the most important 
 |spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the **id** "hello-world" refer to the PostgreSQL Source created in the previous step.|
 |spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the content of its result set.|
 
-If you are using the Dev Container, use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
+The following table describes the Cypher Query used by each of the Continuous Queries:
+|Query|Description|
+|-|-|
+|hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
+|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes with the same value in their `Message` field. For each unique message value, the query result will contain the message value and its `Frequency`.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
+
+Use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
 
 ```bash
 drasi apply -f ./resources/hello-world-queries.yaml
-```
-
-If you are not using the Dev Container, create a file named `hello-world-queries.yaml` from the content above and run the `drasi` CLI command:
-
-```bash
-drasi apply -f hello-world-queries.yaml
 ```
 
 To verify the status of the Continuous Queries, execute the following command: 
@@ -274,7 +269,7 @@ You should expect to see the following output:
 ## Step 4 - Create the Debug Reaction
 In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
-The following YAML file contains the settings necessary to create a Debug Reaction.
+The following YAML is the content of the `hello-world-reaction.yaml` file, which you will use to create the Debug Reaction.
 
 ```yaml
 apiVersion: v1
@@ -289,7 +284,7 @@ spec:
     gateway: 8080  
 ```
 
-You don't need to change this YAML, but this table describes the most important configuration settings in this Reaction definition:
+This table describes the most important configuration settings in this Reaction definition:
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
@@ -298,16 +293,10 @@ You don't need to change this YAML, but this table describes the most important 
 |spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 
-If you are using the Dev Container, use the `drasi` CLI to create the Debug Reaction by running the following command in a terminal window:
+Use the `drasi` CLI to create the Debug Reaction by running the following command in a terminal window:
 
 ```bash
 drasi apply -f ./resources/hello-world-reaction.yaml
-```
-
-If you are not using the Dev Container, create a file named `hello-world-reaction.yaml` from the content above and run the `drasi` command:
-
-```bash
-drasi apply -f hello-world-reaction.yaml
 ```
 
 To verify the status of the Reaction, execute the following command: 
