@@ -390,6 +390,9 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
+
+The QuickStart Tutorial is now complete. The QuickStart Dev Container is running a fully functional version of Drasi that you can use for further exploration. If you no longer need it, simply close VS Code.
+
 ## Reflection
 In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 10 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
 
