@@ -15,4 +15,4 @@ The Drasi Demo Environment contains the following sample applications:
 - [k8s](https://rg-demo-debug1.happycoast-8bd2f07c.westus.azurecontainerapps.io/)
 - More coming soon...
 
-If you are interested in **discussing** Drasi, having a **demonstration**, or getting access to a live demo environment so you can **explore** solutions built using Drasi, contact [Allen Jones (alljones)](mailto:alljones@microsoft.com).
+If you are interested in **discussing** Drasi, having a **demonstration**, or getting access to a live demo environment so you can **explore** solutions built using Drasi, email [The Drasi Team](mailto:projectdrasiteam@service.microsoft.com).
