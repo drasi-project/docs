@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Quickstart Tutorial"
-linkTitle: "Quickstart Tutorial"
+title: "QuickStart Tutorial"
+linkTitle: "QuickStart Tutorial"
 weight: 10
 description: >
     Get started building Drasi-based solutions quickly
@@ -9,7 +9,7 @@ description: >
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 
-After completing this tutorial, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
+After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
 
 ## Solution Overview
 In this sample Drasi solution, the source of data (and change) will be a `Message` table in a PostgreSQL database, which holds the content of messages sent by people. The `Message` table contains these three fields:
@@ -54,7 +54,7 @@ To complete the tutorial, you will be guided through the following steps:
 1. Test the Solution
 
 ## Step 1 - Deploy Drasi
-To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get  one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
+To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
 
 To use the Drasi Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
@@ -62,40 +62,19 @@ To use the Drasi Dev Container, you will need to install:
 - A [git CLI ](https://cli.github.com/) if you are going to download the Dev Container from the Drasi repo
 - Docker
 
-To download the Dev Container files:
-1. Open a terminal window
-1. Create and/or change to a folder where you want to put the Dev Container files
-1. Download the Dev Container files either as a `zip` file from Azure Storage or from the Drasi repo using `git`:
+Once you have these prerequisites installed:
+1. Download the [Drasi QuickStart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
+1. Unzip the Drasi QuickStart ZIP file to a temporary location on your computer
+1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi QuickStart files you just unzipped
 
-{{< tabpane >}}
-{{% tab header="zip" text=true %}}
-1. Download the [Drasi Quickstart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
-1. Unzip the Drasi Quickstart ZIP file in the folder you created above
-{{< /tab >}}
-{{< tab header="git" lang="Bash" >}}
-git clone --filter=blob:none --sparse -b preview https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph drasi
-cd drasi
-git sparse-checkout add tutorial
-{{< /tab >}}
-{{< /tabpane >}}
+If you have opened the correct folder, in the VS Code Explorer pane you will see two folders: `.devcontainer` and `resources`. The `.devcontainer` folder contains files that VS Code uses to configure the Dev Container. The `resources` folder contains files you will use later in the tutorial to create Drasi Sources, Continuous Queries, and Reactions.
 
-Then open the folder containing the Dev Container files in VS Code (or VS Code - Insiders) using the following command:
-
-{{< tabpane >}}
-{{< tab header="VS Code" lang="Bash" >}}
-code tutorial/getting-started
-{{< /tab >}}
-{{< tab header="VS Code - Insiders" lang="Bash" >}}
-code-insiders tutorial/getting-started
-{{< /tab >}}
-{{< /tabpane >}}
-
-Once you are in VS Code, run the Dev Container as follows:
+Run the Dev Container as follows:
 1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
 2. Type "dev containers:"
 3. Select "Dev Containers: Rebuild and Reopen in Container"
 
-The Drasi Dev Container will take some time to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
+The Drasi Dev Container will take a few minutes to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
 
 When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
@@ -104,7 +83,7 @@ Done. Press any key to close the terminal.
 ```
 
 #### Alternatives to the Drasi Dev Container
-The rest of the Quickstart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this Quickstart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
+The rest of the QuickStart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this QuickStart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
 
 In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.
 
@@ -135,7 +114,7 @@ This table describes the most important configuration settings in this Source de
 |-|-|
 |kind|Specifies that the resource is a **Source**|
 |name|Provides the **id** of the **Source**. This is used to manage the **Source** and in **Continuous Query** definitions to configure which Sources the Continuous Query uses as input.
-|spec.kind|Identifies this **Source** as a PostgreSQL Source.| 
+|spec.kind|Identifies this **Source** as a PostgreSQL Source that enables connectivity to a PostgreSQL database.| 
 |spec.host|The DNS host name of the PostgreSQL server.|
 |spec.user|The User ID that the Source will use to connect to the PostgreSQL database.|
 |spec.password|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
@@ -155,7 +134,7 @@ It may take a minute or two for the new Source to startup and become available. 
 drasi list source
 ```
 
-You should expect to see a response like this until the Source is ready (AVAILABLE=true):
+You should expect to see a response like this until the Source is ready (AVAILABLE = true):
 ```
       ID      | AVAILABLE  
 --------------+------------
@@ -236,14 +215,14 @@ This table describes the most important configuration settings in these Continuo
 |kind|Specifies that the resource is a **Continuous Query**|
 |name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
 |spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the **id** "hello-world" refer to the PostgreSQL Source created in the previous step.|
-|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. which changes it is detecting and the content of its result set.|
+|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
 
 The following table describes the Cypher Query used by each of the Continuous Queries:
 |Query|Description|
 |-|-|
 |hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
-|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes with the same value in their `Message` field. For each unique message value, the query result will contain the message value and its `Frequency`.|
-|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that haven't sent messages in the last 10 seconds to be included in the query result.|
+|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes have the same value in their `Message` field. For each unique message value, the query result will contain the `Message` value and its `Frequency`.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that **haven't** sent messages in the last 10 seconds to be included in the query result.|
 
 Use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
 
@@ -312,6 +291,14 @@ You should expect to see the following response:
 --------------------+------------
   hello-world-debug | false  
 ```
+
+If your Reaction is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
+
+```bash
+drasi wait reaction hello-world-debug -t 120
+```
+
+When `drasi wait` returns, your Debug Reaction is created and ready to use.
 
 Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 

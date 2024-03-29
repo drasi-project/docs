@@ -10,7 +10,7 @@ description: >
 ## Getting Started
 - If you want to **understand** the concepts, functionality, and benefits of Drasi, read the [Introduction](#introduction) and [Benefits](#benefits) sections below.
 
-- If you are a **developer** who wants to get started using Drasi quickly, do the [Quickstart Tutotrial](/solution-developer/getting-started). And then explore the [Solution Developer Guides](/solution-developer) to learn more about building solutions that use Drasi.
+- If you are a **developer** who wants to get started using Drasi quickly, do the [QuickStart Tutorial](/solution-developer/getting-started). And then explore the [Solution Developer Guides](/solution-developer) to learn more about building solutions that use Drasi.
 
 - If you need to **deploy** or **manage** a Drasi environment, go to the [Administrator Guides](/administrator)
 
