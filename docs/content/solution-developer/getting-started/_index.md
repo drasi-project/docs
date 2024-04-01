@@ -23,7 +23,7 @@ In this sample Drasi solution, the source of data (and change) will be a `Messag
 You will create three Continuous Queries that observe the `Message` table to answer the following questions in real-time:
 1. Which people have sent the message "Hello World"? 
 1. How many times has the same message been sent? 
-1. Which people haven't sent a message in the last 10 seconds?
+1. Which people haven't sent a message in the last 20 seconds?
 
 Initially, the `Message` table will contain the following messages:
 
@@ -48,9 +48,9 @@ Although an intentionally simple example, the Hello World solution contains all 
 
 To complete the tutorial, you will be guided through the following steps:
 1. Deploy Drasi
-1. Create the PostgreSQL Sources
+1. Create the PostgreSQL Source
 1. Create the Continuous Queries
-1. Create the Debug Reactions
+1. Create the Debug Reaction
 1. Test the Solution
 
 ## Step 1 - Deploy Drasi
@@ -59,22 +59,23 @@ To complete the Hello World tutorial, you need a Drasi environment. The quickest
 To use the Drasi Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
-- A [git CLI ](https://cli.github.com/) if you are going to download the Dev Container from the Drasi repo
-- Docker
+- [Docker](https://www.docker.com/get-started/)
 
 Once you have these prerequisites installed:
 1. Download the [Drasi QuickStart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
 1. Unzip the Drasi QuickStart ZIP file to a temporary location on your computer
 1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi QuickStart files you just unzipped
 
-If you have opened the correct folder, in the VS Code Explorer pane you will see two folders: `.devcontainer` and `resources`. The `.devcontainer` folder contains files that VS Code uses to configure the Dev Container. The `resources` folder contains files you will use later in the tutorial to create Drasi Sources, Continuous Queries, and Reactions.
+If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:
+- `.devcontainer` contains files that VS Code requires to configure the Dev Container
+- `resources` contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions
 
 Run the Dev Container as follows:
 1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
 2. Type "dev containers:"
 3. Select "Dev Containers: Rebuild and Reopen in Container"
 
-The Drasi Dev Container will take a few minutes to initialize because it needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
+The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
 
 When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
@@ -82,12 +83,14 @@ When you see the following message in the Dev Container terminal, it is ready to
 Done. Press any key to close the terminal.
 ```
 
+If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can email the [Drasi Team](mailto:projectdrasiteam@service.microsoft.com). 
+
 #### Alternatives to the Drasi Dev Container
 The rest of the QuickStart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this QuickStart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
 
 In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.
 
-The files you will need to create the Drasi Sources, Continuous Queries, and Reaction in the following steps are located in the `tutorial/getting-started/resources` folder of the files you downloaded earlier. 
+The files you will need to create the Drasi Source, Continuous Queries, and Reaction in the following steps are located in the `tutorial/getting-started/resources` folder of the Drasi QuickStart files you downloaded earlier. 
 
 ## Step 2 - Create the PostgreSQL Source
 The following YAML is the content of the `hello-world-source.yaml` file, which you will use to create a Source that connects to your PostgreSQL database.
@@ -113,14 +116,14 @@ This table describes the most important configuration settings in this Source de
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Source**|
-|name|Provides the **id** of the **Source**. This is used to manage the **Source** and in **Continuous Query** definitions to configure which Sources the Continuous Query uses as input.
-|spec.kind|Identifies this **Source** as a PostgreSQL Source that enables connectivity to a PostgreSQL database.| 
+|name|Provides the unique **ID** of the Source. This is used to manage the Source and in Continuous Query definitions to configure which Sources the Continuous Query uses as input.
+|spec.kind|Identifies this Source as a **PostgreSQL** Source that enables connectivity to a PostgreSQL database.| 
 |spec.host|The DNS host name of the PostgreSQL server.|
-|spec.user|The User ID that the Source will use to connect to the PostgreSQL database.|
-|spec.password|The Password for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
-|spec.database|The name of the Database this Source will get changes from.|
-|spec.ssl|If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
-|spec.tables|The list of database tables that the Source will observe for changes.|
+|spec.user|The **User ID** that the Source will use to connect to the PostgreSQL database.|
+|spec.password|The **Password** for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|spec.database|The name of the **Database** this Source will observe changes from.|
+|spec.ssl|Whether SSL is enabled on the database.<br />**Note**: If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
+|spec.tables|The list of database **table** names that the Source will observe for changes.|
 
 Use the `drasi` CLI to create the Source by running the following command in a terminal window:
 
@@ -198,9 +201,9 @@ spec:
         m.From AS MessageFrom,
         max(drasi.changeDateTime(m)) AS LastMessageTimestamp
       WHERE
-        LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 10 })
+        LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 })
       OR
-        drasi.trueLater(LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 10 }), LastMessageTimestamp + duration({ seconds: 10 }))
+        drasi.trueLater(LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 }), LastMessageTimestamp + duration({ seconds: 20 }))
       RETURN
         MessageFrom,
         LastMessageTimestamp
@@ -213,16 +216,16 @@ This table describes the most important configuration settings in these Continuo
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Continuous Query**|
-|name|Provides the **id** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
-|spec.source.subscriptions.id| Identifies the **id** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the **id** "hello-world" refer to the PostgreSQL Source created in the previous step.|
+|name|Provides the **ID** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
+|spec.source.subscriptions.id| Identifies the **ID** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the id "hello-world" refers to the PostgreSQL Source you created in the previous step.|
 |spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
 
-The following table describes the Cypher Query used by each of the Continuous Queries:
-|Query|Description|
+The following table describes the Cypher Query used by each of the Continuous Queries you are about to create:
+|Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |-|-|
 |hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
-|message-count|Matches all nodes with a label (type) `Message` and counts the number of times `Message` nodes have the same value in their `Message` field. For each unique message value, the query result will contain the `Message` value and its `Frequency`.|
-|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that **haven't** sent messages in the last 10 seconds to be included in the query result.|
+|message-count|Matches all nodes with a label (type) `Message`, groups them by the value of their `Message` field and uses the `count` aggregation function to calculate the number of times the same value occurred. For each unique message value, the query result will contain the `Message` value and its `Frequency`.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that **haven't** sent messages in the last 20 seconds to be included in the query result.|
 
 Use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
 
@@ -259,6 +262,7 @@ spec:
   queries:
     hello-world-from:
     message-count:
+    inactive-people:
   endpoints:
     gateway: 8080  
 ```
@@ -267,9 +271,9 @@ This table describes the most important configuration settings in this Reaction 
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
-|name|Provides the **id** of the Reaction.|
-|spec.image|Identifies the type of Reaction.|
-|spec.queries|Subscribes this Reaction to the two Continuous Queries created in the previous step.|
+|name|Provides the **ID** of the Reaction. This is used to manage the Reaction. |
+|spec.image|Identifies the type of Reaction. The value `reaction-debug` identifies that it is a Debug reaction you want to create.|
+|spec.queries|Specifies the IDs of the Continuous Queries the Reaction will subscribe to. In this case you specify the IDs of the three Continuous Queries you created in the previous step.|
 |spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 
 Use the `drasi` CLI to create the Debug Reaction by running the following command in a terminal window:
@@ -302,8 +306,18 @@ When `drasi wait` returns, your Debug Reaction is created and ready to use.
 
 Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 
+Because the Debug Reaction is running in Kubernetes, in order to connect its Web UI you must forward the container port to a local port. In the Dev Container terminal, run the following command:
+
+```bash
+kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
+```
+
+Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
+
+{{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
+
 ## Step 5 - Test the Solution
-To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from the Dev Container terminal you will create a session with the database in which you can enter SQL commands:
+To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
 
 ```bash
 psql
@@ -319,16 +333,6 @@ If you prefer to use a GUI interface, you can install [pgAdmin](https://www.pgad
 |User Id|test|
 |Password|test|
 
-
-In order to access the Web UI of the Debug Reaction from a local machine, you must forward the container port to a local one using the following command run from a terminal on the Dev Container:
-
-```bash
-kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
-```
-
-Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
-
-{{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
 On the left hand side is a menu listing the three Continuous Queries created earlier. Select `hello-world-from` entry and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
 
@@ -358,21 +362,21 @@ You will see the "I am Spartacus" Frequency increase dynamically to 3:
 
 {{< figure src="message-count-debug-updated.png" alt="Message Count Updated" width="70%" >}}
 
-In the list of Continuous Queries select the `inactive-people` entry and the right hand pane will show the current results to the `inactive-people` query. Assuming you issued the last database change more than 10 seconds ago, you will see **Allen** on the list of inactive people.
+In the list of Continuous Queries select the `inactive-people` entry and the right hand pane will show the current results to the `inactive-people` query. Assuming you issued the last database change more than 20 seconds ago, you will see **Allen** on the list of inactive people.
 
 {{< figure src="inactive-people-debug.png" alt="Initial Inactive People" width="70%" >}}
 
-If you add another Message to the table using the following SQL insert statement:
+If you add another Message from **Allen** to the table using the following SQL insert statement:
 
 ```sql
 INSERT INTO public."Message" VALUES (7, 'Allen', 'Goodbye');
 ```
 
-**Allen** will disappear from the list of inactive people, because he just sent the message:
+**Allen** will disappear from the list of inactive people, because he just sent a message:
 
 {{< figure src="inactive-people-debug-is-active.png" alt="Allen is active" width="70%" >}}
 
-But, if you wait 10 seconds, **Allen** will reappear on the list of inactive people, because he has not sent a message in the allowed 10 second time interval:
+But, if you wait 20 seconds, **Allen** will reappear on the list of inactive people, because he has not sent a message in the allowed 20 second time interval:
 
 {{< figure src="inactive-people-debug-is-inactive.png" alt="Allen is inactive" width="70%" >}}
 
@@ -391,16 +395,26 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
 
-The QuickStart Tutorial is now complete. The QuickStart Dev Container is running a fully functional version of Drasi that you can use for further exploration. If you no longer need it, simply close VS Code.
+The QuickStart Tutorial is now complete. The QuickStart Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing. 
 
 ## Reflection
-In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 10 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
+In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 20 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
 
 Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.
 
-Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would also need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement unique solutions for each type of source you wanted to support. 
+Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement a timer and callback mechanism to create notifications when changes had not happened as expected. You would need to implement unique solutions for each type of source you wanted to support. 
 
 Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system as well as its ability to power solutions that are more dynamic and responsive.
+
+## Cleanup
+
+If you no longer need the Dev Container and want to cleanup, you can
+1. Click the `Dev Container connection status` box in the bottom left corner of VS Code
+1. Select `Close Remote Connection` from the list of options that appear
+1. Run the VS Code command `Dev Containers: Clean Up Dev Containers..."
+1. Select the `getting-started` image and click `ok` to remove the unused image
+1. Select the unused volumes and click `ok` to remove the unused volumes
+
 
 ## Next Steps...
 As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding **why** and **when** to use it. Learning how to use Drasi **most effectively** involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today without significant development efforts. 
