@@ -1,0 +1,42 @@
+[
+    {
+        "id": "62f95c2af2931422d775867b",
+        "queryNodeId": "62f25f8721c1855055c0ed79",
+        "queryId": "62f25f3321c1855055c0ed75",
+        "solutionSignature": "0:n.alice:r.aac5277e-80b1-4a6e-ae3a-b156fe36bf45:n.testteama;1:n.allen:r.a629d86a-2685-4c56-b7ff-08dcaf963e70:n.testteama;2:n.alice:r.15c10fc3-84bc-4391-94e3-ebb9284f3623:n.alices_house:r.2ef983b2-c23e-4edd-bbdf-2eaca92a9133:n.socal;3:n.fire:r.a9c7cea9-f2fb-4144-a1c4-28b2544407be:n.socal",
+        "projection": {
+            "isAggregation": false,
+            "values": {
+                "ManagerName": "Allen",
+                "ManagerEmail": "alljones@microsoft.com",
+                "EmployeeName": "Alice",
+                "IncidentDescription": "A big fire"
+            },
+            "aggValues": null,
+            "aggSignature": null,
+            "signature": 3007040771
+        },
+        "validFrom": 1660509226328,
+        "validTo": "9999-12-31T23:59:59.999Z"
+    },
+    {
+        "id": "62f95c2bf2931422d775867e",
+        "queryNodeId": "62f25f8721c1855055c0ed79",
+        "queryId": "62f25f3321c1855055c0ed75",
+        "solutionSignature": "0:n.allen:r.e5fe2ffc-bdf3-42d1-8976-3971c30fe1f9:n.azinc;1:n.ryan:r.22de86a8-d7fe-4b05-b6eb-4281631e1418:n.azinc;2:n.allen:r.527d4cc2-77b1-4994-8fa4-ca12825d8f1c:n.allens_house:r.804c2810-71b6-4f9f-b8c8-d3f606293fdf:n.socal;3:n.fire:r.a9c7cea9-f2fb-4144-a1c4-28b2544407be:n.socal",
+        "projection": {
+            "isAggregation": false,
+            "values": {
+                "ManagerName": "Ryan",
+                "ManagerEmail": "alljones@microsoft.com",
+                "EmployeeName": "Allen",
+                "IncidentDescription": "A big fire"
+            },
+            "aggValues": null,
+            "aggSignature": null,
+            "signature": 1429608590
+        },
+        "validFrom": 1660509226328,
+        "validTo": "9999-12-31T23:59:59.999Z"
+    }
+]
