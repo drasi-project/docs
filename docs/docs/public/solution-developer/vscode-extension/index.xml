@@ -1,0 +1,19 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Project Drasi – VS Code Extension</title>
+    <link>https://project-drasi.github.io/solution-developer/vscode-extension/</link>
+    <description>Recent content in VS Code Extension on Project Drasi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2023, Microsoft; all rights reserved.</copyright>
+    
+	  <atom:link href="https://project-drasi.github.io/solution-developer/vscode-extension/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+  </channel>
+</rss>

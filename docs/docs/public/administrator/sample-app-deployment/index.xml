@@ -1,0 +1,295 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Project Drasi – Installing Sample Applications</title>
+    <link>https://project-drasi.github.io/administrator/sample-app-deployment/</link>
+    <description>Recent content in Installing Sample Applications on Project Drasi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2023, Microsoft; all rights reserved.</copyright>
+    
+	  <atom:link href="https://project-drasi.github.io/administrator/sample-app-deployment/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Administrator: Curbside Pickup</title>
+      <link>https://project-drasi.github.io/administrator/sample-app-deployment/curbside-pickup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://project-drasi.github.io/administrator/sample-app-deployment/curbside-pickup/</guid>
+      <description>
+        
+        
+        &lt;h2 id=&#34;prerequsites&#34;&gt;Prerequsites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://nodejs.org/&#34;&gt;NodeJs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools&#34;&gt;Azure Functions Core Tools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Azure Account&lt;/li&gt;
+&lt;li&gt;Drasi CLI&lt;/li&gt;
+&lt;li&gt;Kubectl&lt;/li&gt;
+&lt;li&gt;An instance of Reactive Graph, deployed to the Kubernetes cluster that your kubectl context points to&lt;/li&gt;
+&lt;li&gt;The source repo cloned to a folder on your local machine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;overview-of-the-app&#34;&gt;Overview of the app&lt;/h2&gt;
+&lt;p&gt;This demo consists of&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;2 sources, each watching a different database&lt;/li&gt;
+&lt;li&gt;Several continuous queries against each database&lt;/li&gt;
+&lt;li&gt;A continuous query that joins across the 2 databases&lt;/li&gt;
+&lt;li&gt;A SignalR reaction that recieves changes and forwards them to any connected front end clients&lt;/li&gt;
+&lt;li&gt;An Azure Function App that provides Http endpoints that directly manuipulate the data in each database&lt;/li&gt;
+&lt;li&gt;A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;demo-arch.png&#34; alt=&#34;Architecture&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;setup-a-gremlin-database&#34;&gt;Setup a Gremlin Database&lt;/h2&gt;
+&lt;h3 id=&#34;create-a-cosmosdb-account&#34;&gt;Create a CosmosDb account&lt;/h3&gt;
+&lt;p&gt;From the &lt;code&gt;/apps/curbside-pickup/devops&lt;/code&gt; folder, use the Azure CLI to deploy &lt;code&gt;database.bicep&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az deployment group create -f database.bicep --resource-group &amp;lt;your resource group&amp;gt; -p &lt;span style=&#34;color:#111&#34;&gt;cosmosAccountName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;lt;your account name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Insert your resource group name and pick a name for your CosmosDb account, for example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az deployment group create -f database.bicep --resource-group my-resource-group -p &lt;span style=&#34;color:#111&#34;&gt;cosmosAccountName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;my-drasi-db
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This will create a new CosmosDb account with the Gremlin API and a database named &lt;code&gt;Contoso&lt;/code&gt; with 2 empty graphs, named &lt;code&gt;PhysicalOperations&lt;/code&gt; and &lt;code&gt;RetailOperations&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;add-the-pickup-zone-data&#34;&gt;Add the Pickup zone data&lt;/h3&gt;
+&lt;p&gt;Login to the Azure portal and navigate to the Data explorer blade of your CosmosDb account.&lt;/p&gt;
+&lt;p&gt;Expand the &lt;code&gt;Contoso/PhysicalOperations&lt;/code&gt; Graph&lt;/p&gt;
+&lt;p&gt;Execute each of these Gremlin queries in the query box&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;g&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;addV&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Zone&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;property&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Curbside Queue&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;property&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Curbside Queue&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;g&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;addV&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Zone&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;property&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Parking Lot&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;).&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;property&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;Parking Lot&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;deploy-the-sources&#34;&gt;Deploy the sources&lt;/h2&gt;
+&lt;p&gt;Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using &lt;code&gt;kubectl&lt;/code&gt;. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of &lt;code&gt;PRIMARY CONNECTION STRING&lt;/code&gt; from the &lt;code&gt;Keys&lt;/code&gt; blade. Run the following command to create the secrets:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create secret generic phys-ops-creds --from-literal&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;accountEndpoint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;${PRIMARY CONNECTION STRING}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create secret generic retail-ops-creds --from-literal&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;accountEndpoint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;${PRIMARY CONNECTION STRING}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Navigate to the &lt;code&gt;/apps/curbside-pickup/devops&lt;/code&gt; folder, and from there, you can deploy the two sources using the Drasi CLI:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f phys-ops-source.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f retail-ops-source.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To verify that both sources are deployed successfully, run &lt;code&gt;drasi list source&lt;/code&gt;. The expected output should be as follows:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      ID     | AVAILABLE  
+-------------+------------
+  phys-ops   | true       
+  retail-ops | true  
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;deploy-the-queries&#34;&gt;Deploy the queries&lt;/h2&gt;
+&lt;p&gt;From the &lt;code&gt;/apps/curbside-pickup/devops&lt;/code&gt; folder, use the drasi CLI to deploy the continuous queries&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f queries-with-gremlin.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Similarly, run &lt;code&gt;drasi list query&lt;/code&gt; to verify the status of the continuous queries. The expected output should be as follows:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;           ID            | ERRORMESSAGE |              HOSTNAME               | STATUS  | CONTAINER  
+--------------------------+--------------+-------------------------------------+---------+------------
+  vehicles-in-parking-lot |              | default-query-host-...-... | RUNNING | default    
+  vehicles-in-queue       |              | default-query-host-...-... | RUNNING | default    
+  orders-prep             |              | default-query-host-...-... | RUNNING | default    
+  orders-ready            |              | default-query-host-...-... | RUNNING | default    
+  orders-matched-vehicle  |              | default-query-host-...-... | RUNNING | default
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;deploy-the-reaction&#34;&gt;Deploy the reaction&lt;/h2&gt;
+&lt;p&gt;From the &lt;code&gt;/apps/curbside-pickup/devops&lt;/code&gt; folder, use the drasi CLI to deploy the SignalR reaction&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f signalr-reaction.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Create a port forward for the SignalR reaction to a port on your local machine. Currently we have to use &lt;code&gt;kubectl&lt;/code&gt; to achieve this.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl port-forward services/signalr1-reaction-gateway 5001:8080 -n default
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;configure-and-start-the-app-backend&#34;&gt;Configure and start the App backend&lt;/h2&gt;
+&lt;p&gt;From the &lt;code&gt;/apps/curbside-pickup/functions&lt;/code&gt; folder, create a file named &lt;code&gt;local.settings.json&lt;/code&gt; and paste the following content, replacing the values for &lt;code&gt;RETAIL_OPS_URL&lt;/code&gt;, &lt;code&gt;RETAIL_OPS_KEY&lt;/code&gt;, &lt;code&gt;PHYSICAL_OPS_URL&lt;/code&gt; and &lt;code&gt;PHYSICAL_OPS_KEY&lt;/code&gt; with the values from the &lt;code&gt;Keys&lt;/code&gt; blade in the Azure Portal from your CosmosDb account.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;IsEncrypted&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;Values&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FUNCTIONS_WORKER_RUNTIME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;node&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;RETAIL_OPS_URL&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;wss://&amp;lt;my-database&amp;gt;.gremlin.cosmos.azure.com:443/&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;RETAIL_OPS_DB_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;Contoso&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;RETAIL_OPS_CNT_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;RetailOperations&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;RETAIL_OPS_KEY&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&amp;lt;access key&amp;gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;PHYSICAL_OPS_URL&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;wss://&amp;lt;my-database&amp;gt;.gremlin.cosmos.azure.com:443/&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;PHYSICAL_OPS_DB_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;Contoso&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;PHYSICAL_OPS_CNT_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;PhysicalOperations&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;PHYSICAL_OPS_KEY&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&amp;lt;access key&amp;gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#111&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;Host&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;LocalHttpPort&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7071&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Install the dependencies.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Run the Functions app.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;configure-and-start-the-app-frontend&#34;&gt;Configure and start the App frontend&lt;/h2&gt;
+&lt;p&gt;Double check the &lt;code&gt;config.json&lt;/code&gt; file under &lt;code&gt;/apps/curbside-pickup/app/src&lt;/code&gt; to ensure the Urls are correct.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;crudApiUrl&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;http://localhost:7071&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;//Location of Functions app
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;signalRUrl&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;http://localhost:5001/hub&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;//Location of SignalR port forward
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;From the &lt;code&gt;/apps/curbside-pickup/app&lt;/code&gt; folder, start the react app&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The front-end should be accessible at &lt;a href=&#34;http://localhost:3000&#34;&gt;http://localhost:3000&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;ui-overview.png&#34; alt=&#34;UI Overview&#34;&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Administrator: Building Comfort</title>
+      <link>https://project-drasi.github.io/administrator/sample-app-deployment/building-comfort/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://project-drasi.github.io/administrator/sample-app-deployment/building-comfort/</guid>
+      <description>
+        
+        
+        &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Drasi CLI&lt;/li&gt;
+&lt;li&gt;A dev environment with &lt;a href=&#34;https://nodejs.org/&#34;&gt;Node.js 18&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.python.org/downloads/&#34;&gt;Python 3.8&lt;/a&gt; or higher.&lt;/li&gt;
+&lt;li&gt;An Azure Subscription with permissions to create resources.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.microsoft.com/en-us/cli/azure/install-azure-cli&#34;&gt;Azure CLI 2.40&lt;/a&gt; or higher.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools&#34;&gt;Azure Functions Core Tools 4.0&lt;/a&gt; or higher.&lt;/li&gt;
+&lt;li&gt;A Kubernetes cluster with &lt;a href=&#34;https://project-drasi.github.io/administrator/platform-deployment/&#34;&gt;Project Drasi deployed&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;A clone of the &lt;a href=&#34;https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&amp;amp;version=GBdevelop&amp;amp;_a=contents&#34;&gt;Project Drasi Git repository&lt;/a&gt; on your local machine.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;overview-of-the-app&#34;&gt;Overview of the app&lt;/h2&gt;
+&lt;p&gt;This application illustrates the use of Project Drasi for a hypothetical building management scenario, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The use of Continuous Queries over a Cosmos Gremlin database.&lt;/li&gt;
+&lt;li&gt;Continuous Queries that include aggregations across hierarchical graph data.&lt;/li&gt;
+&lt;li&gt;The use of the Gremlin Reaction to update a Gremlin database based on the output of a Continuous Query.&lt;/li&gt;
+&lt;li&gt;The use of the SignalR Reaction to integrate Continuous Query output with a React JS Application.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this sample, Continuous Queries are used to calculate a &lt;em&gt;comfort level&lt;/em&gt; metric for building management. This is a human-centric measurement that combines the physical measurements in a room such as temperature, humidity, and CO2 levels into a perceptual rating of its comfort. For the purposes of this sample, the comfort level will be calculated dynamically for a room from the physical measurements using the simplified formula:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;comfortLevel = trunc(50+(temp-72) + (humidity-42) + if( CO2 &amp;gt; 500,(CO2 - 500)/25,0)) 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A range of 40 to 50 is considered acceptable: a value below 40 indicates that temperature and/or humidity is too low, while a value above 50 indicates that temperature, humidity, and/or CO2 levels are too high.&lt;/p&gt;
+&lt;p&gt;The app will provide a dashboard frontend to visualize the comfort levels of rooms and floors, as well as a way to change the environment measurements in the database to simulate changes in the building environment. The dashboard will also show alerts for rooms, floors, and the building when the comfort level is out of range, where the aggregated comfort levels for the floors and building are calculated from the average comfort levels of the rooms and floors respectively by Reactions.&lt;/p&gt;
+&lt;h3 id=&#34;app-architecture&#34;&gt;App Architecture&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;building-comfort-arch.png&#34; alt=&#34;Architecture&#34;&gt;&lt;/p&gt;
+&lt;p&gt;This app consists of:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A Source getting changes to building environment data from Cosmos DB.&lt;/li&gt;
+&lt;li&gt;Several Continuous Queries that calculate comfort levels and alerts for the rooms, as well as aggregate values for the floors and building as a whole.&lt;/li&gt;
+&lt;li&gt;A Gremlin Reaction that updates the Cosmos DB database with the calculated comfort levels and aggregate values based on changes in the room environment measurements.&lt;/li&gt;
+&lt;li&gt;A SignalR Reaction that receives changes and forwards them to any connected front end clients.&lt;/li&gt;
+&lt;li&gt;An Azure Function App that provides HTTP endpoints for the demo app to directly change the environment values in the database.&lt;/li&gt;
+&lt;li&gt;A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;deploying-the-app&#34;&gt;Deploying the App&lt;/h2&gt;
+&lt;h3 id=&#34;1-set-up-the-sample-data-provider&#34;&gt;1. Set up the sample data provider&lt;/h3&gt;
+&lt;p&gt;From the &lt;code&gt;apps/building-comfort/devops/azure-resources&lt;/code&gt; folder, use the Azure CLI to deploy &lt;code&gt;cosmosdb.bicep&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az login  &lt;span style=&#34;color:#75715e&#34;&gt;# If you are not already logged in&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az deployment group create -f cosmosdb.bicep --resource-group &amp;lt;your resource group&amp;gt; -p &lt;span style=&#34;color:#111&#34;&gt;cosmosAccountName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;lt;your account name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Fill in the name of the resource group you want deploy the demo (you will need to &lt;a href=&#34;https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#create-resource-groups&#34;&gt;create a new resource group&lt;/a&gt; first if you don&amp;rsquo;t already have one), and a name of your choice for the Cosmos DB account. For example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az deployment group create -f cosmosdb.bicep --resource-group my-resource-group -p &lt;span style=&#34;color:#111&#34;&gt;cosmosAccountName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;my-drasi-db
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The bicep deployment will create a new CosmosDb account with the Gremlin API enabled and a database named &lt;code&gt;Contoso&lt;/code&gt; with an empty &lt;code&gt;Facilities&lt;/code&gt; graph.&lt;/p&gt;
+&lt;h4 id=&#34;populate-the-sample-data&#34;&gt;Populate the sample data&lt;/h4&gt;
+&lt;p&gt;Copy the following into a &lt;code&gt;config.py&lt;/code&gt; file under &lt;code&gt;apps/building-comfort/devops/data&lt;/code&gt; and edit the &lt;code&gt;cosmosUri&lt;/code&gt; and &lt;code&gt;cosmosPassword&lt;/code&gt; values to match your created Cosmos DB account.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;cosmosUri&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;wss://my-drasi-db.gremlin.cosmos.azure.com:443/&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;cosmosUserName&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;/dbs/Contoso/colls/Facilities&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;cosmosPassword&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;xxx...xxx&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;buildingCount&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;floorCount&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;roomCount&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;defaultRoomTemp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;70&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;defaultRoomHumidity&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;defaultRoomCo2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can find the values for the &lt;code&gt;cosmosUri&lt;/code&gt; and &lt;code&gt;cosmosPassword&lt;/code&gt; in the Azure portal under your Cosmos DB account or by using the Azure CLI:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# For the cosmosUri, you can use the gremlinEndpoint returned by:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;COSMOS_DB_ID&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;$(&lt;/span&gt;az cosmosdb show -n my-drasi-db -g my-resource-group --query id -o tsv&lt;span style=&#34;color:#00a8c8&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az resource show --id &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;$COSMOS_DB_ID&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&lt;/span&gt; --query properties.gremlinEndpoint -o tsv
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# For the cosmosPassword, you can use the primaryMasterKey returned by:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az cosmosdb keys list --name my-drasi-db --resource-group my-resource-group --type keys --query primaryMasterKey -o tsv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once you have the &lt;code&gt;config.py&lt;/code&gt; file, you can run the &lt;code&gt;load_graph.py&lt;/code&gt; script in the same directory to populate the graph with sample data:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install gremlinpython  &lt;span style=&#34;color:#75715e&#34;&gt;# If you don&amp;#39;t already have the gremlinpython package installed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;python load_graph.py
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;2-deploy-the-drasi-components&#34;&gt;2. Deploy the Drasi components&lt;/h3&gt;
+&lt;h4 id=&#34;deploy-the-sources&#34;&gt;Deploy the sources&lt;/h4&gt;
+&lt;p&gt;Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using &lt;code&gt;kubectl&lt;/code&gt;. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of &lt;code&gt;PRIMARY CONNECTION STRING&lt;/code&gt; from the &lt;code&gt;Keys&lt;/code&gt; blade. Run the following command to create the secrets:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create secret generic comfy-creds --from-literal&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;accountEndpoint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;${PRIMARY CONNECTION STRING}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can also look up the &lt;code&gt;SourceAccountEndpoint&lt;/code&gt; value in the Azure portal or by using the Azure CLI:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az cosmosdb keys list --name my-drasi-db -g my-resource-group --type connection-strings --query &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;connectionStrings[?contains(description, &amp;#39;Primary Gremlin Connection String&amp;#39;)].[connectionString]&amp;#34;&lt;/span&gt; -o tsv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;From the &lt;code&gt;apps/building-comfort/devops/reactive-graph&lt;/code&gt; folder, apply the &lt;code&gt;source-facilities.yaml&lt;/code&gt; file with the drasi CLI to your cluster:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f source-facilities.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;deploy-the-queries&#34;&gt;Deploy the queries&lt;/h4&gt;
+&lt;p&gt;From the &lt;code&gt;apps/building-comfort/devops/reactive-graph&lt;/code&gt; folder, use the drasi CLI to deploy the continuous queries:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f query-alert.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f query-comfort-calc.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f query-ui.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Breaking down the Continuous Queries specified in each file:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;query-alert.yaml&lt;/code&gt; specifies the queries that detect when the comfort level in a room, a floor, or the whole building is outside the acceptable range of 40-50.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;query-comfort-calc.yaml&lt;/code&gt; specifies the queries that calculate the comfort level for each room based on the temperature, humidity, and CO2 levels as described in the overview. It also specifies queries to aggregate the comfort level for each floor based on its rooms, and for the building based on its floors.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;query-ui.yaml&lt;/code&gt; query gets the relevant properties and the relationships between rooms, floors and the building for visualization in the frontend React app.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;deploy-the-reactions&#34;&gt;Deploy the reactions&lt;/h4&gt;
+&lt;p&gt;To deploy the gremlin reaction, we need to create another secret using &lt;code&gt;kubectl&lt;/code&gt; to specify your Gremlin graph in the Cosmos DB instance:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl create secret generic comfy-creds --from-literal&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;DatabaseHost&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;DatabaseHost&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;}&lt;/span&gt; --from-literal&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;DatabasePrimaryKey&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;${DatabasePrimaryKey}&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DatabaseHost&lt;/code&gt; with the host DNS name for the Gremlin endpoint. This is the same as the &lt;code&gt;cosmosUri&lt;/code&gt; in &lt;code&gt;config.py&lt;/code&gt; without the &lt;code&gt;wss://&lt;/code&gt; prefix or the port number.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DatabasePrimaryKey&lt;/code&gt; with the primary key, same as the &lt;code&gt;cosmosPassword&lt;/code&gt; in &lt;code&gt;config.py&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Apply the &lt;code&gt;reaction-gremlin.yaml&lt;/code&gt; file and the &lt;code&gt;reaction-signalr.yaml&lt;/code&gt; file with the drasi CLI to your cluster:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f reaction-gremlin.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi apply -f reaction-signalr.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The Gremlin Reaction is used to update the graph in Cosmos DB with the latest comfort level for each room, floor, and building. The SignalR Reaction is used to send the updates of the UI query to the frontend React app.&lt;/p&gt;
+&lt;p&gt;To connect the React app to the SignalR Reaction, forward the gateway port for the SignalR reaction to a port on your local machine:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl port-forward services/signalr-building-gateway 5001:8080 -n default
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;3-run-the-demo-backend-and-frontend&#34;&gt;3. Run the demo backend and frontend&lt;/h3&gt;
+&lt;h4 id=&#34;configure-and-start-the-backend-functions-app-for-updating-the-data&#34;&gt;Configure and start the backend Functions App for updating the data&lt;/h4&gt;
+&lt;p&gt;From the &lt;code&gt;apps/building-comfort/functions&lt;/code&gt; folder, create a file named &lt;code&gt;local.settings.json&lt;/code&gt; and paste the following content with the appropriate &lt;code&gt;FACILITIES_URL&lt;/code&gt; (same as the &lt;code&gt;cosmosUri&lt;/code&gt; value) and &lt;code&gt;FACILITIES_KEY&lt;/code&gt; (same as the &lt;code&gt;cosmosPassword&lt;/code&gt;) value.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;IsEncrypted&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;false&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;Values&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FUNCTIONS_WORKER_RUNTIME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;node&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FACILITIES_DB_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;Contoso&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FACILITIES_CNT_NAME&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;Facilities&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FACILITIES_URL&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;wss://my-drasi-db.gremlin.cosmos.azure.com:443/&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;FACILITIES_KEY&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;xxx...xxx&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#111&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;Host&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;LocalHttpPort&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7071&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Install the dependencies and run the Functions app locally:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm start -- --javascript
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;configure-and-start-the-frontend-react-app&#34;&gt;Configure and start the frontend React app&lt;/h4&gt;
+&lt;p&gt;From the &lt;code&gt;apps/building-comfort/app&lt;/code&gt; folder, edit the &lt;code&gt;config.json&lt;/code&gt; file to specify the local URLs for your deployment:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;crudApiUrl&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;http://localhost:7071&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt;     &lt;span style=&#34;color:#75715e&#34;&gt;// LocalHttpPort of the backend Functions app
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;signalRUrl&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;http://localhost:5001/hub&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// Kubectl port-forward of SignalR reaction
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Install the dependencies and run the React app locally:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm install
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;npm start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The front-end should launch at &lt;a href=&#34;http://localhost:3000&#34;&gt;http://localhost:3000&lt;/a&gt; by default.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;: If you are experiencing issues with CORS policy (e.g. clicking a button and not seeing any changes), you can follow this workaround solution:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install Chrome&lt;/li&gt;
+&lt;li&gt;In a terminal, execute the following line:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;open /Applications/Google&lt;span style=&#34;color:#8045ff&#34;&gt;\ &lt;/span&gt;Chrome.app --args --user-data-dir&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;/var/tmp/chrome-dev-disabled-security&amp;#34;&lt;/span&gt; --disable-web-security --disable-site-isolation-trials
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Navigate to &lt;code&gt;localhost:3000&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;using-the-frontend-app&#34;&gt;Using the frontend app&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&#34;building-comfort-ui.png&#34; alt=&#34;Building Comfort UI&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The UI shows the measured levels of temperature, humidity, and CO2 levels in each room, and the comfort level calculated from those values for each room, floor, and the building. Any alerts for rooms, floors, of the building are show under Comfort Alerts on the left, for example:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;building-comfort-ui-alerts.png&#34; alt=&#34;Building Comfort UI with alerts&#34;&gt;&lt;/p&gt;
+&lt;p&gt;You can use the buttons associated with each room to change the temperature, humidity, and CO2 levels in each room, and see the comfort level and alerts update in real time:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;BREAK&lt;/code&gt; button sets the temperature to 40, humidity to 20, and CO2 to 700, which will result in a room comfort level outside the acceptable range of 40-50. It will set each property individually with a slight delay between them to simulate a real scenario and show the how the comfort level calculations done by the Continuous Queries are affected in real time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The &lt;code&gt;RESET&lt;/code&gt; button sets the temperature to 70, humidity to 40, and CO2 to 10, which will restore the room to an acceptable comfort level. As with the &lt;code&gt;BREAK&lt;/code&gt; button, it will set each property individually with a slight delay between them.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

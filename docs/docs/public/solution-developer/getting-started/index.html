@@ -1,0 +1,768 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="generator" content="Hugo 0.111.3">
+<link rel="alternate" type="application/rss&#43;xml" href="https://project-drasi.github.io/solution-developer/getting-started/index.xml">
+<meta name="robots" content="index, follow">
+
+
+<link rel="shortcut icon" href="/favicons/favicon.ico" >
+<link rel="apple-touch-icon" href="/favicons/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicons/android-36x36.png" sizes="36x36">
+<link rel="icon" type="image/png" href="/favicons/android-48x48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/favicons/android-72x72.png" sizes="72x72">
+<link rel="icon" type="image/png" href="/favicons/android-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/favicons/android-144x144.png" sizes="144x144">
+<link rel="icon" type="image/png" href="/favicons/android-192x192.png" sizes="192x192">
+
+<title>QuickStart Tutorial | Project Drasi</title>
+<meta name="description" content="Get started building Drasi-based solutions quickly
+">
+<meta property="og:title" content="QuickStart Tutorial" />
+<meta property="og:description" content="Get started building Drasi-based solutions quickly
+" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://project-drasi.github.io/solution-developer/getting-started/" />
+<meta itemprop="name" content="QuickStart Tutorial">
+<meta itemprop="description" content="Get started building Drasi-based solutions quickly
+"><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="QuickStart Tutorial"/>
+<meta name="twitter:description" content="Get started building Drasi-based solutions quickly
+"/>
+
+
+
+
+<link rel="preload" href="/scss/main.min.8b5cb6bf325858503123a884cabb18b474576e49a8f8b45c16440e12cb52ad15.css" as="style">
+<link href="/scss/main.min.8b5cb6bf325858503123a884cabb18b474576e49a8f8b45c16440e12cb52ad15.css" rel="stylesheet" integrity="">
+
+<script
+  src="https://code.jquery.com/jquery-3.6.3.min.js"
+  integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/prism.css"/>
+
+  </head>
+  <body class="td-section">
+    <header>
+      <nav class="td-navbar navbar-dark js-navbar-scroll">
+<div class="container-fluid flex-column flex-md-row">
+  <a class="navbar-brand" href="/"><span class="navbar-brand__logo navbar-logo"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500"><g><path style="fill:#fff" d="M116.8525 421.9722c-5.7041.0-10.3442-4.3127-10.3442-9.6129V88.183c0-5.3002 4.6401-9.6117 10.3442-9.6117H320.858c3.0347.0 9.3959.5498 11.7506 2.6302l.3545.3442 58.905 63.2912c2.3101 2.491 2.9202 8.4928 2.9202 11.3184v256.2039c0 5.3002-4.6407 9.6129-10.3436 9.6129H116.8525z"/><g><g><g><path style="fill:#767676" d="M384.4445 423.2066H116.852c-6.3839.0-11.5786-4.8658-11.5786-10.8474V88.1831c0-5.9804 5.1947-10.8461 11.5786-10.8461h204.0062c.377.0 9.2786.0329 12.568 2.9389l.3947.3833 58.9508 63.337c3.2135 3.4652 3.2514 11.7924 3.2514 12.1593v256.2036C396.0231 418.3408 390.8284 423.2066 384.4445 423.2066zM116.5079 411.9189c.0848.0278.1999.0531.3441.0531h267.5925c.1442.0.2581-.0253.3441-.0531V156.1556c-.0076-.9033-.3593-3.7347-.7034-5.0037l-57.6527-61.9416c-1.4651-.3176-4.4533-.6389-5.5742-.6389H116.852c-.143.0-.2594.024-.3441.0531V411.9189zm267.4533-261.149zM327.0321 89.371v.0013V89.371z"/></g></g></g><g><g><path style="fill:#5b7fc0" d="M189.0874 210.1754l.0012-.0012c7.7751.0012 15.0295 4.1862 18.932 10.9234 1.9177 3.3159 2.9305 7.1011 2.9293 10.9378.0 5.8394-2.2733 11.3304-6.4032 15.4604-4.1288 4.1288-9.6186 6.4032-15.458 6.4032s-11.328-2.2733-15.458-6.4032-6.4032-9.6186-6.4056-15.4628c.0012-6.025 2.454-11.4897 6.4116-15.4473C177.5953 212.627 183.0601 210.1742 189.0874 210.1754zm7.993 21.8576c.0012-1.4042-.3687-2.7868-1.063-3.9887-1.4293-2.4684-4.0833-3.9995-6.9299-4.0019-4.4077.0024-7.993 3.5877-7.993 7.993.0 2.1356.832 4.1431 2.3427 5.6539 1.5083 1.5083 3.5159 2.3403 5.6503 2.3415 2.1356.0 4.1443-.8308 5.6539-2.3403S197.0816 234.1722 197.0804 232.033z"/><path style="opacity:.3;fill:#fff" d="M189.0898 210.176c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3136 2.9377 7.0988 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8066-21.8612-21.8613.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 212.6276 183.0612 210.176 189.0898 210.176zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 236.239 197.0839 234.2399 197.0839 232.0372z"/><g><defs><path id="SVGID_1_" d="M194.7376 237.6875c-1.4461 1.4461-3.4452 2.3439-5.6479 2.3439-4.4077-.0024-7.9918-3.5865-7.9942-7.9942.0024-4.4125 3.5937-7.999 7.9942-7.9942 2.8443.0 5.497 1.5323 6.924 3.9983.6991 1.2067 1.0702 2.5881 1.0702 3.9959C197.0839 234.2399 196.1861 236.239 194.7376 237.6875z"/></defs><clipPath id="SVGID_2_"><use xlink:href="#SVGID_1_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_2_);fill:#fff" d="M190.0704 225.0237c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9546.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.663-2.8588-6.116.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C193.7885 225.7247 191.9774 225.0237 190.0704 225.0237z"/><path style="opacity:.13;clip-path:url(#SVGID_2_);fill:#020202" d="M190.0704 225.0237c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9546.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.663-2.8588-6.116.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C193.7885 225.7247 191.9774 225.0237 190.0704 225.0237z"/></g><g><defs><path id="SVGID_3_" d="M189.0898 210.176c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3136 2.9377 7.0988 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8066-21.8612-21.8613.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 212.6276 183.0612 210.176 189.0898 210.176zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 236.239 197.0839 234.2399 197.0839 232.0372z"/></defs><clipPath id="SVGID_4_"><use xlink:href="#SVGID_3_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_4_);fill:#5b7fc0" d="M172.6595 215.6045c-3.96 3.96-6.4116 9.4235-6.4116 15.452-.0024 12.0547 9.8066 21.8636 21.8613 21.8612 12.0547.0024 21.8636-9.797 21.8613-21.8612.0024-3.8475-1.0151-7.6326-2.9353-10.9462-3.8977-6.7324-11.1497-10.9151-18.926-10.9151C182.0806 209.1953 176.6171 211.647 172.6595 215.6045z"/></g></g><rect x="198.8952" y="225.1043" style="fill:#5b7fc0" width="122.6266" height="13.8671"/></g><g><path style="fill:#d95140" d="M189.0874 155.7611l.0012-.0012c7.7751.0012 15.0295 4.1862 18.932 10.9234 1.9177 3.3159 2.9305 7.1011 2.9293 10.9378.0 5.8394-2.2733 11.3304-6.4032 15.4604-4.1288 4.1288-9.6186 6.4032-15.458 6.4032s-11.328-2.2733-15.458-6.4032-6.4032-9.6186-6.4056-15.4628c.0012-6.0249 2.454-11.4897 6.4116-15.4473C177.5953 158.2128 183.0601 155.7599 189.0874 155.7611zm7.993 21.8577c.0012-1.4042-.3687-2.7868-1.063-3.9887-1.4293-2.4684-4.0833-3.9995-6.9299-4.0019-4.4077.0024-7.993 3.5877-7.993 7.993.0 2.1356.832 4.1431 2.3427 5.6539 1.5083 1.5083 3.5159 2.3403 5.6503 2.3415 2.1356.0 4.1443-.8308 5.6539-2.3403C196.2508 181.7667 197.0816 179.758 197.0804 177.6188z"/><path style="opacity:.3;fill:#fff" d="M189.0898 155.7617c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3135 2.9377 7.0987 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8066-21.8612-21.8613.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 158.2134 183.0612 155.7617 189.0898 155.7617zm7.9941 21.8613c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 181.8248 197.0839 179.8256 197.0839 177.623z"/><g><defs><path id="SVGID_5_" d="M194.7376 183.2733c-1.4461 1.4461-3.4452 2.3439-5.6479 2.3439-4.4077-.0024-7.9918-3.5865-7.9942-7.9942.0024-4.4125 3.5937-7.9989 7.9942-7.9942 2.8443.0 5.497 1.5323 6.924 3.9983.6991 1.2067 1.0702 2.5881 1.0702 3.9959C197.0839 179.8256 196.1861 181.8248 194.7376 183.2733z"/></defs><clipPath id="SVGID_6_"><use xlink:href="#SVGID_5_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_6_);fill:#fff" d="M190.0704 170.6095c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9546.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.663-2.8588-6.116.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C193.7885 171.3104 191.9774 170.6095 190.0704 170.6095z"/><path style="opacity:.13;clip-path:url(#SVGID_6_);fill:#020202" d="M190.0704 170.6095c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9546.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.663-2.8588-6.116.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C193.7885 171.3104 191.9774 170.6095 190.0704 170.6095z"/></g><g><defs><path id="SVGID_7_" d="M189.0898 155.7617c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3135 2.9377 7.0987 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8066-21.8612-21.8613.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 158.2134 183.0612 155.7617 189.0898 155.7617zm7.9941 21.8613c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 181.8248 197.0839 179.8256 197.0839 177.623z"/></defs><clipPath id="SVGID_8_"><use xlink:href="#SVGID_7_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_8_);fill:#d95140" d="M172.6595 161.1903c-3.96 3.96-6.4116 9.4235-6.4116 15.452-.0024 12.0547 9.8066 21.8636 21.8613 21.8613 12.0547.0024 21.8636-9.797 21.8613-21.8613.0024-3.8474-1.0151-7.6326-2.9353-10.9462-3.8977-6.7324-11.1497-10.9151-18.926-10.9151C182.0806 154.7811 176.6171 157.2327 172.6595 161.1903z"/></g><rect x="198.8952" y="170.69" style="fill:#d95140" width="122.6266" height="13.8671"/></g><g><g><path style="fill:#56a55c" d="M189.5379 264.6147l.0012-.0012c7.7751.0012 15.0294 4.1862 18.932 10.9235 1.9177 3.3159 2.9305 7.1011 2.9293 10.9378.0 5.8394-2.2733 11.3304-6.4032 15.4604-4.1288 4.1288-9.6186 6.4032-15.458 6.4032-5.8394.0-11.3281-2.2733-15.458-6.4032-4.13-4.13-6.4032-9.6186-6.4056-15.4628.0012-6.0249 2.454-11.4897 6.4116-15.4472C178.0458 267.0663 183.5105 264.6135 189.5379 264.6147zm7.993 21.8576c.0012-1.4042-.3687-2.7868-1.063-3.9887-1.4293-2.4684-4.0833-3.9995-6.9299-4.0019-4.4077.0024-7.993 3.5877-7.993 7.993.0 2.1356.832 4.1431 2.3427 5.6538 1.5083 1.5083 3.5159 2.3403 5.6503 2.3415 2.1356.0 4.1443-.8308 5.6539-2.3403C196.7013 290.6202 197.5321 288.6115 197.5309 286.4723z"/><path style="opacity:.3;fill:#fff" d="M189.5403 264.6153c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3135 2.9377 7.0987 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8065-21.8612-21.8613.0-6.0285 2.4516-11.492 6.4116-15.452C178.0482 267.0669 183.5117 264.6153 189.5403 264.6153zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9941.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.6366 290.6783 197.5344 288.6792 197.5344 286.4765z"/><g><defs><path id="SVGID_9_" d="M195.1881 292.1268c-1.4461 1.4461-3.4452 2.3439-5.6479 2.3439-4.4077-.0024-7.9918-3.5865-7.9942-7.9942.0024-4.4125 3.5937-7.9989 7.9942-7.9941 2.8443.0 5.497 1.5323 6.924 3.9983.6991 1.2067 1.0702 2.5881 1.0702 3.9959C197.5344 288.6792 196.6366 290.6783 195.1881 292.1268z"/></defs><clipPath id="SVGID_10_"><use xlink:href="#SVGID_9_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_10_);fill:#fff" d="M190.5209 279.463c-4.4005-.0048-7.9918 3.5817-7.9942 7.9941.0011 1.9547.7088 3.7452 1.8782 5.1354-1.7446-1.4674-2.8575-3.6631-2.8588-6.1161.0024-4.4125 3.5936-7.999 7.9942-7.9941 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C194.239 280.164 192.4279 279.463 190.5209 279.463z"/><path style="opacity:.13;clip-path:url(#SVGID_10_);fill:#020202" d="M190.5209 279.463c-4.4005-.0048-7.9918 3.5817-7.9942 7.9941.0011 1.9547.7088 3.7452 1.8782 5.1354-1.7446-1.4674-2.8575-3.6631-2.8588-6.1161.0024-4.4125 3.5936-7.999 7.9942-7.9941 2.3802-1e-4 4.616 1.0833 6.1218 2.8788C194.239 280.164 192.4279 279.463 190.5209 279.463z"/></g><g><defs><path id="SVGID_11_" d="M189.5403 264.6153c7.7763.0 15.0283 4.1826 18.926 10.9151 1.9201 3.3135 2.9377 7.0987 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8613-12.0547.0024-21.8636-9.8065-21.8612-21.8613.0-6.0285 2.4516-11.492 6.4116-15.452C178.0482 267.0669 183.5117 264.6153 189.5403 264.6153zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9941.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.6366 290.6783 197.5344 288.6792 197.5344 286.4765z"/></defs><clipPath id="SVGID_12_"><use xlink:href="#SVGID_11_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_12_);fill:#56a55c" d="M173.11 270.0439c-3.96 3.96-6.4116 9.4235-6.4116 15.452-.0024 12.0547 9.8066 21.8636 21.8613 21.8613 12.0547.0024 21.8636-9.797 21.8613-21.8613.0024-3.8474-1.0151-7.6326-2.9353-10.9462-3.8977-6.7325-11.1497-10.9151-18.926-10.9151C182.5311 263.6346 177.0676 266.0863 173.11 270.0439z"/></g></g><rect x="199.3456" y="279.5436" style="fill:#56a55c" width="122.6266" height="13.8671"/></g><g><g><path style="fill:#f1bc42" d="M189.0874 318.7208l.0012-.0012c7.7751.0012 15.0295 4.1862 18.932 10.9234 1.9177 3.3159 2.9305 7.1011 2.9293 10.9378.0 5.8394-2.2733 11.3305-6.4032 15.4604-4.1288 4.1288-9.6186 6.4032-15.458 6.4032s-11.328-2.2733-15.458-6.4032-6.4032-9.6186-6.4056-15.4628c.0012-6.025 2.454-11.4897 6.4116-15.4472C177.5953 321.1724 183.0601 318.7196 189.0874 318.7208zm7.993 21.8576c.0012-1.4042-.3687-2.7868-1.063-3.9887-1.4293-2.4684-4.0833-3.9995-6.9299-4.0019-4.4077.0024-7.993 3.5877-7.993 7.993.0 2.1356.832 4.1431 2.3427 5.6539 1.5083 1.5083 3.5159 2.3403 5.6503 2.3415 2.1356.0 4.1443-.8308 5.6539-2.3403S197.0816 342.7176 197.0804 340.5784z"/><path style="opacity:.3;fill:#fff" d="M189.0898 318.7214c7.7763.0 15.0283 4.1826 18.926 10.915 1.9201 3.3136 2.9377 7.0988 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8612-12.0547.0024-21.8636-9.8065-21.8612-21.8612.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 321.173 183.0612 318.7214 189.0898 318.7214zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 344.7844 197.0839 342.7853 197.0839 340.5826z"/><g><defs><path id="SVGID_13_" d="M194.7376 346.2329c-1.4461 1.4461-3.4452 2.3439-5.6479 2.3439-4.4077-.0024-7.9918-3.5865-7.9942-7.9942.0024-4.4125 3.5937-7.999 7.9942-7.9942 2.8443.0 5.497 1.5323 6.924 3.9983.6991 1.2067 1.0702 2.5881 1.0702 3.9959C197.0839 342.7853 196.1861 344.7844 194.7376 346.2329z"/></defs><clipPath id="SVGID_14_"><use xlink:href="#SVGID_13_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_14_);fill:#fff" d="M190.0704 333.5691c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9547.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.6631-2.8588-6.1161.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0834 6.1218 2.8788C193.7885 334.2701 191.9774 333.5691 190.0704 333.5691z"/><path style="opacity:.13;clip-path:url(#SVGID_14_);fill:#020202" d="M190.0704 333.5691c-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0011 1.9547.7088 3.7452 1.8782 5.1354-1.7447-1.4674-2.8575-3.6631-2.8588-6.1161.0024-4.4125 3.5936-7.999 7.9942-7.9942 2.3802-1e-4 4.616 1.0834 6.1218 2.8788C193.7885 334.2701 191.9774 333.5691 190.0704 333.5691z"/></g><g><defs><path id="SVGID_15_" d="M189.0898 318.7214c7.7763.0 15.0283 4.1826 18.926 10.915 1.9201 3.3136 2.9377 7.0988 2.9353 10.9462.0024 12.0643-9.8065 21.8636-21.8613 21.8612-12.0547.0024-21.8636-9.8065-21.8612-21.8612.0-6.0285 2.4516-11.4921 6.4116-15.452C177.5977 321.173 183.0612 318.7214 189.0898 318.7214zm7.9941 21.8612c0-1.4078-.3711-2.7892-1.0702-3.9959-1.4269-2.466-4.0797-3.9983-6.924-3.9983-4.4005-.0048-7.9918 3.5817-7.9942 7.9942.0024 4.4077 3.5865 7.9918 7.9942 7.9942 2.2027.0 4.2018-.8978 5.6479-2.3439C196.1861 344.7844 197.0839 342.7853 197.0839 340.5826z"/></defs><clipPath id="SVGID_16_"><use xlink:href="#SVGID_15_" style="overflow:visible"/></clipPath><path style="clip-path:url(#SVGID_16_);fill:#f1bc42" d="M172.6595 324.15c-3.96 3.96-6.4116 9.4235-6.4116 15.452-.0024 12.0547 9.8066 21.8636 21.8613 21.8612 12.0547.0024 21.8636-9.797 21.8613-21.8612.0024-3.8474-1.0151-7.6327-2.9353-10.9462-3.8977-6.7324-11.1497-10.9151-18.926-10.9151C182.0806 317.7407 176.6171 320.1924 172.6595 324.15z"/></g></g><rect x="198.8952" y="333.6497" style="fill:#f1bc42" width="122.6266" height="13.8671"/></g></g></svg></span><span class="navbar-brand__name">Project Drasi</span></a>
+  <div class="td-navbar-nav-scroll ms-md-auto" id="main_navbar">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/support"><span>SUPPORT</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&amp;version=GBdevelop&amp;_a=contents" target="_blank" rel="noopener"><span>CODE</span></a>
+      </li>
+      </ul>
+  </div>
+  <div class="d-none d-lg-block">
+    
+  </div>
+</div>
+</nav>
+    </header>
+    <div class="container-fluid td-outer">
+      <div class="td-main">
+        <div class="row flex-xl-nowrap">
+          <aside class="col-12 col-md-3 col-xl-2 td-sidebar d-print-none">
+            <div id="td-sidebar-menu" class="td-sidebar__inner">
+  <form class="td-sidebar__search d-flex align-items-center">
+    
+    <button class="btn btn-link td-sidebar__toggle d-md-none p-0 ms-3 fas fa-bars" type="button" data-bs-toggle="collapse" data-bs-target="#td-section-nav" aria-controls="td-section-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    </button>
+  </form>
+  <nav class="td-sidebar-nav collapse" id="td-section-nav">
+    <ul class="td-sidebar-nav__section pe-md-3 ul-0">
+      <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m--li">
+  <a href="/" title="Project Drasi" class="align-left ps-0 td-sidebar-link td-sidebar-link__section tree-root" id="m-"><span class="">Home</span></a>
+  <ul class="ul-1">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child active-path" id="m-solution-developer-li">
+  <a href="/solution-developer/" title="Solution Developer Guides" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developer"><span class="">Solution Developer</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child active-path" id="m-solution-developergetting-started-li">
+  <a href="/solution-developer/getting-started/" class="align-left ps-0 active td-sidebar-link td-sidebar-link__section" id="m-solution-developergetting-started"><span class="td-sidebar-nav-active-item">QuickStart Tutorial</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developerbackground-li">
+  <a href="/solution-developer/background/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developerbackground"><span class="">Background</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-solution-developercomponents-li">
+  <a href="/solution-developer/components/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developercomponents"><span class="">Components</span></a>
+  <ul class="ul-3 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developercomponentssources-li">
+  <a href="/solution-developer/components/sources/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developercomponentssources"><span class="">Sources</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developercomponentscontinuous-queries-li">
+  <a href="/solution-developer/components/continuous-queries/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developercomponentscontinuous-queries"><span class="">Continuous Queries</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developercomponentsreactions-li">
+  <a href="/solution-developer/components/reactions/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developercomponentsreactions"><span class="">Reactions</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developersolution-design-li">
+  <a href="/solution-developer/solution-design/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developersolution-design"><span class="">Solution Design</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developerquery-language-li">
+  <a href="/solution-developer/query-language/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developerquery-language"><span class="">Continuous Query Syntax</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developervscode-extension-li">
+  <a href="/solution-developer/vscode-extension/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developervscode-extension"><span class="">VS Code Extension</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developertroubleshooting-li">
+  <a href="/solution-developer/troubleshooting/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developertroubleshooting"><span class="">Troubleshooting</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-solution-developersample-apps-li">
+  <a href="/solution-developer/sample-apps/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-solution-developersample-apps"><span class="">Sample Applications</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-administrator-li">
+  <a href="/administrator/" title="Administrator Guides" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administrator"><span class="">Administrator</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-administratorplatform-deployment-li">
+  <a href="/administrator/platform-deployment/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorplatform-deployment"><span class="">Deploying Drasi</span></a>
+  <ul class="ul-3 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-administratorplatform-deploymentfrom-preview-images-li">
+  <a href="/administrator/platform-deployment/from-preview-images/" title="Deploying Drasi from Preview Images" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorplatform-deploymentfrom-preview-images"><span class="">From Images</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-administratorplatform-deploymentfrom-source-li">
+  <a href="/administrator/platform-deployment/from-source/" title="Deploying Drasi from Source" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorplatform-deploymentfrom-source"><span class="">From Source</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-administratorsample-app-deployment-li">
+  <a href="/administrator/sample-app-deployment/" title="Installing Sample Applications" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorsample-app-deployment"><span class="">Installing Samples</span></a>
+  <ul class="ul-3 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-administratorsample-app-deploymentcurbside-pickup-li">
+  <a href="/administrator/sample-app-deployment/curbside-pickup/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorsample-app-deploymentcurbside-pickup"><span class="">Curbside Pickup</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-administratorsample-app-deploymentbuilding-comfort-li">
+  <a href="/administrator/sample-app-deployment/building-comfort/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorsample-app-deploymentbuilding-comfort"><span class="">Building Comfort</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-administratorobservability-li">
+  <a href="/administrator/observability/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-administratorobservability"><span class="">Observability</span></a>
+</li>
+  </ul>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-support-li">
+  <a href="/support/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-support"><span class="">Support</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section with-child" id="m-reference-li">
+  <a href="/reference/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-reference"><span class="">Reference</span></a>
+  <ul class="ul-2 foldable">
+    <li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referenceglossary-li">
+  <a href="/reference/glossary/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referenceglossary"><span class="">Glossary</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referencedemo-environment-li">
+  <a href="/reference/demo-environment/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referencedemo-environment"><span class="">Demo Environment</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referencequery-container-li">
+  <a href="/reference/query-container/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referencequery-container"><span class="">Query Container</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referenceusing-kind-li">
+  <a href="/reference/using-kind/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referenceusing-kind"><span class="">Using Kind</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referenceusing-minikube-li">
+  <a href="/reference/using-minikube/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referenceusing-minikube"><span class="">Using MiniKube</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referencedrasi-cli-li">
+  <a href="/reference/drasi-cli/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referencedrasi-cli"><span class="">Drasi CLI</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referencesmoke-test-li">
+  <a href="/reference/smoke-test/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referencesmoke-test"><span class="">Smoke test</span></a>
+</li><li class="td-sidebar-nav__section-title td-sidebar-nav__section without-child" id="m-referencesetup-postgres-li">
+  <a href="/reference/setup-postgres/" class="align-left ps-0 td-sidebar-link td-sidebar-link__section" id="m-referencesetup-postgres"><span class="">Using PostgreSQL</span></a>
+</li>
+  </ul>
+</li>
+  </ul>
+</li>
+    </ul>
+  </nav>
+</div>
+
+          </aside>
+          <aside class="d-none d-xl-block col-xl-2 td-sidebar-toc d-print-none">
+            
+<div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+
+</div>
+
+            <div class="td-toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#solution-overview">Solution Overview</a></li>
+    <li><a href="#solution-architecture">Solution Architecture</a></li>
+    <li><a href="#step-1---deploy-drasi">Step 1 - Deploy Drasi</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#step-2---create-the-postgresql-source">Step 2 - Create the PostgreSQL Source</a></li>
+    <li><a href="#step-3---create-the-continuous-queries">Step 3 - Create the Continuous Queries</a></li>
+    <li><a href="#step-4---create-the-debug-reaction">Step 4 - Create the Debug Reaction</a></li>
+    <li><a href="#step-5---test-the-solution">Step 5 - Test the Solution</a></li>
+    <li><a href="#reflection">Reflection</a></li>
+    <li><a href="#cleanup">Cleanup</a></li>
+    <li><a href="#next-steps">Next Steps&hellip;</a></li>
+  </ul>
+</nav>
+      </div>
+    
+            
+
+          </aside>
+          <main class="col-12 col-md-9 col-xl-8 ps-md-5" role="main">
+            
+  
+
+            <nav aria-label="breadcrumb" class="td-breadcrumbs">
+  <ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="https://project-drasi.github.io/solution-developer/">Solution Developer</a></li>
+  <li class="breadcrumb-item active" aria-current="page">
+    QuickStart Tutorial</li>
+  </ol>
+</nav>
+            
+<div class="td-content">
+	<h1>QuickStart Tutorial</h1>
+  <div class="lead">Get started building Drasi-based solutions quickly</div>
+	<header class="article-meta">
+		
+</header>
+	<p>This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.</p>
+<p>After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the <a href="/solution-developer">Solution Developer Guides</a>.</p>
+<h2 id="solution-overview">Solution Overview</h2>
+<p>In this sample Drasi solution, the source of data (and change) will be a <code>Message</code> table in a PostgreSQL database, which holds the content of messages sent by people. The <code>Message</code> table contains these three fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MessageId</td>
+<td>integer</td>
+<td>A unique id for each message.</td>
+</tr>
+<tr>
+<td>From</td>
+<td>character varying(50)</td>
+<td>The name of who the message is from.</td>
+</tr>
+<tr>
+<td>Message</td>
+<td>character varying(200)</td>
+<td>The text of the message.</td>
+</tr>
+</tbody>
+</table>
+<p>You will create three Continuous Queries that observe the <code>Message</code> table to answer the following questions in real-time:</p>
+<ol>
+<li>Which people have sent the message &ldquo;Hello World&rdquo;?</li>
+<li>How many times has the same message been sent?</li>
+<li>Which people haven&rsquo;t sent a message in the last 20 seconds?</li>
+</ol>
+<p>Initially, the <code>Message</code> table will contain the following messages:</p>
+<table>
+<thead>
+<tr>
+<th>MessageId</th>
+<th>From</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Buzz Lightyear</td>
+<td>To infinity and beyond!</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Brian Kernighan</td>
+<td>Hello World</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Antoninus</td>
+<td>I am Spartacus</td>
+</tr>
+<tr>
+<td>4</td>
+<td>David</td>
+<td>I am Spartacus</td>
+</tr>
+</tbody>
+</table>
+<p>During the tutorial, you will add and remove messages and immediately observe the effect of those changes on your Continuous Query results using the <a href="/solution-developer/components/reactions/#debug-reaction">Debug Reaction</a>. The Debug Reaction subscribes to a set of Continuous Queries and provides a dynamic view of each query&rsquo;s result set in a Web browser. It is common to use the Debug Reaction to test your Continuous Queries prior to setting up your actual Reactions.</p>
+<h2 id="solution-architecture">Solution Architecture</h2>
+<p>When complete, the Hello World solution will have the component architecture shown in this diagram:</p>
+
+<figure>
+    <img src="hello-world-solution.png"
+         alt="Hello World Solution" width="70%"/> 
+</figure>
+
+<p>Although an intentionally simple example, the Hello World solution contains all the components of any Drasi-based solution, including:</p>
+<ul>
+<li>Drasi <strong>Sources</strong> that provide access to external data sources</li>
+<li><strong>Continuous Queries</strong> that observe Sources and detect change</li>
+<li><strong>Reactions</strong> that take action on the Continuous Query result set changes</li>
+</ul>
+<p>To complete the tutorial, you will be guided through the following steps:</p>
+<ol>
+<li>Deploy Drasi</li>
+<li>Create the PostgreSQL Source</li>
+<li>Create the Continuous Queries</li>
+<li>Create the Debug Reaction</li>
+<li>Test the Solution</li>
+</ol>
+<h2 id="step-1---deploy-drasi">Step 1 - Deploy Drasi</h2>
+<p>To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get one suitable for the tutorial is to use a <a href="https://code.visualstudio.com/docs/devcontainers/containers">Visual Studio Code Dev Container</a> we have created for the tutorial.</p>
+<p>To use the Drasi Dev Container, you will need to install:</p>
+<ul>
+<li><a href="https://code.visualstudio.com/">Visual Studio Code</a> (or <a href="https://code.visualstudio.com/insiders">Insiders Edition</a>)</li>
+<li>Visual Studio Code <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">Dev Containers extension</a></li>
+<li><a href="https://www.docker.com/get-started/">Docker</a></li>
+</ul>
+<p>Once you have these prerequisites installed:</p>
+<ol>
+<li>Download the <a href="https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip">Drasi QuickStart ZIP file</a></li>
+<li>Unzip the Drasi QuickStart ZIP file to a temporary location on your computer</li>
+<li>Run VS Code and open the <code>tutorial/getting-started</code> folder from the Drasi QuickStart files you just unzipped</li>
+</ol>
+<p>If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:</p>
+<ul>
+<li><code>.devcontainer</code> contains files that VS Code requires to configure the Dev Container</li>
+<li><code>resources</code> contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions</li>
+</ul>
+<p>Run the Dev Container as follows:</p>
+<ol>
+<li>Open the Command Palette using <code>Ctrl + Shift + P</code> (Win/Linux) or <code>Cmd + Shift + P</code> (Mac)</li>
+<li>Type &ldquo;dev containers:&rdquo;</li>
+<li>Select &ldquo;Dev Containers: Rebuild and Reopen in Container&rdquo;</li>
+</ol>
+<p>The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.</p>
+<p>When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.</p>
+<pre tabindex="0"><code>Done. Press any key to close the terminal.
+</code></pre><p>If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for <a href="https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images">cleaning out unused containers and images</a>. If this doesn&rsquo;t resolve your problem, you can email the <a href="mailto:projectdrasiteam@service.microsoft.com">Drasi Team</a>.</p>
+<h4 id="alternatives-to-the-drasi-dev-container">Alternatives to the Drasi Dev Container</h4>
+<p>The rest of the QuickStart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this QuickStart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as <a href="/reference/using-kind/">Kind</a> and <a href="/administrator/platform-deployment/from-preview-images/">deploy Drasi from pre-built Preview Images</a>. You can also explore other options by going to the <a href="/administrator/platform-deployment/">Deploying Drasi</a> section.</p>
+<p>In this case you must also install a PostgreSQL database to use as a source of change. The <a href="/reference/setup-postgres">Using PostgreSQL</a> section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.</p>
+<p>The files you will need to create the Drasi Source, Continuous Queries, and Reaction in the following steps are located in the <code>tutorial/getting-started/resources</code> folder of the Drasi QuickStart files you downloaded earlier.</p>
+<h2 id="step-2---create-the-postgresql-source">Step 2 - Create the PostgreSQL Source</h2>
+<p>The following YAML is the content of the <code>hello-world-source.yaml</code> file, which you will use to create a Source that connects to your PostgreSQL database.</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">Source</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">PostgreSQL</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">host</span><span style="color:#111">:</span> <span style="color:#ae81ff">postgres</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">port</span><span style="color:#111">:</span> <span style="color:#ae81ff">5432</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">user</span><span style="color:#111">:</span> <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span><span style="color:#111">:</span> <span style="color:#ae81ff">test</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">database</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">ssl</span><span style="color:#111">:</span> <span style="color:#00a8c8">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">tables</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">public.Message</span>
+</span></span></code></pre></div><p>This table describes the most important configuration settings in this Source definition.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kind</td>
+<td>Specifies that the resource is a <strong>Source</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>Provides the unique <strong>ID</strong> of the Source. This is used to manage the Source and in Continuous Query definitions to configure which Sources the Continuous Query uses as input.</td>
+</tr>
+<tr>
+<td>spec.kind</td>
+<td>Identifies this Source as a <strong>PostgreSQL</strong> Source that enables connectivity to a PostgreSQL database.</td>
+</tr>
+<tr>
+<td>spec.host</td>
+<td>The DNS host name of the PostgreSQL server.</td>
+</tr>
+<tr>
+<td>spec.user</td>
+<td>The <strong>User ID</strong> that the Source will use to connect to the PostgreSQL database.</td>
+</tr>
+<tr>
+<td>spec.password</td>
+<td>The <strong>Password</strong> for the User ID that the Source will use to connect to the PostgreSQL database.<br /><strong>Note</strong>: It is also possible to reference a Kubernetes secret for this value, see <a href="/solution-developer/components/sources">Sources</a> for more details.</td>
+</tr>
+<tr>
+<td>spec.database</td>
+<td>The name of the <strong>Database</strong> this Source will observe changes from.</td>
+</tr>
+<tr>
+<td>spec.ssl</td>
+<td>Whether SSL is enabled on the database.<br /><strong>Note</strong>: If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the <code>ssl</code> configuration option to <code>false</code>.</td>
+</tr>
+<tr>
+<td>spec.tables</td>
+<td>The list of database <strong>table</strong> names that the Source will observe for changes.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the <code>drasi</code> CLI to create the Source by running the following command in a terminal window:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi apply -f ./resources/hello-world-source.yaml
+</span></span></code></pre></div><p>It may take a minute or two for the new Source to startup and become available. You can inspect the status of all deployed sources by running the command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi list <span style="color:#111">source</span>
+</span></span></code></pre></div><p>You should expect to see a response like this until the Source is ready (AVAILABLE = true):</p>
+<pre tabindex="0"><code>      ID      | AVAILABLE  
+--------------+------------
+  hello-world | false     
+</code></pre><p>If your Source is not yet available (AVAILABLE = false), you can use the <code>drasi wait</code> command to wait for it to complete its startup:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi <span style="color:#111">wait</span> <span style="color:#111">source</span> hello-world -t <span style="color:#ae81ff">120</span>
+</span></span></code></pre></div><p>When <code>drasi wait</code> returns, your Drasi Source for PostgreSQL is created and ready to use.</p>
+<h2 id="step-3---create-the-continuous-queries">Step 3 - Create the Continuous Queries</h2>
+<p>The following YAML is the content of the <code>hello-world-queries.yaml</code> file, which you will use to create the Continuous Queries you need.</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">ContinuousQuery</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world-from</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">mode</span><span style="color:#111">:</span> <span style="color:#ae81ff">query</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">sources</span><span style="color:#111">:</span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">subscriptions</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">id</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">query</span><span style="color:#111">:</span> <span style="color:#ae81ff">&gt; </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">MATCH </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">(m:Message {Message: &#39;Hello World&#39;})</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">RETURN </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">m.MessageId AS MessageId,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">m.From AS MessageFrom</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">---</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">ContinuousQuery</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span><span style="color:#111">:</span> <span style="color:#ae81ff">message-count</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">mode</span><span style="color:#111">:</span> <span style="color:#ae81ff">query</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">sources</span><span style="color:#111">:</span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">subscriptions</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">id</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">query</span><span style="color:#111">:</span> <span style="color:#ae81ff">&gt; </span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">MATCH </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">(m:Message)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">RETURN </span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">m.Message AS Message,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ae81ff">count(m.Message) AS Frequency</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">---</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">ContinuousQuery</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span><span style="color:#111">:</span> <span style="color:#ae81ff">inactive-people</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">mode</span><span style="color:#111">:</span> <span style="color:#ae81ff">query</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">sources</span><span style="color:#111">:</span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">subscriptions</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">id</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">query</span><span style="color:#111">:</span> <span style="color:#111">&gt;</span><span style="color:#d88200">
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">      MATCH
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        (m:Message)
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">      WITH
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        m.From AS MessageFrom,
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        max(drasi.changeDateTime(m)) AS LastMessageTimestamp
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">      WHERE
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        LastMessageTimestamp &lt;= datetime.realtime() - duration({ seconds: 20 })
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">      OR
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        drasi.trueLater(LastMessageTimestamp &lt;= datetime.realtime() - duration({ seconds: 20 }), LastMessageTimestamp + duration({ seconds: 20 }))
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">      RETURN
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        MessageFrom,
+</span></span></span><span style="display:flex;"><span><span style="color:#d88200">        LastMessageTimestamp</span>      
+</span></span></code></pre></div><p>Notice that the YAML describes three Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing <code>---</code>.</p>
+<p>This table describes the most important configuration settings in these Continuous Query definitions.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kind</td>
+<td>Specifies that the resource is a <strong>Continuous Query</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>Provides the <strong>ID</strong> of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.</td>
+</tr>
+<tr>
+<td>spec.source.subscriptions.id</td>
+<td>Identifies the <strong>ID</strong> of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the id &ldquo;hello-world&rdquo; refers to the PostgreSQL Source you created in the previous step.</td>
+</tr>
+<tr>
+<td>spec.query</td>
+<td>Contains the <a href="/solution-developer/query-language/">Cypher Query</a> that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.</td>
+</tr>
+</tbody>
+</table>
+<p>The following table describes the Cypher Query used by each of the Continuous Queries you are about to create:</p>
+<table>
+<thead>
+<tr>
+<th>Query                    </th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hello-world-from</td>
+<td>Matches all nodes with a label (type) <code>Message</code> and filters for only those that have a <code>Message</code> field containing the value &ldquo;Hello World&rdquo;. For records that match that pattern, it includes their <code>MessageId</code> and <code>From</code> fields in the query result.</td>
+</tr>
+<tr>
+<td>message-count</td>
+<td>Matches all nodes with a label (type) <code>Message</code>, groups them by the value of their <code>Message</code> field and uses the <code>count</code> aggregation function to calculate the number of times the same value occurred. For each unique message value, the query result will contain the <code>Message</code> value and its <code>Frequency</code>.</td>
+</tr>
+<tr>
+<td>inactive-people</td>
+<td>Matches all nodes with a label (type) <code>Message</code> and uses the time when the <code>Message</code> was added to the database to represent that <code>LastMessageTimestamp</code> for the person that sent the message. The query uses the <a href="/solution-developer/query-language/#drasi-future-functions">drasi.trueLater</a> function to only include people that <strong>haven&rsquo;t</strong> sent messages in the last 20 seconds to be included in the query result.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the <code>drasi</code> CLI to create the Continuous Queries by running the following command in a terminal window:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi apply -f ./resources/hello-world-queries.yaml
+</span></span></code></pre></div><p>To verify the status of the Continuous Queries, execute the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi list query
+</span></span></code></pre></div><p>You should expect to see the following output:</p>
+<pre tabindex="0"><code>         ID        | STATUS  | CONTAINER | ERRORMESSAGE |              HOSTNAME                
+-------------------+---------+-----------+--------------+--------------------------------------
+  hello-world-from | Running | default   |              | default-query-host-xxx-xxx
+  message-count    | Running | default   |              | default-query-host-xxx-xxx
+  inactive-people  | Running | default   |              | default-query-host-xxx-xxx
+</code></pre><h2 id="step-4---create-the-debug-reaction">Step 4 - Create the Debug Reaction</h2>
+<p>In order to view the results of the Continuous Queries you will deploy an instance of the <a href="/solution-developer/components/reactions/#debug-reaction">Debug Reaction</a>. The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.</p>
+<p>The following YAML is the content of the <code>hello-world-reaction.yaml</code> file, which you will use to create the Debug Reaction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">apiVersion</span><span style="color:#111">:</span> <span style="color:#ae81ff">v1</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">kind</span><span style="color:#111">:</span> <span style="color:#ae81ff">Reaction</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span><span style="color:#111">:</span> <span style="color:#ae81ff">hello-world-debug</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">spec</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">image</span><span style="color:#111">:</span> <span style="color:#ae81ff">reaction-debug</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">queries</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">hello-world-from</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">message-count</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">inactive-people</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">endpoints</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">gateway</span><span style="color:#111">:</span> <span style="color:#ae81ff">8080</span>  
+</span></span></code></pre></div><p>This table describes the most important configuration settings in this Reaction definition:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kind</td>
+<td>Specifies that the resource is a <strong>Reaction</strong></td>
+</tr>
+<tr>
+<td>name</td>
+<td>Provides the <strong>ID</strong> of the Reaction. This is used to manage the Reaction.</td>
+</tr>
+<tr>
+<td>spec.image</td>
+<td>Identifies the type of Reaction. The value <code>reaction-debug</code> identifies that it is a Debug reaction you want to create.</td>
+</tr>
+<tr>
+<td>spec.queries</td>
+<td>Specifies the IDs of the Continuous Queries the Reaction will subscribe to. In this case you specify the IDs of the three Continuous Queries you created in the previous step.</td>
+</tr>
+<tr>
+<td>spec.endpoints</td>
+<td>Specifies the port name and number through which the Debug reaction Web UI is accessible.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the <code>drasi</code> CLI to create the Debug Reaction by running the following command in a terminal window:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi apply -f ./resources/hello-world-reaction.yaml
+</span></span></code></pre></div><p>To verify the status of the Reaction, execute the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi list reaction
+</span></span></code></pre></div><p>You should expect to see the following response:</p>
+<pre tabindex="0"><code>         ID         | AVAILABLE  
+--------------------+------------
+  hello-world-debug | false  
+</code></pre><p>If your Reaction is not yet available (AVAILABLE = false), you can use the <code>drasi wait</code> command to wait for it to complete its startup:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>drasi <span style="color:#111">wait</span> reaction hello-world-debug -t <span style="color:#ae81ff">120</span>
+</span></span></code></pre></div><p>When <code>drasi wait</code> returns, your Debug Reaction is created and ready to use.</p>
+<p>Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.</p>
+<p>Because the Debug Reaction is running in Kubernetes, in order to connect its Web UI you must forward the container port to a local port. In the Dev Container terminal, run the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
+</span></span></code></pre></div><p>Now open your browser and navigate to <a href="http://localhost:8080">http://localhost:8080</a>, where you will see the Debug Reaction UI shown here:</p>
+
+<figure>
+    <img src="debug-reaction-ui.png"
+         alt="Debug Reaction UI" width="70%"/> 
+</figure>
+
+<h2 id="step-5---test-the-solution">Step 5 - Test the Solution</h2>
+<p>To test the Hello World solution, you will need to add/update/delete data in the <code>Message</code> table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with <a href="https://www.postgresql.org/docs/current/app-psql.html">psql</a>, the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>psql
+</span></span></code></pre></div><p>If you prefer to use a GUI interface, you can install <a href="https://www.pgadmin.org/">pgAdmin</a> on your local machine and use the following connections settings:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host Name</td>
+<td>localhost</td>
+</tr>
+<tr>
+<td>Database Name</td>
+<td>hello-world</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>5432</td>
+</tr>
+<tr>
+<td>User Id</td>
+<td>test</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>test</td>
+</tr>
+</tbody>
+</table>
+<p>On the left hand side is a menu listing the three Continuous Queries created earlier. Select <code>hello-world-from</code> entry and the right hand pane will show the current results of the <code>hello-world-from</code> query. Initially, there is only one result, because only <strong>Brian Kernighan</strong> is associated with the &ldquo;Hello World&rdquo; message.</p>
+
+<figure>
+    <img src="hello-world-from-debug.png"
+         alt="Hello World From" width="70%"/> 
+</figure>
+
+<p>If you add another Message to the table using the following SQL insert statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#00a8c8">INSERT</span> <span style="color:#00a8c8">INTO</span> <span style="color:#00a8c8">public</span><span style="color:#111">.</span><span style="color:#d88200">&#34;Message&#34;</span> <span style="color:#00a8c8">VALUES</span> <span style="color:#111">(</span><span style="color:#ae81ff">5</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;Allen&#39;</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;Hello World&#39;</span><span style="color:#111">);</span>
+</span></span></code></pre></div><p>You will see a second record for <strong>Allen</strong> appear dynamically in the query result:</p>
+
+<figure>
+    <img src="hello-world-from-debug-updated.png"
+         alt="Hello World From Updated" width="70%"/> 
+</figure>
+
+<p>In the list of Continuous Queries select the <code>message-count</code> entry and the right hand pane will show the current results to the <code>message-count</code> query. There are three results, as shown below. Note that because of the &ldquo;Hello World&rdquo; message you just added for <strong>Allen</strong>, both &ldquo;Hello World&rdquo; and &ldquo;I am Spartacus&rdquo; have a Frequency of 2.</p>
+
+<figure>
+    <img src="message-count-debug.png"
+         alt="Message Count" width="70%"/> 
+</figure>
+
+<p>If you add another Message to the table using the following SQL insert statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#00a8c8">INSERT</span> <span style="color:#00a8c8">INTO</span> <span style="color:#00a8c8">public</span><span style="color:#111">.</span><span style="color:#d88200">&#34;Message&#34;</span> <span style="color:#00a8c8">VALUES</span> <span style="color:#111">(</span><span style="color:#ae81ff">6</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;Allen&#39;</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;I am Spartacus&#39;</span><span style="color:#111">);</span>
+</span></span></code></pre></div><p>You will see the &ldquo;I am Spartacus&rdquo; Frequency increase dynamically to 3:</p>
+
+<figure>
+    <img src="message-count-debug-updated.png"
+         alt="Message Count Updated" width="70%"/> 
+</figure>
+
+<p>In the list of Continuous Queries select the <code>inactive-people</code> entry and the right hand pane will show the current results to the <code>inactive-people</code> query. Assuming you issued the last database change more than 20 seconds ago, you will see <strong>Allen</strong> on the list of inactive people.</p>
+
+<figure>
+    <img src="inactive-people-debug.png"
+         alt="Initial Inactive People" width="70%"/> 
+</figure>
+
+<p>If you add another Message from <strong>Allen</strong> to the table using the following SQL insert statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#00a8c8">INSERT</span> <span style="color:#00a8c8">INTO</span> <span style="color:#00a8c8">public</span><span style="color:#111">.</span><span style="color:#d88200">&#34;Message&#34;</span> <span style="color:#00a8c8">VALUES</span> <span style="color:#111">(</span><span style="color:#ae81ff">7</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;Allen&#39;</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;Goodbye&#39;</span><span style="color:#111">);</span>
+</span></span></code></pre></div><p><strong>Allen</strong> will disappear from the list of inactive people, because he just sent a message:</p>
+
+<figure>
+    <img src="inactive-people-debug-is-active.png"
+         alt="Allen is active" width="70%"/> 
+</figure>
+
+<p>But, if you wait 20 seconds, <strong>Allen</strong> will reappear on the list of inactive people, because he has not sent a message in the allowed 20 second time interval:</p>
+
+<figure>
+    <img src="inactive-people-debug-is-inactive.png"
+         alt="Allen is inactive" width="70%"/> 
+</figure>
+
+<p>Finally, if you return to the <code>message-count</code> Continuous Query and delete both &ldquo;Hello World&rdquo; messages using the following SQL statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#00a8c8">DELETE</span> <span style="color:#00a8c8">FROM</span> <span style="color:#00a8c8">public</span><span style="color:#111">.</span><span style="color:#d88200">&#34;Message&#34;</span> <span style="color:#00a8c8">WHERE</span> <span style="color:#d88200">&#34;Message&#34;</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#39;Hello World&#39;</span><span style="color:#111">;</span>
+</span></span></code></pre></div><p>The Debug Reaction updates to show that there are no messages with the text &ldquo;Hello World&rdquo;:</p>
+
+<figure>
+    <img src="message-count-debug-deleted.png"
+         alt="Message Count" width="70%"/> 
+</figure>
+
+<p>And if you switch back to the <code>hello-world-from</code> Continuous Query, the current result is empty as expected:</p>
+
+<figure>
+    <img src="hello-world-from-debug-deleted.png"
+         alt="Message Count" width="70%"/> 
+</figure>
+
+<p>The QuickStart Tutorial is now complete. The QuickStart Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing.</p>
+<h2 id="reflection">Reflection</h2>
+<p>In completing the tutorial, you were able to answer questions like &ldquo;Which people have sent the message <code>Hello World</code>&rdquo;, &ldquo;How many times has each unique message been sent&rdquo;, and &ldquo;Which people haven&rsquo;t sent messages in the last 20 seconds&rdquo; using Continuous Queries. Using the Continuous Queries <code>RESULT</code> clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.</p>
+<p>Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.</p>
+<p>Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement a timer and callback mechanism to create notifications when changes had not happened as expected. You would need to implement unique solutions for each type of source you wanted to support.</p>
+<p>Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system as well as its ability to power solutions that are more dynamic and responsive.</p>
+<h2 id="cleanup">Cleanup</h2>
+<p>If you no longer need the Dev Container and want to cleanup, you can</p>
+<ol>
+<li>Click the <code>Dev Container connection status</code> box in the bottom left corner of VS Code</li>
+<li>Select <code>Close Remote Connection</code> from the list of options that appear</li>
+<li>Run the VS Code command `Dev Containers: Clean Up Dev Containers&hellip;&quot;</li>
+<li>Select the <code>getting-started</code> image and click <code>ok</code> to remove the unused image</li>
+<li>Select the unused volumes and click <code>ok</code> to remove the unused volumes</li>
+</ol>
+<h2 id="next-steps">Next Steps&hellip;</h2>
+<p>As with many new technologies, the challenge to getting started with Drasi can be less about how to use it, and more about understanding <strong>why</strong> and <strong>when</strong> to use it. Learning how to use Drasi <strong>most effectively</strong> involves understanding where Drasi replaces and simplifies the way you detect and react to change today, as well as how Drasi enables new ways to think about query-driven solutions that would not be possible today without significant development efforts.</p>
+<p>Once you understand the basics of Drasi, the following sections will help you master Drasi quickly so you can start using it to build more responsive solutions that detect and react to change:</p>
+<ul>
+<li>The <a href="/solution-developer/background">Background</a> section explores in more detail the problems Drasi was created to solve. This will be useful if you are looking for more context and trying to relate the benefits of Drasi to other alternatives for building solutions that detect and react to change.</li>
+<li>The <a href="/solution-developer/solution-design">Solution Design</a> section describes how to use Drasi most effectively in your solutions. It describes multiple ways to think about and apply the functionality provided by Continuous Queries and Reactions. Some are improved alternatives to existing patterns, while others are unique to Drasi.</li>
+<li>The Drasi repo includes multiple <a href="/solution-developer/sample-apps/">Sample Applications</a> that are fully functional solutions that demonstrate the use of Drasi in realistic scenarios. These sample apps contain working implementations of the patterns described in the <a href="/solution-developer/solution-patterns">Solution Pattern</a> section.</li>
+<li>The <a href="/solution-developer/troubleshooting">Troubleshooting</a> section provides guidance on how to investigate problems if they occur when you are creating the Sources, Continuous Queries, and Reactions that you will use as part of your solution.</li>
+</ul>
+
+  <div class="section-index">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+</div>
+
+          </main>
+        </div>
+      </div>
+      <footer class="td-footer row d-print-none">
+  <div class="container-fluid">
+    <div class="row mx-md-2">
+      <div class="col-6 col-sm-4 text-xs-center order-sm-2">
+        
+      </div>
+      <div class="col-6 col-sm-4 text-end text-xs-center order-sm-3">
+        
+      </div>
+      <div class="td-footer__copyright-etc col-12 col-sm-4 text-center py-2 order-sm-2">
+        
+        
+        
+      </div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <script src="/js/main.min.8aed5c79db3ab0ccc681e77863803193ee0d4003b7ead54fe1d767af3cbf9eec.js" integrity="sha256-iu1ceds6sMzGged4Y4Axk&#43;4NQAO36tVP4ddnrzy/nuw=" crossorigin="anonymous"></script>
+<script src='/js/prism.js'></script>
+<script src='/js/tabpane-persist.js'></script>
+
+  </body>
+</html>

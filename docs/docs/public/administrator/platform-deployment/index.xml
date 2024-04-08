@@ -1,0 +1,415 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Project Drasi – Deploying Drasi</title>
+    <link>https://project-drasi.github.io/administrator/platform-deployment/</link>
+    <description>Recent content in Deploying Drasi on Project Drasi</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2023, Microsoft; all rights reserved.</copyright>
+    
+	  <atom:link href="https://project-drasi.github.io/administrator/platform-deployment/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Administrator: Deploying Drasi from Preview Images</title>
+      <link>https://project-drasi.github.io/administrator/platform-deployment/from-preview-images/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://project-drasi.github.io/administrator/platform-deployment/from-preview-images/</guid>
+      <description>
+        
+        
+        &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;You need to be member of the &lt;strong&gt;Project Drasi Preview Users&lt;/strong&gt; security group. Email &lt;a href=&#34;mailto:projectdrasiteam@service.microsoft.com&#34;&gt;The Drasi Team&lt;/a&gt; to request access.&lt;/li&gt;
+&lt;li&gt;On the computer where you will run the install process:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/&#34;&gt;Kubectl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com//cli/azure/install-azure-cli&#34;&gt;Azure CLI&lt;/a&gt; if you are deploying to AKS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;A Kubernetes cluster. Common options include:
+&lt;ul&gt;
+&lt;li&gt;Cloud:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli&#34;&gt;Azure Kubernetes Service (AKS)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Local (for dev/test):
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kind.sigs.k8s.io/&#34;&gt;Kind&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/&#34;&gt;Minikube&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.docker.com/products/docker-desktop/&#34;&gt;Docker Desktop&lt;/a&gt; with &lt;a href=&#34;https://docs.docker.com/desktop/kubernetes/&#34;&gt;Kubernetes enabled&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://k3s.io/&#34;&gt;k3s&lt;/a&gt; (If you have a linux machine or WSL instance on Windows)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;If you are deploying to an AKS cluster&lt;/strong&gt;, you can use the following &lt;code&gt;az cli&lt;/code&gt; commands to pull the cluster credentials into your list of &lt;code&gt;kubectl&lt;/code&gt; contexts:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az login
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az account &lt;span style=&#34;color:#111&#34;&gt;set&lt;/span&gt; --subscription &amp;lt;your subscription id&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az aks get-credentials --resource-group &amp;lt;your resource group&amp;gt; --name &amp;lt;your cluster name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;If you are using Linux or a WSL distro&lt;/strong&gt;, you can install k3s which is very light weight and has zero dependencies.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -sfL https://get.k3s.io &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; sh -
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;KUBECONFIG&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/etc/rancher/k3s/k3s.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo chown &lt;span style=&#34;color:#00a8c8&#34;&gt;$(&lt;/span&gt;whoami&lt;span style=&#34;color:#00a8c8&#34;&gt;)&lt;/span&gt; /etc/rancher/k3s/k3s.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;installing-drasi&#34;&gt;Installing Drasi&lt;/h2&gt;
+&lt;p&gt;Download the CLI for your platform
+
+
+
+
+
+&lt;ul class=&#34;nav nav-tabs&#34; id=&#34;tabs-0&#34; role=&#34;tablist&#34;&gt;
+  &lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link active&#34;
+          id=&#34;tabs-00-00-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-00&#34; role=&#34;tab&#34;
+          data-td-tp-persist=&#34;bash&#34; aria-controls=&#34;tabs-00-00&#34; aria-selected=&#34;true&#34;&gt;
+        MacOS
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-00-01-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-01&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-00-01&#34; aria-selected=&#34;false&#34;&gt;
+        Linux
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-00-02-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-02&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-00-02&#34; aria-selected=&#34;false&#34;&gt;
+        Windows
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-00-03-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-03&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-00-03&#34; aria-selected=&#34;false&#34;&gt;
+        Binaries
+      &lt;/button&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;tabs-0-content&#34;&gt;
+    &lt;div class=&#34;tab-pane fade show active&#34;
+        id=&#34;tabs-00-00&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-00-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -fsSL &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; /bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;tab-pane fade&#34;
+        id=&#34;tabs-00-01&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-01-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -fsSL &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; /bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&#34;tab-body tab-pane fade&#34;
+        id=&#34;tabs-00-02&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-02-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;p&gt;Please download the CLI through this &lt;a href=&#34;%22https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe%22&#34;&gt;link&lt;/a&gt; and then add it to your system path.&lt;/p&gt;
+
+    &lt;/div&gt;
+    
+    &lt;div class=&#34;tab-body tab-pane fade&#34;
+        id=&#34;tabs-00-03&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-03-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;p&gt;Download the CLI for your platform, and add it to your system path:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi&#34;&gt;MacOS arm64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/darwin-x64/drasi&#34;&gt;MacOS x64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe&#34;&gt;Windows x64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/linux-x64/drasi&#34;&gt;Linux x64&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;Make sure the current &lt;code&gt;kubectl&lt;/code&gt; context is set to the Kubernetes cluster where you want to install Drasi:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl config use-context &amp;lt;your cluster name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For deploying Drasi within your Kubernetes cluster, execute the following command based on your cluster configuration:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi init --version preview.1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Dapr should be automatically installed to your cluster. You can verify this by running the command &lt;code&gt;kubectl get pods -n dapr-system&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;optional-testing-the-deployment&#34;&gt;Optional: Testing the Deployment&lt;/h2&gt;
+&lt;p&gt;To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick &lt;a href=&#34;https://project-drasi.github.io/reference/smoke-test&#34;&gt;smoke test&lt;/a&gt; workload.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Administrator: Deploying Drasi from Source</title>
+      <link>https://project-drasi.github.io/administrator/platform-deployment/from-source/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://project-drasi.github.io/administrator/platform-deployment/from-source/</guid>
+      <description>
+        
+        
+        &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;On the computer where you will run the install process:
+&lt;ul&gt;
+&lt;li&gt;A copy of the &lt;a href=&#34;https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&amp;amp;version=GBdevelop&amp;amp;_a=contents&#34;&gt;source code repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;A terminal environment that supports Bash&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/&#34;&gt;Kubectl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://helm.sh/docs/intro/install/&#34;&gt;helm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com//cli/azure/install-azure-cli&#34;&gt;Azure CLI&lt;/a&gt; if you are deploying to AKS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;A Kubernetes cluster. Common options include:
+&lt;ul&gt;
+&lt;li&gt;Cloud:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/azure/aks/&#34;&gt;Azure Kubernetes Service (AKS)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Local (for dev/test):
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kind.sigs.k8s.io/&#34;&gt;Kind&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://minikube.sigs.k8s.io/docs/&#34;&gt;Minikube&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.docker.com/products/docker-desktop/&#34;&gt;Docker Desktop&lt;/a&gt; with &lt;a href=&#34;https://docs.docker.com/desktop/kubernetes/&#34;&gt;Kubernetes enabled&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;If you are deploying to an AKS cluster&lt;/strong&gt;, you can use the following &lt;code&gt;az cli&lt;/code&gt; commands to pull the cluster credentials into your list of &lt;code&gt;kubectl&lt;/code&gt; contexts:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az login
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az account &lt;span style=&#34;color:#111&#34;&gt;set&lt;/span&gt; --subscription &amp;lt;your subscription id&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;az aks get-credentials --resource-group &amp;lt;your resource group&amp;gt; --name &amp;lt;your cluster name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;installing-drasi&#34;&gt;Installing Drasi&lt;/h2&gt;
+&lt;p&gt;The process to deploy Drasi from source code requires you perform the following steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Get the Source Code&lt;/li&gt;
+&lt;li&gt;Set Kubectl Context&lt;/li&gt;
+&lt;li&gt;Build Drasi Component Images&lt;/li&gt;
+&lt;li&gt;Install Drasi in local mode&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These steps are described below.&lt;/p&gt;
+&lt;h3 id=&#34;get-the-source-code&#34;&gt;Get the Source Code&lt;/h3&gt;
+&lt;p&gt;The scripts used to do the build and deployment will use the files from the currently checked out source code branch.&lt;/p&gt;
+&lt;p&gt;First, clone the Drasi repo:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Checkout the branch you want to deploy:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git checkout &amp;lt;branch name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Standard branches are:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Folder&lt;/th&gt;
+&lt;th&gt;Purpose&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;develop&lt;/td&gt;
+&lt;td&gt;The main development branch containing the most recent runnable code.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;preview&lt;/td&gt;
+&lt;td&gt;Code used to build the images released for people to run &lt;code&gt;preview&lt;/code&gt; environments.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;demo&lt;/td&gt;
+&lt;td&gt;Code currently running in the Drasi &lt;code&gt;demo&lt;/code&gt; environment.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;set-kubectl-context&#34;&gt;Set Kubectl Context&lt;/h3&gt;
+&lt;p&gt;Make sure the current &lt;code&gt;kubectl&lt;/code&gt; context is set to the Kubernetes cluster where you want to install Drasi:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl config use-context &amp;lt;your cluster name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;build-drasi-component-images&#34;&gt;Build Drasi Component Images&lt;/h3&gt;
+&lt;p&gt;To build the docker images of all the Drasi services, from the &lt;code&gt;/devops/build&lt;/code&gt; folder, execute the following:&lt;/p&gt;
+
+
+
+&lt;ul class=&#34;nav nav-tabs&#34; id=&#34;tabs-0&#34; role=&#34;tablist&#34;&gt;
+  &lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link active&#34;
+          id=&#34;tabs-00-00-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-00&#34; role=&#34;tab&#34;
+          data-td-tp-persist=&#34;bash&#34; aria-controls=&#34;tabs-00-00&#34; aria-selected=&#34;true&#34;&gt;
+        MacOS
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-00-01-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-00-01&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-00-01&#34; aria-selected=&#34;false&#34;&gt;
+        Windows Powershell
+      &lt;/button&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;tabs-0-content&#34;&gt;
+    &lt;div class=&#34;tab-pane fade show active&#34;
+        id=&#34;tabs-00-00&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-00-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./local-build-images.sh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;tab-pane fade&#34;
+        id=&#34;tabs-00-01&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-00-01-tab&#34; tabindex=&#34;0&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./local-build-images.bat&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Note:  If you are running a local cluster with &lt;code&gt;Kind&lt;/code&gt;, you also need to run &lt;code&gt;load-images-to-kind.sh&lt;/code&gt; (&lt;code&gt;load-images-to-kind.bat&lt;/code&gt; if you are running on Windows) to load the built images into your Kind cluster.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;install-drasi-in-local-mode&#34;&gt;Install Drasi in local mode&lt;/h3&gt;
+&lt;p&gt;Download the CLI for your platform
+
+
+
+
+
+&lt;ul class=&#34;nav nav-tabs&#34; id=&#34;tabs-1&#34; role=&#34;tablist&#34;&gt;
+  &lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link active&#34;
+          id=&#34;tabs-01-00-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-01-00&#34; role=&#34;tab&#34;
+          data-td-tp-persist=&#34;bash&#34; aria-controls=&#34;tabs-01-00&#34; aria-selected=&#34;true&#34;&gt;
+        MacOS
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-01-01-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-01-01&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-01-01&#34; aria-selected=&#34;false&#34;&gt;
+        Linux
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-01-02-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-01-02&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-01-02&#34; aria-selected=&#34;false&#34;&gt;
+        Windows Powershell
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-01-03-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-01-03&#34; role=&#34;tab&#34;
+          data-td-tp-persist=&#34;binaries&#34; aria-controls=&#34;tabs-01-03&#34; aria-selected=&#34;false&#34;&gt;
+        Binaries
+      &lt;/button&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;tabs-1-content&#34;&gt;
+    &lt;div class=&#34;tab-pane fade show active&#34;
+        id=&#34;tabs-01-00&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-01-00-tab&#34; tabindex=&#34;1&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -fsSL &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; /bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;tab-pane fade&#34;
+        id=&#34;tabs-01-01&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-01-01-tab&#34; tabindex=&#34;1&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -fsSL &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; /bin/bash&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;tab-pane fade&#34;
+        id=&#34;tabs-01-02&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-01-02-tab&#34; tabindex=&#34;1&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;iwr -useb &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;https://drasi.blob.core.windows.net/installs/install.ps1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; iex
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# You may need to refresh your $PATH environment variable:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;$Env&lt;/span&gt;:Path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;System.Environment&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;::GetEnvironmentVariable&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;Path&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;User&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class=&#34;tab-body tab-pane fade&#34;
+        id=&#34;tabs-01-03&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-01-03-tab&#34; tabindex=&#34;1&#34;&gt;
+        &lt;p&gt;Download the CLI for your platform, and add it to your system path:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi&#34;&gt;MacOS arm64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/darwin-x64/drasi&#34;&gt;MacOS x64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe&#34;&gt;Windows x64&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://drasi.blob.core.windows.net/installs/linux-x64/drasi&#34;&gt;Linux x64&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;Run the following command, this will install Drasi in local mode, which means it won&amp;rsquo;t try pull images from a container registry but rather use your local image cache, this is ideal for dev workflows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;drasi init --local
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Dapr should be automatically installed to your cluster. You can verify this by running the command &lt;code&gt;kubectl get pods -n dapr-system&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;testing-the-deployment&#34;&gt;Testing the Deployment&lt;/h2&gt;
+&lt;p&gt;To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.&lt;/p&gt;
+&lt;h3 id=&#34;prerequisites-1&#34;&gt;Prerequisites&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://helm.sh/docs/intro/install/&#34;&gt;Helm&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/&#34;&gt;Kubectl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Drasi CLI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Execute the following command:
+
+
+
+&lt;ul class=&#34;nav nav-tabs&#34; id=&#34;tabs-2&#34; role=&#34;tablist&#34;&gt;
+  &lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link active&#34;
+          id=&#34;tabs-02-00-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-02-00&#34; role=&#34;tab&#34;
+          data-td-tp-persist=&#34;bash&#34; aria-controls=&#34;tabs-02-00&#34; aria-selected=&#34;true&#34;&gt;
+        MacOS
+      &lt;/button&gt;
+    &lt;/li&gt;&lt;li class=&#34;nav-item&#34;&gt;
+      &lt;button class=&#34;nav-link&#34;
+          id=&#34;tabs-02-01-tab&#34; data-bs-toggle=&#34;tab&#34; data-bs-target=&#34;#tabs-02-01&#34; role=&#34;tab&#34;
+          aria-controls=&#34;tabs-02-01&#34; aria-selected=&#34;false&#34;&gt;
+        Windows Powershell
+      &lt;/button&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;tab-content&#34; id=&#34;tabs-2-content&#34;&gt;
+    &lt;div class=&#34;tab-pane fade show active&#34;
+        id=&#34;tabs-02-00&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-02-00-tab&#34; tabindex=&#34;2&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bash &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh drasi-system&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;tab-pane fade&#34;
+        id=&#34;tabs-02-01&#34; role=&#34;tabpanel&#34; aria-labelled-by=&#34;tabs-02-01-tab&#34; tabindex=&#34;2&#34;&gt;
+        &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-Bash&#34; data-lang=&#34;Bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Invoke-Command -ScriptBlock &lt;span style=&#34;color:#f92672&#34;&gt;([&lt;/span&gt;scriptblock&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;::Create&lt;span style=&#34;color:#f92672&#34;&gt;([&lt;/span&gt;System.Text.Encoding&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;::UTF8.GetString&lt;span style=&#34;color:#f92672&#34;&gt;((&lt;/span&gt;New-Object Net.WebClient&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;.DownloadData&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;https://drasi.blob.core.windows.net/smoke-tests/cleanup-smoke-test.ps1&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;))))&lt;/span&gt; -ArgumentList &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;drasi-system&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;This shell script accomplishes the following tasks:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Sets up a PostgreSQL database in your Kubernetes cluster&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Adds the following entries to your database&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;id&lt;/th&gt;
+&lt;th&gt;name&lt;/th&gt;
+&lt;th&gt;category&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Item 1&lt;/td&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Item 2&lt;/td&gt;
+&lt;td&gt;B&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Item 3&lt;/td&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Verifies the initial bootstrap&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Adds a new entry ({&amp;ldquo;Id&amp;rdquo;: 4, &amp;ldquo;Name&amp;rdquo;: &amp;ldquo;Item 4&amp;rdquo;, &amp;ldquo;Category&amp;rdquo;: &amp;ldquo;A&amp;rdquo;}) to the PostgreSQL database&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Verifies the new entries got propagated from the source to the reaction&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Cleans-up by deleting all of the components&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,5 +1,5 @@
 # Site Configuration
-baseURL = "https://project-drasi-docs.azurewebsites.net/"
+baseurl = "https://project-drasi.github.io/"
 title = "Project Drasi"
 theme = "docsy"
 
