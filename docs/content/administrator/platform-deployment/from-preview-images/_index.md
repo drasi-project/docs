@@ -47,7 +47,7 @@ curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" |
 curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
 {{< /tab >}}
 {{% tab header="Windows" text=true %}}
-Please download the CLI through this [link]("https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe") and then add it to your system path.
+Please download the CLI through this [link](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe) and then add it to your system path.
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
 Download the CLI for your platform, and add it to your system path:
