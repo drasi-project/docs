@@ -505,7 +505,7 @@ spec:
 In the SourceProvider definition:
 - **apiVersion**: Must be **v1**
 - **kind**: Must be **SourceProvider**
-- **name**: Specifies the kind of Source that we are trying to create
+- **name**: Specifies the kind of Source that we are trying to register
 - **tag**: Optional. This is used for specifying the "version" of the SourceProvider
 
 
@@ -560,7 +560,7 @@ For example, the following section will specify two environment variables `foo` 
 spec:
    services:
      ...
-   properties:
+   config_schema:
       type: object
       properties:
         foo:
