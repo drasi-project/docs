@@ -66,15 +66,17 @@ Use "drasi [command] --help" for more information about a command.
 - ### List
     - This command retrieves and displays the status of all resources of the specified type. The status includes various fields that provide information about the current state of the resource.
     - Available types of resources:
-      - Source
       - Continuousquery (or query for short)
-      - Reaction
       - QueryContainer
+      - Reaction
+      - Source
+      - SourceProvider 
 
     - e.g.
       - `drasi list source`
       - `drasi list continuousquery`
       - `drasi list query`
+      - `drasi list sourceprovider`
     - You can list the resources that are deployed in a different namespace using the `-n` or `--namespace` flag:
       - e.g. `drasi list source -n demo`
 
