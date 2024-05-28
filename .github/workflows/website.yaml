@@ -1,0 +1,80 @@
+name: Drasi Website
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - preview
+
+permissions:
+  id-token: write # Required for requesting the JWT
+  contents: read  # Required for actions/checkout
+
+jobs:
+  build:
+    name: Build Hugo Website
+    if: github.event.action != 'closed' # only runs if the GitHub event action is not 'closed'
+    runs-on: ubuntu-latest
+    env:
+      HUGO_VERSION: 0.117.0
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2.6.0
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true 
+      - name: Setup Docsy
+        run: |
+          cd docs
+          sudo npm install -D --save autoprefixer
+          sudo npm install -D --save postcss-cli
+          cd themes/docsy
+          npm install 
+      - name: Build Hugo Site # No staging URL at the moment
+        run: |
+          cd docs
+          hugo
+      - name: Upload Hugo artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hugo_build
+          path: ./docs/public/
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy Hugo Website to App Service
+    needs: ['build']
+    runs-on: ubuntu-latest
+    environment:
+      url: 'https://project-drasi-docs.azurewebsites.net/'
+      name: preview
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Download Hugo artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: hugo_build
+          path: site/
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy to WebApp
+        uses: Azure/webapps-deploy@v3
+        with:
+          app-name: project-drasi-docs
+          resource-group-name: project-drasi-docs
+          package: site/
