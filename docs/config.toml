@@ -1,0 +1,45 @@
+# Site Configuration
+baseURL = "https://project-drasi-docs.azurewebsites.net/"
+title = "Project Drasi"
+theme = "docsy"
+
+# Attribution
+author = "Azure Incubations"
+copyright = "Copyright © 2023, Microsoft; all rights reserved."
+
+# Language Configuration
+languageCode = "en"
+DefaultContentLanguage = "en"
+
+[params]
+  prism_syntax_highlighting = true
+  [params.prism]
+    languages = [
+      "markup",
+      "css",
+      "clike",
+      "javascript",
+      "json"
+    ]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = 'monokailight'
+
+      
+# Top Nav Bar
+[[menu.main]]
+    name = "SUPPORT"
+    weight = 10
+    url = "/support"
+[[menu.main]]
+    name = "CODE"
+    weight = 20
+    url = "https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents"
+
+[module]
+  [module.hugoVersion]
+    extended = true
