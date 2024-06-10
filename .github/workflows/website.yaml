@@ -54,8 +54,7 @@ jobs:
     needs: ['build']
     runs-on: ubuntu-latest
     environment:
-      url: 'https://project-drasi-docs.azurewebsites.net/'
-      name: preview
+      url: 'https://drasi-docs.azurewebsites.net/'
     steps:
       - name: Checkout docs repo
         uses: actions/checkout@v4
@@ -75,6 +74,6 @@ jobs:
       - name: Deploy to WebApp
         uses: Azure/webapps-deploy@v3
         with:
-          app-name: project-drasi-docs
+          app-name: drasi-docs
           resource-group-name: project-drasi-docs
           package: site/
