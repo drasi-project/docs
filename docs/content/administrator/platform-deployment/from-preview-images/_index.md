@@ -39,22 +39,25 @@ sudo chown $(whoami) /etc/rancher/k3s/k3s.yaml
 
 ## Installing Drasi
 Download the CLI for your platform
+
+**NOTE:** Since all of our Github repositories are private at the moment, please replace `$GITHUB_TOKEN` with your Github PAT if you are using `MacOS` or `Linux`. Please ensure that you are logged into Github if you want to download the binaries directly.
 {{< tabpane >}}
 {{< tab header="MacOS" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
 {{< /tab >}}
 {{< tab header="Linux" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
 {{< /tab >}}
 {{% tab header="Windows" text=true %}}
-Please download the CLI through this [link](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe) and then add it to your system path.
+Please download the CLI through this [link](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe) and then add it to your system path.
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
 Download the CLI for your platform, and add it to your system path:
-- [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
-- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-x64/drasi)
-- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe)
-- [Linux x64](https://drasi.blob.core.windows.net/installs/linux-x64/drasi)
+- [MacOS arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-arm64)
+- [MacOS x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-x64)
+- [Windows x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe)
+- [Linux x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-x64)
+- [Linux arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-arm64)
 {{% /tab %}}
 {{< /tabpane >}}
 

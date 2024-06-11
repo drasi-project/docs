@@ -11,7 +11,7 @@ The VS Code extension enables you to rapidly test the validity of your continuou
 
 ## Installing
 
-Download the VS Code extension from https://drasi.blob.core.windows.net/installs/drasi-0.0.3.vsix
+Download the VS Code extension from https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-0.0.3.vsix (Ensure that you are logged in to Github). 
 Open the VS Code command palette and run the `Extensions: Install from VSIX` command and select the `drasi-0.0.3.vsix` from your download location.
 
 ## Usage

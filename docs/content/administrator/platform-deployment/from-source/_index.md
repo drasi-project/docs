@@ -10,7 +10,7 @@ description: >
 ## Prerequisites
 
 - On the computer where you will run the install process:
-  - A copy of the [source code repo](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents)
+  - A copy of the [source code repo](https://github.com/project-drasi/drasi-platform.git)
   - A terminal environment that supports Bash
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [helm](https://helm.sh/docs/intro/install/)
@@ -47,13 +47,13 @@ These steps are described below.
 
 The scripts used to do the build and deployment will use the files from the currently checked out source code branch.
 
-First, clone the Drasi repo:
+First, clone the `drasi-platform`  repo:
 
 ```bash
-git clone https://azure-octo@dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph
+git clone https://github.com/project-drasi/drasi-platform.git
 ```
 
-Checkout the branch you want to deploy:
+<!-- Checkout the branch you want to deploy:
 
 ```bash
 git checkout <branch name>
@@ -65,7 +65,7 @@ Standard branches are:
 |-|-|
 |develop| The main development branch containing the most recent runnable code. |
 |preview| Code used to build the images released for people to run ```preview``` environments. |
-|demo| Code currently running in the Drasi ```demo``` environment. |
+|demo| Code currently running in the Drasi ```demo``` environment. | -->
 
 ### Set Kubectl Context
 
@@ -77,7 +77,7 @@ kubectl config use-context <your cluster name>
 
 ### Build Drasi Component Images
 
-To build the docker images of all the Drasi services, from the `/devops/build` folder, execute the following:
+To build the docker images of all the Drasi services, from the `/scripts` folder, execute the following:
 
 {{< tabpane langEqualsHeader=true >}}
 {{< tab header="MacOS" lang="Bash" >}}
@@ -92,29 +92,30 @@ To build the docker images of all the Drasi services, from the `/devops/build` f
 
 > Note:  If you are running a local cluster with `Kind`, you also need to run `load-images-to-kind.sh` (`load-images-to-kind.bat` if you are running on Windows) to load the built images into your Kind cluster.
 
-### Install Drasi in local mode
-
+## Installing Drasi
 Download the CLI for your platform
-{{< tabpane langEqualsHeader=true >}}
+
+**NOTE:** Since all of our Github repositories are private at the moment, please replace `$GITHUB_TOKEN` with your Github PAT if you are using `MacOS` or `Linux`. Please ensure that you are logged into Github if you want to download the binaries directly.
+{{< tabpane >}}
 {{< tab header="MacOS" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
 {{< /tab >}}
 {{< tab header="Linux" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs/install-drasi-cli.sh" | /bin/bash
+curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
 {{< /tab >}}
-{{< tab header="Windows Powershell" lang="Bash" >}}
-iwr -useb "https://drasi.blob.core.windows.net/installs/install.ps1" | iex
-# You may need to refresh your $PATH environment variable:
-$Env:Path = [System.Environment]::GetEnvironmentVariable("Path","User")
+{{% tab header="Windows" text=true %}}
+Please download the CLI through this [link](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe) and then add it to your system path.
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
 Download the CLI for your platform, and add it to your system path:
-- [MacOS arm64](https://drasi.blob.core.windows.net/installs/darwin-arm64/drasi)
-- [MacOS x64](https://drasi.blob.core.windows.net/installs/darwin-x64/drasi)
-- [Windows x64](https://drasi.blob.core.windows.net/installs/windows-x64/drasi.exe)
-- [Linux x64](https://drasi.blob.core.windows.net/installs/linux-x64/drasi)
+- [MacOS arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-arm64)
+- [MacOS x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-x64)
+- [Windows x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe)
+- [Linux x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-x64)
+- [Linux arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-arm64)
 {{% /tab %}}
 {{< /tabpane >}}
+
 
 Run the following command, this will install Drasi in local mode, which means it won't try pull images from a container registry but rather use your local image cache, this is ideal for dev workflows:
 
@@ -124,34 +125,5 @@ drasi init --local
 
 Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
 
-## Testing the Deployment
-To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick smoke test workload.
-### Prerequisites
-- [Helm](https://helm.sh/docs/intro/install/)
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/)
-- Drasi CLI
-
-Execute the following command:
-{{< tabpane langEqualsHeader=true >}}
-{{< tab header="MacOS" lang="Bash" >}}
-bash <(curl -s https://drasi.blob.core.windows.net/smoke-tests/setup-smoke-test.sh drasi-system)
-{{< /tab >}}
-{{< tab header="Windows Powershell" lang="Bash" >}}
-Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://drasi.blob.core.windows.net/smoke-tests/cleanup-smoke-test.ps1')))) -ArgumentList 'drasi-system'
-{{< /tab >}}
-{{< /tabpane >}}
-
-This shell script accomplishes the following tasks:
-1. Sets up a PostgreSQL database in your Kubernetes cluster
-1. Adds the following entries to your database
-| id |  name  | category |
-|----|--------|----------|
-|  1 | Item 1 | A        |
-|  2 | Item 2 | B        |
-|  3 | Item 3 | A        |
-
-1. Deploy a PostgreSQL source, a continuous query and a reaction to your cluster using the Drasi CLI
-1. Verifies the initial bootstrap
-1. Adds a new entry ({"Id": 4, "Name": "Item 4", "Category": "A"}) to the PostgreSQL database
-1. Verifies the new entries got propagated from the source to the reaction
-1. Cleans-up by deleting all of the components
+## Optional: Testing the Deployment
+To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick [smoke test](/reference/smoke-test) workload.

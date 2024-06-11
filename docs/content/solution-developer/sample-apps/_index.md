@@ -7,6 +7,6 @@ description: >
     Drasi Sample Applications
 ---
 
-The [apps](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?version=GBdevelop&path=/apps) folder in the Drasi source repo contains a number of example applications that demonstrate the full range of capabilities provided by Drasi. 
+The [apps](https://github.com/project-drasi/learning/tree/main/apps) folder in the Drasi source repo contains a number of example applications that demonstrate the full range of capabilities provided by Drasi. 
 
 Details about the installation of these applications can be found in the [Installing Sample Applications](/administrator/sample-app-deployment) section of the [Administrator Guides](/administrator).
