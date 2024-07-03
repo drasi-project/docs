@@ -19,6 +19,7 @@ Available Commands:
   list        Get status of all resources of a type
   namespace   Manage namespaces
   wait        Wait for resources to be ready
+  uninstall   Uninstall Drasi
 
 Flags:
   -h, --help               help for drasi
@@ -92,3 +93,11 @@ Use "drasi [command] --help" for more information about a command.
     - e.g.
       - `drasi wait resources/reaction.yaml`
       - `drasi wait source postgres-demo`
+
+- ### Uninstall
+    - The `uninstall` command will uninstall the Drasi instance from the current namespace by deleting the namespace. 
+    - If the namespace flag is not set, the current namespace in the Drasi config will be deleted.
+    - e.g.
+      - `drasi uninstall`
+      - `drasi uninstall -y` (Skips the confirmation prompt for verifying the namespace to be deleted)
+      - `drasi uninstall -n <namespace>`
