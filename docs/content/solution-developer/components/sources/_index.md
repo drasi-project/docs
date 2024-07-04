@@ -19,6 +19,8 @@ Drasi currently provides Sources for the following source systems:
 - [Azure Cosmos DB Gremlin API](#azure-cosmos-db-gremlin-api-source)
 - [PostgreSQL](#postgresql-source)
 - [SQL Server](#sqlserver-source)
+- [Event Hubs](#event-hubs-source)
+- [Dataverse](#dataverse-source)
 - [Kubernetes](#kubernetes-source) (experimental)
 
 ## Creation
@@ -40,7 +42,8 @@ kind: Source
 name: <id>
 spec:
   kind: <type>
-  (source kind specific fields)...
+  properties:
+    (source kind specific fields)...
 ```
 The following table describes these configuration settings:
 
@@ -50,14 +53,15 @@ The following table describes these configuration settings:
 |kind|Must have the value **Source**|
 |name|The **id** of the Source. Must be unique within the scope of the Sources in the Drasi deployment. The  **id** is used to identify the Source through the CLI/API and in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.|
 |spec.kind|The type of Source to create, which defines the type of database or source system the Source connects to. Must be one of [CosmosGremlin](#azure-cosmos-db-gremlin-api-source), [PostgreSQL](#postgresql-source) or [Kubernetes](#kubernetes-source).|
-|spec.*|The configuration settings passed to the Source as name-value pairs. Properties differ depending on the Source type (**spec.kind**). See the individual Source sections below for the properties required by each Source type.  Any of these properties can either be specified inline or reference a secret. eg. 
+|spec.properties.*|The configuration settings passed to the Source as name-value pairs. Properties differ depending on the Source type (**spec.kind**). See the individual Source sections below for the properties required by each Source type.  Any of these properties can either be specified inline or reference a secret. eg. 
 ```yaml
   kind: PostgreSQL
-  user: my-user
-  password:
-    kind: Secret
-    name: pg-creds
-    key: password
+  properties:
+    user: my-user
+    password:
+      kind: Secret
+      name: pg-creds
+      key: password
 ```
 
 Once configured, to create a Source defined in a file called `source.yaml`, you would run the command:
@@ -110,13 +114,14 @@ kind: Source
 name: retail-ops
 spec:
   kind: CosmosGremlin
-  accountEndpoint: 
-    kind: Secret
-    name: creds
-    key: account-endpoint
-  database: Contoso
-  container: RetailOperations
-  partitionKey: name
+  properties:
+    accountEndpoint: 
+      kind: Secret
+      name: creds
+      key: account-endpoint
+    database: Contoso
+    container: RetailOperations
+    partitionKey: name
 ```
 
 > Note: You could use the following command to easily create the seret referenced here:
@@ -162,7 +167,7 @@ The following is an example of a full resource definition for a PostgreSQL Sourc
 kubectl create secret generic pg-creds --from-literal=password=my-password
 ```
 
-```
+```yaml
 apiVersion: v1
 kind: Source
 name: phys-ops
@@ -227,7 +232,7 @@ The following is an example of a full resource definition for a SQLServer Source
 kubectl create secret generic sql-creds --from-literal=password=my-password
 ```
 
-```
+```yaml
 apiVersion: v1
 kind: Source
 name: phys-ops
@@ -273,6 +278,147 @@ The SQL Source translates the relational data from change events to more closely
 
 The SQL Server Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/solution-developer/components/continuous-queries/#source-subscriptions) topic in the [Continuous Queries](/solution-developer/components/continuous-queries) section for details. 
 
+
+### Event Hubs Source
+
+The Event Hubs source enables messages streaming through Azure Event Hubs to be mapped into graph nodes that can be referenced by a continuous query.
+It can observe multiple Event Hubs within the same Event Hubs namespace, each incoming message will upsert graph node that will carry the label of the Event Hub name, and be queryable from a continuous query.
+
+#### Configuration Settings
+
+It is best practice to store the connection string to your Event Hubs instance in a secret.
+
+```bash
+kubectl create secret generic eventhub-creds --from-literal=eventHubConnectionString=...
+```
+
+You can then reference the secret when you create an Event Hub source as follows:
+
+```yaml
+kind: Source
+apiVersion: v1
+name: my-source
+spec:
+  kind: EventHub
+  properties:
+    connectionString: 
+      kind: Secret
+      name: eventhub-creds
+      key: eventHubConnectionString
+    eventHubs:
+      - hub1
+      - hub2
+    bootstrapWindow: 0
+```
+
+In the Source resource definition:
+- **apiVersion** must be **v1**
+- **kind** must be **Source**
+- **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.kind** must be **EventHub**
+
+The following table describes the EventHub specific properties:
+|Property|Description|
+|-|-|
+|connectionString|Connection string for the Event Hubs endpoint|
+|eventHubs|A list of Event Hubs within the Event Hubs namespace to observe|
+|bootstrapWindow|When a query bootstraps, it can also fetch all the messages for the previous (n) minutes.  This value defines how many minutes of backfill data to bootstrap the query with.|
+
+
+### Dataverse Source
+
+The Dataverse source enables changes to tables in Microsoft Dataverse to be mapped into graph nodes that can be referenced by a continuous query.
+
+#### Source Requirements
+
+##### App registration
+
+The Dataverse source authenticates with Dataverse using OAuth, you must first register an application in your Microsoft Entra ID tenant.
+
+Registering your application establishes a trust relationship between your app and the Microsoft identity platform. The trust is unidirectional: your app trusts the Microsoft identity platform, and not the other way around. Once created, the application object cannot be moved between different tenants.
+
+Follow these steps to create the app registration:
+
+1. Sign in to the Microsoft Entra admin center as at least a Cloud Application Administrator.
+
+1. If you have access to multiple tenants, use the Settings icon  in the top menu to switch to the tenant in which you want to register the application from the Directories + subscriptions menu.
+
+1. Browse to Identity > Applications > App registrations and select New registration.
+
+1. Enter a display Name for your application. Users of your application might see the display name when they use the app, for example during sign-in. You can change the display name at any time and multiple app registrations can share the same name. The app registration's automatically generated Application (client) ID, not its display name, uniquely identifies your app within the identity platform.
+
+1. Select Register to complete the initial app registration.
+
+When registration finishes, the Microsoft Entra admin center displays the app registration's Overview pane. You see the Application (client) ID. Also called the client ID, this value uniquely identifies your application in the Microsoft identity platform.
+
+Next, you need to add credentials to the application. Credentials allow your application to authenticate as itself, requiring no interaction from a user at runtime.
+
+1. In the Microsoft Entra admin center, in App registrations, select your application.
+1. Select Certificates & secrets > Client secrets > New client secret.
+1. Add a description for your client secret.
+1. Select an expiration for the secret or specify a custom lifetime.
+1. Select Add.
+1. Record the secret's value for use in your client application code. This secret value is never displayed again after you leave this page.
+
+For more information see [Use OAuth authentication with Microsoft Dataverse](https://learn.microsoft.com/en-ca/power-apps/developer/data-platform/authenticate-oauth)
+
+##### Create and bind Dataverse user account to the registered app
+
+The first thing you must do is create a custom security role that will define what access and privileges this account will have within the Dataverse organization. More information: [Create or configure a custom security role](https://learn.microsoft.com/en-us/power-platform/admin/database-security#create-or-configure-a-custom-security-role)
+
+After you have created the custom security role, you must create the user account which will use it.
+
+The procedure to create this user is different from creating a licensed user. Use the following steps:
+
+1. Navigate to Settings > Security > Users
+
+1. In the view drop-down, select Application Users.
+
+1. Click New. Then verify that you are using the Application user form.
+If you do not see the Application ID, Application ID URI and Azure AD Object ID fields in the form, you must select the Application User form from the list.
+
+1. Add the appropriate values to the fields:
+|Field|Value|
+|-|-|
+|User Name|A name for the user|
+|Application ID|The Application ID value for the application registered with Microsoft Entra ID.|
+|Full Name|The name of your application.|
+|Primary Email|The email address for the user.|
+
+1. Associate the application user with the custom security role you created.
+
+More information: [Manually create a Dataverse application user](https://learn.microsoft.com/en-ca/power-apps/developer/data-platform/authenticate-oauth#manually-create-a-dataverse-application-user)
+
+##### Enable change tracking
+
+For each table that you wish to observe, you need to enable `Track Changes` under the properties of that table in the [Power Apps builder](https://make.powerapps.com).
+Also, take note of the internal system name of the tables that you wish to observe.
+
+#### Configuration Settings
+
+```yaml
+kind: Source
+apiVersion: v1
+name: my-source
+spec:
+  kind: Dataverse
+  properties:
+    endpoint: https://xxxxx.api.crm4.dynamics.com/
+    clientId: 00000000-0000-0000-000000000000
+    secret: xxxxxx
+    entities:
+      - msdyn_customerasset
+```
+
+The following table describes the Dataverse specific properties:
+|Property|Description|
+|-|-|
+|endpoint|The API endpoint for the Dataverse environment.  This can be found in the [Power Platform admin center](https://admin.powerplatform.microsoft.com/home), under Environments|
+|clientId|The clientId of the app registration|
+|secret|The secret under the credentials of the app registration|
+|entities|A list of tables to observe.  In the form of the internal system name, visible in [Power Apps](https://make.powerapps.com)|
+
+
 ### Kubernetes Source
 The Kubernetes Source is an early stage experimental Source that enables Drasi connectivity to Kubernetes clusters, enabling Drasi to support Continuous Queries that incorporate changes to Kubernetes resources.
 
@@ -297,7 +443,7 @@ Create a secret named `k8s-context` from the `credentials.yaml` file
 kubectl create secret generic k8s-context --from-file=credentials.yaml
 ```
 
-```
+```yaml
 apiVersion: v1
 kind: Source
 name: k8s
