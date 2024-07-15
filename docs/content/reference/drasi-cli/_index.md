@@ -19,6 +19,7 @@ Available Commands:
   list        Get status of all resources of a type
   namespace   Manage namespaces
   wait        Wait for resources to be ready
+  uninstall   Uninstall Drasi
 
 Flags:
   -h, --help               help for drasi
@@ -81,14 +82,31 @@ Use "drasi [command] --help" for more information about a command.
       - e.g. `drasi list source -n demo`
 
 - ### Namespace
-    - This command has one subcommand: `set`. It is used to set the current Drasi namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that Drasi has been installed.
-    - Additionally, you can also specify the namespace using the `-n` or `--namespace` flags. If both an argument and a flag value are provided, the value from the namespace flag will have a higher precedence.
-      - e.g. 
-        - `drasi namespace set demo` will set the current Drasi namespace to `demo`. 
-        - `drasi namespace set ns1 -n ns2` will set the current Drasi namespace to `ns2`.
+    - This command has three subcommands: `set`, `get` and `list`.
+    - `set`:
+      - It is used to set the current Drasi namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that Drasi has been installed.
+      - Additionally, you can also specify the namespace using the `-n` or `--namespace` flags. If both an argument and a flag value are provided, the value from the namespace flag will have a higher precedence.
+        - e.g. 
+          - `drasi namespace set demo` will set the current Drasi namespace to `demo`. 
+          - `drasi namespace set ns1 -n ns2` will set the current Drasi namespace to `ns2`.
+    - `get`:
+      - Retrieves the current namespace in the Drasi config
+      - Usage: `drasi namespace get`
+    - `list`
+      - Retrieves all namespaces that have an instance of Drasi installed
+      - Usage: `drasi namespace list`
 
 - ### Wait
     - The `wait` is used when you want to wait for a resource to be ready. The command can accept either a combination of the resource type and name intended for deletion, or it can process a directory containing a YAML file.
     - e.g.
       - `drasi wait resources/reaction.yaml`
       - `drasi wait source postgres-demo`
+
+- ### Uninstall
+    - The `uninstall` command will uninstall the Drasi instance from the current namespace by deleting the namespace. 
+    - If the namespace flag is not set, the current namespace in the Drasi config will be deleted.
+    - If the `uninstall-dapr` flag is set, then the `dapr-system` namespace will be removed and `dapr` will be uninstalled from the cluster
+    - e.g.
+      - `drasi uninstall`
+      - `drasi uninstall -y` (Skips the confirmation prompt for verifying the namespace to be deleted)
+      - `drasi uninstall -n <namespace>`
