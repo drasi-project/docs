@@ -40,6 +40,8 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - Map: ., []
   - List: +, IN, []
 - Functions:
+
+  *These functions are implemented by closely following the guidelines and specifications outlined in version 9 of the [OpenCypher Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf).* 
   - Scalar: 
     - elementId
     - char_length, character_length, size
@@ -47,14 +49,14 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - Aggregating: count, sum, avg, min, max in both **WITH** and **RETURN** clauses
   - List: reduce, tail
   - Numeric: abs, ceil, floor, isNan, rand, round, sign
-  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull, toUpper, trim
+  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull*, toUpper, trim
   - Temporal: 
     - Instant: date, datetime, localdatetime, loocaltime, time
     - Duration: duration, duration.between, duration.inMonths, duration.inDays, duration.inSeconds
   - CASE expressions:
     - simple and generic forms
 
-
+**: Functions that did not come from the official OpenCypher documentation*
 # Drasi Functions
 Drasi provides the following functions that extend the base Cypher Query Language. Each of these functions is described in detail in the linked sections below.
 
@@ -313,6 +315,4 @@ RETURN
   l.id as LineId,
   drasi.linearGradient(p.x, p.y) as Gradient
 ```
-
-
 
