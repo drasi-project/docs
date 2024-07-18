@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - preview
+  pull_request:
+    branches:
+      - preview
 
 permissions:
   id-token: write # Required for requesting the JWT
@@ -16,7 +19,7 @@ jobs:
     if: github.event.action != 'closed' # only runs if the GitHub event action is not 'closed'
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.117.0
+      HUGO_VERSION: 0.128.0
     steps:
       - name: Checkout docs repo
         uses: actions/checkout@v4
@@ -52,6 +55,7 @@ jobs:
   deploy:
     name: Deploy Hugo Website to App Service
     needs: ['build']
+    if: github.event_name == 'push'  # only triggers this job when it's a push to preview
     runs-on: ubuntu-latest
     environment:
       url: 'https://drasi-docs.azurewebsites.net/'
