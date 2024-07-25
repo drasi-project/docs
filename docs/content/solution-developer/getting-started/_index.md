@@ -62,7 +62,7 @@ To use the Drasi Dev Container, you will need to install:
 - [Docker](https://www.docker.com/get-started/)
 
 Once you have these prerequisites installed:
-1. Download the [Drasi QuickStart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip)
+1. Download the [Drasi QuickStart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip?latest)
 1. Unzip the Drasi QuickStart ZIP file to a temporary location on your computer
 1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi QuickStart files you just unzipped
 
