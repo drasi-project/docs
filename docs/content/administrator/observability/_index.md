@@ -11,7 +11,7 @@ description: >
 
 ## Setup metrics
 
-Custom metrics are collected by [Prometheus](https://prometheus.io/), to enable this, install Prometheus into your Kubernetes cluster.  By default, the operator will configure Prometheus to scrape metrics from the OpenTelemtry collector.
+Custom metrics are collected by [Prometheus](https://prometheus.io/), to enable this, install Prometheus into your Kubernetes cluster.  By default, the operator will configure Prometheus to scrape metrics from the OpenTelemetry collector.
 To publish custom metrics, use the [Prometheus client library](https://prometheus.io/docs/instrumenting/clientlibs/), and push them to `http://otel-collector:4317`
 
 - Javascript - https://github.com/siimon/prom-client
