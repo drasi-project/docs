@@ -7,7 +7,7 @@ description: >
     Writing Continuous Queries
 ---
 
-Continuous Queries are written using a subset of the Cypher Graph Query Language. If you are new to Cypher, here are some useful references to get started:
+Continuous Queries are written using a subset of the Open Cypher Graph Query Language. If you are new to Open Cypher, here are some useful references to get started:
 - [Getting Started](https://opencypher.org/)
 - [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
 - [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
