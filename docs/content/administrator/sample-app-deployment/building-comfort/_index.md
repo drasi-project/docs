@@ -15,7 +15,7 @@ description: >
 - [Azure CLI 2.40](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or higher.
 - [Azure Functions Core Tools 4.0](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools) or higher.
 - A Kubernetes cluster with [Project Drasi deployed]({{< ref platform-deployment >}}).
-- A clone of the [Project Drasi Git repository](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents) on your local machine.
+- A clone of the [Project Drasi Learning repository](https://github.com/drasi-project/learning) on your local machine.
 
 ## Overview of the app
 
@@ -23,7 +23,6 @@ This application illustrates the use of Project Drasi for a hypothetical buildin
 
 - The use of Continuous Queries over a Cosmos Gremlin database.
 - Continuous Queries that include aggregations across hierarchical graph data.
-- The use of the Gremlin Reaction to update a Gremlin database based on the output of a Continuous Query.
 - The use of the SignalR Reaction to integrate Continuous Query output with a React JS Application.
 
 In this sample, Continuous Queries are used to calculate a _comfort level_ metric for building management. This is a human-centric measurement that combines the physical measurements in a room such as temperature, humidity, and CO2 levels into a perceptual rating of its comfort. For the purposes of this sample, the comfort level will be calculated dynamically for a room from the physical measurements using the simplified formula:
@@ -38,13 +37,12 @@ The app will provide a dashboard frontend to visualize the comfort levels of roo
 
 ### App Architecture
 
-![Architecture](building-comfort-arch.png)
+![Architecture](builiding-comfort-arch-new.png)
 
 This app consists of:
 
 - A Source getting changes to building environment data from Cosmos DB.
 - Several Continuous Queries that calculate comfort levels and alerts for the rooms, as well as aggregate values for the floors and building as a whole.
-- A Gremlin Reaction that updates the Cosmos DB database with the calculated comfort levels and aggregate values based on changes in the room environment measurements.
 - A SignalR Reaction that receives changes and forwards them to any connected front end clients.
 - An Azure Function App that provides HTTP endpoints for the demo app to directly change the environment values in the database.
 - A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction.
@@ -119,7 +117,7 @@ You can also look up the `SourceAccountEndpoint` value in the Azure portal or by
 az cosmosdb keys list --name my-drasi-db -g my-resource-group --type connection-strings --query "connectionStrings[?contains(description, 'Primary Gremlin Connection String')].[connectionString]" -o tsv
 ```
 
-From the `apps/building-comfort/devops/reactive-graph` folder, apply the `source-facilities.yaml` file with the drasi CLI to your cluster:
+From the `apps/building-comfort/devops/drasi` folder, apply the `source-facilities.yaml` file with the drasi CLI to your cluster:
 
 ```bash
 drasi apply -f source-facilities.yaml
@@ -127,7 +125,7 @@ drasi apply -f source-facilities.yaml
 
 #### Deploy the queries
 
-From the `apps/building-comfort/devops/reactive-graph` folder, use the drasi CLI to deploy the continuous queries:
+From the `apps/building-comfort/devops/drasi` folder, use the drasi CLI to deploy the continuous queries:
 
 ```bash
 drasi apply -f query-alert.yaml
@@ -144,29 +142,17 @@ Breaking down the Continuous Queries specified in each file:
 - `query-ui.yaml` query gets the relevant properties and the relationships between rooms, floors and the building for visualization in the frontend React app.
 
 #### Deploy the reactions
-
-To deploy the gremlin reaction, we need to create another secret using `kubectl` to specify your Gremlin graph in the Cosmos DB instance:
-
-```bash
-kubectl create secret generic comfy-creds --from-literal=DatabaseHost=${DatabaseHost} --from-literal=DatabasePrimaryKey='${DatabasePrimaryKey}'
-```
-
-- `DatabaseHost` with the host DNS name for the Gremlin endpoint. This is the same as the `cosmosUri` in `config.py` without the `wss://` prefix or the port number.
-- `DatabasePrimaryKey` with the primary key, same as the `cosmosPassword` in `config.py`.
-
-Apply the `reaction-gremlin.yaml` file and the `reaction-signalr.yaml` file with the drasi CLI to your cluster:
+Apply the `reaction-signalr.yaml` file with the drasi CLI to your cluster:
 
 ```bash
-drasi apply -f reaction-gremlin.yaml
 drasi apply -f reaction-signalr.yaml
 ```
-
-The Gremlin Reaction is used to update the graph in Cosmos DB with the latest comfort level for each room, floor, and building. The SignalR Reaction is used to send the updates of the UI query to the frontend React app.
+The SignalR Reaction is used to send the updates of the UI query to the frontend React app.
 
 To connect the React app to the SignalR Reaction, forward the gateway port for the SignalR reaction to a port on your local machine:
 
 ```bash
-kubectl port-forward services/signalr-building-gateway 5001:8080 -n default
+kubectl port-forward services/signalr-building-gateway 5001:8080 -n drasi-system
 ```
 
 ### 3. Run the demo backend and frontend
