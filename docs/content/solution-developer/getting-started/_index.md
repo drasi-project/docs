@@ -101,14 +101,15 @@ kind: Source
 name: hello-world
 spec:
   kind: PostgreSQL
-  host: postgres
-  port: 5432
-  user: test
-  password: test
-  database: hello-world
-  ssl: true
-  tables:
-    - public.Message
+  properties:
+    host: postgres
+    user: test
+    port: 5432
+    ssl: false
+    password: test
+    database: hello-world
+    tables:
+      - public.Message
 ```
 
 This table describes the most important configuration settings in this Source definition. 
@@ -118,12 +119,13 @@ This table describes the most important configuration settings in this Source de
 |kind|Specifies that the resource is a **Source**|
 |name|Provides the unique **ID** of the Source. This is used to manage the Source and in Continuous Query definitions to configure which Sources the Continuous Query uses as input.
 |spec.kind|Identifies this Source as a **PostgreSQL** Source that enables connectivity to a PostgreSQL database.| 
-|spec.host|The DNS host name of the PostgreSQL server.|
-|spec.user|The **User ID** that the Source will use to connect to the PostgreSQL database.|
-|spec.password|The **Password** for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
-|spec.database|The name of the **Database** this Source will observe changes from.|
-|spec.ssl|Whether SSL is enabled on the database.<br />**Note**: If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
-|spec.tables|The list of database **table** names that the Source will observe for changes.|
+|spec.properties.host|The DNS host name of the PostgreSQL server.|
+|spec.properties.user|The **User ID** that the Source will use to connect to the PostgreSQL database.|
+|spec.properties.port|The port number on which the PostgreSQL server is listening for connections. The default port for PostgreSQL is 5432.|
+|spec.properties.ssl|Whether SSL is enabled on the database.<br />**Note**: If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
+|spec.properties.password|The **Password** for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|spec.properties.database|The name of the **Database** this Source will observe changes from.|
+|spec.properties.tables|The list of database **table** names that the Source will observe for changes.|
 
 Use the `drasi` CLI to create the Source by running the following command in a terminal window:
 
@@ -258,13 +260,11 @@ apiVersion: v1
 kind: Reaction
 name: hello-world-debug
 spec:
-  image: reaction-debug
+  kind: Debug
   queries:
     hello-world-from:
     message-count:
     inactive-people:
-  endpoints:
-    gateway: 8080  
 ```
 
 This table describes the most important configuration settings in this Reaction definition:
@@ -272,9 +272,8 @@ This table describes the most important configuration settings in this Reaction 
 |-|-|
 |kind|Specifies that the resource is a **Reaction**|
 |name|Provides the **ID** of the Reaction. This is used to manage the Reaction. |
-|spec.image|Identifies the type of Reaction. The value `reaction-debug` identifies that it is a Debug reaction you want to create.|
+|spec.kind|Identifies the type of Reaction. The `Debug` reaction was pre-registered when you executed the `drasi init` command earlier|
 |spec.queries|Specifies the IDs of the Continuous Queries the Reaction will subscribe to. In this case you specify the IDs of the three Continuous Queries you created in the previous step.|
-|spec.endpoints|Specifies the port name and number through which the Debug reaction Web UI is accessible.|
 
 Use the `drasi` CLI to create the Debug Reaction by running the following command in a terminal window:
 
