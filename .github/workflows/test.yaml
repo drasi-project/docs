@@ -1,0 +1,109 @@
+name: Test Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Drasi Version'
+        required: true        
+
+permissions:
+  id-token: write # Required for requesting the JWT
+  contents: read  # Required for actions/checkout
+
+jobs:
+  build:
+    name: Build and Test Hugo Website
+    runs-on: e2e-tester
+    env:
+      HUGO_VERSION: 0.128.0
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Get Release ID by Tag
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DRASI_PLATFORM_PAT }}
+          script: |
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: 'drasi-project',
+              repo: 'drasi-platform',
+              tag: '${{ inputs.version }}'
+            });
+            return release.data.id;
+
+      - name: Get Asset ID
+        id: get_asset
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.DRASI_PLATFORM_PAT }}
+          script: |
+            const assets = await github.rest.repos.listReleaseAssets({
+              owner: 'drasi-project',
+              repo: 'drasi-platform',
+              release_id: ${{ steps.get_release.outputs.result }}
+            });
+            const asset = assets.data.find(asset => asset.name === 'drasi-linux-x64');
+            if (!asset) throw new Error('Asset not found');
+            return asset.id;
+
+      - name: Download Drasi CLI
+        run: |
+          curl -L \
+            -o drasi-linux-x64 \
+            -H "Accept: application/octet-stream" \
+            -H "Authorization: Bearer ${{ secrets.DRASI_PLATFORM_PAT }}" \
+            https://api.github.com/repos/drasi-project/drasi-platform/releases/assets/${{ steps.get_asset.outputs.result }}
+
+      - name: Install Drasi CLI
+        run: |
+          chmod +x ./drasi-linux-x64
+          sudo mv ./drasi-linux-x64 /usr/local/bin/drasi
+        
+      - name: Install Kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      - name: Install Kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+    
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2.6.0
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true 
+
+      - name: Setup Docsy
+        run: |
+          cd docs
+          sudo npm install -D --save autoprefixer
+          sudo npm install -D --save postcss-cli
+          cd themes/docsy
+          npm install 
+
+      - name: Build Hugo Site
+        run: |
+          cd docs
+          hugo
+
+      - name: Test Docs
+        working-directory: tests
+        run: |
+          npm install
+          DRASI_VERSION=${{ inputs.version }} npm test
+
+  
