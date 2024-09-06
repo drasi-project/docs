@@ -6,14 +6,35 @@ const { waitForChildProcess } = require('./infrastructure');
 /**
  * @param {Array} resources
  */
-async function deployResources(resources) {
+async function applyKubernetes(resources) {
+
+  let promises = [];
+
+  for (let resource of resources) {
+    if (!resource)
+      continue;
+      
+    console.info(cp.execSync(`kubectl apply -f - `, { input: yaml.dump(resource), encoding: 'utf-8', stdio: 'pipe' }));
+    switch (resource.kind) {
+      case "Deployment":
+      case "StatefulSet":
+        promises.push(waitForChildProcess(cp.exec(`kubectl rollout status --watch --timeout=300s ${resource.kind}/${resource.metadata.name}`, { encoding: 'utf-8' }), resource.metadata.name));
+        break;
+    }
+  }
+
+  await Promise.all(promises);  
+}
+
+/**
+ * @param {Array} resources
+ */
+async function applyDrasi(resources) {
 
   let sources = [];
   let queries = [];
   let reactions = [];
   let containers = [];
-
-  let promises = [];
 
   for (let resource of resources) {
     if (!resource)
@@ -31,24 +52,13 @@ async function deployResources(resources) {
         break;
       case "Reaction":
         reactions.push(resource);
-        break;
-      default:
-        console.info(cp.execSync(`kubectl apply -f - `, { input: yaml.dump(resource), encoding: 'utf-8', stdio: 'pipe' }));
-        switch (resource.kind) {
-          case "Deployment":
-          case "StatefulSet":
-            promises.push(waitForChildProcess(cp.exec(`kubectl rollout status --watch --timeout=300s ${resource.kind}/${resource.metadata.name}`, { encoding: 'utf-8' }), resource.metadata.name));
-            break;
-        }
-        break;
+        break;      
     }
   }
 
-  await Promise.all(promises);
-
   for (let source of sources) {
     console.info(cp.execSync(`drasi apply`, { input: yaml.dump(source), encoding: 'utf-8', stdio: 'pipe'}));
-    await waitForChildProcess(cp.exec(`drasi wait ${source.kind} ${source.name}`, { encoding: 'utf-8' }), source.name);
+    await waitForChildProcess(cp.exec(`drasi wait ${source.kind} ${source.name} -t 240`, { encoding: 'utf-8' }), source.name);
   }
 
   for (let container of containers) {
@@ -64,8 +74,8 @@ async function deployResources(resources) {
 
   for (let reaction of reactions) {
     console.info(cp.execSync(`drasi apply`, { input: yaml.dump(reaction), encoding: 'utf-8', stdio: 'pipe' }));
-    await waitForChildProcess(cp.exec(`drasi wait ${reaction.kind} ${reaction.name}`, { encoding: 'utf-8' }), reaction.name);
+    await waitForChildProcess(cp.exec(`drasi wait ${reaction.kind} ${reaction.name}-t 240`, { encoding: 'utf-8' }), reaction.name);
   }
 }
 
-module.exports = deployResources;
+module.exports = { applyKubernetes, applyDrasi };

@@ -1,5 +1,5 @@
 const signalR = require("@microsoft/signalr");
-const deployResources = require("./deploy-resources");
+const { applyDrasi } = require("./deploy-resources");
 const PortForward = require('./port-forward');
 
 class SignalrFixture {
@@ -19,7 +19,7 @@ class SignalrFixture {
   }
 
   async start() {
-    await deployResources([signalrReactionManifest(this.queryIds)]);
+    await applyDrasi([signalrReactionManifest(this.queryIds)]);
     this.localPort = await this.portForward.start();
     this.signalr = new signalR.HubConnectionBuilder()
       .withUrl(`http://127.0.0.1:${this.localPort}/hub`)

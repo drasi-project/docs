@@ -107,7 +107,7 @@ spec:
     user: test
     password: test
     database: hello-world
-    ssl: true
+    ssl: false
     tables:
       - public.Message
 ```
@@ -341,7 +341,7 @@ On the left hand side is a menu listing the three Continuous Queries created ear
 
 If you add another Message to the table using the following SQL insert statement:
 
-```sql
+```sql {#insert-5}
 INSERT INTO public."Message" VALUES (5, 'Allen', 'Hello World');
 ```
 
