@@ -23,15 +23,24 @@ test('YAML snippets', async () => {
   await applyDrasi(yaml.loadAll(await readSnippet("solution-developer/getting-started", "hello-world-queries")));
   await applyDrasi(yaml.loadAll(await readSnippet("solution-developer/getting-started", "hello-world-reaction")));
 
+  console.log("starting signalr reaction");
   await signalrFixture.start();
+  
+  console.log("starting port forward");
   dbClient.port = await dbPortForward.start();
+  
+  console.log("connecting to pg");
   await dbClient.connect();
+
+  console.log("waiting for changes");
 
   let updateCondition = signalrFixture.waitForChange("message-count", 
     change => change.op == "u" && change.payload.after.Message == "Hello World" && change.payload.after.Frequency == 2);
 
+  console.log("sending changes");
   await dbClient.query(await readSnippet("solution-developer/getting-started", "insert-5"));
 
+  console.log("asserting");
   expect(await updateCondition).toBeTruthy();
 });
 
