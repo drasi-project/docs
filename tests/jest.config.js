@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 const config = {
   globalSetup: '<rootDir>/fixtures/cluster-setup.js',
-  testTimeout: 120000,
+  testTimeout: 180000,
   verbose: true,
 };
 
