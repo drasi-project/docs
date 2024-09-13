@@ -95,19 +95,19 @@ The files you will need to create the Drasi Source, Continuous Queries, and Reac
 ## Step 2 - Create the PostgreSQL Source
 The following YAML is the content of the `hello-world-source.yaml` file, which you will use to create a Source that connects to your PostgreSQL database.
 
-```yaml
+```yaml {#hello-world-source}
 apiVersion: v1
 kind: Source
 name: hello-world
 spec:
   kind: PostgreSQL
   properties:
-    host: postgres
-    user: test
+    host: postgres.default.svc.cluster.local
     port: 5432
-    ssl: false
+    user: test
     password: test
     database: hello-world
+    ssl: false
     tables:
       - public.Message
 ```
@@ -157,7 +157,7 @@ When `drasi wait` returns, your Drasi Source for PostgreSQL is created and ready
 ## Step 3 - Create the Continuous Queries
 The following YAML is the content of the `hello-world-queries.yaml` file, which you will use to create the Continuous Queries you need.
 
-```yaml
+```yaml {#hello-world-queries}
 apiVersion: v1
 kind: ContinuousQuery
 name: hello-world-from
@@ -255,7 +255,7 @@ In order to view the results of the Continuous Queries you will deploy an instan
 
 The following YAML is the content of the `hello-world-reaction.yaml` file, which you will use to create the Debug Reaction.
 
-```yaml
+```yaml {#hello-world-reaction}
 apiVersion: v1
 kind: Reaction
 name: hello-world-debug
@@ -339,7 +339,7 @@ On the left hand side is a menu listing the three Continuous Queries created ear
 
 If you add another Message to the table using the following SQL insert statement:
 
-```sql
+```sql {#insert-5}
 INSERT INTO public."Message" VALUES (5, 'Allen', 'Hello World');
 ```
 
