@@ -74,7 +74,7 @@ async function applyDrasi(resources) {
 
   for (let reaction of reactions) {
     console.info(cp.execSync(`drasi apply`, { input: yaml.dump(reaction), encoding: 'utf-8', stdio: 'pipe' }));
-    await waitForChildProcess(cp.exec(`drasi wait ${reaction.kind} ${reaction.name}-t 240`, { encoding: 'utf-8' }), reaction.name);
+    await waitForChildProcess(cp.exec(`drasi wait ${reaction.kind} ${reaction.name} -t 240`, { encoding: 'utf-8' }), reaction.name);
   }
 }
 
