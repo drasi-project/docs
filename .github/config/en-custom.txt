@@ -1283,9 +1283,6 @@ EnvironmentVariable
 EnvironmentVariableReference
 secretRef
 DaprStateStorePropertiesMetadata
-BicepConfigProperties
-BicepConfigPropertiesAuthentication
-RegistrySecretConfig
 Drasi
 ContinuousQuery
 SignalR
