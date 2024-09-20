@@ -16,19 +16,19 @@ But databases generally focus on providing access to a reliable point-in-time sn
 Drasi integrates easily with a range of existing databases (called Sources in Drasi) using their change feed as its primary source of data. Drasi lets you use the familiar concept of a database query to describe what data to to watch for changes and how you want that data structured in your query result. But instead of running immediately and returning a result set like a normal query, Drasi queries (called Continuous Queries) run continuously, waiting for changes to affect the data they are watching and automatically updating their result when changes occur. When a database change causes a Continuous Query result to change, Drasi determines exactly what the change was and forwards it to one or more Drasi components called Reactions that use the change description to perform some action.
 
 ### Example - Employee Safety
-For example, a company wants to alert management when staff are at risk from incidents occurring near them so they can provide support, such as medical assistance, a delivery of supplies, or travel out of the danger area. Being able to act quickly, maybe within minutes, in response to multiple sources of changing data are necessary for this support to be effective. To achieve this goal you would need to observe multipl sources of data, including:
+For example, a company wants to alert management when staff are at risk from incidents occurring near them so they can provide support, such as medical assistance, a delivery of supplies, or travel out of the danger area. Being able to act quickly, maybe within minutes, in response to multiple sources of changing data are necessary for this support to be effective. To achieve this goal you would need to observe multiple sources of data, including:
   - Incidents: describing the type of incident, its location and the area it is affecting, its severity and the risk it posses to people in its area of affect.
  -  
 
 
-Although this may sound like many other event or stream processing technologies, the use of rich queries that can include data from multiple Sources, the precicion of being able to react to specific changes instead of generating windowed aggregates, and the ability to react when expected changes do not happen, all differentiate .
+Although this may sound like many other event or stream processing technologies, the use of rich queries that can include data from multiple Sources, the precision of being able to react to specific changes instead of generating windowed aggregates, and the ability to react when expected changes do not happen, all differentiate .
 
 
 
 Solutions to problems like those mentioned above are already possible, and there are a number of common approaches software developers take; these include:
 - polling
 - change log processing
-- analytcs
+- analytics
 
 There are also
 - stream processing

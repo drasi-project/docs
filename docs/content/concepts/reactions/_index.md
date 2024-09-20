@@ -238,7 +238,7 @@ Property|Description|
 |clientId|The clientId of the app registration|
 |secret|The secret under the credentials of the app registration|
 
-In addition, for each query you need to specify how the Dataverse entites are manipulated in response to changes.  This takes the form of a YAML sub-document for each query.  For each query you can specify what happens when results to the query are `added`, `updated` or `deleted`. Under each of these sections you can specify a list of actions.  Each action has a `kind` field of `createEntity`, `updateEntity` or `deleteEntity` and a field called `entityName` which indicates the Dataverse table upon which to operate. All other field names map to the internal field names of the Dataverse table, and can be mapped to values flowing from the query result using an `@` symbol or can be constant values.
+In addition, for each query you need to specify how the Dataverse entities are manipulated in response to changes.  This takes the form of a YAML sub-document for each query.  For each query you can specify what happens when results to the query are `added`, `updated` or `deleted`. Under each of these sections you can specify a list of actions.  Each action has a `kind` field of `createEntity`, `updateEntity` or `deleteEntity` and a field called `entityName` which indicates the Dataverse table upon which to operate. All other field names map to the internal field names of the Dataverse table, and can be mapped to values flowing from the query result using an `@` symbol or can be constant values.
 
 For example, the following will create an IoT Alert and a note when a result is added to the query result set, and add corresponding notes if a result is changed or removed.
 ```yaml
@@ -520,7 +520,7 @@ In the ReactionProvider definition:
 The section below provides a more detailed walkthrough of the various fields under the `spec` section.
 ### Config Schema
 
-The `config_schema` section that is at the top level is used for defining any enviroment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
+The `config_schema` section that is at the top level is used for defining any environment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
 
 For example, the following section will specify two environment variables `foo` and `isTrue` for this Reaction. `foo` is a required environment variable and it expects the input to be of type `string`, whereas `isTrue` expects the input to be of type `boolean` and is not a required value (default value is set to `true`)
 
@@ -543,7 +543,7 @@ spec:
 
 ### Services
 
-The `services` field configures the definition of the serivce(s) of a Reaction. At the moment, a service must be defined for any ReactionProvider. For each `service`, there are four fields that you can configure:
+The `services` field configures the definition of the service(s) of a Reaction. At the moment, a service must be defined for any ReactionProvider. For each `service`, there are four fields that you can configure:
 - `image`
   - `image` is a required field and you can specify the image to use for this Reaction service here. 
     - (NOTE: Drasi assumes that the image lives in the same registry that you used when you executed `drasi init`).
@@ -569,7 +569,7 @@ The `services` field configures the definition of the serivce(s) of a Reaction. 
             app-port: 4002
   - `config_schema`
     - This is used for defining environment variables; however, the environment variables that are defined here are only accessible for this particular service.
-    - The configurations are defined by following JSON Schema. We define this field to be of type `object`, and list all of the configs (environment variables) under the `properties` section. For each of the property, you need to specify its type and an optional default value. For any required environment variables, you can list them under the `require` section as an array of elements
+    - The configurations are defined by following JSON Schema. We define this field to be of type `object`, and list all of the configurations (environment variables) under the `properties` section. For each of the property, you need to specify its type and an optional default value. For any required environment variables, you can list them under the `require` section as an array of elements
     - Sample:
      ```yaml
         config_schema:

@@ -727,7 +727,7 @@ The section below provides a more detailed walkthrough of the various fields und
 
 ### Services
 
-The `services` field configures the definition of the serivce(s) of a Source. For any SourceProvider, you must define two required services: `proxy` and `reactivator`, and you can choose to define additional services if needed. Every service will be rendered into an unique Kubernetes deployment and ultimately a Kubernetes pod. For each `service`, there are four fields that you can configure:
+The `services` field configures the definition of the service(s) of a Source. For any SourceProvider, you must define two required services: `proxy` and `reactivator`, and you can choose to define additional services if needed. Every service will be rendered into an unique Kubernetes deployment and ultimately a Kubernetes pod. For each `service`, there are four fields that you can configure:
 - `image`
   - `image` is a required field and you can specify the image to use for this source service here. 
     - (NOTE: Drasi assumes that the image lives in the same registry that you used when you executed `drasi init`).
@@ -748,7 +748,7 @@ The `services` field configures the definition of the serivce(s) of a Source. Fo
             app-port: 4002
   - `config_schema`
     - This is used for defining environment variables; however, the environment variables that are defined here are only accessible for this particular service.
-    - The configurations are defined by following JSON Schema. We define this field to be of type `object`, and list all of the configs (environment variables) under the `properties` section. For each of the property, you need to specify its type and an optional default value. For any required environment variables, you can list them under the `require` section as an array of elements
+    - The configurations are defined by following JSON Schema. We define this field to be of type `object`, and list all of the configurations (environment variables) under the `properties` section. For each of the property, you need to specify its type and an optional default value. For any required environment variables, you can list them under the `require` section as an array of elements
     - Sample:
      ```yaml
         config_schema:
@@ -766,7 +766,7 @@ The `services` field configures the definition of the serivce(s) of a Source. Fo
 
 ### Config Schema
 
-The `config_schema` section that is at the same level as the `services` section is used for defining any enviroment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
+The `config_schema` section that is at the same level as the `services` section is used for defining any environment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
 
 For example, the following section will specify two environment variables `foo` and `isTrue` for this source. `foo` is a required environment variable and it expects the input to be of type `string`, whereas `isTrue` expects the input to be of type `boolean` and is not a required value (default value is set to `true`)
 
