@@ -14,12 +14,12 @@ description: >
 - An Azure Subscription with permissions to create resources.
 - [Azure CLI 2.40](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or higher.
 - [Azure Functions Core Tools 4.0](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools) or higher.
-- A Kubernetes cluster with [Project Drasi deployed]({{< ref installation >}}).
-- A clone of the [Project Drasi Git repository](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents) on your local machine.
+- A Kubernetes cluster with [Drasi deployed]({{< ref installation >}}).
+- A clone of the [Drasi Git repository](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents) on your local machine.
 
 ## Overview of the app
 
-This application illustrates the use of Project Drasi for a hypothetical building management scenario, including:
+This application illustrates the use of Drasi for a hypothetical building management scenario, including:
 
 - The use of Continuous Queries over a Cosmos Gremlin database.
 - Continuous Queries that include aggregations across hierarchical graph data.
