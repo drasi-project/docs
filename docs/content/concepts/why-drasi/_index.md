@@ -16,7 +16,7 @@ But databases generally focus on providing access to a reliable point-in-time sn
 Drasi integrates easily with a range of existing databases (called Sources in Drasi) using their change feed as its primary source of data. Drasi lets you use the familiar concept of a database query to describe what data to to watch for changes and how you want that data structured in your query result. But instead of running immediately and returning a result set like a normal query, Drasi queries (called Continuous Queries) run continuously, waiting for changes to affect the data they are watching and automatically updating their result when changes occur. When a database change causes a Continuous Query result to change, Drasi determines exactly what the change was and forwards it to one or more Drasi components called Reactions that use the change description to perform some action.
 
 ### Example - Employee Safety
-For example, a company wants to alert management when staff are at risk from incidents occuring near them so they can provide support, such as medical assistance, a delivery of supplies, or travel out of the danger area. Being able to act quickly, maybe within minutes, in response to multiple sources of changing data are necessary for this support to be effective. To achieve this goal you would need to observe multipl sources of data, including:
+For example, a company wants to alert management when staff are at risk from incidents occurring near them so they can provide support, such as medical assistance, a delivery of supplies, or travel out of the danger area. Being able to act quickly, maybe within minutes, in response to multiple sources of changing data are necessary for this support to be effective. To achieve this goal you would need to observe multipl sources of data, including:
   - Incidents: describing the type of incident, its location and the area it is affecting, its severity and the risk it posses to people in its area of affect.
  -  
 
@@ -42,7 +42,7 @@ We believe that Drasi provides
 
 When to use Drasi:
 - whenever you need to figure out when and how data in one or more database has changed
-- whenever you need to figure out when data hasnt changed when it was expected to
+- whenever you need to figure out when data hasn't changed when it was expected to
 - 
 
 OLD INTRO
@@ -65,7 +65,7 @@ Some software systems are designed with built-in change notification capabilitie
 - How to monitor the eventing functionality and supporting infrastructure in production.
 - How to educate developers in the use of your eventing capabilities and make it easy for them to use.
 
-Doing all this successfully (in addition to delivering the system’s primary functionality) requires the developer to have good data modelling skills, a deep understanding of event driven architectures, and experience with messaging infrastructure technology. All of this is in addition to skills in their domain of expertise, like financial services or life sciences. As such, many systems do not include change notification capabilities, or have very simplistic implementations that provide limited value to the developers trying to use them.
+Doing all this successfully (in addition to delivering the system’s primary functionality) requires the developer to have good data modeling skills, a deep understanding of event driven architectures, and experience with messaging infrastructure technology. All of this is in addition to skills in their domain of expertise, like financial services or life sciences. As such, many systems do not include change notification capabilities, or have very simplistic implementations that provide limited value to the developers trying to use them.
 
 Further, observing and reacting to software systems that were not originally designed to generate change notifications presents additional challenges for developers. While the developer still needs to address many of the concerns outlined previously, they must also solve the problem of detecting when changes occur in the source systems. If they are unable to modify the system source code to update components and services to generate change notifications, as is often the case when dealing with third-party or legacy systems, the developer must implement a complex and inefficient work around such as:
 - periodically querying (i.e. polling) the source system and comparing results to detect changes over time.

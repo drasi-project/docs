@@ -4,7 +4,7 @@ title: "Test a Drasi Installation"
 linkTitle: "Test a Drasi Installation"
 weight: 50
 description: >
-    Learn how to quickly test a Drasi installlation to make sure it is working correctly
+    Learn how to quickly test a Drasi installation to make sure it is working correctly
 ---
 
 ### Prerequisites

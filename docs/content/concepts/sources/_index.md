@@ -124,7 +124,7 @@ spec:
     partitionKey: name
 ```
 
-> Note: You could use the following command to easily create the seret referenced here:
+> Note: You could use the following command to easily create the secret referenced here:
   ```bash
   kubectl create secret generic creds --from-literal=account-endpoint=...
   ```
@@ -732,8 +732,8 @@ The `services` field configures the definition of the serivce(s) of a Source. Fo
   - `image` is a required field and you can specify the image to use for this source service here. 
     - (NOTE: Drasi assumes that the image lives in the same registry that you used when you executed `drasi init`).
   - `endpoints`
-    - If your source has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", althrough we currently only support internal endpoints. For the `target` attribute, if the setting is set to `internal`, the `target` should be a port number.
-    - Each endpoint will be rendered into a Kuberentes Service, with the value of `target` being set as the port number.
+    - If your source has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", although we currently only support internal endpoints. For the `target` attribute, if the setting is set to `internal`, the `target` should be a port number.
+    - Each endpoint will be rendered into a Kubernetes Service, with the value of `target` being set as the port number.
     - The following block defines a Source that will create a Kubernetes service called `<source-name>-gateway` with a port of `4318` when deployed.
       - ```yaml 
           endpoints:
@@ -862,7 +862,7 @@ drasi list sourceprovider
 ```
 
 
-To deploy a `PostgreSQL` source, we simply need to create a Source file that supplies all of the required values. In this case, we need to supply a value for all of the environment variables that are marked as required. Below is a sample Source file for deploying a `PostgreSQL` source (Notice that since we are not overwritting any service configurations, we can simply omit the `services` field in this file):
+To deploy a `PostgreSQL` source, we simply need to create a Source file that supplies all of the required values. In this case, we need to supply a value for all of the environment variables that are marked as required. Below is a sample Source file for deploying a `PostgreSQL` source (Notice that since we are not overwriting any service configurations, we can simply omit the `services` field in this file):
 ```yaml
 apiVersion: v1
 kind: Source
