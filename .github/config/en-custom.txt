@@ -1338,3 +1338,7 @@ MiniKube
 netlify
 ReactionProvider
 SourceProvider
+kubeconfig
+WAL
+wal
+sys
