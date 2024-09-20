@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Installing Drasi from Source"
-linkTitle: "Installing Drasi from Source"
+title: "Install Drasi from Source"
+linkTitle: "Install Drasi from Source"
 weight: 20
 description: >
     Learn how to install Drasi from source

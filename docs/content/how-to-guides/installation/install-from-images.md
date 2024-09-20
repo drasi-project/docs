@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Installing Drasi from Images"
-linkTitle: "Installing Drasi from Images"
+title: "Install Drasi from Images"
+linkTitle: "Install Drasi from Images"
 weight: 10
 description: >
     Learn how to install Drasi from pre-built images

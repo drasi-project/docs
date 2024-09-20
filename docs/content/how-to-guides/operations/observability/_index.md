@@ -1,11 +1,11 @@
 
 ---
 type: "docs"
-title: "Observability"
-linkTitle: "Observability"
-weight: 30
+title: "Configure Observability"
+linkTitle: "Configure Observability"
+weight: 50
 description: >
-    Platform Observability
+    Configuring platform observability
 ---
 
 

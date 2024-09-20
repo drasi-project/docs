@@ -7,6 +7,7 @@ description: >
     What Problem does Drasi Solve?
 ---
 
+
 Data stored in databases plays a critical role in an organization's ability to make decisions and manage its operations. Databases often provide the primary system of record for the things an organization needs to keep track of such as customers, orders, employees, issues, books, vehicles, etc. Modern databases make it easy to store, update, retrieve, and analyze enormous volumes of data quickly and reliable and can be accessed and updated concurrently by many people and systems. 
 
 But databases generally focus on providing access to a reliable point-in-time snapshot of an organization's data. Knowing when and how data changes is also important so that organizations can react to changes as they occur. Although the need to detect and react to data change is common, the Drasi Team believe current options for doing this are too complex. This is where Drasi, the Data Change Processing Platform, comes in.
