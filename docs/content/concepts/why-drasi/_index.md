@@ -7,11 +7,52 @@ description: >
     What Problem does Drasi Solve?
 ---
 
+TESTING NEW INTRO
+
+Data stored in databases plays a critical role in an organization's ability to make decisions and manage its operations. Databases often provide the primary system of record for the things an organization needs to keep track of such as customers, orders, employees, issues, books, vehicles, etc. Modern databases make it easy to store, update, retrieve, and analyze enormous volumes of data quickly and reliable and can be accessed and updated concurrently by many people and systems. 
+
+But databases generally focus on providing access to a reliable point-in-time snapshot of an organization's data. Knowing when and how data changes is also important so that organizations can react to changes as they occur. Although the need to detect and react to data change is common, the Drasi Team believe current options for doing this are too complex. This is where Drasi, the Data Change Processing Platform, comes in.
+
+Drasi integrates easily with a range of existing databases (called Sources in Drasi) using their change feed as its primary source of data. Drasi lets you use the familar concept of a database query to describe what data to to watch for changes and how you want that data structured in your query result. But instead of running immediately and returning a result set like a normal query, Drasi queries (called Continuous Queries) run continuously, waiting for changes to affect the data they are watching and automatically updating thier result when changes occur. When a database change causes a Continuous Query result to change, Drasi determines exactly what the change was and forwards it to one or more Drasi components called Reactions that use the change description to perform some action.
+
+### Example - Employee Safety
+For example, a company wants to alert management when staff are at risk from incidents occuring near them so they can provide support, such as medical assistance, a delivery of supplies, or travel out of the danger area. Being able to act quickly, maybe within minutes, in response to multiple sources of changing data are neccessary for this support to be effective. To achieve this goal you would need to observe multipl sources of data, including:
+  - Incidents: describing the type of incident, its location and the area it is affecting, its severity and the risk it posses to people in its area of affect.
+ -  
+
+
+Although this may sound like many other event or stream processing technologies, the use of rich queries that can include data from multiple Sources, the precicion of being able to react to specific changes instead of generating windowed aggregates, and the ability to react when expected changes do not happen, all differentiate .
+
+
+
+Solutions to problems like those mentioned above are already possible, and there are a number of common approaches software developers take; these include:
+- polling
+- change log processing
+- analytcs
+
+There are also
+- stream processing
+- event processing
+
+And some organizations try
+
+
+We believe that Drasi provides 
+
+
+When to use Drasi:
+- whenever you need to figure out when and how data in one or more database has changed
+- whenever you need to figure out when data hasnt changed when it was expected to
+- 
+
+OLD INTRO
+
 The world is complex and constantly changing. Organizations create ever more sophisticated software systems in an effort to model, reason about, and manage their physical assets and operational activities. The data managed by these software systems can be large and complex, in some instances containing millions of digital entities that represent real-world things like people, vehicles, products, orders, processes, and incidents. These systems can also contain millions of relationships between entities that describe how things in the real world are physically or logically related to each other
 
 As the world changes, the data must also change, resulting in the continual creation and deletion of entities, modifications to the properties that represent the state of the entities, and the creation and deletion of relationships between entities. In large systems, the frequency and volume of change can be very high. 
 
 Being able to react dynamically when this data changes is increasingly important to organizations that want to improve productivity and operational efficiency through the creation of more integrated and responsive software solutions across and between organizations.
+
 
 Some software systems are designed with built-in change notification capabilities that enable cascading updates within the system or external consumers to observe changes as they occur and react accordingly. But building such systems is difficult and time consuming. For example, if you want to include change notification capabilities in a system you are building, you will need to decide:
 - Which actions or operations in your system generate events (i.e an event taxonomy). For a large system there could be hundreds or thousands of actions for which you need to generate events.

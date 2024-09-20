@@ -2,7 +2,7 @@
 type: "docs"
 title: "Continuous Query Syntax"
 linkTitle: "Continuous Query Syntax"
-weight: 55
+weight: 10
 description: >
     Writing Continuous Queries
 ---

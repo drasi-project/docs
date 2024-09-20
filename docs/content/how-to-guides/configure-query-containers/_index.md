@@ -1,11 +1,11 @@
 
 ---
 type: "docs"
-title: "Query Container"
-linkTitle: "Query Container"
-weight: 30
+title: "Configure Query Containers"
+linkTitle: "Configure Query Containers"
+weight: 40
 description: >
-    Query Container
+    Configuring Query Containers
 ---
 
 When you create a continuous query, you can specify which query container should host that query.  This enables you to isolate groups of queries to use a specific set of resources.  A new installation of Drasi will include a `default` query container but you can also create your own.

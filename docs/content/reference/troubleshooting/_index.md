@@ -2,7 +2,7 @@
 type: "docs"
 title: "Troubleshooting"
 linkTitle: "Troubleshooting"
-weight: 70
+weight: 60
 description: >
     Troubleshooting Drasi Issues
 ---

@@ -1,10 +1,10 @@
 ---
 type: "docs"
-title: "Drasi CLI"
-linkTitle: "Drasi CLI"
-weight: 50
+title: "Command Line Interface"
+linkTitle: "Command Line Interface"
+weight: 20
 description: >
-    Detailed information of the Drasi CLI
+    using the Drasi CLI
 ---
 ```bash
 Usage:
