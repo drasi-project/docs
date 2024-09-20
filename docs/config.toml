@@ -1,6 +1,6 @@
 # Site Configuration
 baseURL = "https://drasi-docs.azurewebsites.net/"
-title = "Project Drasi"
+title = "Drasi"
 theme = "docsy"
 
 # Attribution

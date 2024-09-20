@@ -9,7 +9,7 @@ description: >
 
 ## Prerequisites
 
-- You need to be member of the **Project Drasi Preview Users** security group. Email [The Drasi Team](mailto:projectdrasiteam@service.microsoft.com) to request access.
+- You need to be member of the **Drasi Preview Users** security group. Email [The Drasi Team](mailto:projectdrasiteam@service.microsoft.com) to request access.
 - On the computer where you will run the install process:
   - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
   - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli) if you are deploying to AKS.

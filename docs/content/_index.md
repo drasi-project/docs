@@ -1,6 +1,6 @@
 ---
 type: "docs"
-title: "Project Drasi"
+title: "Drasi"
 linkTitle: "Home"
 weight: 1
 description: >
