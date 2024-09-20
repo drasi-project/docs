@@ -1421,3 +1421,6 @@ directIo
 storageClass
 eventing
 linearGradient
+backfill
+bootstrapWindow
+eventHubs
