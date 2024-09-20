@@ -78,7 +78,7 @@ Drasi LIST functions simplify some LIST handling operations that are common in D
 ### drasi.min()
 The `drasi.min` function returns the minimum value contained in a LIST.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.min(list)
 ```
@@ -100,7 +100,7 @@ The `drasi.min` function returns a single value, which is the minimum value from
 ### drasi.max()
 The `drasi.max` function returns the maximum value contained in a LIST.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.max(list)
 ```
@@ -127,7 +127,7 @@ A Continuous Query containing FUTURE functions must have a temporal Element Inde
 ### drasi.changeDateTime()
 The `drasi.changeDateTime` function returns the ZONED DATETIME of when the provided element was changed.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.changeDateTime(element)
 ```
@@ -148,7 +148,7 @@ The `drasi.getVersionByTimestamp` function returns the version of a specified El
 
 The Continuous Query containing the `drasi.getVersionByTimestamp` function must have a temporal Element Index enabled.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.getVersionByTimestamp(element, timestamp)
 ```
@@ -170,7 +170,7 @@ The `drasi.getVersionsByTimeRange` function returns a LIST containing all the ve
 
 The Continuous Query containing the `drasi.getVersionsByTimeRange` function must have a temporal Element Index enabled.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.getVersionsByTimeRange(element, from_timestamp, to_timestamp, include_initial_version)
 ```
@@ -195,7 +195,7 @@ Drasi FUTURE functions makes it possible to use Continuous Queries in situations
 ### drasi.trueLater()
 The `drasi.trueLater` function makes it possible to write Continuous Queries that evaluate a BOOLEAN expression at a specific point in time, instead of at the point in time when the change being processed occurred.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueLater(expression, timestamp)
 ```
@@ -222,7 +222,7 @@ More formally:
 ### drasi.trueUntil()
 The `drasi.trueUntil` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE at least until a specific point in time.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueUntil(expression, timestamp)
 ```
@@ -252,7 +252,7 @@ More formally:
 ### drasi.trueFor()
 The `drasi.trueFor` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE for at least a period of time from the time at which the change being evaluated occurred.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueFor(expression, duration)
 ```
@@ -286,7 +286,7 @@ More formally:
 ### drasi.linearGradient()
 The `drasi.linearGradient` function is an aggregating function that fits a straight line to a set of X and Y coordinates, and returns the slope of that line.  As values are added, removed or updated, the line will be adjusted to reflect the relationship between the X and Y values.  The slope of the line can be used to predict a value for Y given a known value of X, by multiplying the slope by the X value.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.linearGradient(x, y)
 ```
