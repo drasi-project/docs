@@ -138,7 +138,7 @@ In the Source resource definition:
 The following table describes the Cosmos Gremlin specific properties that must be configured in the **spec** object:
 |Property|Description|
 |-|-|
-|accountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal.|
+|accountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmos DB Account page of the Azure Portal.|
 |database|**Database Id** from the Cosmos DB account.|
 |container|**Graph Id** from the Cosmos DB Database.|
 |partitionKey|The **Partition Key** configured on the **Graph**.|
@@ -194,7 +194,7 @@ In the Source resource definition:
 - **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
 - **spec.kind** must be **PostgreSQL**
 
-The following table describes the PostgrSQL specific properties:
+The following table describes the PostgreSQL specific properties:
 |Property|Description|
 |-|-|
 |host|The **host name** of the PostgreSQL database server.|

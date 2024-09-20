@@ -367,7 +367,7 @@ The format of the content of the options field is completely up to the developer
 
 When the projection of a continuous query is changed, a message will be published to a [Dapr topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#subscribe-to-topics). The pubsub name will be available on the `PUBSUB` environment variable (default is `rg-pubsub`). The topic name will be `<queryId>-results`, so for each queryId you discover in `/etc/queries`, you should subscribe to that Dapr topic.
 
-A skeleton implementation in Javascript would look something like this
+A skeleton implementation in JavaScript would look something like this
 
 ```js
 import { DaprServer } from "@dapr/dapr";

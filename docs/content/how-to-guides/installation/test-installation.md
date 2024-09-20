@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Test a Drasi Installlation"
-linkTitle: "Test a Drasi Installlation"
+title: "Test a Drasi Installation"
+linkTitle: "Test a Drasi Installation"
 weight: 50
 description: >
     Learn how to quickly test a Drasi installlation to make sure it is working correctly
