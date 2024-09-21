@@ -7,7 +7,7 @@ description: >
     Installing the Curbside Pickup sample application on self-hosted Drasi
 ---
 
-## Prerequsites
+## Prerequisites
 - [NodeJs](https://nodejs.org/)
 - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools)
 - Azure Account
@@ -23,8 +23,8 @@ This demo consists of
   - 2 sources, each watching a different database
   - Several continuous queries against each database
   - A continuous query that joins across the 2 databases
-  - A SignalR reaction that recieves changes and forwards them to any connected front end clients
-  - An Azure Function App that provides Http endpoints that directly manuipulate the data in each database
+  - A SignalR reaction that receives changes and forwards them to any connected front end clients
+  - An Azure Function App that provides Http endpoints that directly manipulate the data in each database
   - A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction
 
 
@@ -32,7 +32,7 @@ This demo consists of
 
 ## Setup a Gremlin Database
 
-### Create a CosmosDb account
+### Create a CosmosDB account
 
 From the `/apps/curbside-pickup/devops` folder, use the Azure CLI to deploy `database.bicep`
 
@@ -40,17 +40,17 @@ From the `/apps/curbside-pickup/devops` folder, use the Azure CLI to deploy `dat
 az deployment group create -f database.bicep --resource-group <your resource group> -p cosmosAccountName=<your account name>
 ```
 
-Insert your resource group name and pick a name for your CosmosDb account, for example:
+Insert your resource group name and pick a name for your CosmosDB account, for example:
 
 ```bash
 az deployment group create -f database.bicep --resource-group my-resource-group -p cosmosAccountName=my-drasi-db
 ```
 
-This will create a new CosmosDb account with the Gremlin API and a database named `Contoso` with 2 empty graphs, named `PhysicalOperations` and `RetailOperations`.
+This will create a new CosmosDB account with the Gremlin API and a database named `Contoso` with 2 empty graphs, named `PhysicalOperations` and `RetailOperations`.
 
 ### Add the Pickup zone data
 
-Login to the Azure portal and navigate to the Data explorer blade of your CosmosDb account.
+Login to the Azure portal and navigate to the Data explorer blade of your CosmosDB account.
 
 Expand the `Contoso/PhysicalOperations` Graph
 
@@ -65,7 +65,7 @@ g.addV('Zone').property('name','Parking Lot').property('type','Parking Lot')
 ```
 
 ## Deploy the sources
-Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
+Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
 
 ```bash
 kubectl create secret generic phys-ops-creds --from-literal=accountEndpoint='${PRIMARY CONNECTION STRING}'
@@ -121,7 +121,7 @@ kubectl port-forward services/signalr1-reaction-gateway 5001:8080 -n default
 
 ## Configure and start the App backend
 
-From the `/apps/curbside-pickup/functions` folder, create a file named `local.settings.json` and paste the following content, replacing the values for `RETAIL_OPS_URL`, `RETAIL_OPS_KEY`, `PHYSICAL_OPS_URL` and `PHYSICAL_OPS_KEY` with the values from the `Keys` blade in the Azure Portal from your CosmosDb account.
+From the `/apps/curbside-pickup/functions` folder, create a file named `local.settings.json` and paste the following content, replacing the values for `RETAIL_OPS_URL`, `RETAIL_OPS_KEY`, `PHYSICAL_OPS_URL` and `PHYSICAL_OPS_KEY` with the values from the `Keys` blade in the Azure Portal from your CosmosDB account.
 
 ```json
 {
@@ -156,7 +156,7 @@ npm start
 
 ## Configure and start the App frontend
 
-Double check the `config.json` file under `/apps/curbside-pickup/app/src` to ensure the Urls are correct.
+Double check the `config.json` file under `/apps/curbside-pickup/app/src` to ensure the URLs are correct.
 
 ```json
 {

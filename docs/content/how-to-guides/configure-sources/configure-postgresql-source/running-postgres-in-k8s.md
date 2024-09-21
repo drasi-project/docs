@@ -17,7 +17,7 @@ This page describes how to setup and configure a PostgreSQL database to use in t
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [pgAdmin 4](https://www.pgadmin.org/download/)
 - 
-**NOTE:** This tutorial assumes that you have installed Drasi to the `drasi-system` namespace. If you installed Drasi different namespace, please replace all occurences of `-n drasi-system` in the command with `-n <your-namespace>`.
+**NOTE:** This tutorial assumes that you have installed Drasi to the `drasi-system` namespace. If you installed Drasi different namespace, please replace all occurrences of `-n drasi-system` in the command with `-n <your-namespace>`.
 
 ### Setting up PostgreSQL deployment
 To set up a PostgreSQL database in your Kubernetes cluster suitable for Drasi test/dev, you can either execute the following command

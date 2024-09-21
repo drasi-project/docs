@@ -17,7 +17,7 @@ Each of these approaches is described in more detail in the linked sections belo
 **In addition** to these three approaches, which are focused on the detection and processing of change in existing systems, you might also consider adopting Drasi if you are creating a solution that you want to be a source of change for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own change notification solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of work (as described in the [Background](/solution-developer/background) section) and the downstream developers get a richer and more flexible way to detect and react to change in your system.
 
 ## Observing Changes
-Most systems that provide the capability for you as a Solution Developer to react to change do so by propagating events/messages that describe the basic creation, update, or deletion of some data entity that is modelled in the system. For example: 
+Most systems that provide the capability for you as a Solution Developer to react to change do so by propagating events/messages that describe the basic creation, update, or deletion of some data entity that is modeled in the system. For example: 
 - a Retail Operations system might generate create, update, and delete events related to:
   - Orders
   - Products

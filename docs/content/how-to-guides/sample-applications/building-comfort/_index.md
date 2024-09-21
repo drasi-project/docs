@@ -66,7 +66,7 @@ Fill in the name of the resource group you want deploy the demo (you will need t
 az deployment group create -f cosmosdb.bicep --resource-group my-resource-group -p cosmosAccountName=my-drasi-db
 ```
 
-The bicep deployment will create a new CosmosDb account with the Gremlin API enabled and a database named `Contoso` with an empty `Facilities` graph.
+The bicep deployment will create a new CosmosDB account with the Gremlin API enabled and a database named `Contoso` with an empty `Facilities` graph.
 
 
 #### Populate the sample data
@@ -107,7 +107,7 @@ python load_graph.py
 
 #### Deploy the sources
 
-Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manaually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
+Currently, we are unable to create a Kubernetes Secret using the Drasi CLI, so it needs to be manually created using `kubectl`. Navigate to your CosmosDB account in the Azure Portal. You will need to retrieve the value of `PRIMARY CONNECTION STRING` from the `Keys` blade. Run the following command to create the secrets:
 
 ```bash
 kubectl create secret generic comfy-creds --from-literal=accountEndpoint='${PRIMARY CONNECTION STRING}'

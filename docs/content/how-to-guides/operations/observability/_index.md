@@ -11,10 +11,10 @@ description: >
 
 ## Setup metrics
 
-Custom metrics are collected by [Prometheus](https://prometheus.io/), to enable this, install Prometheus into your Kubernetes cluster.  By default, the operator will configure Prometheus to scrape metrics from the OpenTelemtry collector.
+Custom metrics are collected by [Prometheus](https://prometheus.io/), to enable this, install Prometheus into your Kubernetes cluster.  By default, the operator will configure Prometheus to scrape metrics from the OpenTelemetry collector.
 To publish custom metrics, use the [Prometheus client library](https://prometheus.io/docs/instrumenting/clientlibs/), and push them to `http://otel-collector:4317`
 
-- Javascript - https://github.com/siimon/prom-client
+- JavaScript - https://github.com/siimon/prom-client
 - C# - https://github.com/prometheus-net/prometheus-net
 
 ### Install Prometheus
@@ -36,7 +36,7 @@ In your browser, go to http://localhost:82 and you will see the Prometheus UI.
 
 ## Setup tracing
 
-Traces are sent by the Dapr sidecar to Zipkin.  To enable this, install Zipkin in your Kuberenetes cluster.
+Traces are sent by the Dapr sidecar to Zipkin.  To enable this, install Zipkin in your Kubernetes cluster.
 
 ### Install Zipkin
 

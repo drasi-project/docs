@@ -100,8 +100,8 @@ The following sections describe the configuration of the Source types currently 
 
 ### Azure Cosmos DB Gremlin API Source
 
-
 ### PostgreSQL Source
+
 ### SQLServer Source
 
 ### Event Hubs Source
