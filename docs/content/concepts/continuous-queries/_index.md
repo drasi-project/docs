@@ -2,7 +2,7 @@
 type: "docs"
 title: "Continuous Queries"
 linkTitle: "Continuous Queries"
-weight: 20
+weight: 30
 description: >
     What are Continuous Queries and How to Use Them 
 ---
