@@ -177,7 +177,7 @@ Apply operation successful
 
 Otherwise, the output will contain error message describing what went wrong.
 
-> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a succesful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly.
+> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a succesful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly. See the [drasi wait](#drasi-wait) command for a way to wait for resources to become fully functional.
 
 **Known Issues**: 
 - Drasi does not currently enforce dependency relationships between resources. If you create multiple resources from a single YAML file or issue multiple commands rapidly, and those resources depend upon each other (i.e. a Continuous Query that uses a Source), Drasi does not gaurantee that the Source is succesfully created and working before the Continuous Query that uses it is created, meaning the Continuous Query could fail.
@@ -204,15 +204,15 @@ drasi completion zsh -h
 
 **Arguments and Flags**:
 - `<resource-type> <resource-id>`: specifies the type and the ID of the resource to delete.
-- `-f|--files <file>`: Specifies the YAML file containing the definitions f the resources to delete. This is a convenience that allows you to use the same YAML file used to create resources to delete them.
-- `-n|--namespace <namespace>`: Specifies the namespace where the resources should be applied. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-f|--files <file> <file> <...>`: Specifies one or more YAML files containing the definitions of the resources to delete. This is a convenience that allows you to use the same YAML files used to create resources to delete them; only the resource types and names from the files are relevant, the rest of the definitions are ignored.
+- `-n|--namespace <namespace>`: Specifies the namespace where the resources to be deleted are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
 - `-h|--help`: Display help for the `delete` command.
 
 **Usage Example**:
 The following command will delete all the resources defined in the `drasi-resources.yaml` file. It will delete them from the Drasi environment running in the `demo` Kubernetes namespace.
 
 ```
-drasi delete -f resources/source.yaml -n demo
+drasi delete -f resources/drasi-resources.yaml -n demo
 ```
 
 Alternatively, the following command deletes a single **Source** resource named **Facilities** from the current default namespace:
@@ -240,7 +240,7 @@ Otherwise, the output will contain error message describing what went wrong.
 
 **Flags and Arguments**:
 - `<resource-type>` `<resource-id>`: specifies the type and the ID of the resource to describe.
-- `-n|--namespace <namespace>`: Specifies the namespace where the resources should be applied. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-n|--namespace <namespace>`: Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
 - `-h|--help`: Display help for the `describe` command.
 
 **Usage Example**:
@@ -352,7 +352,7 @@ If any of these steps fail, a red check mark will appear next to the step.
 
 **Flags and Arguments**:
 - `<resource-type>`: Specifies the type of resource to list; see the [Drasi Resources](#drasi-resources) section for a description of the possible values.
-- `-n|--namespace <namespace>`: Specifies the namespace where the resources should be listed. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-n|--namespace <namespace>`: Specifies the namespace where the resources to be listed are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
 - `-h|--help`: Display help for the `list` command.
 
 **Usage Example**:
@@ -462,8 +462,8 @@ drasi-system
 **Flags and Arguments**:
 - `-d|--uninstall-dapr`: Specifies whether to uninstall DAPR by deleting the DAPR system namespace.
 - `-y|--yes`: Automatically respond **yes** to all prompts presented during uninstall.
-- `-n|--namespace <namespace>`: Specifies the namespace from which Drasi should be uninstalled. If not provided, the default namespace configured using the `drasi namespace set` command is used.
-- `-h|--help`: Display help for the `list` command.
+- `-n|--namespace <namespace>`: Specifies the namespace to be deleted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-h|--help`: Display help for the `uninstall` command.
 
 **Usage Example**:
 This command will uninstall Drasi from the current default namespace:
@@ -511,13 +511,54 @@ Drasi uninstalled successfully
 - The `uninstall` command does nothing more than delete a Kubernetes namespace. This is a brute force way of removing Drasi. Any resources, such as databases, that where setup outside the Drasi namespace will not be deleted, and any non Drasi resources created in the Drasi namespace will be deleted. Any deleted resources are unrecoverable and will need to be re-created if deleted accidently.
 
 ### drasi version
+**Purpose**: The `version` command returns the version tag of the running Drasi CLI. The version tag of the Drasi CLI is important because it is the version tag the Drasi CLI will use by default when the [init](#drasi-init) command is run and will be the default version tag for the images that are pulled for use in the Drasi deployment.
 
+**Flags and Arguments**:
+- `-h|--help`: Display help for the `version` command.
+
+**Usage Example**:
+This command will display the version tag associated with the currently executing Drasi CLI:
+
+```bash
+drasi version
+```
+
+The output of the command will look like this:
+
+```
+Drasi CLI version: latest
+```
 
 ### drasi wait
-    - The `wait` is used when you want to wait for a resource to be ready. The command can accept either a combination of the resource type and id intended for deletion, or it can process a directory containing a YAML file.
-    - e.g.
-      - `drasi wait resources/reaction.yaml`
-      - `drasi wait source postgres-demo`
+**Purpose**: The `wait` command waits for one or more resources to become operational, or for a timeout interval to be reached. As mentioned in the [apply command](#drasi-apply) section, the `apply` command returns as soon as a resource definition is validated and registered as part of the Drasi configuration; it returns without confirming that the new resource is succesfully deployed and ready without error. That is the purpose of the `wait` command.
+
+**Arguments and Flags**:
+- `<resource-type> <resource-id>`: specifies the type and the ID of the resource to wait for.
+- `-f|--files <file> <file> <...>`: Specifies one or more YAML files containing the definitions of the resources to wait for. This is a convenience that allows you to use the same YAML file used to create resources to wait for them. Only the resource types and names are used, the rest of the configuration is ignored.
+- `-t|--timeout <seconds>`: The number of seconds to wait before timing out and aborting the wait operation. The default value is 60.
+- `-n|--namespace <namespace>`: Specifies the namespace where the resources to be waited on are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-h|--help`: Display help for the `delete` command.
+
+
+**Usage Example**:
+The following command waits for a single **Source** resource named **Facilities** from the current default namespace to be ready. It waits a maximum of 60 seconds which is the default timeout:
+
+```
+drasi wait source Facilities
+```
+
+
+The following command will wait on **all** the resources defined in the `drasi-resources.yaml` file that are hosted in the `drasi-demo` Kubernetes namespace. It also waits the default timeout of 60 seconds:
+
+```
+drasi wait -f drasi-resources.yaml -n drasi-demo
+```
+
+The following command will also wait on **all** the resources defined in the `drasi-resources.yaml` file, but it will assume they are in the default namespace and wait for a maximum of 20 seconds before timing out and returning:
+
+```
+drasi wait -f drasi-resources.yaml -t 20
+```
 
 ## Drasi CLI Source
 The Drasi CLI is written in Go. If you want to explore how the Drasi CLI works, the source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
