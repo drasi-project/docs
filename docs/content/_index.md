@@ -1,6 +1,6 @@
 ---
 type: "docs"
-title: "Project Drasi"
+title: "Drasi"
 linkTitle: "Home"
 weight: 1
 description: >
@@ -31,7 +31,7 @@ Drasi is built around three simple components: **Sources**, **Continuous Queries
 {{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
 ### Sources
-Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current data in the system. This diagram shows three Sources, providing Drasi with access to changes from an Azure Cosmos Gremlin database, a PostreSQL database, and a Kubernetes cluster.
+Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current data in the system. This diagram shows three Sources, providing Drasi with access to changes from an Azure Cosmos Gremlin database, a PostgreSQL database, and a Kubernetes cluster.
 
 {{< figure src="sources-component.png" alt="Sources Component" width="60%" >}}
 

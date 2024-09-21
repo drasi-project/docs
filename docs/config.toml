@@ -1,6 +1,6 @@
 # Site Configuration
 baseURL = "https://drasi-docs.azurewebsites.net/"
-title = "Project Drasi"
+title = "Drasi"
 theme = "docsy"
 
 # Attribution
@@ -10,17 +10,6 @@ copyright = "Copyright © 2024, The Drasi Authors."
 # Language Configuration
 languageCode = "en"
 DefaultContentLanguage = "en"
-
-[params]
-  prism_syntax_highlighting = true
-  [params.prism]
-    languages = [
-      "markup",
-      "css",
-      "clike",
-      "javascript",
-      "json"
-    ]
 
 [markup]
   [markup.goldmark]
@@ -43,3 +32,22 @@ DefaultContentLanguage = "en"
 [module]
   [module.hugoVersion]
     extended = true
+
+# UI Customization
+[params]
+  prism_syntax_highlighting = true
+  [params.prism]
+    languages = [
+      "markup",
+      "css",
+      "clike",
+      "javascript",
+      "json"
+    ]
+
+[params.ui]
+  sidebar_menu_compact = true
+  sidebar_search_disable = true
+  sidebar_menu_foldable = true
+  sidebar_menu_truncate = 500
+  ul_show = 1
