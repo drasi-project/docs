@@ -2,7 +2,7 @@
 type: "docs"
 title: "Why Drasi?"
 linkTitle: "Why Drasi?"
-weight: 5
+weight: 10
 description: >
     What Problem does Drasi Solve?
 ---

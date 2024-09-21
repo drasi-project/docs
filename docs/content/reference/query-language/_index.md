@@ -7,8 +7,8 @@ description: >
     Writing Continuous Queries
 ---
 
-Continuous Queries are written using a subset of the Cypher Graph Query Language. If you are new to Cypher, here are some useful references to get started:
-- [Getting Started](https://neo4j.com/docs/getting-started/cypher-intro/)
+Continuous Queries are written using a subset of the Open Cypher Graph Query Language. If you are new to Open Cypher, here are some useful references to get started:
+- [Getting Started](https://opencypher.org/)
 - [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
 - [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
 
@@ -40,29 +40,32 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - Map: ., []
   - List: +, IN, []
 - Functions:
+
+  *These functions are implemented by closely following the guidelines and specifications outlined in version 9 of the [OpenCypher Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf).* 
   - Scalar: 
-    - elementId
+    - elementId, head, last, timestamp
     - char_length, character_length, size
-    - toInteger, toIntegerOrNull, toFloat, toFloatOrNull, toBoolean, toBooleanOrNull
+    - toInteger, toIntegerOrNull*, toFloat, toFloatOrNull*, toBoolean, toBooleanOrNull*
   - Aggregating: count, sum, avg, min, max in both **WITH** and **RETURN** clauses
-  - List: reduce, tail
-  - Numeric: abs, ceil, floor, isNan, rand, round, sign
-  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull, toUpper, trim
+  - List: reduce, tail, range 
+  - Numeric: abs, ceil, floor, rand, round, sign
+  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull*, toUpper, trim
   - Temporal: 
+    - *These temporal functions are implemented based on [Neo4j's documentation (version 4.4)](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
     - Instant: date, datetime, localdatetime, loocaltime, time
     - Duration: duration, duration.between, duration.inMonths, duration.inDays, duration.inSeconds
   - CASE expressions:
     - simple and generic forms
 
-
+**: Functions that are not documented in the official OpenCypher documentation. These functions are implemented based on the version 4.4 of the Neo4j's Cypher manual*
 # Drasi Functions
 Drasi provides the following functions that extend the base Cypher Query Language. Each of these functions is described in detail in the linked sections below.
 
 | Function                | Description                           |
 |-------------------------|---------------------------------------|
 | **[LIST FUNCTIONS](#drasi-list-functions)** ||
-| [drasi.min](#drasimin)  | Returns the minimum value contained in a LIST |
-| [drasi.max](#drasimax)  | Returns the maximum value contained in a LIST |
+| [drasi.listMin](#drasilistmin)  | Returns the minimum value contained in a LIST |
+| [drasi.listMax](#drasilistmax)  | Returns the maximum value contained in a LIST |
 | **[TEMPORAL FUNCTIONS](#drasi-temporal-functions)** ||
 | [drasi.changeDateTime](#drasichangedatetime) | Gets a ZONED DATETIME of when a specified element was changed |
 | [drasi.getVersionByTimestamp](#drasigetversionbytimestamp) | Retrieves the version of a specified Element as it was at a specified point in time |
@@ -75,16 +78,16 @@ Drasi provides the following functions that extend the base Cypher Query Languag
 ## Drasi LIST Functions
 Drasi LIST functions simplify some LIST handling operations that are common in Drasi Continuous Queries.
 
-### drasi.min()
-The `drasi.min` function returns the minimum value contained in a LIST.
+### drasi.listMin()
+The `drasi.listMin` function returns the minimum value contained in a LIST. Null values are ignored.
 
 #### Syntax
 ```cypher
-drasi.min(list)
+drasi.listMin(list)
 ```
 
 #### Arguments
-The `drasi.min` function accepts one argument:
+The `drasi.listMin` function accepts one argument:
 
 | Name | Type | Description |
 |-------------------------|-----------------------|----------------|
@@ -92,21 +95,22 @@ The `drasi.min` function accepts one argument:
 
 #### Returns
 
-The `drasi.min` function returns a single value, which is the minimum value from the provided list. Determination of which value is minimum depends on the types of values in the list. For example:
+The `drasi.listMin` function returns a single value, which is the minimum value from the provided list. Determination of which value is minimum depends on the types of values in the list. For example:
 
-- drasi.min([45, 33, 66]) returns 33
-- drasi.min(["banana", "apple", "peach"]) returns "apple"
+- drasi.listMin([45, 33, 66]) returns 33
+- drasi.listMin(["banana", "apple", "peach"]) returns "apple"
+- drasi.listMin(null) returns null
 
-### drasi.max()
-The `drasi.max` function returns the maximum value contained in a LIST.
+### drasi.listMax()
+The `drasi.listMax` function returns the maximum value contained in a LIST. Null values are ignored.
 
 #### Syntax
 ```cypher
-drasi.max(list)
+drasi.listMax(list)
 ```
 
 #### Arguments
-The `drasi.max` function accepts one argument:
+The `drasi.listMax` function accepts one argument:
 
 | Name | Type | Description |
 |-------------------------|-----------------------|----------------|
@@ -114,10 +118,11 @@ The `drasi.max` function accepts one argument:
 
 #### Returns
 
-The `drasi.max` function returns a single value, which is the maximum value from the provided list. Determination of which value is maximum depends on the types of values in the list. For example:
+The `drasi.listMax` function returns a single value, which is the maximum value from the provided list. Determination of which value is maximum depends on the types of values in the list. For example:
 
-- drasi.max([45, 33, 66]) returns 66
-- drasi.max(["banana", "apple", "peach"]) returns "peach"
+- drasi.listMax([45, 33, 66]) returns 66
+- drasi.listMax(["banana", "apple", "peach"]) returns "peach"
+- drasi.listMax(null) returns null
 
 ## Drasi TEMPORAL Functions
 Drasi TEMPORAL functions make it possible to write Continuous Queries that use previous values of Nodes and Relations in the logic of the query. 
@@ -313,6 +318,3 @@ RETURN
   l.id as LineId,
   drasi.linearGradient(p.x, p.y) as Gradient
 ```
-
-
-

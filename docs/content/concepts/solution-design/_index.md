@@ -2,7 +2,7 @@
 type: "docs"
 title: "Solution Design"
 linkTitle: "Solution Design"
-weight: 40
+weight: 60
 description: >
     How to Design Solutions with Drasi
 ---
