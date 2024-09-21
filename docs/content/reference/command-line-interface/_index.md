@@ -15,14 +15,14 @@ The Drasi Command Line Interface (CLI) is a tool designed to streamline the inst
 In Drasi, a `resource` is a user-definable component that is created and managed using the Drasi CLI. There are currently six types of resource:
 
 
-| Type | CLI Name | Description |
-|------|----------|-------------|
-| Continuous Query | continuousquery or query | A Continuous Query |
-| Query Container | querycontainer | TODO |
-| Reaction | reaction | A Reaction |
-| Reaction Provider | reactionprovider | The definition of a specific type of Reaction that Drasi uses when users create new instances of that Reaction. Drasi comes with a number of predefined [Reaction providers](/how-to-guides/configure-reactions/) and developers can extend the capabilities of Drasi by [creating custom Reaction providers](/docs/content/how-to-guides/extend-drasi/implement-a-reaction.md). |
-| Source | source | A Source |
-| Source Provider | sourceprovider | The definition of a specific type of Source that Drasi uses when users create new instances of that Source. Drasi comes with a number of predefined [Source providers](/how-to-guides/configure-sources/) and developers can extend the capabilities of Drasi by [creating custom Source providers](/docs/content/how-to-guides/extend-drasi/implement-a-source.md). |
+| Type | CLI Name |
+|------|----------|
+| [Continuous Query](/concepts/continuous-queries/) | continuousquery or query |
+| [Query Container](/concepts/query-container/) | querycontainer |
+| [Reaction](/concepts/reactions/) | reaction |
+| [Reaction Provider](/concepts/reactions/) | reactionprovider |
+| [Source](/concepts/sources/) | source |
+| [Source Provider](/concepts/sources/) | sourceprovider |
 
 Throughout the Drasi CLI documentation and help text, where it refers to a `resource`, it usually means any of these resource types, unless otherwise specified. Where you need to specifiy a resource type, such as in the `drasi list` command, you use the **CLI Name** of the type listed in the table above. For example to list all Sources, use the command:
 
