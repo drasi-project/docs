@@ -80,7 +80,7 @@ Property|Description|
 |clientId|The clientId of the app registration|
 |secret|The secret under the credentials of the app registration|
 
-In addition, for each query you need to specify how the Dataverse entites are manipulated in response to changes.  This takes the form of a YAML sub-document for each query.  For each query you can specify what happens when results to the query are `added`, `updated` or `deleted`. Under each of these sections you can specify a list of actions.  Each action has a `kind` field of `createEntity`, `updateEntity` or `deleteEntity` and a field called `entityName` which indicates the Dataverse table upon which to operate. All other field names map to the internal field names of the Dataverse table, and can be mapped to values flowing from the query result using an `@` symbol or can be constant values.
+In addition, for each query you need to specify how the Dataverse entities are manipulated in response to changes.  This takes the form of a YAML sub-document for each query.  For each query you can specify what happens when results to the query are `added`, `updated` or `deleted`. Under each of these sections you can specify a list of actions.  Each action has a `kind` field of `createEntity`, `updateEntity` or `deleteEntity` and a field called `entityName` which indicates the Dataverse table upon which to operate. All other field names map to the internal field names of the Dataverse table, and can be mapped to values flowing from the query result using an `@` symbol or can be constant values.
 
 For example, the following will create an IoT Alert and a note when a result is added to the query result set, and add corresponding notes if a result is changed or removed.
 ```yaml
@@ -110,7 +110,7 @@ queries:
 
 ```
 
-In addition to these actions you can also attach a `ifNotExists` condition, where the action will only be executed if an entity does not exists that matches the field mapping you provide it.  The following example will only create the new entity if one with the mayching asset, description and alert type does not already exist:
+In addition to these actions you can also attach a `ifNotExists` condition, where the action will only be executed if an entity does not exists that matches the field mapping you provide it.  The following example will only create the new entity if one with the matching asset, description and alert type does not already exist:
 
 ```yaml
 queries:

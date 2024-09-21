@@ -237,13 +237,13 @@ The section below provides a more detailed walkthrough of the various fields und
 
 ### Services
 
-The `services` field configures the definition of the serivce(s) of a Source. For any SourceProvider, you must define two required services: `proxy` and `reactivator`, and you can choose to define additional services if needed. Every service will be rendered into an unique Kubernetes deployment and ultimately a Kubernetes pod. For each `service`, there are four fields that you can configure:
+The `services` field configures the definition of the service(s) of a Source. For any SourceProvider, you must define two required services: `proxy` and `reactivator`, and you can choose to define additional services if needed. Every service will be rendered into an unique Kubernetes deployment and ultimately a Kubernetes pod. For each `service`, there are four fields that you can configure:
 - `image`
   - `image` is a required field and you can specify the image to use for this source service here. 
     - (NOTE: Drasi assumes that the image lives in the same registry that you used when you executed `drasi init`).
   - `endpoints`
-    - If your source has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", althrough we currently only support internal endpoints. For the `target` attribute, if the setting is set to `internal`, the `target` should be a port number.
-    - Each endpoint will be rendered into a Kuberentes Service, with the value of `target` being set as the port number.
+    - If your source has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", although we currently only support internal endpoints. For the `target` attribute, if the setting is set to `internal`, the `target` should be a port number.
+    - Each endpoint will be rendered into a Kubernetes Service, with the value of `target` being set as the port number.
     - The following block defines a Source that will create a Kubernetes service called `<source-name>-gateway` with a port of `4318` when deployed.
       - ```yaml 
           endpoints:
@@ -276,7 +276,7 @@ The `services` field configures the definition of the serivce(s) of a Source. Fo
 
 ### Config Schema
 
-The `config_schema` section that is at the same level as the `services` section is used for defining any enviroment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
+The `config_schema` section that is at the same level as the `services` section is used for defining any environment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
 
 For example, the following section will specify two environment variables `foo` and `isTrue` for this source. `foo` is a required environment variable and it expects the input to be of type `string`, whereas `isTrue` expects the input to be of type `boolean` and is not a required value (default value is set to `true`)
 
@@ -372,7 +372,7 @@ drasi list sourceprovider
 ```
 
 
-To deploy a `PostgreSQL` source, we simply need to create a Source file that supplies all of the required values. In this case, we need to supply a value for all of the environment variables that are marked as required. Below is a sample Source file for deploying a `PostgreSQL` source (Notice that since we are not overwritting any service configurations, we can simply omit the `services` field in this file):
+To deploy a `PostgreSQL` source, we simply need to create a Source file that supplies all of the required values. In this case, we need to supply a value for all of the environment variables that are marked as required. Below is a sample Source file for deploying a `PostgreSQL` source (Notice that since we are not overwriting any service configurations, we can simply omit the `services` field in this file):
 ```yaml
 apiVersion: v1
 kind: Source

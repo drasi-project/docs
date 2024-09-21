@@ -52,7 +52,7 @@ The format of the content of the options field is completely up to the developer
 
 When the projection of a continuous query is changed, a message will be published to a [Dapr topic](https://docs.dapr.io/developing-applications/building-blocks/pubsub/howto-publish-subscribe/#subscribe-to-topics). The pubsub name will be available on the `PUBSUB` environment variable (default is `rg-pubsub`). The topic name will be `<queryId>-results`, so for each queryId you discover in `/etc/queries`, you should subscribe to that Dapr topic.
 
-A skeleton implementation in Javascript would look something like this
+A skeleton implementation in JavaScript would look something like this
 
 ```js
 import { DaprServer } from "@dapr/dapr";
@@ -205,7 +205,7 @@ In the ReactionProvider definition:
 The section below provides a more detailed walkthrough of the various fields under the `spec` section.
 ### Config Schema
 
-The `config_schema` section that is at the top level is used for defining any enviroment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
+The `config_schema` section that is at the top level is used for defining any environment variables that will be shared and accessible by all services. Similarly, this field can be defined in a similar way as how you would define the `config_schema` field for each service.
 
 For example, the following section will specify two environment variables `foo` and `isTrue` for this Reaction. `foo` is a required environment variable and it expects the input to be of type `string`, whereas `isTrue` expects the input to be of type `boolean` and is not a required value (default value is set to `true`)
 
@@ -228,13 +228,13 @@ spec:
 
 ### Services
 
-The `services` field configures the definition of the serivce(s) of a Reaction. At the moment, a service must be defined for any ReactionProvider. For each `service`, there are four fields that you can configure:
+The `services` field configures the definition of the service(s) of a Reaction. At the moment, a service must be defined for any ReactionProvider. For each `service`, there are four fields that you can configure:
 - `image`
   - `image` is a required field and you can specify the image to use for this Reaction service here. 
     - (NOTE: Drasi assumes that the image lives in the same registry that you used when you executed `drasi init`).
   - `endpoints`
-    - If your Reaction has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", althrough we currently only support internal endpoints. The `target` field will reference the value of a config that is defined under the `config_schema` section of the service. You can provide a default value when defining the ReactionProvider and/or overwrite in the actual Reaction definition file.
-    - Each endpoint will be rendered into a Kuberentes Service, with the value of `target` being set as the port number.
+    - If your Reaction has a port that needs to be exposed, you can specify them under the `endpoints` section. The `endpoints` section takes in a series of `endpoint`, which is a JSON object. Each `endpoint` object should have two properties: `setting` and `target`. `setting` can be either "internal" or "external", although we currently only support internal endpoints. The `target` field will reference the value of a config that is defined under the `config_schema` section of the service. You can provide a default value when defining the ReactionProvider and/or overwrite in the actual Reaction definition file.
+    - Each endpoint will be rendered into a Kubernetes Service, with the value of `target` being set as the port number.
     - The following block defines a Reaction that will create a Kubernetes service called `<Reaction-name>-gateway` with a default port of `4318` when deployed.
       - ```yaml 
           endpoints:

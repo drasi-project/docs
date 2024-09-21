@@ -32,7 +32,7 @@ spec:
     partitionKey: name
 ```
 
-> Note: You could use the following command to easily create the seret referenced here:
+> Note: You could use the following command to easily create the secret referenced here:
   ```bash
   kubectl create secret generic creds --from-literal=account-endpoint=...
   ```
@@ -46,7 +46,7 @@ In the Source resource definition:
 The following table describes the Cosmos Gremlin specific properties that must be configured in the **spec** object:
 |Property|Description|
 |-|-|
-|accountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmsos DB Account page of the Azure Portal.|
+|accountEndpoint|The **PRIMARY** or **SECONDARY CONNECTION STRING** from the **Keys** page of the Azure Cosmos DB Account page of the Azure Portal.|
 |database|**Database Id** from the Cosmos DB account.|
 |container|**Graph Id** from the Cosmos DB Database.|
 |partitionKey|The **Partition Key** configured on the **Graph**.|

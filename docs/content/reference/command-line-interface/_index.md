@@ -9,7 +9,7 @@ description: >
 
 The Drasi Command Line Interface (CLI) is a tool designed to streamline the installation of Drasi and the management of Drasi environments. This section provides comprehensive instructions on how to use the CLI to apply, delete, describe, and manage resources within your Drasi environment. Whether you are installing Drasi for the first time or managing existing resources, the CLI commands and flags detailed here will help you perform these tasks efficiently and effectively.
 
-> The Drasi CLI is a convenient command line interface that wraps the [Drasi Management API](/reference/management-api/). Anything you can do through the Drasi CLI you can do programatically through the Managemnt API.
+> The Drasi CLI is a convenient command line interface that wraps the [Drasi Management API](/reference/management-api/). Anything you can do through the Drasi CLI you can do programmatically through the Managemnt API.
 
 ## Drasi Resources
 In Drasi, a `resource` is a user-definable component that is created and managed using the Drasi CLI. There are currently six types of resource:
@@ -24,7 +24,7 @@ In Drasi, a `resource` is a user-definable component that is created and managed
 | [Source](/concepts/sources/) | source |
 | [Source Provider](/concepts/sources/) | sourceprovider |
 
-Throughout the Drasi CLI documentation and help text, where it refers to a `resource`, it usually means any of these resource types, unless otherwise specified. Where you need to specifiy a resource type, such as in the `drasi list` command, you use the **CLI Name** of the type listed in the table above. For example to list all Sources, use the command:
+Throughout the Drasi CLI documentation and help text, where it refers to a `resource`, it usually means any of these resource types, unless otherwise specified. Where you need to specify a resource type, such as in the `drasi list` command, you use the **CLI Name** of the type listed in the table above. For example to list all Sources, use the command:
 
 ```
 drasi list source
@@ -137,13 +137,13 @@ kubectl config use-context <drasi_cluster_name>
 
 Drasi can be installed in the namespace of your choice on a Kubernetes cluster and can also be installed multiple times in different namespaces on the same cluster. The Drasi CLI provides the `drasi namespace` command to configure the current default namespace and each command supports the `-n` or `--namespace` flag to enable you to specify which Kubernetes namespace you want to target with any command you run.
 
-For example, the following command will get a list of Sources from the Drasi environment running in the current default namesapce:
+For example, the following command will get a list of Sources from the Drasi environment running in the current default namespace:
 
 ```
 drasi list source
 ```
 
-Whereas, the following command will get a list of Sources from the Drasi environment running in the `production` namesapce, irrespective of what the default namespace is:
+Whereas, the following command will get a list of Sources from the Drasi environment running in the `production` namespace, irrespective of what the default namespace is:
 
 ```
 drasi list source -n production
@@ -169,7 +169,7 @@ drasi apply -f resources/drasi-resources.yaml -n demo
 ```
 
 **Output**:
-If succesful, the `apply` command will output the following message:
+If successful, the `apply` command will output the following message:
 
 ```
 Apply operation successful
@@ -177,10 +177,10 @@ Apply operation successful
 
 Otherwise, the output will contain error message describing what went wrong.
 
-> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a succesful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly. See the [drasi wait](#drasi-wait) command for a way to wait for resources to become fully functional.
+> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a successful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly. See the [drasi wait](#drasi-wait) command for a way to wait for resources to become fully functional.
 
 **Known Issues**: 
-- Drasi does not currently enforce dependency relationships between resources. If you create multiple resources from a single YAML file or issue multiple commands rapidly, and those resources depend upon each other (i.e. a Continuous Query that uses a Source), Drasi does not gaurantee that the Source is succesfully created and working before the Continuous Query that uses it is created, meaning the Continuous Query could fail.
+- Drasi does not currently enforce dependency relationships between resources. If you create multiple resources from a single YAML file or issue multiple commands rapidly, and those resources depend upon each other (i.e. a Continuous Query that uses a Source), Drasi does not guarantee that the Source is successfully created and working before the Continuous Query that uses it is created, meaning the Continuous Query could fail.
 
 ### drasi completion
 **Purpose**: The `completion` command generates autocompletion scripts to enable command-line autocomplete functionality for the Drasi CLI for various command shells. This is functionality automatically provided by the [Cobra library](https://github.com/spf13/cobra) used in the development of the Drasi CLI. 
@@ -193,7 +193,7 @@ Otherwise, the output will contain error message describing what went wrong.
 - `-h|--help`: Display help for the `completion` command.
 
 **Usage Example**:
-The help information generated by the Cobra Library is extensive and easy to understand, it even includes code snippets that can be copied and used to complete the enablement of automcomplete support. For example, to get details about how to generate and use autocompletion scripts for the `zsh` shell, run the command:
+The help information generated by the Cobra Library is extensive and easy to understand, it even includes code snippets that can be copied and used to enable of automcompletion support. For example, to get details about how to generate and use autocompletion scripts for the `zsh` shell, run the command:
 
 ```
 drasi completion zsh -h
@@ -222,7 +222,7 @@ drasi delete source Facilities
 ```
 
 **Output**:
-If succesful, the `delete` command will output the following message:
+If successful, the `delete` command will output the following message:
 
 ```
 Delete operation successful
@@ -284,7 +284,7 @@ In the above example, the `inactive-people` resource is currently in an error st
 **Purpose**: The `help` command provides detailed help information about Drasi CLI commands. It is useful for understanding the usage, flags, and arguments of various commands available in the Drasi CLI. See the [Get Help](#get-help) section above.
 
 ### drasi init
-**Purpose**: The `init` command is used to install a Drasi environment to the Kubernetes cluster that is the **current context** in `kubectl` ([see above](#target-the-drasi-environment)). By default, the Drasi ebvironment will be installed into the `drasi-system` namespace, but this can be overridden as described below.
+**Purpose**: The `init` command is used to install a Drasi environment to the Kubernetes cluster that is the **current context** in `kubectl` ([see above](#target-the-drasi-environment)). By default, the Drasi environment will be installed into the `drasi-system` namespace, but this can be overridden as described below.
 
 **Flags and Arguments**:
 - `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
@@ -375,7 +375,7 @@ When listing static resources like `sourceprovider` and `reactionprovider`, the 
   CosmosGremlin
 ```
 
-When listing `querycontainer`, `source`, and `reaction` resources, the output is a table showning the name of the resource and a status showing whether the resource is available, like this list of **Query Containers**:
+When listing `querycontainer`, `source`, and `reaction` resources, the output is a table showing the name of the resource and a status showing whether the resource is available, like this list of **Query Containers**:
 
 ```
     ID    | AVAILABLE
@@ -445,7 +445,7 @@ The `namespace set <namespace>` command, displays the newly configured default n
 Namespace set to <namespace>
 ```
 
-The `namespace list` command returns a simple list of Kubernetesd namespaces like this:
+The `namespace list` command returns a simple list of Kubernetes namespaces like this:
 
 ```
 Namespaces:
@@ -457,7 +457,7 @@ drasi-system
 - The `namespace` command does not currently enforce any restrictions on namespace names, nor does it validate that the namespace used in the `namespace set` command exist. Ensure that the namespace names used do not conflict with existing namespaces or reserved names.
 
 ### drasi uninstall
-**Purpose**: The `uninstall` command removes a Drasi deployment from a Kubernetes cluster by **deleting** the specified namespace, or using the current default namesapce if not specified.
+**Purpose**: The `uninstall` command removes a Drasi deployment from a Kubernetes cluster by **deleting** the specified namespace, or using the current default namespace if not specified.
 
 **Flags and Arguments**:
 - `-d|--uninstall-dapr`: Specifies whether to uninstall DAPR by deleting the DAPR system namespace.
@@ -474,7 +474,7 @@ drasi uninstall
 
 By default, the `uninstall` command does not remove DAPR from the Kubernetes cluster.
 
-This command will uninstall Drasi from the `drasi-demo` namespace and eove the DAPR installation:
+This command will uninstall Drasi from the `drasi-demo` namespace and remove the DAPR installation:
 
 ```bash
 drasi uninstall -n drasi-demo -d
@@ -493,7 +493,7 @@ When run without the `-y` flag, the `uninstall` command will prompt you to confi
 Are you sure you want to uninstall Drasi from the namespace drasi-system? (yes/no):
 ```
 
-If you respond **no**, the operation is cancelled and nothing is deleted. This is your last change to verify that you wnat to delete the specified namespace. Once deleted the namespace and the resources it contained are gone and are unrecoverable.
+If you respond **no**, the operation is canceled and nothing is deleted. This is your last change to verify that you want to delete the specified namespace. Once deleted the namespace and the resources it contained are gone and are unrecoverable.
 
 If you agree to the prompt or use the `-y` flag, the `uninstall` command will initially display this message while it deletes the Kubernetes namespace:
 
@@ -508,7 +508,7 @@ Drasi uninstalled successfully
 ```
 
 **Known Issues**: 
-- The `uninstall` command does nothing more than delete a Kubernetes namespace. This is a brute force way of removing Drasi. Any resources, such as databases, that where setup outside the Drasi namespace will not be deleted, and any non Drasi resources created in the Drasi namespace will be deleted. Any deleted resources are unrecoverable and will need to be re-created if deleted accidently.
+- The `uninstall` command does nothing more than delete a Kubernetes namespace. This is a brute force way of removing Drasi. Any resources, such as databases, that where setup outside the Drasi namespace will not be deleted, and any non Drasi resources created in the Drasi namespace will be deleted. Any deleted resources are unrecoverable and will need to be re-created if deleted accidentally.
 
 ### drasi version
 **Purpose**: The `version` command returns the version tag of the running Drasi CLI. The version tag of the Drasi CLI is important because it is the version tag the Drasi CLI will use by default when the [init](#drasi-init) command is run and will be the default version tag for the images that are pulled for use in the Drasi deployment.
@@ -530,7 +530,7 @@ Drasi CLI version: latest
 ```
 
 ### drasi wait
-**Purpose**: The `wait` command waits for one or more resources to become operational, or for a timeout interval to be reached. As mentioned in the [apply command](#drasi-apply) section, the `apply` command returns as soon as a resource definition is validated and registered as part of the Drasi configuration; it returns without confirming that the new resource is succesfully deployed and ready without error. That is the purpose of the `wait` command.
+**Purpose**: The `wait` command waits for one or more resources to become operational, or for a timeout interval to be reached. As mentioned in the [apply command](#drasi-apply) section, the `apply` command returns as soon as a resource definition is validated and registered as part of the Drasi configuration; it returns without confirming that the new resource is successfully deployed and ready without error. That is the purpose of the `wait` command.
 
 **Arguments and Flags**:
 - `<resource-type> <resource-id>`: specifies the type and the ID of the resource to wait for.

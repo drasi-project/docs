@@ -11,11 +11,11 @@ The Debug Reaction provides a simple Web-based UI that lets you see the current 
 
 To configure and deploy an instance of the Drasi Debug Reaction, you will need to:
 
-1. Create a .yaml file that contains the configration for the Drasi Debug Reaction.
+1. Create a .yaml file that contains the configuration for the Drasi Debug Reaction.
 1. Deploy the Drasi Debug Reaction to your Drasi environment using the [Drasi CLI](/reference/command-line-interface).
 1. Make the Drasi Debug Reaction Web-UI accessible using ```kubectl```.
 
-These steps are desribed in the following sections.
+These steps are described in the following sections.
 
 ## Creation
 Reactions can be created and managed using the `drasi` CLI tool. 
