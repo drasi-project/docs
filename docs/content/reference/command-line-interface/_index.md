@@ -348,21 +348,61 @@ If any of these steps fail, a red check mark will appear next to the step.
 - Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
 
 ### drasi list
-    - This command retrieves and displays the status of all resources of the specified type. The status includes various fields that provide information about the current state of the resource.
-    - Available types of resources:
-      - Continuousquery (or query for short)
-      - QueryContainer
-      - Reaction
-      - Source
-      - SourceProvider 
+**Purpose**: The `list` command is used to display the list of resources of a specified type that are defined in a Drasi environment along with some basic status information. This command helps you to quickly view the resources that are currently running in Drasi.
 
-    - e.g.
-      - `drasi list source`
-      - `drasi list continuousquery`
-      - `drasi list query`
-      - `drasi list sourceprovider`
-    - You can list the resources that are deployed in a different namespace using the `-n` or `--namespace` flag:
-      - e.g. `drasi list source -n demo`
+**Flags and Arguments**:
+- `<resource-type>`: Specifies the type of resource to list; see the [Drasi Resources](#drasi-resources) section for a description of the possible values.
+- `-n|--namespace <namespace>`: Specifies the namespace where the resources should be listed. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-h|--help`: Display help for the `list` command.
+
+**Usage Example**:
+The following command will list all the `query` resources in the `demo` Kubernetes namespace:
+
+```bash
+drasi list query -n demo
+```
+
+**Output**:
+The output of the `list` command depends on the resource type being listed.
+
+When listing static resources like `sourceprovider` and `reactionprovider`, the output is a simple list with no additional status information, like this list of available **Source Providers**:
+
+```
+       ID
+-----------------
+  PostgreSQL
+  SQLServer
+  CosmosGremlin
+```
+
+When listing `querycontainer`, `source`, and `reaction` resources, the output is a table showning the name of the resource and a status showing whether the resource is available, like this list of **Query Containers**:
+
+```
+    ID    | AVAILABLE
+----------+------------
+  default | true
+```
+
+When listing `continuousquery` (or `query`) resources, the output is a table the shows where the **Continuous Query** is running and what its current status is. Here is an example containing multiple **Continuous Queries**, two of which are `Running` and one of which is in a `TerminalError` state:
+
+```
+        ID         | CONTAINER |                   ERRORMESSAGE                   |              HOSTNAME               |    STATUS
+-------------------+-----------+--------------------------------------------------+-------------------------------------+----------------
+  hello-world-from | default   |                                                  | default-query-host-866cfd7c69-wsb2x | Running
+  message-count    | default   |                                                  | default-query-host-866cfd7c69-wsb2x | Running
+  inactive-people  | default   | Failed to fetch data from source                 | default-query-host-866cfd7c69-wsb2x | TerminalError
+                   |           | 'hello-world': 500 Internal Server Error         |                                     |
+                   |           | {"errorCode":"ERR_DIRECT_INVOKE","message":"fail |                                     |
+                   |           | to invoke, id: hello-world-query-api, err:       |                                     |
+                   |           | failed to invoke target hello-world-query-api    |                                     |
+                   |           | after 3 retries"}                                |                                     |
+```
+**Known Issues**: 
+- The status information displayed by the `list` command is often not sufficient to debug and resolve the cause of issues. Improving the resilience, error reporting, and supportability of Drasi is an active and ongoing stream of work. Currently, it is usually necessary to look at the container logs of the Kubernetes node on which the failed component is hosted to determine what is going wrong.
+
+
+
+
 
 ### drasi namespace
     - This command has three subcommands: `set`, `get` and `list`.
