@@ -401,23 +401,63 @@ When listing `continuousquery` (or `query`) resources, the output is a table the
 - The status information displayed by the `list` command is often not sufficient to debug and resolve the cause of issues. Improving the resilience, error reporting, and supportability of Drasi is an active and ongoing stream of work. Currently, it is usually necessary to look at the container logs of the Kubernetes node on which the failed component is hosted to determine what is going wrong.
 
 
-
-
-
 ### drasi namespace
-    - This command has three subcommands: `set`, `get` and `list`.
-    - `set`:
-      - It is used to set the current Drasi namespace. Useful if you work with multiple instances of Drasi that are installed in different namespace. This command assumes that the namespace is already created and that Drasi has been installed.
-      - Additionally, you can also specify the namespace using the `-n` or `--namespace` flags. If both an argument and a flag value are provided, the value from the namespace flag will have a higher precedence.
-        - e.g. 
-          - `drasi namespace set demo` will set the current Drasi namespace to `demo`. 
-          - `drasi namespace set ns1 -n ns2` will set the current Drasi namespace to `ns2`.
-    - `get`:
-      - Retrieves the current namespace in the Drasi config
-      - Usage: `drasi namespace get`
-    - `list`
-      - Retrieves all namespaces that have an instance of Drasi installed
-      - Usage: `drasi namespace list`
+**Purpose**: The `namespace` command manages the Kubernetes namespace settings for the Drasi CLI. The Drasi CLI has the concept of a **current namespace**, which defaults to `drasi-system`. But you can use the `namespace` command to change the default Drasi namespace. The `namespace` command is required when you work with multiple instances of Drasi that are installed in different namespaces. 
+
+**Sub commands**:
+- `get`: Get the default namespace name.
+- `list`: List all namespaces that have Drasi deployments.
+- `set <namespace>`: Set the default namespace name. This command assumes that the namespace is already created and that Drasi has been installed in it.
+
+**Flags and Arguments**:
+- `-n|--namespace <namespace>`: Provides an alternative way to specify the namespace used in the `set` sub command. If you provide both a namespace argument to `set` and a value for the `-n` flag, the `-n` flag will take precedence.
+- `-h|--help`: Display help for the `list` command.
+
+**Usage Example**:
+To display the currently configured default namespace, run this command:
+
+```bash
+drasi namespace get
+```
+
+To change the default namespace to `drasi-demo` run the following command:
+
+```bash
+drasi namespace set drasi-demo
+```
+
+To list all namespaces that contain Drasi deployments, run the following command:
+
+```bash
+drasi namespace list
+```
+
+**Output**:
+The `namespace get` command simply displays the currently configured default namespace like this:
+
+```
+Current namespace: drasi-system
+```
+
+The `namespace set <namespace>` command, displays the newly configured default namespace like this:
+
+```
+Namespace set to <namespace>
+```
+
+The `namespace list` command returns a simple list of Kubernetesd namespaces like this:
+
+```
+Namespaces:
+drasi-demo
+drasi-system
+```
+
+**Known Issues**: 
+- The `namespace` command does not currently enforce any restrictions on namespace names, nor does it validate that the namespace used in the `namespace set` command exist. Ensure that the namespace names used do not conflict with existing namespaces or reserved names.
+
+
+
 
 ### drasi uninstall
     - The `uninstall` command will uninstall the Drasi instance from the current namespace by deleting the namespace. 
