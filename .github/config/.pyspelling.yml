@@ -7,6 +7,7 @@ matrix:
     encoding: utf-8
     wordlists:
     - .github/config/en-custom.txt
+    - .github/config/en-drasi.txt
   pipeline:
   - pyspelling.filters.markdown:
       markdown_extensions:

@@ -1312,16 +1312,9 @@ toStringOrNull
 toUpper
 DATETIME
 changeDateTime
-drasi
 getVersionByTimestamp
 getVersionsByTimeRange
-trueFor
-trueLater
-trueUntil
-drasi
 Syntax
-QueryContainer
-Continuousquery
 subcommands
 Kernighan
 Lightyear
@@ -1333,8 +1326,6 @@ CORS
 Debezium
 MiniKube
 netlify
-ReactionProvider
-SourceProvider
 kubeconfig
 WAL
 wal
