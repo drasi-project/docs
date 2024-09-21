@@ -51,13 +51,13 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - Numeric: abs, ceil, floor, rand, round, sign
   - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull*, toUpper, trim
   - Temporal: 
-    - *These temporal functions are implemented based on [Neo4j's documentation (version 4.4)](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
+    - *These temporal functions are implemented based on [Neo4js documentation (version 4.4)](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
     - Instant: date, datetime, localdatetime, loocaltime, time
     - Duration: duration, duration.between, duration.inMonths, duration.inDays, duration.inSeconds
   - CASE expressions:
     - simple and generic forms
 
-**: Functions that are not documented in the official OpenCypher documentation. These functions are implemented based on the version 4.4 of the Neo4j's Cypher manual*
+**: Functions that are not documented in the official OpenCypher documentation. These functions are implemented based on the version 4.4 of the Neo4js Cypher manual*
 # Drasi Functions
 Drasi provides the following functions that extend the base Cypher Query Language. Each of these functions is described in detail in the linked sections below.
 

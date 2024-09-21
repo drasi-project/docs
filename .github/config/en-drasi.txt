@@ -8,9 +8,10 @@ drasi
 Drasi
 listMax
 listMin
-Neo4j's
+Neo4js
 OpenCypher
 PostgreSQL
+programmatically
 querycontainer
 Querycontainer
 QueryContainer
