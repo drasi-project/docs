@@ -78,7 +78,7 @@ Drasi LIST functions simplify some LIST handling operations that are common in D
 ### drasi.min()
 The `drasi.min` function returns the minimum value contained in a LIST.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.min(list)
 ```
@@ -100,7 +100,7 @@ The `drasi.min` function returns a single value, which is the minimum value from
 ### drasi.max()
 The `drasi.max` function returns the maximum value contained in a LIST.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.max(list)
 ```
@@ -127,7 +127,7 @@ A Continuous Query containing FUTURE functions must have a temporal Element Inde
 ### drasi.changeDateTime()
 The `drasi.changeDateTime` function returns the ZONED DATETIME of when the provided element was changed.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.changeDateTime(element)
 ```
@@ -148,7 +148,7 @@ The `drasi.getVersionByTimestamp` function returns the version of a specified El
 
 The Continuous Query containing the `drasi.getVersionByTimestamp` function must have a temporal Element Index enabled.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.getVersionByTimestamp(element, timestamp)
 ```
@@ -170,7 +170,7 @@ The `drasi.getVersionsByTimeRange` function returns a LIST containing all the ve
 
 The Continuous Query containing the `drasi.getVersionsByTimeRange` function must have a temporal Element Index enabled.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.getVersionsByTimeRange(element, from_timestamp, to_timestamp, include_initial_version)
 ```
@@ -193,9 +193,9 @@ The `drasi.getVersionsByTimeRange` function returns a LIST of Elements (Node or 
 Drasi FUTURE functions makes it possible to use Continuous Queries in situations where it is important to react to the  **absence** of change. For example, if it is important to know when Invoices become 10 days overdue, or which customers haven't logged in to their account for over 2 weeks. Both of these situations (depending on the database schema) might only occur as a result of no change being made to the Invoice or Customer record.
 
 ### drasi.trueLater()
-The `drasi.trueLater` function makes it possible to write Continuous Queries that evaluate a BOOLEAN expression at a specific point in time, instead of at the point in time when the change being processed occured.  
+The `drasi.trueLater` function makes it possible to write Continuous Queries that evaluate a BOOLEAN expression at a specific point in time, instead of at the point in time when the change being processed occurred.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueLater(expression, timestamp)
 ```
@@ -209,7 +209,7 @@ The `drasi.trueLater` function accepts two arguments:
 | timestamp | DATE, DATETIME, or INTEGER | The time at which the *expression* should be evaluated. |
 
 #### Returns
-If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occured), `drasi.trueLater` will evaluate and return the value of *expression*. Otherwise, `drasi.trueLater` will return the special value `drasi.awaiting` indicating the Drasi cannot yet evaluate the expression, and schedules the solution currently being evaluated to be re-evaluated at the time specified by *timestamp*.
+If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueLater` will evaluate and return the value of *expression*. Otherwise, `drasi.trueLater` will return the special value `drasi.awaiting` indicating the Drasi cannot yet evaluate the expression, and schedules the solution currently being evaluated to be re-evaluated at the time specified by *timestamp*.
 
 More formally:
 
@@ -222,7 +222,7 @@ More formally:
 ### drasi.trueUntil()
 The `drasi.trueUntil` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE at least until a specific point in time.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueUntil(expression, timestamp)
 ```
@@ -236,7 +236,7 @@ The `drasi.trueUntil` function accepts two arguments:
 | timestamp | DATE, DATETIME, or INTEGER | The time until which the expression should remain TRUE. |
 
 #### Returns
-- If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occured), `drasi.trueUntil` will evaluate and return the value of *expression*. 
+- If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueUntil` will evaluate and return the value of *expression*. 
 - Otherwise, if *expression* evaluates to TRUE, `drasi.trueUntil` will return the special value `drasi.awaiting` indicating that Drasi has scheduled the solution currently being evaluated to be re-evaluated (for remaining TRUE) at the time specified by *timestamp*.
 - If, at any time before *timestamp*, expression is found to be FALSE, `drasi.trueUntil` returns FALSE and cancels any currently scheduled reprocessing for the current solution.
 
@@ -250,9 +250,9 @@ More formally:
 | timestamp > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 
 ### drasi.trueFor()
-The `drasi.trueFor` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE for at least a period of time from the time at which the change being evaluated occured.  
+The `drasi.trueFor` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE for at least a period of time from the time at which the change being evaluated occurred.  
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.trueFor(expression, duration)
 ```
@@ -266,7 +266,7 @@ The `drasi.trueFor` function accepts two arguments:
 | duration | DURATION | The duration for which the *expression* should remain TRUE. |
 
 #### Returns
-- If the time when *expression* became TRUE with *duration* added to it is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occured), `drasi.trueUntil` will evaluate and return the value of *expression*. 
+- If the time when *expression* became TRUE with *duration* added to it is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueUntil` will evaluate and return the value of *expression*. 
 - Otherwise, if *expression* evaluates to TRUE, `drasi.trueUntil` will return the special value `drasi.awaiting` indicating that Drasi has scheduled the solution currently being evaluated to be re-evaluated (for remaining TRUE) at the time specified by the current change time plus the *duration*.
 - If, at any time before *duration* passes, expression is found to be FALSE, `drasi.trueUntil` returns FALSE and cancels any currently scheduled reprocessing for the current solution.
 
@@ -286,7 +286,7 @@ More formally:
 ### drasi.linearGradient()
 The `drasi.linearGradient` function is an aggregating function that fits a straight line to a set of X and Y coordinates, and returns the slope of that line.  As values are added, removed or updated, the line will be adjusted to reflect the relationship between the X and Y values.  The slope of the line can be used to predict a value for Y given a known value of X, by multiplying the slope by the X value.
 
-#### Synax
+#### Syntax
 ```cypher
 drasi.linearGradient(x, y)
 ```

@@ -7,7 +7,7 @@ description: >
     Development tools
 ---
 
-The VS Code extension enables you to rapidly test the validity of your continuous queries by providing a one click `Run` button that will bootstap, execute and display the results/errors of queries within your VS Code workspace.
+The VS Code extension enables you to rapidly test the validity of your continuous queries by providing a one click `Run` button that will bootstrap, execute and display the results/errors of queries within your VS Code workspace.
 
 ## Installing
 
