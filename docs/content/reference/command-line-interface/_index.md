@@ -456,17 +456,59 @@ drasi-system
 **Known Issues**: 
 - The `namespace` command does not currently enforce any restrictions on namespace names, nor does it validate that the namespace used in the `namespace set` command exist. Ensure that the namespace names used do not conflict with existing namespaces or reserved names.
 
-
-
-
 ### drasi uninstall
-    - The `uninstall` command will uninstall the Drasi instance from the current namespace by deleting the namespace. 
-    - If the namespace flag is not set, the current namespace in the Drasi config will be deleted.
-    - If the `uninstall-dapr` flag is set, then the `dapr-system` namespace will be removed and `dapr` will be uninstalled from the cluster
-    - e.g.
-      - `drasi uninstall`
-      - `drasi uninstall -y` (Skips the confirmation prompt for verifying the namespace to be deleted)
-      - `drasi uninstall -n <namespace>`
+**Purpose**: The `uninstall` command removes a Drasi deployment from a Kubernetes cluster by **deleting** the specified namespace, or using the current default namesapce if not specified.
+
+**Flags and Arguments**:
+- `-d|--uninstall-dapr`: Specifies whether to uninstall DAPR by deleting the DAPR system namespace.
+- `-y|--yes`: Automatically respond **yes** to all prompts presented during uninstall.
+- `-n|--namespace <namespace>`: Specifies the namespace from which Drasi should be uninstalled. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+- `-h|--help`: Display help for the `list` command.
+
+**Usage Example**:
+This command will uninstall Drasi from the current default namespace:
+
+```bash
+drasi uninstall
+```
+
+By default, the `uninstall` command does not remove DAPR from the Kubernetes cluster.
+
+This command will uninstall Drasi from the `drasi-demo` namespace and eove the DAPR installation:
+
+```bash
+drasi uninstall -n drasi-demo -d
+```
+
+This command will suppress the prompt that allows you to verify the namespace that will be deleted and proceed as if the user agreed:
+
+```bash
+drasi uninstall -y
+```
+
+**Output**:
+When run without the `-y` flag, the `uninstall` command will prompt you to confirm the deletion of the specified or default namespace with the following message:
+
+```
+Are you sure you want to uninstall Drasi from the namespace drasi-system? (yes/no):
+```
+
+If you respond **no**, the operation is cancelled and nothing is deleted. This is your last change to verify that you wnat to delete the specified namespace. Once deleted the namespace and the resources it contained are gone and are unrecoverable.
+
+If you agree to the prompt or use the `-y` flag, the `uninstall` command will initially display this message while it deletes the Kubernetes namespace:
+
+```
+Namespace is still present. Waiting for it to be deleted
+```
+
+Once the operation is complete, you will see this message:
+
+```
+Drasi uninstalled successfully
+```
+
+**Known Issues**: 
+- The `uninstall` command does nothing more than delete a Kubernetes namespace. This is a brute force way of removing Drasi. Any resources, such as databases, that where setup outside the Drasi namespace will not be deleted, and any non Drasi resources created in the Drasi namespace will be deleted. Any deleted resources are unrecoverable and will need to be re-created if deleted accidently.
 
 ### drasi version
 
