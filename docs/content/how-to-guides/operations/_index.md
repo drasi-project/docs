@@ -1,9 +1,9 @@
 
 ---
 type: "docs"
-title: "Operations"
-linkTitle: "Operations"
+title: "Manage Drasi"
+linkTitle: "Manage Drasi"
 weight: 70
 description: >
-    Operations
+    Learn how to manage a Drasi environment
 ---

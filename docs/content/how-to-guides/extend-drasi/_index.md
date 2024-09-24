@@ -1,8 +1,8 @@
 ---
 type: "docs"
-title: "Extending Drasi"
-linkTitle: "Extending Drasi"
+title: "Extend Drasi"
+linkTitle: "Extend Drasi"
 weight: 80
 description: >
-    Extending the Drasi Platform
+    Learn how to extending the Drasi platform
 ---
