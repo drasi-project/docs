@@ -15,7 +15,7 @@ listMax
 listMin
 MessageFrom
 Neo4js
-OpenCypher
+openCypher
 PostgreSQL
 programmatically
 realtime

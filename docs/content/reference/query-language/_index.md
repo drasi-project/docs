@@ -41,7 +41,7 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - List: +, IN, []
 - Functions:
 
-  *These functions are implemented by closely following the guidelines and specifications outlined in version 9 of the [OpenCypher Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf).* 
+  *These functions are implemented by closely following the guidelines and specifications outlined in version 9 of the [openCypher Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf).* 
   - Scalar: 
     - elementId, head, last, timestamp
     - char_length, character_length, size
@@ -57,7 +57,7 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - CASE expressions:
     - simple and generic forms
 
-**: Functions that are not documented in the official OpenCypher documentation. These functions are implemented based on the version 4.4 of the Neo4js Cypher manual*
+**: Functions that are not documented in the official openCypher documentation. These functions are implemented based on the version 4.4 of the Neo4js Cypher manual*
 # Drasi Functions
 Drasi provides the following functions that extend the base Cypher Query Language. Each of these functions is described in detail in the linked sections below.
 

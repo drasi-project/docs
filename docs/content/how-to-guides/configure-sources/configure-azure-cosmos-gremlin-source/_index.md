@@ -62,7 +62,7 @@ This table describes the other settings in the **spec.properties** section of th
 |container|**Graph Id** from the Cosmos DB Database. Visible in the table of graphs on the **Overview** page of the Azure Cosmos DB Account page of the Azure Portal.|
 |partitionKey|The **Partition Key** configured on the Graph. Visible in the **Settings** page of the specified graph.|
 
-The example Source definition above contains a plaintext value for the **accountEndpoint** property. This may be acceptable for its convenience during development or testing but must be avoided if the credentials need to remain secure. Instead of providing a plaintext value for the **accountEndpoint** property, you can configure it to use a securely stored Kubernetes Secret as shown in the following alternate definition for the above Source:
+The example Source definition above contains a plain text value for the **accountEndpoint** property. This may be acceptable for its convenience during development or testing but must be avoided if the credentials need to remain secure. Instead of providing a plain text value for the **accountEndpoint** property, you can configure it to use a securely stored Kubernetes Secret as shown in the following alternate definition for the above Source:
 
 
 ```
@@ -102,7 +102,7 @@ Or including a target namespace:
 drasi list source -n my-namespace
 ```
 
-This will return a simple list of all Sources in the default (or specified) namespace and thier overall status. For example:
+This will return a simple list of all Sources in the default (or specified) namespace and their overall status. For example:
 
 ```
     ID       | AVAILABLE
@@ -110,7 +110,7 @@ This will return a simple list of all Sources in the default (or specified) name
   retail-ops | true
 ```
 
-If an error has occured during the creation or operation of a Source, the `AVAILABLE` column will contain the error text instead of `ready`.
+If an error has occurred during the creation or operation of a Source, the `AVAILABLE` column will contain the error text instead of `ready`.
 
 For more details about a Source you can use the `drasi describe` command:
 
@@ -146,4 +146,4 @@ If the Source is not in the default Drasi namespace, you should specific the tar
 drasi delete -f my-source.yaml -n my-namespace
 ```
 
-Drasi does not currently verify or protect dependencies between Sources and the Continuous Queries that subscribe to them. It is possible to delete a Source that is actively used by one or more Continuous Queries. This will break the Continuous Queries or leave them in an unkniwn state.
+Drasi does not currently verify or protect dependencies between Sources and the Continuous Queries that subscribe to them. It is possible to delete a Source that is actively used by one or more Continuous Queries. This will break the Continuous Queries or leave them in an unknown state.

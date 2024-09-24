@@ -84,5 +84,5 @@ Dapr should be automatically installed to your cluster. You can verify this by r
 
 Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
 
-## Optional:Testing the Drasi environemnt
+## Optional:Testing the Drasi environment
 To verify that Drasi has been correctly deployed to your kind cluster, you can deploy a quick [test workload](/how-to-guides/installation/test-installation.md).
