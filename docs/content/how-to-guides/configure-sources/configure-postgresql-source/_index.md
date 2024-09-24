@@ -76,7 +76,6 @@ This table describes the other settings in the **spec.properties** section of th
 
 The example Source definition above contains plain text values for the **user** and **password** properties. This may be acceptable for its convenience during development or testing but must be avoided if the credentials need to remain secure. Instead of providing plain text values, you can configure them to use a securely stored Kubernetes Secrets as shown in the following alternate definition for the above Source:
 
-
 ```
 apiVersion: v1
 kind: Source
@@ -143,7 +142,7 @@ drasi describe source retail-ops
 This will return the full definition used to create the Source along with more detailed status information.
 
 ## Modifying the Source
-Currently, Drasi does not support the modification of existing Sources. You must [Delete the Source](#deleting-a-source), make changes to the Source definition file, and [Create the Source](#creating-a-source) again. This process will leave all Continuous Queries that subscribe to that Source in an unknown state, so they should also be deleted and re-created once the updated Source is ready.
+Currently, Drasi does not support the modification of existing Sources. You must [Delete the Source](#deleting-the-source), make changes to the Source definition file, and [Create the Source](#creating-the-source) again. This process will leave all Continuous Queries that subscribe to that Source in an unknown state, so they should also be deleted and re-created once the updated Source is ready.
 
 ## Deleting the Source
 To delete a Source you use the `drasi delete` command. There are two ways to do this. 

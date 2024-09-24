@@ -7,82 +7,125 @@ description: >
     Learn how to configure a Drasi Debug Reaction
 ---
 
-The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes. It is intended for use as a development and testing tool for people writing and testing Continuous Queries, not as a way to consume Continuous Queries in a live environment.
+The Drasi Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to see the Continuous Query results updating dynamically when changes to the Source data cause the Continuous Query result to change. The Drasi Debug Reaction is intended for use as a development and testing tool for people writing and testing Continuous Queries, not as a way to integrate with Continuous Queries in a production environment.
 
-To configure and deploy an instance of the Drasi Debug Reaction, you will need to:
+## Requirements
+On the computer from where you will create the Drasi Debug Reaction, you need to install the following software:
+- [Drasi CLI](/reference/command-line-interface/) 
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
-1. Create a .yaml file that contains the configuration for the Drasi Debug Reaction.
-1. Deploy the Drasi Debug Reaction to your Drasi environment using the [Drasi CLI](/reference/command-line-interface).
-1. Make the Drasi Debug Reaction Web-UI accessible using ```kubectl```.
-
-These steps are described in the following sections.
-
-## Creation
-Reactions can be created and managed using the `drasi` CLI tool. 
-
-The easiest way to create a Reaction, and the way you will often create one as part of a broader software solution, is to:
-
-1. Collect ID's of the Continuous Queries the Reaction will subscribe to.
-1. Collect credentials and endpoint addresses that provide access to any external system the Reaction interacts with.
-1. Create a YAML file containing the Reaction Resource Definition. This will include the configuration settings that enable the Reaction to connect to external systems. This can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run `drasi apply` to apply the Reaction resource definition to the Kubernetes cluster where your Drasi environment is deployed.
-
-As soon as the Reaction is created it will start running, subscribing to its Continuous Queries and processing query result changes.
-
-The definition for a Reaction has the following structure:
+## Creating the Reaction
+To create a Reaction, execute the `drasi apply` command as follows:
 
 ```
+drasi apply -f my-reaction.yaml -n my-namespace
+```
+
+The `drasi apply` command is how you create all new Drasi resources (in this case a Reaction). The `-f` flag specifies that the definition of the new Reaction is contained in the referenced YAML file `my-reaction.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Reaction (Drasi must already be installed in that namespace).
+
+## Reaction Definitions
+The YAML file passed to `drasi apply` can contain one or more Reaction definitions. Here is an example of a Drasi Debug Reactione definition:
+
+```yaml {#hello-world-debug-reaction}
 apiVersion: v1
 kind: Reaction
-name: <reaction-id>
+name: hello-world-debug
 spec:
-  kind: <reaction kind>
+  kind: Debug
   queries:
-    query1: <custom metadata for query1 (optional)>
-    query2: <custom metadata for query2 (optional)>
-  properties:
-    <property_1_name>: <property_1_value>
-    <property_2_name>: 
-      kind: Secret
-      name: <secret_id>
-      key: <secret_key>          
+    hello-world-from:
+    message-count:
+    inactive-people:
   endpoints:
-    <endpoint_name>: <enpoint_port_num>
+    gateway: 8080    
 ```
 
-The following table provides a summary of these configuration settings:
+In this definition: 
+- the **apiVersion** must be **v1**.
+- the **kind** property tells Drasi to create a **Reaction** resource.
+- the **spec.kind** property tells Drasi the kind of Reaction to create, in this case a **Debug** Reaction. 
+- the **name** property tells Drasi the identity of the Reaction and must be unique within the scope of Reactions within the target Drasi environment. In the above example, the **name** of the Reaction is **hello-world-debug**.
 
-|Name|Description|
+This table describes the other settings in the **spec** section of the Reaction definition:
+|Property|Description|
 |-|-|
-|apiVersion|Must have the value **v1**|
-|kind|Must have the value **Reaction**|
-|name|The **id** of the Reaction. Must be unique within the scope of the Reactions in the Drasi deployment. The  **id** is used to manage the Reaction.|
-|spec.kind|The type of Reaction to deploy.|
-|spec.queries|The list of Continuous Query IDs the Reaction will subscribe to. Some Reactions also need per-query configuration, which can be passed using the options property of the queryId. These are unique to the type of Reaction and are detailed in the sections below.|
-|spec.properties|Name/value pairs used to configure the Reaction. These are unique to the type of Reaction and are detailed in the sections below.|
-|spec.endpoints|Names and port numbers to use for Reactions that expose accessible ports for clients to connect to.|  
+|queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to.|
+|endpoints.gateway|Specifies the **port** on which the Drasi Debug Reaction will expose its Web UI. If not specified, this defaults to 8080. |
 
-Once configured, to create a Reaction defined in a file called `reaction.yaml`, you would run the command:
+## Inspecting the Reaction
+As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
 
-```
-drasi apply -f reaction.yaml
-```
-
-You can then use additional `drasi` commands to query the existence and status of the Reaction resource. For example, to see a list of the active Reactions, run the following command:
+You can check the status of the Reaction using the `drasi list` command:
 
 ```
 drasi list reaction
 ```
 
-## Deletion
-To delete an active Reaction, run the following command:
+Or including a target namespace:
 
 ```
-drasi delete reaction <reaction-id>
+drasi list reaction -n my-namespace
 ```
 
-For example, if the Reaction ID is `update-gremlin`, you would run,
+This will return a simple list of all Reactions in the default (or specified) namespace and their overall status. For example:
 
 ```
-drasi delete reaction update-gremlin
+        ID          | AVAILABLE
+--------------------+------------
+  hello-world-debug | true
+```
+
+If an error has occurred during the creation or operation of a Reaction, the `AVAILABLE` column will contain the error text instead of `true`.
+
+For more details about the Reaction you can use the `drasi describe` command:
+
+```
+drasi describe reaction hello-world-debug
+```
+
+This will return the full definition used to create the Reaction along with more detailed status information.
+
+## Viewing the Debug Reaction UI
+Because the Drasi Debug Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can view its Web UI. The easiest way to do this is to setup a port forward using `kubectl` and the following command:
+
+```bash
+kubectl port-forward -n my-namespace services/hello-world-debug-gateway 8080:8080
+```
+
+The `-n` flag specifies the Kubernetes namespace containing the Drasi environment where you installed the Reaction. The name used to reference the Reaction has the structure`services/<reaction_name>-gateway`.
+
+This will make the Drasi Debug Reaction UI available through port 8080 on the computer where you ran the port forward command. Assuming this is your local computer, you can open the Drasi Debug UI by browsing to the address [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
+
+{{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
+
+On the left hand side is a menu listing the three Continuous Queries contained in the Reaction defintion. Select one of the Continuous Queries in this list and the right hand pane will show the current results of the selected Continuous Query. 
+
+{{< figure src="hello-world-from-debug.png" alt="Hello World From" width="70%" >}}
+
+If changes occur to the result of the selected Continuous Query while you are viewing it in the Drasi Debug Reaction, you will see the table content update dynamically.
+
+## Modifying the Reaction
+Currently, Drasi does not support the modification of existing Reactions. You must [Delete the Reaction](#deleting-the-reaction), make changes to the Reaction definition file, and [Create the Reaction](#creating-the-reaction) again.
+
+## Deleting the Reaction
+To delete a Reaction you use the `drasi delete` command. There are two ways to do this. 
+
+Firstly, you can specify the type of resource (Reaction) and its name, for example:
+
+```
+drasi delete reaction hello-world-debug
+```
+
+Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Reaction(s):
+
+```
+drasi delete -f my-reaction.yaml <file2.yaml> <file3.yaml> <...>
+```
+
+This is a convenience, especially if a single YAML file contains multiple Reaction definitions. 
+
+If the Reaction is not in the default Drasi namespace, you should specific the target namespace using the `-n` flag as usual:
+
+```
+drasi delete -f my-reaction.yaml -n my-namespace
 ```
