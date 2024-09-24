@@ -17,8 +17,8 @@ On the computer from where you will create the Drasi Debug Reaction, you need to
 ## Creating the Reaction
 To create a Reaction, execute the `drasi apply` command as follows:
 
-```
-drasi apply -f my-reaction.yaml -n my-namespace
+```drasi
+drasi apply -f my-reaction.yaml -n drasi-namespace
 ```
 
 The `drasi apply` command is how you create all new Drasi resources (in this case a Reaction). The `-f` flag specifies that the definition of the new Reaction is contained in the referenced YAML file `my-reaction.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Reaction (Drasi must already be installed in that namespace).
@@ -57,14 +57,14 @@ As soon as the Reaction is created it will start running, subscribing to the spe
 
 You can check the status of the Reaction using the `drasi list` command:
 
-```
+```drasi
 drasi list reaction
 ```
 
 Or including a target namespace:
 
-```
-drasi list reaction -n my-namespace
+```drasi
+drasi list reaction -n drasi-namespace
 ```
 
 This will return a simple list of all Reactions in the default (or specified) namespace and their overall status. For example:
@@ -75,11 +75,11 @@ This will return a simple list of all Reactions in the default (or specified) na
   hello-world-debug | true
 ```
 
-If an error has occurred during the creation or operation of a Reaction, the `AVAILABLE` column will contain the error text instead of `true`.
+If an error has occurred during the creation or operation of a Reaction, the `AVAILABLE` column will contain the error text instead of `true` or `false`.
 
-For more details about the Reaction you can use the `drasi describe` command:
+For more details about the Reaction you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
 
-```
+```drasi
 drasi describe reaction hello-world-debug
 ```
 
@@ -88,8 +88,8 @@ This will return the full definition used to create the Reaction along with more
 ## Viewing the Debug Reaction UI
 Because the Drasi Debug Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can view its Web UI. The easiest way to do this is to setup a port forward using `kubectl` and the following command:
 
-```bash
-kubectl port-forward -n my-namespace services/hello-world-debug-gateway 8080:8080
+```kubectl
+kubectl port-forward -n drasi-namespace services/hello-world-debug-gateway 8080:8080
 ```
 
 The `-n` flag specifies the Kubernetes namespace containing the Drasi environment where you installed the Reaction. The name used to reference the Reaction has the structure`services/<reaction_name>-gateway`.
@@ -112,13 +112,13 @@ To delete a Reaction you use the `drasi delete` command. There are two ways to d
 
 Firstly, you can specify the type of resource (Reaction) and its name, for example:
 
-```
+```drasi
 drasi delete reaction hello-world-debug
 ```
 
 Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Reaction(s):
 
-```
+```drasi
 drasi delete -f my-reaction.yaml <file2.yaml> <file3.yaml> <...>
 ```
 
@@ -126,6 +126,6 @@ This is a convenience, especially if a single YAML file contains multiple Reacti
 
 If the Reaction is not in the default Drasi namespace, you should specific the target namespace using the `-n` flag as usual:
 
-```
-drasi delete -f my-reaction.yaml -n my-namespace
+```drasi
+drasi delete -f my-reaction.yaml -n drasi-namespace
 ```
