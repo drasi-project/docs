@@ -2,15 +2,15 @@
 type: "docs"
 title: "Setup PostgreSQL Replication"
 linkTitle: "Setup PostgreSQL Replication"
-weight: 50
+weight: 20
 description: >
-    Setup and Configure PostgreSQL for Drasi
+    Learn how to configure PostgreSQL to work as a Drasi Source
 ---
 
-This page describes how to configure your PostgreSQL database to work with the Drasi SQL Server source.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#setting-up-postgresql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+This page describes how to configure your PostgreSQL database so it will work with the PostgreSQL Source.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#setting-up-postgresql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Overview
-The PostgreSQL source is built upon the Debezium PostgreSQL connector, which relies on the replication functionality of PostgreSQL to achieve change data capture.
+The PostgreSQL Source is built upon the Debezium PostgreSQL connector, which relies on the replication functionality of PostgreSQL to achieve change data capture.
 
 ## PostgreSQL in the Cloud
 ### PostgreSQL on Amazon RDS
