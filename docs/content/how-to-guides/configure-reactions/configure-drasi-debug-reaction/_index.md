@@ -24,7 +24,7 @@ drasi apply -f my-reaction.yaml -n my-namespace
 The `drasi apply` command is how you create all new Drasi resources (in this case a Reaction). The `-f` flag specifies that the definition of the new Reaction is contained in the referenced YAML file `my-reaction.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Reaction (Drasi must already be installed in that namespace).
 
 ## Reaction Definitions
-The YAML file passed to `drasi apply` can contain one or more Reaction definitions. Here is an example of a Drasi Debug Reactione definition:
+The YAML file passed to `drasi apply` can contain one or more Reaction definitions. Here is an example of a Drasi Debug Reaction definition:
 
 ```yaml {#hello-world-debug-reaction}
 apiVersion: v1
@@ -98,7 +98,7 @@ This will make the Drasi Debug Reaction UI available through port 8080 on the co
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 
-On the left hand side is a menu listing the three Continuous Queries contained in the Reaction defintion. Select one of the Continuous Queries in this list and the right hand pane will show the current results of the selected Continuous Query. 
+On the left hand side is a menu listing the three Continuous Queries contained in the Reaction definition. Select one of the Continuous Queries in this list and the right hand pane will show the current results of the selected Continuous Query. 
 
 {{< figure src="hello-world-from-debug.png" alt="Hello World From" width="70%" >}}
 
