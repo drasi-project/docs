@@ -10,6 +10,8 @@ description: >
 The Cosmos Gremlin Source enables Drasi connectivity to Azure Cosmos DB Gremlin API databases. It 
 calls the Azure Cosmos Gremlin API to retrieve data required to bootstrap Continuous Queries when they are created, and uses the Cosmos DB Change Feed as the source of database change events to keep the Continuous Queries that subscribe to it perpetually accurate.
 
+{{< figure src="cosmos-gremlin-source.png" alt="Cosmos Gremlin Source" width="65%" >}}
+
 ## Data Model
 Azure Cosmos DB Gremlin API uses a property graph data model similar to the graph data model used by the openCypher-based query language used to write Continuous Queries. This makes it easier to configure Continuous Queries that use a Cosmos Gremlin Source than those that depend on relational Sources. The only thing to note is the terminology differences between Gremlin and Drasi summarized in this table:
 
