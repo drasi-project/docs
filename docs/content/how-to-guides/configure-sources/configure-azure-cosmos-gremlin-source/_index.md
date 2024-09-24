@@ -52,6 +52,7 @@ spec:
 ```
 
 In this definition: 
+- the **apiVersion** must be **v1**.
 - the **kind** property tells Drasi to create a **Source** resource.
 - the **spec.kind** property tells Drasi the kind of Source to create, in this case a **CosmosGremlin** Source. 
 - the **name** property tells Drasi the identity of the Source and must be unique within the scope of Sources within the target Drasi environment. This **name** is used in Continuous Query definitions to identify which Sources the Continuous Query subscribes to for data. In the above example, the **name** of the Source is **retail-ops**.
@@ -89,7 +90,7 @@ To create the Kubernetes Secret used above, you would run the command:
 kubectl create secret generic creds --from-literal=account-endpoint=AccountEndpoint=https://...
 ```
 
-## Inspecting a Source
+## Inspecting the Source
 Currently, a Source must be fully functional with a `ready` status before Continuous Queries can subscribe to it. If you create Continuous Queries that use a Source before the Source is `ready` they will either fail, or be in an unknown state.
 
 You can check the status of the Source using the `drasi list` command:
