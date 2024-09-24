@@ -1,10 +1,10 @@
 ---
 type: "docs"
-title: "Install Sample Applications"
-linkTitle: "Install Sample Applications"
+title: "Install Demo Apps"
+linkTitle: "Install Demo Apps"
 weight: 20
 description: >
-    Installing Drasi sample applications
+    Installing Drasi demo applications
 ---
 
 The [apps](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?version=GBdevelop&path=/apps) folder in the Drasi source repo contains a number of example applications that demonstrate the full range of capabilities provided by Drasi. The following links provide documentation about how to deploy those application to a self-hosted Drasi environment.
