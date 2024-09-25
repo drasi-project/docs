@@ -37,29 +37,34 @@ drasi list query
 ```
 
 ## Get the Drasi CLI
-You can download pre-built Drasi CLI binaries for your platform using the following commands / links:
+You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
-{{< tab header="MacOS" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
+{{< tab header="MacOS" lang="bash" >}}
+curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/installer-hotfix/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Linux" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
+{{< tab header="Windows" lang="bash" >}}
+iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
-{{% tab header="Windows" text=true %}}
-Please download the CLI through this [link](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe) and then add it to your system path.
+{{< tab header="Linux" lang="bash" >}}
+wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
-Download the CLI for your platform, and add it to your system path:
-- [MacOS arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-arm64)
-- [MacOS x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-x64)
-- [Windows x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe)
-- [Linux x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-x64)
-- [Linux arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-arm64)
+Download a specific version of the CLI from the [drasi-platform releases](https://github.com/drasi-project/drasi-platform/releases) page on GitHub. The file to download for your platform is:
+- **MacOS arm64** - drasi-darwin-arm64
+- **MacOS x64** - drasi-darwin-x64
+- **Windows x64** - drasi-windows-x64.exe
+- **Linux x64** - drasi-linux-x64
+- **Linux arm64** - drasi-linux-arm64
+
+Once downloaded, rename the file to `drasi` (MacOs and Linux) or `drasi.exe` (Windows) and add it to your path.
+{{% /tab %}}
+{{% tab header="Build from Source" text=true %}}
+The Drasi CLI source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
+
+The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
 {{% /tab %}}
 {{< /tabpane >}}
-
-Alternatively, you can build the Drasi CLI from source; to do this see the [Drasi CLI Source](#drasi-cli-source) section below.
 
 ## Get Help
 The Drasi CLI provides online help for the different commands it supports and the arguments each command accepts. If you run `drasi` from the command line, you will see the following output providing a high level overview of all the commands supported by the Drasi CLI:
@@ -563,9 +568,8 @@ drasi wait -f drasi-resources.yaml -t 20
 ## Drasi CLI Source
 The Drasi CLI is written in Go. If you want to explore how the Drasi CLI works, the source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
 
-The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build the Drasi CLI from source.
+The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build the Drasi CLI from source and install it on your computer.
 
 The definitions of **SourceProviders** installed by default when you run `drasi init` are contained in the [default-source-providers.yaml](https://github.com/drasi-project/drasi-platform/blob/main/cli/service/resources/default-source-providers.yaml) file.
 
 The definitions of **ReactionProviders** installed by default when you run `drasi init` are contained in the [default-reaction-providers.yaml](https://github.com/drasi-project/drasi-platform/blob/main/cli/service/resources/default-reaction-providers.yaml) file.
-
