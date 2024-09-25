@@ -74,7 +74,7 @@ Liveness
 lang
 MONGOMODULE
 MQ
-MacOS
+macOS
 MemoryDB
 MemoryDB
 Microservice
@@ -241,9 +241,6 @@ lineNos
 liveness
 livenessProbe
 localWorkspace
-localhost
-macOS
-macos
 managedStore
 md
 memorydb

@@ -22,30 +22,37 @@ On the computer where you will run the install process, you need to install the 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [EKS CLI](https://learn.microsoft.com//cli/azure/install-azure-cli)
 
-## Install the Drasi CLI
-Download the Drasi CLI to your local computer using the command or link for your operating system:
+## Get the Drasi CLI
+You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
-{{< tab header="MacOS" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
+{{< tab header="macOS" lang="bash" >}}
+curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/installer-hotfix/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Linux" lang="Bash" >}}
-curl -fsSL "https://drasi.blob.core.windows.net/installs-ghcr/install-drasi-cli-github.sh" | /bin/bash -s -- $GITHUB_TOKEN
+{{< tab header="Windows" lang="bash" >}}
+iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
-{{% tab header="Windows" text=true %}}
-Please download the CLI through this [link](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe) and then add it to your system path.
+{{< tab header="Linux" lang="bash" >}}
+wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
 {{< /tab >}}
 {{% tab header="Binaries" text=true %}}
-Download the CLI for your platform, and add it to your system path:
-- [MacOS arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-arm64)
-- [MacOS x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-darwin-x64)
-- [Windows x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-windows-x64.exe)
-- [Linux x64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-x64)
-- [Linux arm64](https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-linux-arm64)
+Download a specific version of the CLI from the [drasi-platform releases](https://github.com/drasi-project/drasi-platform/releases) page on GitHub. The file to download for your platform is:
+- **macOS arm64** - drasi-darwin-arm64
+- **macOS x64** - drasi-darwin-x64
+- **Windows x64** - drasi-windows-x64.exe
+- **Linux x64** - drasi-linux-x64
+- **Linux arm64** - drasi-linux-arm64
+
+Once downloaded, rename the file to `drasi` (macOS and Linux) or `drasi.exe` (Windows) and add it to your path.
+{{% /tab %}}
+{{% tab header="Build from Source" text=true %}}
+The Drasi CLI source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
+
+The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
 {{% /tab %}}
 {{< /tabpane >}}
 
-> See the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of the functionality it provides.
+Refer to the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of how to use it and the functionality it provides.
 
 ## Set the kubectl context
 use the following `az cli` commands to pull the cluster credentials into your list of `kubectl` contexts:

@@ -38,3 +38,12 @@ trueFor
 trueLater
 trueUntil
 volumeMounts
+localhost
+macOS
+darwin
+githubusercontent
+hotfix
+iex
+iwr
+useb
+wget
