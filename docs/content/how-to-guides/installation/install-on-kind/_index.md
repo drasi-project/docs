@@ -7,7 +7,7 @@ description: >
     Learn how to install Drasi on a kind cluster for local development and testing
 ---
 
-[kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, it is an easy to use option for doing local development and testing of Drasi and Drasi-based solutions. This tutorial teaches you how to install Drasi on kind.
+[kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, kind is an easy to use option for doing local development and testing of Drasi and Drasi-based solutions. This guide describes how to install Drasi on kind.
 
 ## Prerequisites
 This tutorial assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
@@ -17,10 +17,10 @@ On the computer where you will install kind, you need to install the following s
 - [docker](https://www.docker.com/products/docker-desktop/)
 
 ## Install Kind
-The [kind installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) instructions describe multiple ways to install kind on macOS, Windows, and Linux. These include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install kind on your computer before continuing.
+The [kind installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) instructions describe multiple ways to install kind on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install kind on your computer before continuing.
 
 ## Create a kind Cluster
-To create a kind cluster, run the following command from a terminal window: 
+To create a kind cluster, open a terminal or command prompt and run the following command: 
 
 ```bash
 kind create cluster
@@ -42,9 +42,11 @@ You can now use your cluster with:
 kubectl cluster-info --context kind-kind
 ```
 
-This will create a kind cluster named **kind-kind** and set the current kubectl context to the new cluster. You can manage the kind cluster using familiar Kubernetes management tools such as kubectl and the [Kubernetes extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) for [Visual Studio Code](https://code.visualstudio.com/).
+This will create a kind cluster named **kind-kind** and set the current kubectl context to the new cluster. Now you can manage the kind cluster using familiar Kubernetes management tools such as kubectl and the [Kubernetes extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) for [Visual Studio Code](https://code.visualstudio.com/).
 
 ## Get the Drasi CLI
+You will install Drasi on the kind cluster using the Drasi CLI. 
+
 You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
@@ -74,7 +76,7 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 {{% /tab %}}
 {{< /tabpane >}}
 
-Refer to the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of how to use it and the functionality it provides.
+This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of how to use it and the functionality it provides.
 
 ## Install Drasi on the kind Cluster
 To install Drasi on the kind cluster run:
@@ -83,22 +85,30 @@ To install Drasi on the kind cluster run:
 drasi init
 ```
 
-By default, this will install the same version of Drasi as the version number of the CLI. You can check which Drasi CLI version you have by running the command:
+This installs Drasi into the **drasi-system** namespace on the kind cluster, creating the namespace if it doesn't exist. You can install Drasi into a different namespace using the `--namespace` (or `-n`) flag and providing the namespace name:
+
+```drasi
+drasi init -n drasi-dev
+```
+
+This allows you to deploy multiple Drasi environments to a single kind cluster. If the specified namespace does not exist, `drasi init` will create it.
+
+By default, `drasi init` will install the same version of Drasi as the version number of the CLI. You can check which Drasi CLI version you have by running the command:
 
 ```drasi
 drasi version
 ```
 
-If you want to install a specific version of Drasi, you can pass the `--version` flag to the `drasi init` command. Here is an example of how to install Drasi **0.1.3**:
+If you want to install a specific version of Drasi, you can use the `--version` flag. Here is an example of how to install Drasi **0.1.3**:
 
 ```drasi
 drasi init --version 0.1.3
 ```
 
-The following shows the output you would expect from a successful Drasi installation:
+The following shows the output you would expect from a successful installation of Drasi 0.1.3:
 
 ```
-Installing Drasi with version latest from registry ghcr.io
+Installing Drasi with version 0.1.3 from registry ghcr.io
 ℹ Dapr not installed
 ✓ Dapr installed successfully
 ✓ Infrastructure deployed
@@ -125,13 +135,13 @@ Installing Drasi with version latest from registry ghcr.io
   ✓ Apply: ReactionProvider/StoredProc: complete
 ```
 
-Note that the Drasi install process also installs [DAPR](https://dapr.io/) on the kind cluster, along with some infrastructure components used by Drasi and DAPR, such as [Redis](https://redis.io/) and [Mongo DB](https://www.mongodb.com/).
+Note that the Drasi install process also installs [Dapr](https://dapr.io/) on the kind cluster, along with some infrastructure components used by Drasi and Dapr, such as [Redis](https://redis.io/) and [Mongo DB](https://www.mongodb.com/).
 
 If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
-If you want to verify that your new Drasi environment is working correctly, you can walk through the [Getting Started tutorial](/getting-started/) using your new environment instead of the Dev Container suggested in the tutorial. 
+If you want to verify that your new Drasi environment is working correctly, you can walk through the [Getting Started tutorial](/getting-started/) using your new Drasi environment instead of the Dev Container suggested in the tutorial. 
 
-## Troubleshooting Installation Errors
+## Troubleshooting Installation Problems
 If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
 
 ```
@@ -147,9 +157,9 @@ If any of installation steps fail, a check mark will appear next to the failed s
 Error: drasi API not available
 ```
 
-Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts experienced while downloading and installing dependencies. In these situations you can simply rerun the `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
+Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts experienced while downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
 
-To verify DAPR was installed successfully, you can check what DAPR pods are running using the command:
+To verify Dapr was installed successfully, you can check what Dapr pods are running using the command:
 
 ```kubectl
 kubectl get pods -n dapr-system
@@ -166,6 +176,21 @@ dapr-sentry-697bdc6cc4-xprww             1/1     Running   0               10m
 dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ```
 
+## Deleting Drasi
+To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
+
+```drasi
+drasi uninstall
+```
+
+To delete a Drasi environment from a specific namespace, include the `-n` flag:
+
+```drasi
+drasi uninstall -n drasi-dev
+```
+
+In either case, the Drasi CLI will delete the namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered.
+
 ## Deleting the kind cluster
 To delete the kind cluster and everything it contains, including the Drasi environment, run this command:
 
@@ -179,5 +204,3 @@ You will see the following output:
 Deleting cluster "kind" ...
 Deleted nodes: ["kind-control-plane"]
 ```
-
-After this the kind cluster is gone.
