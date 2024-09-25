@@ -30,8 +30,8 @@ You must configure your PostgreSQL Source with PostgreSQL database credentials t
 ## Creating the Source
 To create a PostgreSQL Source, execute the `drasi apply` command as follows:
 
-```
-drasi apply -f my-source.yaml -n my-namespace
+```drasi
+drasi apply -f my-source.yaml -n drasi-namespace
 ```
 
 The `drasi apply` command is how you create all new Drasi resources (in this case a Source). The `-f` flag specifies that the definition of the new Source is contained in the referenced YAML file `my-source.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Source (Drasi must already be installed in that namespace).
@@ -39,7 +39,7 @@ The `drasi apply` command is how you create all new Drasi resources (in this cas
 ## Source Definitions
 The YAML file passed to `drasi apply` can contain one or more Source definitions. Here is an example of a PostgreSQL Source definition:
 
-```
+```yaml {#retail-ops-postgresql-source}
 apiVersion: v1
 kind: Source
 name: retail-ops
@@ -76,7 +76,7 @@ This table describes the other settings in the **spec.properties** section of th
 
 The example Source definition above contains plain text values for the **user** and **password** properties. This may be acceptable for its convenience during development or testing but must be avoided if the credentials need to remain secure. Instead of providing plain text values, you can configure them to use a securely stored Kubernetes Secrets as shown in the following alternate definition for the above Source:
 
-```
+```yaml {#retail-ops-postgresql-source-with-secrets}
 apiVersion: v1
 kind: Source
 name: retail-ops
@@ -102,40 +102,51 @@ spec:
 
 To create the Kubernetes Secrets used above, you would run the command:
 
-```bash
+```kubectl
 kubectl create secret generic pg-creds \
   --from-literal=user=postgres@retail-operations \
   --from-literal=password=secret-password
 ```
 
 ## Inspecting the Source
-Currently, a Source must be fully functional with a `ready` status before Continuous Queries can subscribe to it. If you create Continuous Queries that use a Source before the Source is `ready` they will either fail, or be in an unknown state.
+Currently, a Source must be fully functional with an `available` status of `true` before Continuous Queries can subscribe to it. If you create Continuous Queries that use a Source before the Source is `available` they will either fail, or be in an unknown state.
 
 You can check the status of the Source using the `drasi list` command:
 
-```
+```drasi
 drasi list source
 ```
 
 Or including a target namespace:
 
-```
-drasi list source -n my-namespace
+```drasi
+drasi list source -n drasi-namespace
 ```
 
 This will return a simple list of all Sources in the default (or specified) namespace and their overall status. For example:
 
 ```
-    ID       | AVAILABLE
--------------+------------
-  retail-ops | true
+       ID      | AVAILABLE
+---------------+------------
+  retail-ops   | true
+  physical-ops | false
 ```
 
-If an error has occurred during the creation or operation of a Source, the `AVAILABLE` column will contain the error text instead of `ready`.
+In this case, the `retail-ops` Source is ready for use (AVAILABLE = true), but the `physical-ops` Source is not yet ready (AVAILABLE = false).
 
-For more details about a Source you can use the `drasi describe` command:
+Given how important it is for Sources to be ready before you start Continuous Queries that use them, the Drasi CLI supports the ability to wait for a Source to be ready using the [drasi wait](/reference/command-line-interface#drasi-wait) command:
 
+```drasi
+drasi wait source physical-ops -t 120
 ```
+
+The `drasi wait` command waits for one or more resources to become operational, or for a timeout interval `-t` to be reached (in seconds).
+
+If an error has occurred during the creation or operation of a Source, the `AVAILABLE` column will contain the error text.
+
+For more details about a Source you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
+
+```drasi
 drasi describe source retail-ops
 ```
 
@@ -149,13 +160,13 @@ To delete a Source you use the `drasi delete` command. There are two ways to do 
 
 Firstly, you can specify the type of resource (Source) and its name, for example:
 
-```
+```drasi
 drasi delete source retail-ops
 ```
 
 Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Source(s):
 
-```
+```drasi
 drasi delete -f my-source.yaml <file2.yaml> <file3.yaml> <...>
 ```
 
@@ -163,8 +174,8 @@ This is a convenience, especially if a single YAML file contains multiple Source
 
 If the Source is not in the default Drasi namespace, you should specific the target namespace using the `-n` flag as usual:
 
-```
-drasi delete -f my-source.yaml -n my-namespace
+```drasi
+drasi delete -f my-source.yaml -n drasi-namespace
 ```
 
 Drasi does not currently verify or protect dependencies between Sources and the Continuous Queries that subscribe to them. It is possible to delete a Source that is actively used by one or more Continuous Queries. This will break the Continuous Queries or leave them in an unknown state.
