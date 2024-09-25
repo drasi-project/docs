@@ -1,10 +1,12 @@
 autocomplete
 autocompletion
+cosmosgremlin
 configMap
 configMapRef
 configs
 continuousquery
 Continuousquery
+Contoso
 datasets
 drasi
 Drasi
@@ -27,6 +29,7 @@ Reactionprovider
 ReactionProvider
 ReactionProviders
 readme
+RetailOperations
 sourceprovider
 SourceProvider
 SourceProviders
