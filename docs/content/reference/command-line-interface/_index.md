@@ -41,9 +41,9 @@ You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
 {{< tab header="macOS" lang="bash" >}}
-curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/installer-hotfix/cli/installers/install-drasi-cli.sh | /bin/bash
+curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows" lang="bash" >}}
+{{< tab header="Windows PowerShell" lang="ps" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
 {{< tab header="Linux" lang="bash" >}}

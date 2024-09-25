@@ -7,7 +7,7 @@ description: >
     Learn how to install Drasi on a kind cluster for local development and testing
 ---
 
-[kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, kind is an easy to use option for doing local development and testing of Drasi and Drasi-based solutions. This guide describes how to install Drasi on kind.
+[kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, kind is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. This guide describes how to install Drasi on kind.
 
 ## Prerequisites
 This tutorial assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
@@ -45,15 +45,15 @@ kubectl cluster-info --context kind-kind
 This will create a kind cluster named **kind-kind** and set the current kubectl context to the new cluster. Now you can manage the kind cluster using familiar Kubernetes management tools such as kubectl and the [Kubernetes extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) for [Visual Studio Code](https://code.visualstudio.com/).
 
 ## Get the Drasi CLI
-You will install Drasi on the kind cluster using the Drasi CLI. 
+You will install Drasi on the kind cluster using the [Drasi CLI](/reference/command-line-interface/). 
 
 You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
 {{< tab header="macOS" lang="bash" >}}
-curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/installer-hotfix/cli/installers/install-drasi-cli.sh | /bin/bash
+curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows" lang="bash" >}}
+{{< tab header="Windows PowerShell" lang="ps" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
 {{< tab header="Linux" lang="bash" >}}
@@ -76,33 +76,30 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 {{% /tab %}}
 {{< /tabpane >}}
 
-This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of how to use it and the functionality it provides.
+This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 ## Install Drasi on the kind Cluster
-To install Drasi on the kind cluster run:
+To install Drasi on the kind cluster using all default settings, simply run the command:
 
 ```drasi
 drasi init
 ```
 
-This installs Drasi into the **drasi-system** namespace on the kind cluster, creating the namespace if it doesn't exist. You can install Drasi into a different namespace using the `--namespace` (or `-n`) flag and providing the namespace name:
+This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
+
+The `drasi init` command gives you to control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
+
+- `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
+- `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
+- `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
+- `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
+- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version).
+
+For example, to install Drasi **0.1.3** in the **drasi-dev** namespace, you would run the following command:
 
 ```drasi
-drasi init -n drasi-dev
-```
-
-This allows you to deploy multiple Drasi environments to a single kind cluster. If the specified namespace does not exist, `drasi init` will create it.
-
-By default, `drasi init` will install the same version of Drasi as the version number of the CLI. You can check which Drasi CLI version you have by running the command:
-
-```drasi
-drasi version
-```
-
-If you want to install a specific version of Drasi, you can use the `--version` flag. Here is an example of how to install Drasi **0.1.3**:
-
-```drasi
-drasi init --version 0.1.3
+drasi init --version 0.1.3 -n drasi-dev
 ```
 
 The following shows the output you would expect from a successful installation of Drasi 0.1.3:
@@ -135,11 +132,12 @@ Installing Drasi with version 0.1.3 from registry ghcr.io
   ✓ Apply: ReactionProvider/StoredProc: complete
 ```
 
-Note that the Drasi install process also installs [Dapr](https://dapr.io/) on the kind cluster, along with some infrastructure components used by Drasi and Dapr, such as [Redis](https://redis.io/) and [Mongo DB](https://www.mongodb.com/).
+Note that the Drasi installation also installs a number of dependencies, including:
+- [Dapr](https://dapr.io/)
+- [Redis](https://redis.io/)
+- [Mongo DB](https://www.mongodb.com/).
 
 If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
-
-If you want to verify that your new Drasi environment is working correctly, you can walk through the [Getting Started tutorial](/getting-started/) using your new Drasi environment instead of the Dev Container suggested in the tutorial. 
 
 ## Troubleshooting Installation Problems
 If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
