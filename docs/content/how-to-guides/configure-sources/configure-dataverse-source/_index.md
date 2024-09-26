@@ -3,6 +3,8 @@ type: "docs"
 title: "Connect to Microsoft Dataverse"
 linkTitle: "Connect to Microsoft Dataverse"
 weight: 30
+toc_hide: true
+hide_summary: true
 description: >
     Learn how to configure a Dataverse Source to connect to Microsoft Dataverse
 ---

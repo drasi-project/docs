@@ -3,6 +3,8 @@ type: "docs"
 title: "Connect to Microsoft SQL Server"
 linkTitle: "Connect to Microsoft SQL Server"
 weight: 40
+toc_hide: true
+hide_summary: true
 no_list: true
 description: >
     Learn how to configure a SQL Server Source to connect to Microsoft SQL Server
