@@ -2,7 +2,7 @@
 type: "docs"
 title: "Install on AWS Elastic Kubernetes Service"
 linkTitle: "Install on AWS Elastic Kubernetes Service"
-weight: 50
+weight: 20
 toc_hide: true
 description: >
     Learn how to install Drasi on an AWS Elastic Kubernetes Service (EKS) cluster
@@ -30,7 +30,7 @@ You can get the Drasi CLI for your platform using one of the following options:
 {{< tab header="macOS" lang="bash" >}}
 curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows PowerShell" lang="ps" >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
 {{< tab header="Linux" lang="bash" >}}
