@@ -1,0 +1,8 @@
+$custom-colors: (
+    'drasi-dark-blue': #1f203f,
+    'drasi-light-green': #d0fa58,
+    'drasi-dark-green': #75de6f,
+    'drasi-purple': #bdadf4,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
