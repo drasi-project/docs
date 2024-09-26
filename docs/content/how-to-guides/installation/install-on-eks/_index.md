@@ -201,26 +201,112 @@ A rebuild of the Drasi CLI is needed. The [readme.md](https://github.com/drasi-p
 </details>
 
 ## Install Drasi on the EKS Cluster
-To install the latest version of Drasi on the kind cluster, run:
+To install Drasi on the EKS cluster using all default settings, simply run the command:
 
-```bash
+```text
 drasi init
 ```
 
-If you want to install a specific version of Drasi, you can use the `version` flag, like this:
+This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
 
-```bash
-drasi init --version <version>
+The `drasi init` command gives you to control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
+
+- `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
+- `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
+- `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
+- `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
+- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/docs/content/reference/command-line-interface#drasi-version) command.
+
+For example, to install Drasi **0.1.3** in the **drasi-dev** namespace, you would run the following command:
+
+```text
+drasi init --version 0.1.3 -n drasi-dev
 ```
 
-If `drasi init` completes without error, the Drasi environment is installed and ready for use.
+The following shows the output you would expect from a successful installation of Drasi 0.1.3:
 
-## Troubleshooting Installation
-If any of these steps fail, a red check mark will appear next to the step and the installation process will stop. 
+```
+Installing Drasi with version 0.1.3 from registry ghcr.io
+ℹ Dapr not installed
+✓ Dapr installed successfully
+✓ Infrastructure deployed
+  ✓ app=rg-redis is online
+  ✓ app=rg-mongo is online
+✓ Control plane is online
+  ✓ drasi/infra=api is online
+  ✓ drasi/infra=resource-provider is online
+✓ Query container created
+  ✓ Apply: QueryContainer/default: complete
+  ✓ Wait QueryContainer/default online
+✓ Default source providers created
+  ✓ Apply: SourceProvider/PostgreSQL: complete
+  ✓ Apply: SourceProvider/SQLServer: complete
+  ✓ Apply: SourceProvider/CosmosGremlin: complete
+✓ Default reaction providers created
+  ✓ Apply: ReactionProvider/Debug: complete
+  ✓ Apply: ReactionProvider/Debezium: complete
+  ✓ Apply: ReactionProvider/EventGrid: complete
+  ✓ Apply: ReactionProvider/Gremlin: complete
+  ✓ Apply: ReactionProvider/Result: complete
+  ✓ Apply: ReactionProvider/SignalR: complete
+  ✓ Apply: ReactionProvider/StorageQueue: complete
+  ✓ Apply: ReactionProvider/StoredProc: complete
+```
 
-Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
+Note that the Drasi installation also installs a number of dependencies, including:
+- [Dapr](https://dapr.io/)
+- [Redis](https://redis.io/)
+- [Mongo DB](https://www.mongodb.com/).
 
-Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
-## Optional:Testing the Drasi environment
-To verify that Drasi has been correctly deployed to your kind cluster, you can deploy a quick [test workload](/how-to-guides/installation/test-installation.md).
+## Troubleshooting Installation Problems
+If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
+
+```
+ℹ Dapr not installed
+✓ Dapr installed successfully
+✓ Infrastructure deployed
+  ✗ Timed out waiting for app=drasi-redis
+  ✗ Timed out waiting for app=drasi-mongo
+✓ Control plane is online
+  ✗ Timed out waiting for drasi/infra=api
+  ✗ Timed out waiting for drasi/infra=resource-provider
+●∙∙ Creating query container...
+Error: drasi API not available
+```
+
+Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts experienced while downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
+
+To verify Dapr was installed successfully, you can check what Dapr pods are running using the command:
+
+```text
+kubectl get pods -n dapr-system
+```
+
+Which should show output similar to this:
+
+```
+NAME                                     READY   STATUS    RESTARTS        AGE
+dapr-dashboard-5cc65d985f-qzqbg          1/1     Running   0               10m
+dapr-operator-5d98f57c86-kspwk           1/1     Running   0               10m
+dapr-placement-server-0                  1/1     Running   0               10m
+dapr-sentry-697bdc6cc4-xprww             1/1     Running   0               10m
+dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
+```
+
+## Deleting Drasi
+To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
+
+```text
+drasi uninstall
+```
+
+To delete a Drasi environment from a specific namespace, include the `-n` flag:
+
+```text
+drasi uninstall -n drasi-dev
+```
+
+In either case, the Drasi CLI will delete the namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered.
