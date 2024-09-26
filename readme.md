@@ -1,5 +1,9 @@
 # Drasi documentation
-This repo contains the documentation source for [https://drasi.io](https://drasi.io). 
+This repo contains the documentation source for [https://drasi.io](https://drasi.io).
+## Contributing
+Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in [Docs Contribution Guide](https://github.com/drasi-project/docs/blob/preview/docs/README.md) to learn how to get started with contributing and creating new documents for Drasi.
+
+## En
 
 ## Framework
 The documentation website is generated with the [Hugo](https://gohugo.io/) framework.
@@ -8,22 +12,25 @@ The documentation website is generated with the [Hugo](https://gohugo.io/) frame
 The [Docsy](https://www.docsy.dev/) theme is used to style the generated site. Refer to the [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/) for helpful tips on creating content for Drasi.
 
 1. Install [Hugo](https://gohugo.io/)
-1. Pull the drasi-project/docs repo
+1. Clone the drasi-project/docs repo
+2. Change to the docs subfolder
+
+   ``` cd docs/docs```
+ 
 1. From the root of the drasi-project/docs repo, where this readme is located, run ```git submodule update --init --recursive --remote``` to pull Docsy code that is configured as a submodule.
-1. In the ```docs/docs/themes/docsy``` folder, run the command ```npm i```
+1. Switch to  the Docsy theme folder
 
+   ```docs/docs/themes/docsy``` folder
 
-## Contributing
-Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in [Docs Contribution Guide](https://github.com/drasi-project/docs/blob/preview/docs/README.md) to learn how to get started with contributing and creating new documents for Drasi.
+1. Run the command ```npm install```
 
-## Hosting
-Drasi docs are hosted on the Azure App Service
+## Run local server
 
-1. Open a terminal
-1. Change to the ```docs``` folder in the repo
+1. Open a terminal window
+1. Ensure that you are in the  ```docs/docs``` folder of the repo
 1. Run the command ```hugo server```
 
-The documentaiton website will be accessible on the URL http://localhost:1313/
+The documentation website will be accessible on the URL **http://localhost:1313/**
 
 ## Deploying to Azure
 
