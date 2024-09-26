@@ -2,9 +2,8 @@
 This repo contains the documentation source for [https://drasi.io](https://drasi.io).
 ## Contributing
 Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in [Docs Contribution Guide](https://github.com/drasi-project/docs/blob/preview/docs/README.md) to learn how to get started with contributing and creating new documents for Drasi.
-
-## En
-
+## Pre-requisites
+ * [Node.js](https://nodejs.org/en/)
 ## Framework
 The documentation website is generated with the [Hugo](https://gohugo.io/) framework.
 
