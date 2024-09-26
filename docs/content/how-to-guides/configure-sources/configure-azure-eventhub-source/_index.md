@@ -1,10 +1,12 @@
 ---
 type: "docs"
-title: "Configure an Azure EventHub Source"
-linkTitle: "Configure an Azure EventHub Source"
+title: "Connect to Azure EventHub"
+linkTitle: "Connect to Azure EventHub"
 weight: 20
+toc_hide: true
+hide_summary: true
 description: >
-    Learn how to configure Azure EventHub Sources
+    Learn how to configure an Azure EventHub Source to connect to an Azure EventHub
 ---
 
 

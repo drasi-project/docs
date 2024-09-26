@@ -1,0 +1,102 @@
+
+/* Disable the site name */
+.td-navbar .navbar-brand__name {
+    display: none;
+}
+  
+/* Adjust the logo size */
+.td-navbar {
+    .navbar-brand {
+        // Margin adjustments go here if needed.
+        margin-left: $spacer;
+
+        .navbar-brand__logo {
+            svg {
+                width: 40%;
+                height: auto;
+            }
+        }
+    }
+}
+
+// Grid container for the extension cards
+.extension-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px; // Space between the cards
+    padding: 20px;
+    justify-content: center;
+  }
+  
+  .extension-grid-container a {
+    text-decoration: none; /* Removes the underline */
+    color: inherit; /* Ensures the text color stays consistent */
+  }
+
+  // Extension card styles
+  .extension-card {
+    display: block; /* Make the whole card clickable */
+    border: 1px solid #ddd; // Light border around the card
+    border-radius: 8px; // Slight rounding on corners
+    overflow: hidden; // Ensures the image and content stay within the card boundaries
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+    transition: transform 0.3s ease; // Animation on hover
+  
+    &:hover {
+      transform: scale(1.05); // Slight zoom effect on hover
+    }
+  
+    // Ensure all cards are the same size
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  // Extension card image
+  .extension-card-image img {
+    width: 100%;
+    height: 150px; // Takes up the top half of the card
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    object-fit:contain;
+  }
+  
+  // Extension card content
+  .extension-card-content {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .extension-card-content a {
+    color: inherit; /* Ensures the text color stays consistent */
+  }
+
+  // Extension card title
+  .extension-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  // Extension card summary
+  .extension-card-summary {
+    font-size: 0.9rem;
+    color: #666; // Slightly muted color for summary text
+  }
+  
+  // Responsiveness
+  @media (max-width: 768px) {
+    .extension-grid-container {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  
+    .extension-card {
+      height: 300px; // Adjust card height for smaller screens
+    }
+  }
+  

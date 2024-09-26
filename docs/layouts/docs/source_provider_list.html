@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <div class="container">
+    <div class="extension-grid-container">
+        {{ $filteredPages := where .Pages "Params.hide_summary" "ne" true }}
+        {{ range $filteredPages }}
+          <a href="{{ .Permalink }}" class="card">
+            <div class="extension-card">
+            <div class="extension-card-image">
+                {{ $image := .Resources.GetMatch "grid-image.{png,jpg,jpeg,svg}" }}
+                {{ if $image }}
+                    {{ $image := $image.Fit "300x150" }}
+                    <img src="{{ $image.Permalink }}" alt="{{ .Description }}">
+                {{ else }}
+                    <img src="/images/defaults/default-source.jpeg" alt="{{ .Description }}">
+                {{ end }}
+            </div>
+            <div class="extension-card-content">
+                <h3 class="extension-card-title">{{ .Title }}</h3>
+                <p class="extension-card-summary">{{ .Description }}</p>
+            </div>
+            </div>
+        </a>
+      {{ end }}
+    </div>
+  </div>
+{{ end }}

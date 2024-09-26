@@ -2,7 +2,7 @@
 type: "docs"
 title: "Install on kind"
 linkTitle: "Install on kind"
-weight: 10
+weight: 40
 description: >
     Learn how to install Drasi on a kind cluster for local development and testing
 ---
@@ -10,13 +10,13 @@ description: >
 [kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, kind is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. This guide describes how to install Drasi on kind.
 
 ## Prerequisites
-This tutorial assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
+This guide assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
 
 On the computer where you will install kind, you need to install the following software:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [docker](https://www.docker.com/products/docker-desktop/)
 
-## Install Kind
+## Install kind
 The [kind installation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) instructions describe multiple ways to install kind on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install kind on your computer before continuing.
 
 ## Create a kind Cluster
@@ -53,7 +53,7 @@ You can get the Drasi CLI for your platform using one of the following options:
 {{< tab header="macOS" lang="bash" >}}
 curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows PowerShell" lang="ps" >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
 {{< tab header="Linux" lang="bash" >}}
@@ -81,7 +81,7 @@ This guide focuses on how to install Drasi on a kind cluster and covers only a f
 ## Install Drasi on the kind Cluster
 To install Drasi on the kind cluster using all default settings, simply run the command:
 
-```drasi
+```text
 drasi init
 ```
 
@@ -94,11 +94,11 @@ The `drasi init` command gives you to control over certain aspects of the instal
 - `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
 - `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
-- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version).
+- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/docs/content/reference/command-line-interface#drasi-version) command.
 
 For example, to install Drasi **0.1.3** in the **drasi-dev** namespace, you would run the following command:
 
-```drasi
+```text
 drasi init --version 0.1.3 -n drasi-dev
 ```
 
@@ -177,13 +177,13 @@ dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ## Deleting Drasi
 To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
 
-```drasi
+```text
 drasi uninstall
 ```
 
 To delete a Drasi environment from a specific namespace, include the `-n` flag:
 
-```drasi
+```text
 drasi uninstall -n drasi-dev
 ```
 

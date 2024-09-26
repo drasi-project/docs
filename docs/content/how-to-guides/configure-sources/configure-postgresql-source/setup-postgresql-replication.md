@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup PostgreSQL Replication"
 linkTitle: "Setup PostgreSQL Replication"
 weight: 20
+toc_hide: true
 description: >
     Learn how to configure PostgreSQL to work as a Drasi Source
 ---

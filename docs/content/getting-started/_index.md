@@ -9,7 +9,7 @@ description: >
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 
-After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform as described in the [Solution Developer Guides](/solution-developer).
+After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform creating [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
 ## Solution Overview
 In this sample Drasi solution, the source of data (and change) will be a `Message` table in a PostgreSQL database, which holds the content of messages sent by people. The `Message` table contains these three fields:
@@ -34,12 +34,12 @@ Initially, the `Message` table will contain the following messages:
 |3|Antoninus|I am Spartacus|
 |4|David|I am Spartacus|
 
-During the tutorial, you will add and remove messages and immediately observe the effect of those changes on your Continuous Query results using the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction subscribes to a set of Continuous Queries and provides a dynamic view of each query's result set in a Web browser. It is common to use the Debug Reaction to test your Continuous Queries prior to setting up your actual Reactions.
+During the tutorial, you will modify the `Message` table, adding and removing messages, and observing the effect of those changes on your Continuous Query results using the [Debug Reaction](/how-to-guides/configure-reactions/configure-drasi-debug-reaction/). The Debug Reaction subscribes to a set of Continuous Queries and provides a dynamic view of each query's result set in a Web browser. It is common to use the Debug Reaction to test your Continuous Queries prior to setting up your actual Reactions.
 
 ## Solution Architecture
 When complete, the Hello World solution will have the component architecture shown in this diagram:
 
-{{< figure src="hello-world-solution.png" alt="Hello World Solution" width="70%" >}}
+{{< figure src="hello-world-solution.png" alt="Hello World Solution" width="85%" >}}
 
 Although an intentionally simple example, the Hello World solution contains all the components of any Drasi-based solution, including:
 - Drasi **Sources** that provide access to external data sources
@@ -53,18 +53,20 @@ To complete the tutorial, you will be guided through the following steps:
 1. Create the Debug Reaction
 1. Test the Solution
 
-## Step 1 - Deploy Drasi
+## Step 1 - Install Drasi
 To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
+
+> If you cannot or do not want to use a Dev Container to run this tutorial, take a look at the [alternatives](#alternatives-to-the-drasi-dev-container) described at the bottom of the page, then continue with [Step 2 - Create the PostgreSQL Source](#step-2---create-the-postgresql-source).
 
 To use the Drasi Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
-- [Docker](https://www.docker.com/get-started/)
+- [docker](https://www.docker.com/get-started/)
 
 Once you have these prerequisites installed:
-1. Download the [Drasi QuickStart ZIP file](https://drasi.blob.core.windows.net/tutorials/quickstart-dev-container.zip?latest)
-1. Unzip the Drasi QuickStart ZIP file to a temporary location on your computer
-1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi QuickStart files you just unzipped
+1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
+1. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
+1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
 If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:
 - `.devcontainer` contains files that VS Code requires to configure the Dev Container
@@ -79,18 +81,11 @@ The Drasi Dev Container will take a few minutes to initialize depending on how m
 
 When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
-```
+```text
 Done. Press any key to close the terminal.
 ```
 
-If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can email the [Drasi Team](mailto:projectdrasiteam@service.microsoft.com). 
-
-#### Alternatives to the Drasi Dev Container
-The rest of the QuickStart Tutorial assumes you are using the Dev Container. However, if you cannot or do not want to use a Dev Container to run this QuickStart Tutorial, we recommend you install Drasi on a local Kubernetes environment such as [Kind](/reference/using-kind/) and [deploy Drasi from pre-built Preview Images](/administrator/platform-deployment/from-preview-images/). You can also explore other options by going to the [Deploying Drasi](/administrator/platform-deployment/) section.
-
-In this case you must also install a PostgreSQL database to use as a source of change. The [Using PostgreSQL](/reference/setup-postgres) section provides instruction on setting up a Kubernetes hosted PostgreSQL database suitable for this tutorial, including all required tables and data.
-
-The files you will need to create the Drasi Source, Continuous Queries, and Reaction in the following steps are located in the `tutorial/getting-started/resources` folder of the Drasi QuickStart files you downloaded earlier. 
+If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team. 
 
 ## Step 2 - Create the PostgreSQL Source
 The following YAML is the content of the `hello-world-source.yaml` file, which you will use to create a Source that connects to your PostgreSQL database.
@@ -394,7 +389,7 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
 
-The QuickStart Tutorial is now complete. The QuickStart Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing. 
+This tutorial is now complete. The Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing. 
 
 ## Reflection
 In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 20 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
@@ -413,3 +408,11 @@ If you no longer need the Dev Container and want to cleanup, you can
 1. Run the VS Code command `Dev Containers: Clean Up Dev Containers..."
 1. Select the `getting-started` image and click `ok` to remove the unused image
 1. Select the unused volumes and click `ok` to remove the unused volumes
+
+## Alternatives to the Drasi Dev Container
+As an alternative to completing this tutorial using a Dev Container you can install Drasi on one of the other platforms described in the [Drasi Installation Guides](/how-to-guides/installation/).
+
+You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server and to load the required data.
+
+Finally, download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial. Unzip the file to a suitable location on your computer and [return to the tutorial](#step-2---create-the-postgresql-source).
+
