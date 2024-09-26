@@ -17,7 +17,7 @@ On the computer from where you will create the Drasi Debug Reaction, you need to
 ## Creating the Reaction
 To create a Reaction, execute the `drasi apply` command as follows:
 
-```drasi
+```text
 drasi apply -f my-reaction.yaml -n drasi-namespace
 ```
 
@@ -57,13 +57,13 @@ As soon as the Reaction is created it will start running, subscribing to the spe
 
 You can check the status of the Reaction using the `drasi list` command:
 
-```drasi
+```text
 drasi list reaction
 ```
 
 Or including a target namespace:
 
-```drasi
+```text
 drasi list reaction -n drasi-namespace
 ```
 
@@ -79,7 +79,7 @@ If an error has occurred during the creation or operation of a Reaction, the `AV
 
 For more details about the Reaction you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
 
-```drasi
+```text
 drasi describe reaction hello-world-debug
 ```
 
@@ -112,13 +112,13 @@ To delete a Reaction you use the `drasi delete` command. There are two ways to d
 
 Firstly, you can specify the type of resource (Reaction) and its name, for example:
 
-```drasi
+```text
 drasi delete reaction hello-world-debug
 ```
 
 Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Reaction(s):
 
-```drasi
+```text
 drasi delete -f my-reaction.yaml <file2.yaml> <file3.yaml> <...>
 ```
 
@@ -126,6 +126,6 @@ This is a convenience, especially if a single YAML file contains multiple Reacti
 
 If the Reaction is not in the default Drasi namespace, you should specific the target namespace using the `-n` flag as usual:
 
-```drasi
+```text
 drasi delete -f my-reaction.yaml -n drasi-namespace
 ```
