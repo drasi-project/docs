@@ -1,26 +1,6 @@
 /* Set Drasi's primary color */
 $primary: #1f203f;
+$secondary: #75de6f;
 
 /* Set the heading colors to Drasi's primary color */
 $headings-color: $primary;
-
-/* Disable the site name */
-.td-navbar .navbar-brand__name {
-    display: none;
-}
-  
-/* Adjust the logo size */
-.td-navbar {
-    .navbar-brand {
-        // Margin adjustments go here if needed.
-        margin-left: $spacer;
-
-        .navbar-brand__logo {
-            svg {
-                width: 40%;
-                height: auto;
-            }
-        }
-    }
-}
-
