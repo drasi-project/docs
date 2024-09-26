@@ -47,3 +47,6 @@ iex
 iwr
 useb
 wget
+RocksDB
+rocksDB
+rocksDb
