@@ -1,7 +1,7 @@
 # Drasi documentation
 This repo contains the documentation source for [https://drasi.io](https://drasi.io).
 ## Contributing
-Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in [Docs Contribution Guide](https://github.com/drasi-project/docs/blob/preview/docs/README.md) to learn how to get started with contributing and creating new documents for Drasi.
+Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in here to learn how to get started with contributing and creating new documents for Drasi.
 ## Pre-requisites
  * [Node.js](https://nodejs.org/en/)
 ## Framework
@@ -24,6 +24,7 @@ The [Docsy](https://www.docsy.dev/) theme is used to style the generated site. R
 1. Run the command ```npm install```
 
 ## Run local server
+Follow these steps to build the docs locally
 
 1. Open a terminal window
 1. Ensure that you are in the  ```docs/docs``` folder of the repo
