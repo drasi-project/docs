@@ -10,7 +10,7 @@ The [Docsy](https://www.docsy.dev/) theme is used to style the generated site. R
 1. Install [Hugo](https://gohugo.io/)
 1. Pull the drasi-project/docs repo
 1. From the root of the drasi-project/docs repo, where this readme is located, run ```git submodule update --init --recursive --remote``` to pull Docsy code that is configured as a submodule.
-1. In the ```docs/docs/themes/docsy``` folder, run the command ```npm i```
+1. In the ```docs/themes/docsy``` folder, run the command ```npm i```
 
 
 ## Contributing
