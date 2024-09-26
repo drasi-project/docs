@@ -6,7 +6,7 @@ weight: 30
 description: >
     Learn how to install Drasi on a k3s cluster (using k3d) for local development and testing
 ---
-sss
+
 [k3s](https://k3s.io/) is a lightweight Kubernetes distribution that is ideal for running on your local computer. This tutorial teaches you how to install Drasi on k3s using [k3d](https://k3d.io/), a lightweight wrapper to run k3s in docker. It is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. 
 
 ## Prerequisites
