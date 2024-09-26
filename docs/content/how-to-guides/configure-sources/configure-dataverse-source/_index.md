@@ -1,10 +1,12 @@
 ---
 type: "docs"
-title: "Configure a Dataverse Source"
-linkTitle: "Configure a Dataverse Source"
+title: "Connect to Microsoft Dataverse"
+linkTitle: "Connect to Microsoft Dataverse"
 weight: 30
+toc_hide: true
+hide_summary: true
 description: >
-    Learn how to configure Dataverse Sources
+    Learn how to configure a Dataverse Source to connect to Microsoft Dataverse
 ---
 
 The Dataverse source enables changes to tables in Microsoft Dataverse to be mapped into graph nodes that can be referenced by a continuous query.

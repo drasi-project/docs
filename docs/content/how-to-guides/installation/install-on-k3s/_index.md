@@ -4,54 +4,68 @@ title: "Install on k3s"
 linkTitle: "Install on k3s"
 weight: 30
 description: >
-    Learn how to install Drasi on a k3s cluster for local development and testing
+    Learn how to install Drasi on a k3s cluster (using k3d) for local development and testing
 ---
 
-[k3s](https://k3s.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. It is an easy to use option for doing local development and testing of Drasi and Drasi-based solutions. This tutorial teaches you how to install Drasi on k3s.
+[k3s](https://k3s.io/) is a lightweight Kubernetes distribution that is ideal for running on your local computer. This tutorial teaches you how to install Drasi on k3s using [k3d](https://k3d.io/), a lightweight wrapper to run k3s in docker. It is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. 
 
 ## Prerequisites
-This tutorial assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
+This guide assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
 
-On the computer where you will install k3s, you need to install the following software:
-- [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-- [Docker](https://www.docker.com/)
-- [k3s](https://k3s.sigs.k8s.io/docs/user/quick-start/)
+On the computer where you will install k3d/k3s, you need to install the following software:
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [docker](https://www.docker.com/)
+
+## Install k3d
+The [k3d installation](https://k3d.io/v5.6.3/#installation) instructions describe multiple ways to install k3d on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install k3d on your computer before continuing.
 
 ## Create a k3s Cluster
-To create a k3s cluster, run the following command in a terminal window: 
+To create a k3s cluster, open a terminal or command prompt and run the following command: 
 
 ```bash
-k3s create cluster
+k3d cluster create
 ```
 
-This command will create a k3s cluster named "k3s" and set the current kubectl context to refer to the new cluster. During the k3s install, you will see output similar to this:
+During the cluster creation, you will see output similar to this:
 
 ```
-Creating cluster "k3s" ...
- ✓ Ensuring node image (kindest/node:v1.30.0) 🖼
- ✓ Preparing nodes 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
-Set kubectl context to "k3s-k3s"
-You can now use your cluster with:
-
-kubectl cluster-info --context k3s-k3s
-
-Not sure what to do next? 😅  Check out https://k3s.sigs.k8s.io/docs/user/quick-start/
+INFO[0000] Prep: Network
+INFO[0000] Created network 'k3d-k3s-default'
+INFO[0000] Created image volume k3d-k3s-default-images
+INFO[0000] Starting new tools node...
+INFO[0001] Creating node 'k3d-k3s-default-server-0'
+INFO[0001] Pulling image 'ghcr.io/k3d-io/k3d-tools:5.7.4'
+INFO[0002] Pulling image 'docker.io/rancher/k3s:v1.30.4-k3s1'
+INFO[0003] Starting node 'k3d-k3s-default-tools'
+INFO[0008] Creating LoadBalancer 'k3d-k3s-default-serverlb'
+INFO[0010] Pulling image 'ghcr.io/k3d-io/k3d-proxy:5.7.4'
+INFO[0014] Using the k3d-tools node to gather environment information
+INFO[0014] Starting new tools node...
+INFO[0014] Starting node 'k3d-k3s-default-tools'
+INFO[0016] Starting cluster 'k3s-default'
+INFO[0016] Starting servers...
+INFO[0016] Starting node 'k3d-k3s-default-server-0'
+INFO[0019] All agents already running.
+INFO[0019] Starting helpers...
+INFO[0019] Starting node 'k3d-k3s-default-serverlb'
+INFO[0026] Injecting records for hostAliases (incl. host.k3d.internal) and for 3 network members into CoreDNS configmap...
+INFO[0028] Cluster 'k3s-default' created successfully!
+INFO[0028] You can now use it like this:
+kubectl cluster-info
 ```
 
-Once complete, you can manage the k3s cluster with familiar Kubernetes management tools such as kubectl and the Visual Studio Code Kubernetes plugin. The k3s will have the name "k3s-k3s".
+This will create a k3s cluster named **k3d-k3s-default** and set the current kubectl context to the new cluster. Now you can manage the k3s cluster using familiar Kubernetes management tools such as kubectl and the [Kubernetes extension](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools) for [Visual Studio Code](https://code.visualstudio.com/).
 
 ## Get the Drasi CLI
+You will install Drasi on the k3s cluster using the [Drasi CLI](/reference/command-line-interface/). 
+
 You can get the Drasi CLI for your platform using one of the following options:
 
 {{< tabpane >}}
 {{< tab header="macOS" lang="bash" >}}
 curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows PowerShell" lang="ps" >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
 {{< tab header="Linux" lang="bash" >}}
@@ -74,29 +88,41 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 {{% /tab %}}
 {{< /tabpane >}}
 
-Refer to the [Drasi CLI Reference](/reference/command-line-interface/) for a complete description of how to use it and the functionality it provides.
+This guide focuses on how to install Drasi on a k3s cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 ## Install Drasi on the k3s Cluster
-To install the latest version of Drasi on the k3s cluster, run:
+To install Drasi on the k3s cluster using all default settings, simply run the command:
 
-```bash
+```text
 drasi init
 ```
 
-If you want to install a specific version of Drasi, you can use the `version` flag, like this:
+This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
 
-```bash
-drasi init --version <version>
+The `drasi init` command gives you to control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
+
+- `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
+- `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
+- `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
+- `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
+- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/docs/content/reference/command-line-interface#drasi-version) command.
+
+For example, to install Drasi **0.1.3** in the **drasi-dev** namespace, you would run the following command:
+
+```text
+drasi init --version 0.1.3 -n drasi-dev
 ```
 
-The following shows the output from a successful Drasi installation:
+The following shows the output you would expect from a successful installation of Drasi 0.1.3:
 
 ```
-Installing Drasi with version latest from registry ghcr.io
-ℹ Dapr already installed
+Installing Drasi with version 0.1.3 from registry ghcr.io
+ℹ Dapr not installed
+✓ Dapr installed successfully
 ✓ Infrastructure deployed
-  ✓ app=rg-redis is online
-  ✓ app=rg-mongo is online
+  ✓ app=drasi-redis is online
+  ✓ app=drasi-mongo is online
 ✓ Control plane is online
   ✓ drasi/infra=api is online
   ✓ drasi/infra=resource-provider is online
@@ -118,30 +144,77 @@ Installing Drasi with version latest from registry ghcr.io
   ✓ Apply: ReactionProvider/StoredProc: complete
 ```
 
-If `drasi init` completes without error, the Drasi environment is installed and ready for use.
+Note that the Drasi installation also installs a number of dependencies, including:
+- [Dapr](https://dapr.io/)
+- [Redis](https://redis.io/)
+- [Mongo DB](https://www.mongodb.com/).
 
-## Troubleshooting Installation
-If any of these steps fail, a red check mark will appear next to the step and the installation process will stop. 
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
-Dapr should be automatically installed to your cluster. You can verify this by running the command `kubectl get pods -n dapr-system`. 
+## Troubleshooting Installation Problems
+If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
 
-Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
+```
+ℹ Dapr not installed
+✓ Dapr installed successfully
+✓ Infrastructure deployed
+  ✗ Timed out waiting for app=drasi-redis
+  ✗ Timed out waiting for app=drasi-mongo
+✓ Control plane is online
+  ✗ Timed out waiting for drasi/infra=api
+  ✗ Timed out waiting for drasi/infra=resource-provider
+●∙∙ Creating query container...
+Error: drasi API not available
+```
 
-## Optional:Testing the Drasi environment
-To verify that Drasi has been correctly deployed to your k3s cluster, you can deploy a quick [test workload](/how-to-guides/installation/test-installation.md).
+Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts experienced while downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
+
+To verify Dapr was installed successfully, you can check what Dapr pods are running using the command:
+
+```bash
+kubectl get pods -n dapr-system
+```
+
+Which should show output similar to this:
+
+```
+NAME                                     READY   STATUS    RESTARTS        AGE
+dapr-dashboard-5cc65d985f-qzqbg          1/1     Running   0               10m
+dapr-operator-5d98f57c86-kspwk           1/1     Running   0               10m
+dapr-placement-server-0                  1/1     Running   0               10m
+dapr-sentry-697bdc6cc4-xprww             1/1     Running   0               10m
+dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
+```
+
+## Deleting Drasi
+To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
+
+```text
+drasi uninstall
+```
+
+To delete a Drasi environment from a specific namespace, include the `-n` flag:
+
+```text
+drasi uninstall -n drasi-dev
+```
+
+In either case, the Drasi CLI will delete the namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered.
 
 ## Deleting the k3s cluster
 To delete the k3s cluster and everything it contains, including the Drasi environment, run this command:
 
 ```bash
-k3s delete cluster
+k3d cluster delete
 ```
 
 You will see the following output:
 
 ```
-Deleting cluster "k3s" ...
-Deleted nodes: ["k3s-control-plane"]
+INFO[0000] Deleting cluster 'k3s-default'
+INFO[0003] Deleting cluster network 'k3d-k3s-default'
+INFO[0003] Deleting 1 attached volumes...
+INFO[0003] Removing cluster details from default kubeconfig...
+INFO[0003] Removing standalone kubeconfig file (if there is one)...
+INFO[0003] Successfully deleted cluster k3s-default!
 ```
-
-After this the k3s cluster is gone.

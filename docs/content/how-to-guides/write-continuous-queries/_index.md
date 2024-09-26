@@ -3,6 +3,7 @@ type: "docs"
 title: "Write Continuous Queries"
 linkTitle: "Write Continuous Queries"
 weight: 50
+toc_hide: true
 description: >
     Write and debug Continuous Queries
 ---

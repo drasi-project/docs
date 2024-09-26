@@ -3,6 +3,8 @@ type: "docs"
 title: "Configure an Azure Event Grid Reaction"
 linkTitle: "Configure an Azure Event Grid Reaction"
 weight: 10
+toc_hide: true
+hide_summary: true
 description: >
     Learn how to configure an Azure Event Grid Reaction
 ---

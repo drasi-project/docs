@@ -1,10 +1,13 @@
 ---
 type: "docs"
-title: "Configure a MS SQL Source"
-linkTitle: "Configure a MS SQL Source"
+title: "Connect to Microsoft SQL Server"
+linkTitle: "Connect to Microsoft SQL Server"
 weight: 40
+toc_hide: true
+hide_summary: true
+no_list: true
 description: >
-    Learn how to configure MS SQL Sources
+    Learn how to configure a SQL Server Source to connect to Microsoft SQL Server
 ---
 
 The SQLServer Source enables Drasi connectivity to Microsoft SQL Server databases.

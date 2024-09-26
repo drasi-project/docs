@@ -3,6 +3,7 @@ type: "docs"
 title: "Connect to PostgreSQL"
 linkTitle: "Connect to PostgreSQL"
 weight: 50
+no_list: true
 description: >
     Learn how to configure a PostgreSQL Source to connect to a PostgreSQL database
 ---
@@ -30,7 +31,7 @@ You must configure your PostgreSQL Source with PostgreSQL database credentials t
 ## Creating the Source
 To create a PostgreSQL Source, execute the `drasi apply` command as follows:
 
-```drasi
+```text
 drasi apply -f my-source.yaml -n drasi-namespace
 ```
 
@@ -113,13 +114,13 @@ Currently, a Source must be fully functional with an `available` status of `true
 
 You can check the status of the Source using the `drasi list` command:
 
-```drasi
+```text
 drasi list source
 ```
 
 Or including a target namespace:
 
-```drasi
+```text
 drasi list source -n drasi-namespace
 ```
 
@@ -136,7 +137,7 @@ In this case, the `retail-ops` Source is ready for use (AVAILABLE = true), but t
 
 Given how important it is for Sources to be ready before you start Continuous Queries that use them, the Drasi CLI supports the ability to wait for a Source to be ready using the [drasi wait](/reference/command-line-interface#drasi-wait) command:
 
-```drasi
+```text
 drasi wait source physical-ops -t 120
 ```
 
@@ -146,7 +147,7 @@ If an error has occurred during the creation or operation of a Source, the `AVAI
 
 For more details about a Source you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
 
-```drasi
+```text
 drasi describe source retail-ops
 ```
 
@@ -160,13 +161,13 @@ To delete a Source you use the `drasi delete` command. There are two ways to do 
 
 Firstly, you can specify the type of resource (Source) and its name, for example:
 
-```drasi
+```text
 drasi delete source retail-ops
 ```
 
 Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Source(s):
 
-```drasi
+```text
 drasi delete -f my-source.yaml <file2.yaml> <file3.yaml> <...>
 ```
 
@@ -174,7 +175,7 @@ This is a convenience, especially if a single YAML file contains multiple Source
 
 If the Source is not in the default Drasi namespace, you should specific the target namespace using the `-n` flag as usual:
 
-```drasi
+```text
 drasi delete -f my-source.yaml -n drasi-namespace
 ```
 
