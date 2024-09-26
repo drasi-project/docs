@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup SQL Server"
 linkTitle: "Setup SQL Server"
 weight: 50
+toc_hide: true
 description: >
     Setup and Configure SQL Server for Drasi
 ---

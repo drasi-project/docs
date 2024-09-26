@@ -3,6 +3,7 @@ type: "docs"
 title: "Sample Data"
 linkTitle: "Sample Data"
 weight: 10
+toc_hide: true
 description: >
     Sample datasets available for experimenting with and testing Drasi
 ---

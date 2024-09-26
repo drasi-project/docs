@@ -3,6 +3,7 @@ type: "docs"
 title: "Install on Azure Kubernetes Service"
 linkTitle: "Install on Azure Kubernetes Service"
 weight: 40
+toc_hide: true
 description: >
     Learn how to install Drasi on an Azure Kubernetes Service (AKS) cluster
 ---

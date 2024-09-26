@@ -3,6 +3,7 @@ type: "docs"
 title: "Connect to PostgreSQL"
 linkTitle: "Connect to PostgreSQL"
 weight: 50
+no_list: true
 description: >
     Learn how to configure a PostgreSQL Source to connect to a PostgreSQL database
 ---

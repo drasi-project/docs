@@ -3,6 +3,7 @@ type: "docs"
 title: "Install on k3s"
 linkTitle: "Install on k3s"
 weight: 30
+toc_hide: true
 description: >
     Learn how to install Drasi on a k3s cluster for local development and testing
 ---
