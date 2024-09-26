@@ -3,6 +3,7 @@ type: "docs"
 title: "Install Demo Apps"
 linkTitle: "Install Demo Apps"
 weight: 20
+toc_hide: true
 description: >
     Installing Drasi demo applications
 ---
