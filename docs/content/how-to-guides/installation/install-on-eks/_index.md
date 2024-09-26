@@ -4,6 +4,7 @@ title: "Install on AWS Elastic Kubernetes Service"
 linkTitle: "Install on AWS Elastic Kubernetes Service"
 weight: 20
 toc_hide: true
+hide_summary: true
 description: >
     Learn how to install Drasi on an AWS Elastic Kubernetes Service (EKS) cluster
 ---

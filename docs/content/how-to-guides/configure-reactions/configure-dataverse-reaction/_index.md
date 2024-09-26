@@ -3,6 +3,8 @@ type: "docs"
 title: "Configure a Dataverse Reaction"
 linkTitle: "Configure a Dataverse Reaction"
 weight: 30
+toc_hide: true
+hide_summary: true
 description: >
     Learn how to configure a Dataverse Reaction
 ---
