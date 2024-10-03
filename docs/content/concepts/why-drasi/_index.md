@@ -3,6 +3,8 @@ type: "docs"
 title: "Why Drasi?"
 linkTitle: "Why Drasi?"
 weight: 10
+toc_hide: true
+hide_summary: true
 description: >
     What Problem does Drasi Solve?
 ---

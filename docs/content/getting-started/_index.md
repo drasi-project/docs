@@ -118,7 +118,7 @@ This table describes the most important configuration settings in this Source de
 |spec.properties.user|The **User ID** that the Source will use to connect to the PostgreSQL database.|
 |spec.properties.port|The port number on which the PostgreSQL server is listening for connections. The default port for PostgreSQL is 5432.|
 |spec.properties.ssl|Whether SSL is enabled on the database.<br />**Note**: If you deployed your PostgreSQL database in your Kubernetes cluster, make sure to set the `ssl` configuration option to `false`. |
-|spec.properties.password|The **Password** for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/solution-developer/components/sources) for more details.|
+|spec.properties.password|The **Password** for the User ID that the Source will use to connect to the PostgreSQL database.<br />**Note**: It is also possible to reference a Kubernetes secret for this value, see [Sources](/how-to-guides/configure-sources/configure-postgresql-source/) for more details.|
 |spec.properties.database|The name of the **Database** this Source will observe changes from.|
 |spec.properties.tables|The list of database **table** names that the Source will observe for changes.|
 
@@ -215,14 +215,14 @@ This table describes the most important configuration settings in these Continuo
 |kind|Specifies that the resource is a **Continuous Query**|
 |name|Provides the **ID** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
 |spec.source.subscriptions.id| Identifies the **ID** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the id "hello-world" refers to the PostgreSQL Source you created in the previous step.|
-|spec.query|Contains the [Cypher Query](/solution-developer/query-language/) that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
+|spec.query|Contains the [Cypher Query](/reference/query-language/) that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
 
 The following table describes the Cypher Query used by each of the Continuous Queries you are about to create:
 |Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |-|-|
 |hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
 |message-count|Matches all nodes with a label (type) `Message`, groups them by the value of their `Message` field and uses the `count` aggregation function to calculate the number of times the same value occurred. For each unique message value, the query result will contain the `Message` value and its `Frequency`.|
-|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/solution-developer/query-language/#drasi-future-functions) function to only include people that **haven't** sent messages in the last 20 seconds to be included in the query result.|
+|inactive-people|Matches all nodes with a label (type) `Message` and uses the time when the `Message` was added to the database to represent that `LastMessageTimestamp` for the person that sent the message. The query uses the [drasi.trueLater](/reference/query-language#drasitruelater) function to only include people that **haven't** sent messages in the last 20 seconds to be included in the query result.|
 
 Use the `drasi` CLI to create the Continuous Queries by running the following command in a terminal window:
 
@@ -246,7 +246,7 @@ You should expect to see the following output:
 ```
 
 ## Step 4 - Create the Debug Reaction
-In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/solution-developer/components/reactions/#debug-reaction). The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
+In order to view the results of the Continuous Queries you will deploy an instance of the [Debug Reaction](/how-to-guides/configure-reactions/configure-drasi-debug-reaction/). The Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to view the query results updating dynamically as the source data changes.
 
 The following YAML is the content of the `hello-world-reaction.yaml` file, which you will use to create the Debug Reaction.
 

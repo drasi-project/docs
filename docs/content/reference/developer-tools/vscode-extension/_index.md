@@ -3,6 +3,8 @@ type: "docs"
 title: "VS Code Extension"
 linkTitle: "VS Code Extension"
 weight: 60
+toc_hide: true
+hide_summary: true
 description: >
     Development tools
 ---

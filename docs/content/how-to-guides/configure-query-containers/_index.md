@@ -4,6 +4,8 @@ type: "docs"
 title: "Configure Query Containers"
 linkTitle: "Configure Query Containers"
 weight: 40
+toc_hide: true
+hide_summary: true
 description: >
     Configuring Query Containers
 ---

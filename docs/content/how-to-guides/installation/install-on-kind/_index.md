@@ -94,7 +94,7 @@ The `drasi init` command gives you to control over certain aspects of the instal
 - `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
 - `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
-- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/docs/content/reference/command-line-interface#drasi-version) command.
+- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/reference/command-line-interface#drasi-version) command.
 
 For example, to install Drasi **0.1.3** in the **drasi-dev** namespace, you would run the following command:
 

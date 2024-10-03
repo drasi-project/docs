@@ -1,14 +1,14 @@
 ---
 type: "docs"
-title: "Overview"
-linkTitle: "Overview"
-weight: 20
+title: "Why Drasi?"
+linkTitle: "Why Drasi?"
+weight: 10
 description: >
-    Old getting started page 
+    Why use Drasi? 
 ---
 
 ## Introduction
-Drasi is a [Data Change Processing](/reference/glossary/#data-change-processing) platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in **existing** databases and software systems (i.e. not only new systems built using Drasi). Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations, as you would typically get from database transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect and the data you want to distribute about those changes to downstream systems. 
+Drasi is a Data Change Processing platform that makes it easier to build dynamic solutions that detect and react to data changes that occur in **existing** databases and software systems (i.e. not only new systems built using Drasi). Drasi's change detection capabilities go beyond simply reporting add, update, and delete operations, as you would typically get from database transaction/change logs and message-based change notification solutions. Instead, Drasi's low-code query-based approach enables you to write rich graph queries through which you can express sophisticated rules describing the types of changes you want to detect and the data you want to distribute about those changes to downstream systems. 
 
 Here are some examples of scenarios where Drasi's functionality can be applied to existing systems to detect and react to changing data:
 - Observing data from building sensors and automatically adjusting HVAC settings to maintain a comfortable environment for building occupants.
@@ -28,7 +28,7 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 
 Drasi’s Source input schema is modeled on Debezium (https://debezium.io), an open-source Change Data Capture platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will more easily integrate with the many existing Debezium sources. 
 
-More detail about Sources is available in the [Sources](/solution-developer/components/sources) section of the [Solution Developer Guide](/solution-developer). 
+More detail about Sources is available on the [Sources](/concepts/sources/) overview page. 
 
 ### Continuous Queries
 
@@ -40,9 +40,9 @@ When you execute an **instantaneous query**, you are running the query against t
 
 **Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
-{{< figure src="/continuous-query.png" alt="Continuous Query" width="65%" >}}
+{{< figure src="continuous-query.png" alt="Continuous Query" width="65%" >}}
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](https://neo4j.com/developer/cypher/). The use of a declarative graph query language means you can:
+Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/reference/query-language/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
 - express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
 - create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
@@ -51,7 +51,7 @@ The following diagram shows where Continuous Queries fit in the data flow of a D
 
 {{< figure src="queries-component.png" alt="Continuous Queries Component" width="60%" >}}
 
-More detail about Continuous Queries is available in the [Continuous Queries](/solution-developer/components/continuous-queries) section of the [Solution Developer Guide](/solution-developer). 
+More detail about Continuous Queries is available in the [Continuous Queries](/concepts/continuous-queries) overview page. 
 
 ### Reactions
 Reactions receive a stream of query result changes generated by one or more Continuous Queries and take action. The action taken depends on the Reaction implementation.  Drasi provides standard Reactions that:
@@ -60,7 +60,7 @@ Reactions receive a stream of query result changes generated by one or more Cont
 
 {{< figure src="reactions-component.png" alt="Reactions Component" width="75%" >}}
 
-More detail about Reactions is available in the [Reactions](/solution-developer/components/reactions) section of the [Solution Developer Guide](/solution-developer). 
+More detail about Reactions is available in the [Reactions](/concepts/reactions) overview page. 
 
 ## Benefits
 Drasi provides significant benefits over existing change event/notification approaches, including:
