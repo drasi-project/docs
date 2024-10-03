@@ -2,7 +2,7 @@
 type: "docs"
 title: "Sample Data"
 linkTitle: "Sample Data"
-weight: 10
+weight: 30
 description: >
     Sample datasets available for experimenting with and testing Drasi
 ---

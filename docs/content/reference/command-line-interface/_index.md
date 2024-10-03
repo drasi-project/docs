@@ -2,7 +2,7 @@
 type: "docs"
 title: "Command Line Interface"
 linkTitle: "Command Line Interface"
-weight: 20
+weight: 10
 description: >
     Managing Drasi using the Drasi Command Line Interface (CLI)
 ---

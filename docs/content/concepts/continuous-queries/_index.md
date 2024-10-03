@@ -4,10 +4,10 @@ title: "Continuous Queries"
 linkTitle: "Continuous Queries"
 weight: 30
 description: >
-    What are Continuous Queries and How to Use Them 
+    What are Continuous Queries and how to use them?
 ---
 
-Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/solution-developer/components/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/solution-developer/components/reactions).
+Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/concepts/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/concepts/reactions).
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
@@ -19,9 +19,9 @@ When you execute an **instantaneous query**, you are running the query against t
 
 **Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
 
-{{< figure src="/continuous-query.png" alt="Continuous Query" width="60%" >}}
+{{< figure src="continuous-query.png" alt="Continuous Query" width="60%" >}}
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/solution-developer/query-language). The use of a declarative graph query language means you can:
+Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/reference/query-language/). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
 - express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
 - create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
@@ -98,12 +98,12 @@ If the **severity** of the Forest Fire then changed from 'extreme' to 'critical'
 In some instances, a single source change can result in multiple changes to the query result e.g. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes. This enables subscribed Reactions to treat the related changes atomically given they all arose from a single source change.
 
 ## Creation
-Continuous Queries can be created and managed using the `drasi` CLI tool. 
+Continuous Queries can be created and managed using the [Drasi CLI](/reference/command-line-interface/). 
 
 The easiest way to create a Continuous Query, and the way you will often create one as part of a broader software solution, is to:
 
 1. Create a YAML file containing the Continuous Query definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run `drasi apply` to apply the YAML file, creating the Continuous Query
+1. Run [drasi apply](/reference/command-line-interface/#drasi-apply) to apply the YAML file, creating the Continuous Query
 
 When a new Continuous Query is created it:
 1. Subscribes to its Sources, describing the types of change it wants to receive.
@@ -146,20 +146,20 @@ drasi apply -f query.yaml
 You can then use additional `drasi` commands to query the existence and status of the Continuous Query resource. For example, to see a list of the active Continuous Queries, run the following command:
 
 ```
-drasi list continuousqueries
+drasi list query
 ```
 
 ## Deletion
 To delete an active Continuous Query, run the following command:
 
 ```
-drasi delete continuousqueries <query-id>
+drasi delete query <query-id>
 ```
 
 For example, if the Continuous Query id from the `name` property of the resource definition is `manager-incident-alert`, you would run,
 
 ```
-drasi delete continuousqueries manager-incident-alert
+drasi delete query manager-incident-alert
 ```
 
 **Note**: Drasi does not currently enforce dependency integrity between Continuous Queries and Reactions. If you delete a Continuous Query that is used by one or more Reactions, they will stop getting query result changes.
@@ -225,7 +225,7 @@ The following table provides a summary of the other configuration settings from 
 |sources|Contains two sections: **subscriptions** and **joins**. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Both sections are described in more detail in the [Sources](#sources) section.|
 |params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
 |view|(Optional). Defines the behavior of the results view.  **enabled** controls if the results of the query are cached in the results view. **retentionPolicy** determines how long the results will be stored for.  **latest** (default) only holds the most recent version, **all** holds all previous versions and allows querying at a time point in the past, **expire** holds the non current results for a limited time.|
-|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Continuous Query Syntax](/solution-developer/query-language).|
+|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Continuous Query Syntax](/reference/query-language/).|
 
 ### Sources
 
@@ -238,7 +238,7 @@ The configuration settings in the **spec.sources.subscriptions** section of the 
 The configuration settings in the **spec.sources.joins** section of the Continuous Query resource definition create a mapping between a Label and Property name pair from one source, with a Label and Property Name pair in another source.
 This allows the Continuous Query to be written as a single unified query without consideration from which Source data is originating from. Drasi will use the mapping to create synthetic relations between Nodes as required.
 
-Here is an example of a Continuous Query from the [Curbside Pickup](/solution-developer/sample-apps/curbside-pickup/) demo app that defines two Sources: **phys-ops** and **retail-ops**:
+Here is an example of a Continuous Query from the [Curbside Pickup](https://github.com/drasi-project/learning/tree/main/apps/curbside-pickup) demo app that defines two Sources: **phys-ops** and **retail-ops**:
 
 ```
 apiVersion: v1

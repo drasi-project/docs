@@ -2,17 +2,17 @@
 type: "docs"
 title: "Continuous Query Syntax"
 linkTitle: "Continuous Query Syntax"
-weight: 10
+weight: 20
 description: >
     Writing Continuous Queries
 ---
 
-Continuous Queries are written using a subset of the Open Cypher Graph Query Language. If you are new to Open Cypher, here are some useful references to get started:
-- [Getting Started](https://opencypher.org/)
-- [Language Reference](https://neo4j.com/docs/cypher-manual/current/)
-- [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
+Continuous Queries are written using a subset of the [Cypher Query Language](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf). If you are new to Cypher, Neo4J the original creators of the Cypher Query Language, have a lot of resources to help you understand, learn, and try Cypher, including:
+  - [Getting Started](https://neo4j.com/docs/getting-started/cypher-intro/)
+  - [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
 
-Drasi currently supports the following subset of the Cypher Graph Query Language:
+## Cypher Support
+Drasi currently supports the following subset of the Cypher Query Language:
 - MATCH clause:
   - Path patterns containing:
     - nodes and relations
@@ -23,8 +23,9 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
     - Only fixed length MATCH paths with non-anonymous nodes and relations
 - WITH clause
 - WHERE clause
-- RETURN clause:
+- RETURN clause
   - Aliases on RETURN values
+  - Non-aggregated RETURN values are automatically used as aggregation groups
 - Query Parameters
 - Data Types:
   - Basic: BOOLEAN, FLOAT, INTEGER, STRING, NULL
@@ -40,26 +41,24 @@ Drasi currently supports the following subset of the Cypher Graph Query Language
   - Map: ., []
   - List: +, IN, []
 - Functions:
-
-  *These functions are implemented by closely following the guidelines and specifications outlined in version 9 of the [openCypher Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf).* 
   - Scalar: 
     - elementId, head, last, timestamp
     - char_length, character_length, size
-    - toInteger, toIntegerOrNull*, toFloat, toFloatOrNull*, toBoolean, toBooleanOrNull*
-  - Aggregating: count, sum, avg, min, max in both **WITH** and **RETURN** clauses
+    - toInteger, toIntegerOrNull, toFloat, toFloatOrNull, toBoolean, toBooleanOrNull
+  - Aggregating: count, sum, avg, min, max in both WITH and RETURN clauses
   - List: reduce, tail, range 
   - Numeric: abs, ceil, floor, rand, round, sign
-  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull*, toUpper, trim
+  - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull, toUpper, trim
   - Temporal: 
-    - *These temporal functions are implemented based on [Neo4js documentation (version 4.4)](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
     - Instant: date, datetime, localdatetime, loocaltime, time
     - Duration: duration, duration.between, duration.inMonths, duration.inDays, duration.inSeconds
   - CASE expressions:
     - simple and generic forms
 
-**: Functions that are not documented in the official openCypher documentation. These functions are implemented based on the version 4.4 of the Neo4js Cypher manual*
-# Drasi Functions
-Drasi provides the following functions that extend the base Cypher Query Language. Each of these functions is described in detail in the linked sections below.
+*Functions that are not documented in the openCypher [Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf), are based on [Neo4js Cypher version 4.4 documentation](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
+
+## Drasi Functions
+Drasi is not simply running graph queries across data, it is using the Cypher Query Language as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language in order to meet its needs for detecting and reacting to change (or an absence of change).
 
 | Function                | Description                           |
 |-------------------------|---------------------------------------|
@@ -74,26 +73,28 @@ Drasi provides the following functions that extend the base Cypher Query Languag
 | [drasi.trueLater](#drasitruelater) | Evaluates a BOOLEAN expression at a specified later time |
 | [drasi.trueUntil](#drasitrueuntil) | Evaluates if a BOOLEAN expression remains TRUE until a specified later time |
 | [drasi.trueFor](#drasitruefor) | Evaluates if a BOOLEAN expression remains TRUE for a specified duration |
+| **[STATISTICAL FUNCTIONS](#drasi-statistical-functions)** ||
+| [drasi.linearGradient](#drasilinearGradient) | Fits a straight line to a set of X and Y coordinates and returns the slope of that line |
 
-## Drasi LIST Functions
+### Drasi LIST Functions
 Drasi LIST functions simplify some LIST handling operations that are common in Drasi Continuous Queries.
 
-### drasi.listMin()
+#### drasi.listMin()
 The `drasi.listMin` function returns the minimum value contained in a LIST. Null values are ignored.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.listMin(list)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.listMin` function accepts one argument:
 
 | Name | Type | Description |
 |-------------------------|-----------------------|----------------|
 | list | LIST | The list of values from which to return the minimum value.|
 
-#### Returns
+##### Returns
 
 The `drasi.listMin` function returns a single value, which is the minimum value from the provided list. Determination of which value is minimum depends on the types of values in the list. For example:
 
@@ -101,22 +102,22 @@ The `drasi.listMin` function returns a single value, which is the minimum value 
 - drasi.listMin(["banana", "apple", "peach"]) returns "apple"
 - drasi.listMin(null) returns null
 
-### drasi.listMax()
+#### drasi.listMax()
 The `drasi.listMax` function returns the maximum value contained in a LIST. Null values are ignored.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.listMax(list)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.listMax` function accepts one argument:
 
 | Name | Type | Description |
 |-------------------------|-----------------------|----------------|
 | list | LIST | The list of values from which to return the maximum value.|
 
-#### Returns
+##### Returns
 
 The `drasi.listMax` function returns a single value, which is the maximum value from the provided list. Determination of which value is maximum depends on the types of values in the list. For example:
 
@@ -124,41 +125,41 @@ The `drasi.listMax` function returns a single value, which is the maximum value 
 - drasi.listMax(["banana", "apple", "peach"]) returns "peach"
 - drasi.listMax(null) returns null
 
-## Drasi TEMPORAL Functions
+### Drasi TEMPORAL Functions
 Drasi TEMPORAL functions make it possible to write Continuous Queries that use previous values of Nodes and Relations in the logic of the query. 
 
 A Continuous Query containing FUTURE functions must have a temporal Element Index enabled.
 
-### drasi.changeDateTime()
+#### drasi.changeDateTime()
 The `drasi.changeDateTime` function returns the ZONED DATETIME of when the provided element was changed.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.changeDateTime(element)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.changeDateTime` function accepts one argument:
 
 | Name | Type | Description |
 |-------------------------|-----------------------|----------------|
 | element | ELEMENT | A Node or Relation.|
 
-#### Returns
+##### Returns
 
 The `drasi.changeDateTime` function returns a ZONED DATETIME. 
 
-### drasi.getVersionByTimestamp()
+#### drasi.getVersionByTimestamp()
 The `drasi.getVersionByTimestamp` function returns the version of a specified Element as it was at the specified time.
 
 The Continuous Query containing the `drasi.getVersionByTimestamp` function must have a temporal Element Index enabled.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.getVersionByTimestamp(element, timestamp)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.getVersionByTimestamp` function accepts two arguments:
 
 | Name | Type | Description |
@@ -166,21 +167,21 @@ The `drasi.getVersionByTimestamp` function accepts two arguments:
 | element | ELEMENT | A Node or Relation.|
 | timestamp | DATE, DATETIME, or INTEGER | The timestamp used to lookup the value of the specified Element. |
 
-#### Returns
+##### Returns
 
 The `drasi.getVersionByTimestamp` function returns an Element (Node or Relation). 
 
-### drasi.getVersionsByTimeRange()
+#### drasi.getVersionsByTimeRange()
 The `drasi.getVersionsByTimeRange` function returns a LIST containing all the versions of a specified Element that exist between two points in time.
 
 The Continuous Query containing the `drasi.getVersionsByTimeRange` function must have a temporal Element Index enabled.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.getVersionsByTimeRange(element, from_timestamp, to_timestamp, include_initial_version)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.getVersionsByTimeRange` function accepts four arguments:
 
 | Name | Type | Description |
@@ -190,22 +191,22 @@ The `drasi.getVersionsByTimeRange` function accepts four arguments:
 | to_timestamp | DATE, DATETIME, or INTEGER | The end of the time range. |
 | include_initial_version | BOOLEAN | If TRUE, tells Drasi to also include the Element version prior to *from_timestamp* if *from_timestamp* is less than the timestamp of the first version that would normally be included in the range. This enables you to ensure you have the value of the Element as it was the start of the specified range. |
 
-#### Returns
+##### Returns
 
 The `drasi.getVersionsByTimeRange` function returns a LIST of Elements (Node or Relation). 
 
-## Drasi FUTURE Functions
+### Drasi FUTURE Functions
 Drasi FUTURE functions makes it possible to use Continuous Queries in situations where it is important to react to the  **absence** of change. For example, if it is important to know when Invoices become 10 days overdue, or which customers haven't logged in to their account for over 2 weeks. Both of these situations (depending on the database schema) might only occur as a result of no change being made to the Invoice or Customer record.
 
-### drasi.trueLater()
+#### drasi.trueLater()
 The `drasi.trueLater` function makes it possible to write Continuous Queries that evaluate a BOOLEAN expression at a specific point in time, instead of at the point in time when the change being processed occurred.  
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.trueLater(expression, timestamp)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.trueLater` function accepts two arguments:
 
 | Name | Type | Description |
@@ -213,7 +214,7 @@ The `drasi.trueLater` function accepts two arguments:
 | expression | BOOLEAN expression | The BOOLEAN expression to evaluate.|
 | timestamp | DATE, DATETIME, or INTEGER | The time at which the *expression* should be evaluated. |
 
-#### Returns
+##### Returns
 If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueLater` will evaluate and return the value of *expression*. Otherwise, `drasi.trueLater` will return the special value `drasi.awaiting` indicating the Drasi cannot yet evaluate the expression, and schedules the solution currently being evaluated to be re-evaluated at the time specified by *timestamp*.
 
 More formally:
@@ -224,15 +225,15 @@ More formally:
 | timestamp =< change_time AND expression == FALSE | n/a | FALSE |
 | timestamp > change_time | queue re-evaluation | drasi.awaiting |
 
-### drasi.trueUntil()
+#### drasi.trueUntil()
 The `drasi.trueUntil` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE at least until a specific point in time.  
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.trueUntil(expression, timestamp)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.trueUntil` function accepts two arguments:
 
 | Name | Type | Description |
@@ -240,7 +241,7 @@ The `drasi.trueUntil` function accepts two arguments:
 | expression | BOOLEAN expression | The BOOLEAN expression to evaluate.|
 | timestamp | DATE, DATETIME, or INTEGER | The time until which the expression should remain TRUE. |
 
-#### Returns
+##### Returns
 - If the *timestamp* is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueUntil` will evaluate and return the value of *expression*. 
 - Otherwise, if *expression* evaluates to TRUE, `drasi.trueUntil` will return the special value `drasi.awaiting` indicating that Drasi has scheduled the solution currently being evaluated to be re-evaluated (for remaining TRUE) at the time specified by *timestamp*.
 - If, at any time before *timestamp*, expression is found to be FALSE, `drasi.trueUntil` returns FALSE and cancels any currently scheduled reprocessing for the current solution.
@@ -254,15 +255,15 @@ More formally:
 | timestamp > change_time AND expression == TRUE | queue re-evaluation at timestamp | drasi.awaiting |
 | timestamp > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 
-### drasi.trueFor()
+#### drasi.trueFor()
 The `drasi.trueFor` function makes it possible to write Continuous Queries that evaluate whether a BOOLEAN expression remains TRUE for at least a period of time from the time at which the change being evaluated occurred.  
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.trueFor(expression, duration)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.trueFor` function accepts two arguments:
 
 | Name | Type | Description |
@@ -270,7 +271,7 @@ The `drasi.trueFor` function accepts two arguments:
 | expression | BOOLEAN expression | The BOOLEAN expression to evaluate.|
 | duration | DURATION | The duration for which the *expression* should remain TRUE. |
 
-#### Returns
+##### Returns
 - If the time when *expression* became TRUE with *duration* added to it is **less than or equal to** the time associated with the change being processed (i.e. the desired time has already occurred), `drasi.trueUntil` will evaluate and return the value of *expression*. 
 - Otherwise, if *expression* evaluates to TRUE, `drasi.trueUntil` will return the special value `drasi.awaiting` indicating that Drasi has scheduled the solution currently being evaluated to be re-evaluated (for remaining TRUE) at the time specified by the current change time plus the *duration*.
 - If, at any time before *duration* passes, expression is found to be FALSE, `drasi.trueUntil` returns FALSE and cancels any currently scheduled reprocessing for the current solution.
@@ -286,17 +287,17 @@ More formally:
 | expression_true_time + duration > change_time AND expression == TRUE | n/a | drasi.awaiting |
 | expression_true_time + duration > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 
-## Drasi STATISTICAL Functions
+### Drasi STATISTICAL Functions
 
-### drasi.linearGradient()
+#### drasi.linearGradient()
 The `drasi.linearGradient` function is an aggregating function that fits a straight line to a set of X and Y coordinates, and returns the slope of that line.  As values are added, removed or updated, the line will be adjusted to reflect the relationship between the X and Y values.  The slope of the line can be used to predict a value for Y given a known value of X, by multiplying the slope by the X value.
 
-#### Syntax
+##### Syntax
 ```cypher
 drasi.linearGradient(x, y)
 ```
 
-#### Arguments
+##### Arguments
 The `drasi.linearGradient` function accepts two arguments:
 
 | Name | Type | Description |
@@ -304,10 +305,10 @@ The `drasi.linearGradient` function accepts two arguments:
 | x | expression | An expression that returns the X value (independent variable) |
 | y | expression | An expression that returns the Y value (dependent variable) |
 
-#### Returns
+##### Returns
 The slope or gradient of the line that best fits the current data set. This can be used to predict the value of Y for a given value of X by multiplying it by the known X value.
 
-#### Example
+##### Example
 
 The following example will return the gradient of each line, given the known points associated with that line.
 
