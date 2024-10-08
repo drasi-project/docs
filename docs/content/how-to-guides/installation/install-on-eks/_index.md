@@ -28,7 +28,7 @@ On the computer where you will run the install process, you need to install the 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [EKS CLI](https://aws.amazon.com/cli/)
 - [Make](https://www.gnu.org/software/make/)
-- [Golang](https://go.dev/)
+- [Go](https://go.dev/)
 - [git](https://git-scm.com/downloads)
 
 You will also need a git clone or a local fork of the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository.
