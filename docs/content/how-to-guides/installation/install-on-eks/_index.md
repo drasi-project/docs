@@ -14,7 +14,7 @@ description: >
 ## Prerequisites
 This tutorial assumes you are familiar with:
 - [Kubernetes](https://kubernetes.io/) and how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
-- The following Kubernetes concepts and how to create/update them using YAML files or `kubectl`: 
+- The following Kubernetes concepts and how to create/update them using `kubectl`: 
   - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
   - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 - EKS and how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
