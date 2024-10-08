@@ -9,18 +9,29 @@ description: >
 
 [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) is a managed Kubernetes service that allows users to run Kubernetes on Amazon Web Services (AWS).
 
+**NOTE**: Installing Drasi in an EKS cluster can be significantly more complex than a standard installation on other platforms. Instead of downloading a CLI binary using the provided installation scripts, this approach requires modifying the source code of the Drasi CLI and building a local version of the CLI. While not strictly necessary, having knowledge of AWS storage services such as [EFS(Elastic File System)](https://aws.amazon.com/efs/) and [EBS(Elastic Block Storage)](https://aws.amazon.com/ebs/), as well as how to them up in Kubernetes as [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) can be extremely helpful.
+
 ## Prerequisites
 This tutorial assumes you are familiar with:
 - [Kubernetes](https://kubernetes.io/) and how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
+- The following Kubernetes concepts and how to create/update them using YAML files or `kubectl`: 
+  - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+  - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 - EKS and how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
+- Making minor code changes in the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository and using the `make` command to build a new, local version of the Drasi CLI from the source code.
+- *Optional*:
+  - Understanding of AWS [EFS(Elastic File System)](https://aws.amazon.com/efs/) and AWS [EBS(Elastic Block Storage)](https://aws.amazon.com/ebs/)
 
 You will need admin access to an [EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html). The EKS cluster needs to have a working Kubernetes node. This [document](https://docs.aws.amazon.com/eks/latest/userguide/create-managed-node-group.html) explains how to create a managed node group for your cluster.
 
 On the computer where you will run the install process, you need to install the following software:
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [EKS CLI](https://aws.amazon.com/cli/)
+- [Make](https://www.gnu.org/software/make/)
+- [Golang](https://go.dev/)
+- [git](https://git-scm.com/downloads)
 
-You will also need a clone or a fork of the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository.
+You will also need a git clone or a local fork of the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository.
 
 ## Set the kubectl context
 *If you created your cluster using eksctl, then you can skip this step. This is because eksctl already completed this step for you.* 
