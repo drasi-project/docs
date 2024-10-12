@@ -19,7 +19,7 @@ The [Docsy](https://www.docsy.dev/) theme is used to style the generated site. R
 1. From the root of the drasi-project/docs repo, where this readme is located, run ```git submodule update --init --recursive --remote``` to pull Docsy code that is configured as a submodule.
 1. Switch to  the Docsy theme folder
 
-   ```docs/docs/themes/docsy``` folder
+   ```docs/themes/docsy``` folder
 
 1. Run the command ```npm install```
 
