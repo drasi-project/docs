@@ -31,9 +31,21 @@ DefaultContentLanguage = "en"
     url = "https://aka.ms/drasidiscord"
     pre = "<i class='fab fa-discord'></i>"
 
+[[menu.main]]
+  name ="X"
+  weight = 30
+  url = "https://x.com/drasi_project"
+  icon = "fab fa-twitter"
+  desc = "Follow us on Twitter to get the latest news!"
+
 [module]
   [module.hugoVersion]
     extended = true
+
+[params.search.algolia]
+appId = "Q8GYM4KCMH"
+apiKey = "b7594fb9d03b1498e770a5a7a1065e95"
+indexName = "drasi"
 
 # UI Customization
 [params]
