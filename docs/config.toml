@@ -35,8 +35,8 @@ DefaultContentLanguage = "en"
   name ="X"
   weight = 30
   url = "https://x.com/drasi_project"
-  icon = "fab fa-twitter"
-  desc = "Follow us on Twitter to get the latest news!"
+  icon = "fab fa-x-twitter"
+  desc = "Follow us on X to get the latest news!"
 
 [module]
   [module.hugoVersion]
@@ -58,6 +58,8 @@ indexName = "drasi"
       "javascript",
       "json"
     ]
+# Google Analytics
+googleAnalytics =  "G-MZQ63ZL6GZ"
 
 [params.ui]
   sidebar_menu_compact = true
