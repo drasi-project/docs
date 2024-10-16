@@ -186,6 +186,10 @@ dapr-sentry-697bdc6cc4-xprww             1/1     Running   0               10m
 dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ```
 
+## Optional: Testing the Deployment
+To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick [smoke test](/reference/smoke-test) workload.
+
+
 ## Deleting Drasi
 To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
 
