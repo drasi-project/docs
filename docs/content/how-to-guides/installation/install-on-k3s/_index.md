@@ -187,7 +187,7 @@ dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ```
 
 ## Optional: Testing the Deployment
-To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick [smoke test](/reference/smoke-test) workload.
+To test that Drasi has been correctly deployed to your Kubernetes cluster, you can deploy a quick [smoke test](/how-to-guides/smoke-test) workload.
 
 
 ## Deleting Drasi

@@ -1,10 +1,10 @@
 ---
 type: "docs"
-title: "Smoke Test"
-linkTitle: "Smoke Test"
-weight: 40
+title: "Smoke Test a Drasi Installation"
+linkTitle: "Test Drasi"
+weight: 70
 description: >
-    Smoke test for Drasi Installation
+    Learn how to quickly test a Drasi installation
 ---
 
 
@@ -37,6 +37,36 @@ Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.
 {{< /tab >}}
 {{< /tabpane >}}
 
+### Smoke Test Result
+If the smoke test runs successfully, you will see the following final lines of output in the terminal:
+```bash
+...
+Inserting the following entries into the database: '{Id: 5, Name: Item 5, Category: A}'
+INSERT 0 1
+Retrieving the current result from the debug reaction
+Final output:[{"Category":"A","Id":1,"Name":"Item 1"},{"Category":"A","Id":3,"Name":"Item 3"},{"Category":"A","Id":5,"Name":"Item 5"}]
+Expected output after the insertion:[{"Category":"A","Id":1,"Name":"Item 1"},{"Category":"A","Id":3,"Name":"Item 3"},{"Category":"A","Id":5,"Name":"Item 5"}]
+Smoke test passed!
+cleaning up resources...
+configmap "test-data-init" deleted
+configmap "test-pg-config" deleted
+deployment.apps "postgres" deleted
+service "postgres" deleted
+✓ Delete: Source/smoke-test: complete
+✓ Delete: ContinuousQuery/smoke-query: complete
+✓ Delete: Reaction/smoke-result-reaction: complete
+```
+If the smoke test fails, the script will still output the current result set from the result action. Additionally, all deployed resources will remain intact for debugging purposes. You might see the following output:
+```bash
+...
+Inserting the following entries into the database: '{Id: 5, Name: Item 5, Category: A}'
+INSERT 0 1
+Retrieving the current result from the debug reaction
+Final output:[{"Category":"A","Id":1,"Name":"Item 1"},{"Category":"A","Id":3,"Name":"Item 3"}]  # The result set did not update after the insertion
+Expected output after the insertion:[{"Category":"A","Id":1,"Name":"Item 1"},{"Category":"A","Id":3,"Name":"Item 3"},{"Category":"A","Id":5,"Name":"Item 5"}]
+Smoke test failed
+Resources are not deleted. If you wish to clean up everything, run 'curl -s https://raw.githubusercontent.com/drasi-project/drasi-platform/main/dev-tools/smoke-tests/cleanup-smoke-test.sh | bash'
+```
 
 ### Smoke Test Overview
 This smoke test script accomplishes the following tasks:
