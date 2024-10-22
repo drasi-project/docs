@@ -1,7 +1,7 @@
 ---
 type: "docs"
 title: "Smoke Test a Drasi Installation"
-linkTitle: "Test Drasi"
+linkTitle: "Smoke Test a Drasi Installation"
 weight: 70
 description: >
     Learn how to quickly test a Drasi installation
