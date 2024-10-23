@@ -9,8 +9,6 @@ description: >
 
 [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) is a managed Kubernetes service that allows users to run Kubernetes on Amazon Web Services (AWS).
 
-**NOTE**: Installing Drasi in an EKS cluster can be significantly more complex than a standard installation on other platforms. Instead of downloading a CLI binary using the provided installation scripts, this approach requires modifying the source code of the Drasi CLI and building a local version of the CLI. While not strictly necessary, having knowledge of AWS storage services such as [EFS(Elastic File System)](https://aws.amazon.com/efs/) and [EBS(Elastic Block Storage)](https://aws.amazon.com/ebs/), as well as how to them up in Kubernetes as [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/) can be extremely helpful.
-
 ## Prerequisites
 This tutorial assumes you are familiar with:
 - [Kubernetes](https://kubernetes.io/) and how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
@@ -18,7 +16,6 @@ This tutorial assumes you are familiar with:
   - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
   - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 - EKS and how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
-- Making minor code changes in the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository and using the `make` command to build a new, local version of the Drasi CLI from the source code.
 - *Optional*:
   - Understanding of AWS [EFS(Elastic File System)](https://aws.amazon.com/efs/) and AWS [EBS(Elastic Block Storage)](https://aws.amazon.com/ebs/)
 
@@ -26,12 +23,8 @@ You will need admin access to an [EKS cluster](https://docs.aws.amazon.com/eks/l
 
 On the computer where you will run the install process, you need to install the following software:
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
-- [EKS CLI](https://aws.amazon.com/cli/)
-- [Make](https://www.gnu.org/software/make/)
-- [Go](https://go.dev/)
-- [git](https://git-scm.com/downloads)
+- [AWS CLI](https://aws.amazon.com/cli/)
 
-You will also need a git clone or a local fork of the [drasi-platform](https://github.com/drasi-project/drasi-platform) repository.
 
 ## Set the kubectl context
 *If you created your cluster using eksctl, then you can skip this step. This is because eksctl already completed this step for you.* 
@@ -49,147 +42,97 @@ kubectl config use-context <your cluster name>
 ```
 
 ## Get the Drasi CLI
-Usually you can utilize the installation scripts to install the Drasi CLI. However, we will be making minor code changes in the CLI in this installation guide, which means you must build the CLI from the source code. The section below will walkthrough the steps in-depth.
+You will install Drasi on the kind cluster using the [Drasi CLI](/reference/command-line-interface/). 
 
+You can get the Drasi CLI for your platform using one of the following options:
 
+{{< tabpane >}}
+{{< tab header="macOS" lang="bash" >}}
+curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
+{{< /tab >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
+iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
+{{< /tab >}}
+{{< tab header="Linux" lang="bash" >}}
+wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
+{{< /tab >}}
+{{% tab header="Binaries" text=true %}}
+Download a specific version of the CLI from the [drasi-platform releases](https://github.com/drasi-project/drasi-platform/releases) page on GitHub. The file to download for your platform is:
+- **macOS arm64** - drasi-darwin-arm64
+- **macOS x64** - drasi-darwin-x64
+- **Windows x64** - drasi-windows-x64.exe
+- **Linux x64** - drasi-linux-x64
+- **Linux arm64** - drasi-linux-arm64
 
-## Configuring Kubernetes StorageClass for the Drasi infrastructure
-By default, the Drasi CLI uses Redis as the storage for the Query Container. There are two other valid storage types: In-memory and RocksDB (See [Configure Query Containers](/how-to-guides/configure-query-containers) for more details). Currently, some code changes in the CLI is needed for all three types.
+Once downloaded, rename the file to `drasi` (macOS and Linux) or `drasi.exe` (Windows) and add it to your path.
+{{% /tab %}}
+{{% tab header="Build from Source" text=true %}}
+The Drasi CLI source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
+
+The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
+{{% /tab %}}
+{{< /tabpane >}}
+
+This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
+
+## Cluster Setup
+The Drasi infrastructure pods require the use of persistent volumes, which must be bound to a Kuberentes StorageClass. The AWS cluster comes with a default storage class backed by Amazon Elastic Block Store (EBS) volumes, but it also supports various other types. You must install a Container Storage Interface (CSI) driver for the type of volumes that you wish to use before installing Drasi. The following instructions provide guidance on configuring either EBS or EFS (Elastic File System) volumes, depending on your storage requirements:
+
+**Note:** if you are using RocksDB as the Query Container storage, you must setup an EFS storage class. For more information on configuring Query Containers, visit [Configure Query Containers](/how-to-guides/configure-query-containers):
 
 <details>
-<summary style="font-size: 1.5em;">Configuration for Redis and In-memory storage</summary>
+<summary style="font-size: 1.5em;">Configuring Kubernetes StorageClass and Amazon EBS CSI Drivers</summary>
 
-#### 1. Configure the Drasi CLI
-To begin with, retrieve the name of the StorageClass in your EKS cluster using the following command:
-```bash
-kubectl get storageclass
-```
-In your local clone or fork of the `drasi-platform` repo, navigate to `cli/service/resources/infra.yaml`. Locate a StatefulSet with the name `drasi-redis` and navigate to the `volumeClaimTemplates` section. Under `spec`, add a field with the name `storageClassname` and the name of your storage class that you have retrieved previously.
-```yaml
-...
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: drasi-redis
-  labels:
-    app: drasi-redis
-spec:
-...
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ReadWriteOnce]
-        storageClassName: <your-storage-class>  # Add the storage class here
-        resources:
-          requests:
-            storage: 1Gi
-...
-```
+1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) for configuring Amazon EBS CSI Driver**
 
-Similarly, locate a StatefulSet with the name `drasi-mongo` and navigate to the `volumeClaimTemplates` section. Under `spec`, add a field with the name `storageClassname` and the name of your storage class that you have retrieved previously.
+   This will guide you through the steps to install and configure the Amazon EBS CSI driver for your EKS cluster.
 
-```yaml
-...
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: drasi-mongo
-  labels:
-    app: drasi-mongo
-spec:
-...
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ReadWriteOnce]
-        storageClassName: <your-storage-class>  # Add the storage class here
-        resources:
-          requests:
-            storage: 1Gi
-...
-```
+2. **Ensure that the `gp2` StorageClass is set to be default**
 
-A re-build of the Drasi CLI is needed. The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
+   After configuring the CSI driver, you can set the `gp2` StorageClass as the default in your Kubernetes cluster by following these steps:
 
-#### 2. Enable the AWS EBS CSI driver as an EKS addon
-We recommend following this [tutorial](https://stackoverflow.com/a/75758116) for this step if you are unfamiliar with the process.
+   1. **List the available StorageClasses** to confirm the existence of `gp2`:
 
-This completes the configuration steps for using Redis/In-memory as the Query Container storage. Proceed to the next section for installing Drasi to the cluster.
+      ```bash
+      kubectl get storageclass
+      ```
+
+   2. **Patch the `gp2` StorageClass** to set it as the default:
+
+      ```bash
+      kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+      ```
+
+   3. **(Optional) If other StorageClasses are already set as default**, patch them to remove the default annotation:
+
+      ```bash
+      kubectl patch storageclass <other-storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+      ```
+
+   4. **Verify that `gp2` is the default** by listing the StorageClasses again:
+
+      ```bash
+      kubectl get storageclass
+      ```
+
+      The `gp2` StorageClass should now have `(default)` next to its name.
 
 </details>
 
-
-
 <details>
-<summary style="font-size: 1.5em;">Configuration for RocksDB storage</summary>
+<summary style="font-size: 1.5em;">Configuring Kubernetes StorageClass and Amazon EFS CSI Drivers (Required if using Rocksdb)</summary>
 
-#### 1. Configure the Drasi CLI
-To begin with, retrieve the name of the StorageClass in your EKS cluster using the following command:
-```bash
-kubectl get storageclass
-```
-In your local clone or fork of the `drasi-platform` repo, navigate to `cli/service/resources/infra.yaml`. Locate a StatefulSet with the name `drasi-redis` and navigate to the `volumeClaimTemplates` section. Under `spec`, add a field with the name `storageClassname` and the name of your storage class that you have retrieved previously.
-```yaml
-...
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: drasi-redis
-  labels:
-    app: drasi-redis
-spec:
-...
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ReadWriteOnce]
-        storageClassName: <your-storage-class>  # Add the storage class here
-        resources:
-          requests:
-            storage: 1Gi
-...
-```
+1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html) for configuring Amazon EBS CSI Driver**
 
-Similarly, locate a StatefulSet with the name `drasi-mongo` and navigate to the `volumeClaimTemplates` section. Under `spec`, add a field with the name `storageClassname` and the name of your storage class that you have retrieved previously.
+   This will guide you through the steps to install and configure the Amazon EFS CSI driver for your EKS cluster.
 
-```yaml
-...
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: drasi-mongo
-  labels:
-    app: drasi-mongo
-spec:
-...
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes: [ReadWriteOnce]
-        storageClassName: <your-storage-class>  # Add the storage class here
-        resources:
-          requests:
-            storage: 1Gi
-...
-```
+2. **Follow this [tutorial](https://stackoverflow.com/questions/51212904/kubernetes-pvc-with-readwritemany-on-aws/59671383) for createing an EFS StorageClass in your EKS cluster**
 
-#### 2. Enable the AWS EBS CSI driver as an EKS addon
-We recommend following this [tutorial](https://stackoverflow.com/a/75758116) for this step if you are unfamiliar with the process.
-
-This completes the configuration steps for using Redis/In-memory as the Query Container storage. Proceed to the next section for installing Drasi to the cluster.
-
-#### 3. Enable an EFS CSI driver
-To begin with, we need to enable an AWS EFS CSI driver and create an EFS system. The default EBS system does not support the PVC access mode of `ReadWriteMany`, which is used by RocksDB. This [guide](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html) showcases how to setup this driver and create a file system.
-
-#### 4. Deploy StorageClass, PersistentVolume and PersistentVolumeClaim
-This [guide](https://stackoverflow.com/a/59671383) uses `kubectl` to configure the necessary Kubernetes resources. Specifically, a StorageClass, PersistentVolume and a PersistentVolumeClaim will be created.
-
-#### 5. Configuring the default Query Container in the CLI
-In your local clone or fork of the `drasi-platform` repo, navigate to `cli/service/resources/default-query-container.yaml`. Create a new storage with type `rocksDb` and put in the name of the Storageclass that you just created in the `storageClass` field. 
+3.  **Configuring the default Query Container to use RocksDB**
+    
+    NEED TO REVIEW WITH TEAM
+<!-- 
+    Drasi uses redis as the default storage for the query container. To update this to use RocksDB instead, you need  `In your local clone or fork of the `drasi-platform` repo, navigate to `cli/service/resources/default-query-container.yaml`. Create a new storage with type `rocksDb` and put in the name of the Storageclass that you just created in the `storageClass` field. 
 
 *Sample default-query-container.yaml file with rocksDB*
 ```yaml
@@ -205,7 +148,7 @@ spec:
       storageClass: <name-of-your-storage-class>
       enableArchive: false
 ```
-A rebuild of the Drasi CLI is needed. The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
+A rebuild of the Drasi CLI is needed. The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer. -->
 
 </details>
 
