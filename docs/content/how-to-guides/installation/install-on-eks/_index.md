@@ -15,11 +15,11 @@ This tutorial assumes you are familiar with:
 - The following Kubernetes concepts and how to create/update them using `kubectl`: 
   - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
   - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
-- An EKS Clusterand how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
+- An EKS Cluster and how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
 
 You will need admin access to an [EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html). The EKS cluster needs to have a working Kubernetes node. This [document](https://docs.aws.amazon.com/eks/latest/userguide/create-managed-node-group.html) explains how to create a managed node group for your cluster.
 
-Additionally, the Drasi infrastructure pods require the use of persistent volumes, which must be bound to a Kuberentes StorageClass. The AWS cluster comes with a default storage class backed by Amazon Elastic Block Store (EBS) volumes, but it also supports various other types. Before installing Drasi, you must install a Container Storage Interface (CSI) driver for the type of volumes you wish to use. The following instructions provide guidance on configuring either EBS or EFS (Elastic File System) volumes, as well as setting up an IAM role with sufficient permissions for the drivers, depending on your storage requirements:
+Additionally, the Drasi infrastructure pods require the use of persistent volumes, which must be bound to a Kubernetes StorageClass. The AWS cluster comes with a default storage class backed by Amazon Elastic Block Store (EBS) volumes, but it also supports various other types. Before installing Drasi, you must install a Container Storage Interface (CSI) driver for the type of volumes you wish to use. The following instructions provide guidance on configuring either EBS or EFS (Elastic File System) volumes, as well as setting up an IAM role with sufficient permissions for the drivers, depending on your storage requirements:
 
 **Note:** if you are using RocksDB as the Query Container storage, you must setup an EFS storage class. For more information on configuring Query Containers, visit [Configure Query Containers](/how-to-guides/configure-query-containers):
 
@@ -64,7 +64,7 @@ Additionally, the Drasi infrastructure pods require the use of persistent volume
 </details>
 
 <details>
-<summary style="font-size: 1em;">Configuring Kubernetes StorageClass and Amazon EFS CSI Drivers (Required if using Rocksdb)</summary>
+<summary style="font-size: 1em;">Configuring Kubernetes StorageClass and Amazon EFS CSI Drivers (Required if using RocksDB)</summary>
 
 1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html) for configuring Amazon EFS CSI Driver**
 
