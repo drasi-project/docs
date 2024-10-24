@@ -15,11 +15,96 @@ This tutorial assumes you are familiar with:
 - The following Kubernetes concepts and how to create/update them using `kubectl`: 
   - [Storage Classes](https://kubernetes.io/docs/concepts/storage/storage-classes/)
   - [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
-- EKS and how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
-- *Optional*:
-  - Understanding of AWS [EFS(Elastic File System)](https://aws.amazon.com/efs/) and AWS [EBS(Elastic Block Storage)](https://aws.amazon.com/ebs/)
+- An EKS Clusterand how to use [AWS CLI](https://aws.amazon.com/cli/) to manage EKS clusters.
 
 You will need admin access to an [EKS cluster](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html). The EKS cluster needs to have a working Kubernetes node. This [document](https://docs.aws.amazon.com/eks/latest/userguide/create-managed-node-group.html) explains how to create a managed node group for your cluster.
+
+Additionally, the Drasi infrastructure pods require the use of persistent volumes, which must be bound to a Kuberentes StorageClass. The AWS cluster comes with a default storage class backed by Amazon Elastic Block Store (EBS) volumes, but it also supports various other types. Before installing Drasi, you must install a Container Storage Interface (CSI) driver for the type of volumes you wish to use. The following instructions provide guidance on configuring either EBS or EFS (Elastic File System) volumes, as well as setting up an IAM role with sufficient permissions for the drivers, depending on your storage requirements:
+
+**Note:** if you are using RocksDB as the Query Container storage, you must setup an EFS storage class. For more information on configuring Query Containers, visit [Configure Query Containers](/how-to-guides/configure-query-containers):
+
+<details>
+<summary style="font-size: 1em;">Configuring Kubernetes StorageClass and Amazon EBS CSI Drivers</summary>
+
+1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) for configuring Amazon EBS CSI Driver**
+
+   This will guide you through the steps to install and configure the Amazon EBS CSI driver for your EKS cluster. Step 1 of this tutorial will also create an IAM role with the required permissions.
+
+2. **Ensure that the EBS StorageClass is set to be default**
+
+   After configuring the CSI driver, you can set the EBS StorageClass as the default one in your Kubernetes cluster by following these steps:
+
+   1. **List the available StorageClasses**:
+
+      Identify the one where the provisioner is `kubernetes.io/aws-ebs`.
+      ```bash
+      kubectl get storageclass
+      ```
+
+   2. **Patch the EBS StorageClass** to set it as the default:
+
+      ```bash
+      kubectl patch storageclass <name-of-storageclass> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+      ```
+
+   3. **(Optional) If other StorageClasses are already set as default**, patch them to remove the default annotation:
+
+      ```bash
+      kubectl patch storageclass <other-storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+      ```
+
+   4. **Verify that the default StorageClass is updated** by listing the StorageClasses again:
+
+      ```bash
+      kubectl get storageclass
+      ```
+
+      The EBS StorageClass should now have "(default)" next to its name.
+
+</details>
+
+<details>
+<summary style="font-size: 1em;">Configuring Kubernetes StorageClass and Amazon EFS CSI Drivers (Required if using Rocksdb)</summary>
+
+1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html) for configuring Amazon EFS CSI Driver**
+
+   This will guide you through the steps to install and configure the Amazon EFS CSI driver for your EKS cluster. Step 1 of this tutorial will also create an IAM role with the required permissions.
+
+2. **Follow this [tutorial](https://stackoverflow.com/questions/51212904/kubernetes-pvc-with-readwritemany-on-aws/59671383) for creating an EFS StorageClass in your EKS cluster**
+
+3. **Ensure that the EBS StorageClass is set to be default**
+
+   After configuring the CSI driver, you can set the EFS StorageClass as the default one in your Kubernetes cluster by following these steps:
+
+   1. **List the available StorageClasses**:
+
+      Identify the one where the provisioner is `efs.csi.aws.com`.
+      ```bash
+      kubectl get storageclass
+      ```
+
+   2. **Patch the EFS StorageClass** to set it as the default:
+
+      ```bash
+      kubectl patch storageclass <name-of-storageclass> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+      ```
+
+   3. **(Optional) If other StorageClasses are already set as default**, patch them to remove the default annotation:
+
+      ```bash
+      kubectl patch storageclass <other-storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+      ```
+
+   4. **Verify that the default StorageClass is updated** by listing the StorageClasses again:
+
+      ```bash
+      kubectl get storageclass
+      ```
+
+      The EFS StorageClass should now have "(default)" next to its name.
+
+</details>
+
 
 On the computer where you will run the install process, you need to install the following software:
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
@@ -75,82 +160,6 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 
 This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
-## Cluster Setup
-The Drasi infrastructure pods require the use of persistent volumes, which must be bound to a Kuberentes StorageClass. The AWS cluster comes with a default storage class backed by Amazon Elastic Block Store (EBS) volumes, but it also supports various other types. You must install a Container Storage Interface (CSI) driver for the type of volumes that you wish to use before installing Drasi. The following instructions provide guidance on configuring either EBS or EFS (Elastic File System) volumes, depending on your storage requirements:
-
-**Note:** if you are using RocksDB as the Query Container storage, you must setup an EFS storage class. For more information on configuring Query Containers, visit [Configure Query Containers](/how-to-guides/configure-query-containers):
-
-<details>
-<summary style="font-size: 1.5em;">Configuring Kubernetes StorageClass and Amazon EBS CSI Drivers</summary>
-
-1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) for configuring Amazon EBS CSI Driver**
-
-   This will guide you through the steps to install and configure the Amazon EBS CSI driver for your EKS cluster.
-
-2. **Ensure that the `gp2` StorageClass is set to be default**
-
-   After configuring the CSI driver, you can set the `gp2` StorageClass as the default in your Kubernetes cluster by following these steps:
-
-   1. **List the available StorageClasses** to confirm the existence of `gp2`:
-
-      ```bash
-      kubectl get storageclass
-      ```
-
-   2. **Patch the `gp2` StorageClass** to set it as the default:
-
-      ```bash
-      kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-      ```
-
-   3. **(Optional) If other StorageClasses are already set as default**, patch them to remove the default annotation:
-
-      ```bash
-      kubectl patch storageclass <other-storage-class-name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
-      ```
-
-   4. **Verify that `gp2` is the default** by listing the StorageClasses again:
-
-      ```bash
-      kubectl get storageclass
-      ```
-
-      The `gp2` StorageClass should now have `(default)` next to its name.
-
-</details>
-
-<details>
-<summary style="font-size: 1.5em;">Configuring Kubernetes StorageClass and Amazon EFS CSI Drivers (Required if using Rocksdb)</summary>
-
-1. **Follow this [tutorial](https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html) for configuring Amazon EBS CSI Driver**
-
-   This will guide you through the steps to install and configure the Amazon EFS CSI driver for your EKS cluster.
-
-2. **Follow this [tutorial](https://stackoverflow.com/questions/51212904/kubernetes-pvc-with-readwritemany-on-aws/59671383) for createing an EFS StorageClass in your EKS cluster**
-
-3.  **Configuring the default Query Container to use RocksDB**
-    
-    NEED TO REVIEW WITH TEAM
-<!-- 
-    Drasi uses redis as the default storage for the query container. To update this to use RocksDB instead, you need  `In your local clone or fork of the `drasi-platform` repo, navigate to `cli/service/resources/default-query-container.yaml`. Create a new storage with type `rocksDb` and put in the name of the Storageclass that you just created in the `storageClass` field. 
-
-*Sample default-query-container.yaml file with rocksDB*
-```yaml
-kind: QueryContainer
-apiVersion: v1
-name: default
-spec:
-  queryHostCount: 1
-  defaultStore: rocks
-  storage:
-    rocks:
-      kind: rocksDb
-      storageClass: <name-of-your-storage-class>
-      enableArchive: false
-```
-A rebuild of the Drasi CLI is needed. The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer. -->
-
-</details>
 
 ## Install Drasi on the EKS Cluster
 To install Drasi on the EKS cluster using all default settings, simply run the command:
@@ -160,6 +169,10 @@ drasi init
 ```
 
 This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
+
+{{% alert tip %}}
+If you wish to use RocksDB as the Query Container storage and you have already configured an EFS StorageClass, you need to update the default Query Container settings with the `Drasi` CLI. Please navigate to this [page](/how-to-guides/configure-query-containers/#rocksdb-storage-options) for more detailed instructions on how to configure the storage settings with the StorageClass you created earlier.
+{{% /alert %}}
 
 The `drasi init` command gives you to control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
 
@@ -212,6 +225,10 @@ Note that the Drasi installation also installs a number of dependencies, includi
 - [Mongo DB](https://www.mongodb.com/).
 
 If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+
+{{% alert tip %}}
+To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
+{{% /alert %}}
 
 ## Troubleshooting Installation Problems
 If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
