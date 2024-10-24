@@ -70,7 +70,7 @@ Additionally, the Drasi infrastructure pods require the use of persistent volume
 
    This will guide you through the steps to install and configure the Amazon EFS CSI driver for your EKS cluster. Step 1 of this tutorial will also create an IAM role with the required permissions.
 
-2. **Follow this [tutorial](https://stackoverflow.com/questions/51212904/kubernetes-pvc-with-readwritemany-on-aws/59671383) for creating an EFS StorageClass in your EKS cluster**
+2. **Follow this [tutorial](https://community.aws/content/2iCiQb70sP9wWcOLgG67jLVqK53/navigating-amazon-eks-eks-with-efs-add-on#step-6-set-up-a-storage-class-for-the-sample-application) for creating an EFS StorageClass in your EKS cluster**
 
 3. **Ensure that the EBS StorageClass is set to be default**
 
@@ -127,7 +127,7 @@ kubectl config use-context <your cluster name>
 ```
 
 ## Get the Drasi CLI
-You will install Drasi on the kind cluster using the [Drasi CLI](/reference/command-line-interface/). 
+You will install Drasi on the kind cluster using the [Drasi CLI](/reference/command-line-interface/). This guide focuses on how to install Drasi on an EKS cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 You can get the Drasi CLI for your platform using one of the following options:
 
@@ -158,7 +158,6 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 {{% /tab %}}
 {{< /tabpane >}}
 
-This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 
 ## Install Drasi on the EKS Cluster
@@ -227,7 +226,7 @@ Note that the Drasi installation also installs a number of dependencies, includi
 If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
 {{% alert tip %}}
-To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
+To test that Drasi has been successfully installed on your EKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
 {{% /alert %}}
 
 ## Troubleshooting Installation Problems
@@ -265,17 +264,37 @@ dapr-sentry-697bdc6cc4-xprww             1/1     Running   0               10m
 dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ```
 
+
 ## Deleting Drasi
 To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
 
-```text
+```
 drasi uninstall
+```
+
+The Drasi CLI will delete the `drasi-system` namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered, so the Drasi CLI will prompt you to confirm you want to uninstall with the following message:
+
+```
+Uninstalling Drasi
+Deleting namespace:  drasi-system
+Are you sure you want to uninstall Drasi from the namespace drasi-system? (yes/no)
+```
+
+Type `yes` and hit `enter` to proceed. 
+
+Once Drasi is successfully uninstalled you will see the following confirmation message:
+
+```
+Drasi uninstalled successfully
+```
+
+To force the uninstall to proceed without prompting you to confirm you can add the `-y` or `--yes` flag to the command:
+
+```
+drasi uninstall --yes
 ```
 
 To delete a Drasi environment from a specific namespace, include the `-n` flag:
 
-```text
-drasi uninstall -n drasi-dev
 ```
-
-In either case, the Drasi CLI will delete the namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered.
+drasi uninstall -n drasi-dev
