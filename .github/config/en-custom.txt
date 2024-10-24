@@ -1428,3 +1428,4 @@ ebs
 provisioner
 pvc
 readwritemany
+StorageClasses
