@@ -7,7 +7,7 @@ description: >
     Learn how to install Drasi on a k3s cluster (using k3d) for local development and testing
 ---
 
-[k3s](https://k3s.io/) is a lightweight Kubernetes distribution that is ideal for running on your local computer. This tutorial teaches you how to install Drasi on k3s using [k3d](https://k3d.io/), a lightweight wrapper to run k3s in docker. It is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. 
+[k3s](https://k3s.io/) is a lightweight Kubernetes distribution that is ideal for running on your local computer. This guide explains how to install Drasi on k3s using [k3d](https://k3d.io/), a lightweight wrapper to run k3s in docker. It is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. 
 
 ## Prerequisites
 This guide assumes you are familiar with [Kubernetes](https://kubernetes.io/) and know how to use [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) to manage a Kubernetes cluster.
@@ -99,7 +99,7 @@ drasi init
 
 This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
 
-The `drasi init` command gives you to control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
+The `drasi init` command gives you control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
 
 - `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
 - `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
@@ -151,6 +151,10 @@ Note that the Drasi installation also installs a number of dependencies, includi
 
 If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
+{{% alert tip %}}
+To test that Drasi has been successfully installed on your k3s cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
+{{% /alert %}}
+
 ## Troubleshooting Installation Problems
 If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
 
@@ -189,17 +193,37 @@ dapr-sidecar-injector-56c4c4b485-n48bg   1/1     Running   0               10m
 ## Deleting Drasi
 To delete a Drasi environment that is installed in the default `drasi-system` namespace, run the command:
 
-```text
+```
 drasi uninstall
+```
+
+The Drasi CLI will delete the `drasi-system` namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered, so the Drasi CLI will prompt you to confirm you want to uninstall with the following message:
+
+```
+Uninstalling Drasi
+Deleting namespace:  drasi-system
+Are you sure you want to uninstall Drasi from the namespace drasi-system? (yes/no)
+```
+
+Type `yes` and hit `enter` to proceed. 
+
+Once Drasi is successfully uninstalled you will see the following confirmation message:
+
+```
+Drasi uninstalled successfully
+```
+
+To force the uninstall to proceed without prompting you to confirm you can add the `-y` or `--yes` flag to the command:
+
+```
+drasi uninstall --yes
 ```
 
 To delete a Drasi environment from a specific namespace, include the `-n` flag:
 
-```text
+```
 drasi uninstall -n drasi-dev
 ```
-
-In either case, the Drasi CLI will delete the namespace containing the Drasi environment. Everything in that namespace will be deleted and cannot be recovered.
 
 ## Deleting the k3s cluster
 To delete the k3s cluster and everything it contains, including the Drasi environment, run this command:
