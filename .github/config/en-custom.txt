@@ -1423,3 +1423,13 @@ efs
 stackoverflow
 storageClassname
 volumeClaimTemplates
+storageclass
+ebs
+provisioner
+pvc
+readwritemany
+StorageClasses
+iCiQb
+jLVqK
+sP
+wWcOLgG
