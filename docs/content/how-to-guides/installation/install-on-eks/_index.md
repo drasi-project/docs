@@ -127,7 +127,7 @@ kubectl config use-context <your cluster name>
 ```
 
 ## Get the Drasi CLI
-You will install Drasi on the kind cluster using the [Drasi CLI](/reference/command-line-interface/). This guide focuses on how to install Drasi on an EKS cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
+You will install Drasi on the EKS cluster using the [Drasi CLI](/reference/command-line-interface/). This guide focuses on how to install Drasi on an EKS cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 You can get the Drasi CLI for your platform using one of the following options:
 
