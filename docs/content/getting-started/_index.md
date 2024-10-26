@@ -76,7 +76,7 @@ Once the codespace creation is complete, in the VS Code Explorer panel you will 
 You can now proceed with the rest of the tutorial.
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VS Code Dev Container" text=true %}}
 To use the Drasi Getting Started Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
@@ -454,7 +454,7 @@ Cleanup steps depend on how you ran the Getting Started Tutorial:
 If you no longer need the Codespace and want to cleanup, you can go to [Your codespaces](https://github.com/codespaces) page on GitHub and delete the codespace.
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VS Code Dev Container" text=true %}}
 
 If you no longer need the Dev Container and want to cleanup, you can:
 1. Click the `Dev Container connection status` box in the bottom left corner of VS Code
