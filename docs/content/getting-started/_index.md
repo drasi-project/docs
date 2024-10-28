@@ -9,7 +9,7 @@ description: >
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 
-After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform creating [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based change-driven solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform creating [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
 ## Solution Overview
 In this sample Drasi solution, the source of data (and change) will be a `Message` table in a PostgreSQL database, which holds the content of messages sent by people. The `Message` table contains these three fields:
@@ -47,18 +47,37 @@ Although an intentionally simple example, the Hello World solution contains all 
 - **Reactions** that take action on the Continuous Query result set changes
 
 To complete the tutorial, you will be guided through the following steps:
-1. Deploy Drasi
+1. Setup a Drasi Environment
 1. Create the PostgreSQL Source
 1. Create the Continuous Queries
 1. Create the Debug Reaction
 1. Test the Solution
 
-## Step 1 - Install Drasi
-To complete the Hello World tutorial, you need a Drasi environment. The quickest and easiest way to get one suitable for the tutorial is to use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) we have created for the tutorial. 
+## Step 1 - Setup a Drasi Environment
+To complete this tutorial, you need a Drasi environment and a PostgreSQL database. The quickest and easiest way is to use the [GitHub Codespace](https://github.com/features/codespaces) created for the tutorial, which allows you to complete the tutorial without the need to setup or install anything. Alternatively, you can use the [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) created for the tutorial, which also avoids the need for you to setup infrastructure, but will run in VS Code on your machine. Finally, you can deploy a full Drasi environment on one of the [supported platforms](/how-to-guides/installation/) and setup a PostgreSQL database.
 
-> If you cannot or do not want to use a Dev Container to run this tutorial, take a look at the [alternatives](#alternatives-to-the-drasi-dev-container) described at the bottom of the page, then continue with [Step 2 - Create the PostgreSQL Source](#step-2---create-the-postgresql-source).
+Complete one of the options described below before continuing to [Step 2](#step-2---create-the-postgresql-source):
 
-To use the Drasi Dev Container, you will need to install:
+{{< tabpane >}}
+{{% tab header="GitHub Codespace" text=true %}}
+
+The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning)
+
+When you see the **Create a new codespace** screen, click the **Create codespace** button; there is no need to change any of the default configuration settings.
+
+The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps. 
+
+Once the codespace creation is complete, in the VS Code Explorer panel you will see two folders:
+- `.devcontainer` contains files used to configure the Codespace.
+- `resources` contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions
+
+You can now proceed with the rest of the tutorial.
+
+{{% /tab %}}
+{{% tab header="VS Code Dev Container" text=true %}}
+To use the Drasi Getting Started Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
 - [docker](https://www.docker.com/get-started/)
@@ -79,13 +98,21 @@ Run the Dev Container as follows:
 
 The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
 
-When you see the following message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
-
-```text
-Done. Press any key to close the terminal.
-```
+When you see the ```Done. Press any key to close the terminal.``` message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
 If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team. 
+
+{{% /tab %}}
+{{% tab header="Install Drasi" text=true %}}
+
+As an alternative to completing this tutorial using a GitHub Codespace or VS Code Dev Container you can install Drasi on one of the supported platforms [Drasi Installation Guides](/how-to-guides/installation/). The complexity and time this will take depends on the platform you choose.
+
+You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server on Kubernetes and to load the required data.
+
+Finally, download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial. Unzip the file to a suitable location on your computer and you can proceed with the rest of the tutorial.
+
+{{% /tab %}}
+{{< /tabpane >}}
 
 ## Step 2 - Create the PostgreSQL Source
 The following YAML is the content of the `hello-world-source.yaml` file, which you will use to create a Source that connects to your PostgreSQL database.
@@ -136,9 +163,26 @@ drasi list source
 
 You should expect to see a response like this until the Source is ready (AVAILABLE = true):
 ```
-      ID      | AVAILABLE  
---------------+------------
-  hello-world | false     
+      ID      | AVAILABLE |            MESSAGES             
+--------------+-----------+---------------------------------
+  hello-world |  false    | query-api - daprd: waiting:     
+              |           | ContainerCreating  query-api:   
+              |           | waiting: ContainerCreating      
+              |           |  reactivator - daprd:           
+              |           | waiting: ContainerCreating      
+              |           |  reactivator: waiting:          
+              |           | ContainerCreating               
+              |           | change-dispatcher -             
+              |           | change-dispatcher: waiting:     
+              |           | ContainerCreating  daprd:       
+              |           | waiting: ContainerCreating      
+              |           |  change-router -                
+              |           | change-router: waiting:         
+              |           | ContainerCreating  daprd:       
+              |           | waiting: ContainerCreating      
+              |           |  proxy - daprd: waiting:        
+              |           | ContainerCreating  proxy:       
+              |           | waiting: ContainerCreating  
 ```
 
 If your Source is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
@@ -238,11 +282,11 @@ drasi list query
 
 You should expect to see the following output:
 ```
-         ID        | STATUS  | CONTAINER | ERRORMESSAGE |              HOSTNAME                
--------------------+---------+-----------+--------------+--------------------------------------
-  hello-world-from | Running | default   |              | default-query-host-xxx-xxx
-  message-count    | Running | default   |              | default-query-host-xxx-xxx
-  inactive-people  | Running | default   |              | default-query-host-xxx-xxx
+         ID        | CONTAINER | ERRORMESSAGE |          HOSTNAME          |  STATUS   
+-------------------+-----------+--------------+----------------------------+-----------
+  hello-world-from |  default  |              | default-query-host-xxx-xxx |  Running  
+  message-count    |  default  |              | default-query-host-xxx-xxx |  Running  
+  inactive-people  |  default  |              | default-query-host-xxx-xxx |  Running   
 ```
 
 ## Step 4 - Create the Debug Reaction
@@ -285,9 +329,9 @@ drasi list reaction
 You should expect to see the following response:
 
 ```
-         ID         | AVAILABLE  
---------------------+------------
-  hello-world-debug | false  
+         ID         | AVAILABLE | MESSAGES  
+--------------------+-----------+-----------
+  hello-world-debug |  true     |           
 ```
 
 If your Reaction is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
@@ -392,7 +436,7 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 This tutorial is now complete. The Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing. 
 
 ## Reflection
-In completing the tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 20 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
+In completing the Getting Started Tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 20 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
 
 Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.
 
@@ -402,17 +446,53 @@ Hopefully, from this simple tutorial you can see the efficiencies and time savin
 
 ## Cleanup
 
-If you no longer need the Dev Container and want to cleanup, you can
+Cleanup steps depend on how you ran the Getting Started Tutorial:
+
+{{< tabpane >}}
+{{% tab header="GitHub Codespace" text=true %}}
+
+If you no longer need the Codespace and want to cleanup, you can go to [Your codespaces](https://github.com/codespaces) page on GitHub and delete the codespace.
+
+{{% /tab %}}
+{{% tab header="VS Code Dev Container" text=true %}}
+
+If you no longer need the Dev Container and want to cleanup, you can:
 1. Click the `Dev Container connection status` box in the bottom left corner of VS Code
 1. Select `Close Remote Connection` from the list of options that appear
 1. Run the VS Code command `Dev Containers: Clean Up Dev Containers..."
 1. Select the `getting-started` image and click `ok` to remove the unused image
 1. Select the unused volumes and click `ok` to remove the unused volumes
 
-## Alternatives to the Drasi Dev Container
-As an alternative to completing this tutorial using a Dev Container you can install Drasi on one of the other platforms described in the [Drasi Installation Guides](/how-to-guides/installation/).
+{{% /tab %}}
 
-You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server and to load the required data.
+{{% tab header="Installed Drasi" text=true %}}
 
-Finally, download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial. Unzip the file to a suitable location on your computer and [return to the tutorial](#step-2---create-the-postgresql-source).
+Use the [drasi delete](/reference/command-line-interface/#drasi-delete) to delete the Debug Reaction, Continuous Queries, and PostgreSQL Source with the following commands:
 
+Delete the Debug Reaction:
+
+```
+drasi delete -f ./resources/hello-world-reaction.yaml
+```
+
+Delete the Continuous Queries:
+
+```
+drasi delete -f ./resources/hello-world-queries.yaml
+```
+
+Delete the PostgreSQL Source:
+
+```
+drasi delete -f ./resources/hello-world-source.yaml
+```
+
+Run [drasi uninstall](/reference/command-line-interface/#drasi-uninstall) to delete the Drasi environment:
+
+```
+drasi uninstall -y
+```
+
+{{% /tab %}}
+
+{{% /tabpane %}}
