@@ -54,3 +54,15 @@ rocksDB
 rocksDb
 VentureBeat
 StoredProc
+AddedResultCommand
+DatabaseClient
+DatabaseDbname
+DatabaseHostname
+DatabasePassword
+DatabasePort
+DatabaseSsl
+DatabaseUser
+DeletedResultCommand
+UpdatedResultCommand
+proc
+mysql
