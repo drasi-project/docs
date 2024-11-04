@@ -15,6 +15,12 @@ The Drasi Stored Procedure (StoredProc) Reaction allows you invoke pre-created S
 On the computer from where you will create the Drasi StoredProc Reaction, you need to install the following software:
 - [Drasi CLI](/reference/command-line-interface/) 
 
+## Supported Database Clients
+The StoredProc Reaction uses [knex](https://knexjs.org/) underneath the hood to call the Stored Procedures. You can specify the type of database that you wish to connect to in the `DatabaseClient` field in your Reaction YAML file. Currently, we support the following types:
+- PostgreSQL (pg)
+- MySQL (mysql)
+
+
 ## Creating the Reaction
 To create a Reaction, execute the `drasi apply` command as follows:
 
@@ -62,7 +68,7 @@ This table describes the other settings in the **spec** section of the Reaction 
 |properties.AddedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Added** result is received.
 |properties.UpdatedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Updated** result is received.
 |properties.DeletedResultCommand|Specifies the Stored Procedure to invoke and its parameters when a **Deleted** result is received.
-|DatabaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql, mssql, oracledb|
+|DatabaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql|
 |DatabaseHostname|The host name of the database server|
 |DatabasePort|The port number used to communicate with the database server|
 |DatabaseUser|The user id to use for authentication against the database server|
