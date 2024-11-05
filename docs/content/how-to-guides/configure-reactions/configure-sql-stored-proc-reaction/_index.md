@@ -19,6 +19,7 @@ On the computer from where you will create the Drasi StoredProc Reaction, you ne
 The StoredProc Reaction uses [knex](https://knexjs.org/) underneath the hood to call the Stored Procedures. You can specify the type of database that you wish to connect to in the `DatabaseClient` field in your Reaction YAML file. Currently, we support the following types:
 - PostgreSQL (pg)
 - MySQL (mysql)
+- Microsoft SQL (mssql)
 
 
 ## Creating the Reaction
@@ -68,7 +69,7 @@ This table describes the other settings in the **spec** section of the Reaction 
 |properties.AddedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Added** result is received.
 |properties.UpdatedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Updated** result is received.
 |properties.DeletedResultCommand|Specifies the Stored Procedure to invoke and its parameters when a **Deleted** result is received.
-|DatabaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql|
+|DatabaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql, mssql|
 |DatabaseHostname|The host name of the database server|
 |DatabasePort|The port number used to communicate with the database server|
 |DatabaseUser|The user id to use for authentication against the database server|
@@ -76,6 +77,7 @@ This table describes the other settings in the **spec** section of the Reaction 
 |DatabasePassword|The password for the user account specified in the user property|
 |DatabaseSsl|Whether the database server requires a secure connection, valid values are true or false (default is set to false)|
 
+**Note**: When defining the commands, add @ before any parameter name to use a query's return value as the stored procedure parameter.
 ## Inspecting the Reaction
 As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
 
