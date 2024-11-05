@@ -66,3 +66,4 @@ DeletedResultCommand
 UpdatedResultCommand
 proc
 mysql
+mssql
