@@ -16,7 +16,7 @@ On the computer from where you will create the Drasi StoredProc Reaction, you ne
 - [Drasi CLI](/reference/command-line-interface/) 
 
 ## Supported Database Clients
-The StoredProc Reaction uses [knex](https://knexjs.org/) underneath the hood to call the Stored Procedures. You can specify the type of database that you wish to connect to in the `DatabaseClient` field in your Reaction YAML file. Currently, we support the following types:
+The StoredProc Reaction uses [knex](https://knexjs.org/) underneath the hood to call the Stored Procedures. You can specify the type of database that you wish to connect to in the `databaseClient` field in your Reaction YAML file. Currently, we support the following types:
 - PostgreSQL (pg)
 - MySQL (mysql)
 - Microsoft SQL (mssql)
@@ -44,16 +44,16 @@ spec:
   queries:
     hello-world-from:
   properties:
-    AddedResultCommand: public.added_command(@MessageId, @MessageFrom)
-    UpdatedResultCommand: public.updated_command(@MessageId, @MessageFrom)
-    DeletedResultCommand: public.deleted_command(@MessageId, @MessageFrom)
-    DatabaseClient: pg
-    DatabaseHostname: postgres.default.svc.cluster.local
-    DatabasePort: 5432
-    DatabaseUser: test
-    DatabaseDbname: hello-world
-    DatabasePassword: test 
-    DatabaseSsl: false
+    addedResultCommand: public.added_command(@MessageId, @MessageFrom)
+    updatedResultCommand: public.updated_command(@MessageId, @MessageFrom)
+    deletedResultCommand: public.deleted_command(@MessageId, @MessageFrom)
+    databaseClient: pg
+    databaseHostname: postgres.default.svc.cluster.local
+    databasePort: 5432
+    databaseUser: test
+    databaseDbname: hello-world
+    databasePassword: test 
+    databaseSsl: false
 ```
 
 In this definition: 
@@ -66,18 +66,18 @@ This table describes the other settings in the **spec** section of the Reaction 
 |Property|Description|
 |-|-|
 |queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to.|
-|properties.AddedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Added** result is received.
-|properties.UpdatedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Updated** result is received.
-|properties.DeletedResultCommand|Specifies the Stored Procedure to invoke and its parameters when a **Deleted** result is received.
-|DatabaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql, mssql|
-|DatabaseHostname|The host name of the database server|
-|DatabasePort|The port number used to communicate with the database server|
-|DatabaseUser|The user id to use for authentication against the database server|
-|DatabaseDbname|The name of the database|
-|DatabasePassword|The password for the user account specified in the user property|
-|DatabaseSsl|Whether the database server requires a secure connection, valid values are true or false (default is set to false)|
+|properties.addedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Added** result is received.
+|properties.updatedResultCommand|Specifies the Stored Procedure to invoke and its parameters when an **Updated** result is received.
+|properties.deletedResultCommand|Specifies the Stored Procedure to invoke and its parameters when a **Deleted** result is received.
+|databaseClient|Specifies the type of database where the Stored Procedure lives in. Valid options: pg, mysql, mssql|
+|databaseHostname|The host name of the database server|
+|databasePort|The port number used to communicate with the database server|
+|databaseUser|The user id to use for authentication against the database server|
+|databaseDbname|The name of the database|
+|databasePassword|The password for the user account specified in the user property|
+|databaseSsl|Whether the database server requires a secure connection, valid values are true or false (default is set to false)|
 
-**Note**: When defining the commands, add @ before any parameter name to use a query's return value as the stored procedure parameter.
+**Note**: When defining the commands, **add** @ before any parameter name to use a query's return value as the stored procedure parameter.
 ## Inspecting the Reaction
 As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
 
