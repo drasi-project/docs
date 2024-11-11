@@ -67,3 +67,5 @@ updatedResultCommand
 proc
 mysql
 mssql
+creds
+storedproc
