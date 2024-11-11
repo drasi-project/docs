@@ -78,6 +78,40 @@ This table describes the other settings in the **spec** section of the Reaction 
 |databaseSsl|Whether the database server requires a secure connection, valid values are true or false (default is set to false)|
 
 **Note**: When defining the commands, **add** @ before any parameter name to use a query's return value as the stored procedure parameter.
+
+#### Secret Configuration
+It is best practice to store private credentials for your database in a Kubernetes secret, which can be created using `kubectl`. The example below creates a Secret with the name `storedproc-creds`, containing one key called `password` in the `drasi-system` namespace.
+
+```bash
+kubectl create secret generic storedproc-creds --from-literal=password=<db-password> -n drasi-system
+```
+
+You can then reference the secret when you create a StoredProc Reaction as follows:
+```yaml {#stored-proc-with-secret}
+apiVersion: v1
+kind: Reaction
+name: stored-proc
+spec:
+  kind: StoredProc
+  queries:
+    hello-world-from:
+  properties:
+    addedResultCommand: public.added_command(@MessageId, @MessageFrom)
+    updatedResultCommand: public.updated_command(@MessageId, @MessageFrom)
+    deletedResultCommand: public.deleted_command(@MessageId, @MessageFrom)
+    databaseClient: pg
+    databaseHostname: postgres.default.svc.cluster.local
+    databasePort: 5432
+    databaseUser: test
+    databaseDbname: hello-world
+    databasePassword: 
+      kind: Secret
+      name: storedproc-creds
+      key: password
+    databaseSsl: false
+```
+
+
 ## Inspecting the Reaction
 As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
 
