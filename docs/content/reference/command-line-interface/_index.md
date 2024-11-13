@@ -533,6 +533,21 @@ The output of the command will look like this:
 ```
 Drasi CLI version: latest
 ```
+### drasi watch
+**Purpose**: The `watch` command allows users to continuously monitor the results of a specified query. It is especially useful for tracking changes in data over time and responding to real-time updates in the query result set.
+
+**Arguments and Flags**:
+- `query name` (required): This argument specifies the name of the query to watch. The command requires at least one query name argument.
+-  `-n| --namespace <namspace>` (optional):   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the drasi namespace set command is used.
+-  `-h|--help`: Display help for the `watch` command.
+
+**Usage Example**:
+The following command will start watching a query result set of a Continuous Query named inactive-people from the Drasi environment running in the default Kubernetes namespace.
+
+```
+drasi watch inactive-people
+```
+
 
 ### drasi wait
 **Purpose**: The `wait` command waits for one or more resources to become operational, or for a timeout interval to be reached. As mentioned in the [apply command](#drasi-apply) section, the `apply` command returns as soon as a resource definition is validated and registered as part of the Drasi configuration; it returns without confirming that the new resource is successfully deployed and ready without error. That is the purpose of the `wait` command.
