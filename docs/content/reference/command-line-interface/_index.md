@@ -538,7 +538,7 @@ Drasi CLI version: latest
 
 **Arguments and Flags**:
 - `query name` (required): This argument specifies the name of the query to watch.
--  `-n| --namespace <namspace>` (optional):   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the drasi namespace set command is used.
+-  `-n| --namespace <namspace>` (optional):   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
 -  `-h|--help`: Display help for the `watch` command.
 
 **Usage Example**:
