@@ -542,7 +542,7 @@ Drasi CLI version: latest
 -  `-h|--help`: Display help for the `watch` command.
 
 **Usage Example**:
-The following command will start watching a query result set of a Continuous Query named inactive-people from the Drasi environment running in the default Kubernetes namespace.
+The following command will start watching a query result set of a Continuous Query named `inactive-people`.
 
 ```
 drasi watch inactive-people
