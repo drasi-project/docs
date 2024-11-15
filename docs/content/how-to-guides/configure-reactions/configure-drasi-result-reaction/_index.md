@@ -87,7 +87,7 @@ This will return the full definition used to create the Reaction along with more
 
 
 ## Using the Result Reaction
-Because the Drasi Debug Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can send HTTP requests. The easiest way to do this is to setup a port forward using `kubectl` and the following command:
+Because the Result Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can send HTTP requests. For development purposes, the easiest way to do this is to setup a port forward using `kubectl` and the following command:
 
 ```bash
 kubectl port-forward -n <drasi-namespace> services/quick-result-reaction-gateway 8080:8080
