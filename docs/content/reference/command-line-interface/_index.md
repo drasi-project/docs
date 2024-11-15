@@ -85,6 +85,7 @@ Available Commands:
   uninstall   Uninstall Drasi
   version     Get Drasi CLI version
   wait        Wait for resources to be ready
+  watch       Watch the result set of a query
 
 Flags:
   -h, --help               help for drasi
@@ -533,20 +534,6 @@ The output of the command will look like this:
 ```
 Drasi CLI version: latest
 ```
-### drasi watch
-**Purpose**: The `watch` command allows users to continuously monitor the result set of a specified query in real-time.
-
-**Arguments and Flags**:
-- `query name` (required): This argument specifies the name of the query to watch.
--  `-n| --namespace <namspace>` (optional):   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
--  `-h|--help`: Display help for the `watch` command.
-
-**Usage Example**:
-The following command will start watching a query result set of a Continuous Query named `inactive-people`.
-
-```
-drasi watch inactive-people
-```
 
 
 ### drasi wait
@@ -579,7 +566,30 @@ The following command will also wait on **all** the resources defined in the `dr
 ```
 drasi wait -f drasi-resources.yaml -t 20
 ```
+### drasi watch
+**Purpose**: The `watch` command allows users to continuously monitor the result set of a specified query in real-time.
 
+**Arguments and Flags**:
+- `query name` (required): This argument specifies the name of the query to watch.
+-  `-n| --namespace <namspace>` (optional):   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+-  `-h|--help`: Display help for the `watch` command.
+
+**Usage Example**:
+The following command will start watching a query result set of a Continuous Query named `inactive-people` in the current default namespace.
+
+```
+drasi watch inactive-people
+```
+
+**Output**:
+When running the `watch` command for a query, the output is a table of the continuously updated result set. Here is an example of that shows the result set of the `inactive-people` query.
+
+```
+LastMessageTimestamp  | MessageFrom
+----------------------+------------
+2024-11-12 18:47:03.. | Buzz Lightyear
+2024-11-13 15:45:08.. | Brian Kernighan
+```
 ## Drasi CLI Source
 The Drasi CLI is written in Go. If you want to explore how the Drasi CLI works, the source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
 
