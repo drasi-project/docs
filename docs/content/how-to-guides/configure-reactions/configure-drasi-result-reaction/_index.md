@@ -95,7 +95,7 @@ kubectl port-forward -n <drasi-namespace> services/quick-result-reaction-gateway
 
 The `-n` flag specifies the Kubernetes namespace containing the Drasi environment where you installed the Reaction. The name used to reference the Reaction has the structure`services/<reaction_name>-gateway`.
 
-This will make the Drasi Debug Reaction UI available through port 8080 on the computer where you ran the port-forward command. You can now send GET requests to `localhost:8080` to retrieve the result set of a particular query. The examples below use `curl` and showcase various ways of using the Result Reaction
+This will make the Result Reaction endpoint available through port 8080 on the computer where you ran the port-forward command. You can now send GET requests to `localhost:8080` to retrieve the result set of a particular query. The examples below use `curl` and showcase various ways of using the Result Reaction
 
 #### Retrieving the current result set
 The following command will retrieve the current result set for a ContinuousQuery with the name `query1`
