@@ -534,7 +534,7 @@ The output of the command will look like this:
 Drasi CLI version: latest
 ```
 ### drasi watch
-**Purpose**: The `watch` command allows users to continuously monitor the results of a specified query. It is especially useful for tracking changes in data over time and responding to real-time updates in the query result set.
+**Purpose**: The `watch` command allows users to continuously monitor the result set of a specified query in real-time.
 
 **Arguments and Flags**:
 - `query name` (required): This argument specifies the name of the query to watch. The command requires at least one query name argument.
