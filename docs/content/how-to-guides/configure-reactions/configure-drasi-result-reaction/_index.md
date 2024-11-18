@@ -7,23 +7,23 @@ description: >
     Learn how to configure a Drasi Result Reaction
 ---
 
-The Drasi Result Reaction allows users to retrieve the current result set, or the result set at a specified timestamp, for a particular Continuous Query. This reaction provides an endpoint accessible via HTTP GET requests.
+The Drasi Result Reaction is primarily designed for programmatic access to the result set of a Continuous Query by providing an endpoint accessible via HTTP GET requests. Users can use this reaction to either retrieve the current result set, or to view the result set of a query at a specific timestamp.
 
 ## Requirements
 On the computer from where you will create the Drasi Debug Reaction, you need to install the following software:
 - [Drasi CLI](/reference/command-line-interface/) 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
-You should also be proficient in creating HTTP requests using tools such as [curl](https://curl.se/) or [Postman](https://www.postman.com/).
+**Optional**: For debugging scenarios, you can use tools such as [curl](https://curl.se/) or [Postman](https://www.postman.com/) to create HTTP GET requests. The examples below use `curl`.
 
 ## Creating the Reaction
 To create a Reaction, execute the `drasi apply` command as follows:
 
 ```text
-drasi apply -f my-reaction.yaml -n drasi-namespace
+drasi apply -f my-reaction.yaml
 ```
 
-The `drasi apply` command is how you create all new Drasi resources (in this case a Reaction). The `-f` flag specifies that the definition of the new Reaction is contained in the referenced YAML file `my-reaction.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Reaction (Drasi must already be installed in that namespace).
+The `drasi apply` command is how you create all new Drasi resources (in this case a Reaction). The `-f` flag specifies that the definition of the new Reaction is contained in the referenced YAML file `my-reaction.yaml`. The Reaction will be created in the current namespace to which Drasi is set. If you wish to apply the Reaction to a different namespace, you can specify it using the `-n` flag.
 
 ## Reaction Definitions
 The YAML file passed to `drasi apply` can contain one or more Reaction definitions. Here is an example of a Drasi Debug Reaction definition:
@@ -87,33 +87,259 @@ This will return the full definition used to create the Reaction along with more
 
 
 ## Using the Result Reaction
-Because the Result Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can send HTTP requests. For development purposes, the easiest way to do this is to setup a port forward using `kubectl` and the following command:
+
+### Port-forwarding the Result Reaction
+The only way to retrieve the result set from the Result Reaction is through sending HTTP GET requests to the endpoints. For development and testing purposes, since the Result Reaction lives in a Kubernetes pod, it needs to be exposed using Kubernetes port-forwarding. This allows you to send HTTP GET requests to the Result Reaction endpoint from your local machine or from another application. Use the following command to set up port-forwarding for the Result Reaction deployed in the previous steps:
 
 ```bash
 kubectl port-forward -n <drasi-namespace> services/quick-result-reaction-gateway 8080:8080
 ```
 
-The `-n` flag specifies the Kubernetes namespace containing the Drasi environment where you installed the Reaction. The name used to reference the Reaction has the structure`services/<reaction_name>-gateway`.
+This command forwards port `8080` from your local machine to port `8080` on the Result Reaction service in the Kubernetes cluster. Replace `<drasi-namespace>` with the Kubernetes namespace where the Result Reaction was deployed. The name used to reference the Reaction has the structure `services/<reaction_name>-gateway`. 
 
-This will make the Result Reaction endpoint available through port 8080 on the computer where you ran the port-forward command. You can now send GET requests to `localhost:8080` to retrieve the result set of a particular query. The examples below use `curl` and showcase various ways of using the Result Reaction
+You can now access the service locally at `http://localhost:8080` and you can send GET requests to retrieve the result set of a particular query.
 
-#### Retrieving the current result set
-The following command will retrieve the current result set for a ContinuousQuery with the name `query1`
+### Retrieving the current result set
+This endpoint will return the current result set as well as its metadata, which contains information such as the sequence number and the timestamp. 
+
+#### HTTP Request
 ```bash
-curl -X GET "localhost:8080/query1"
+GET http://localhost:<servicePort>/<queryId>
 ```
 
-#### Retrieving the result set at a particular timestamp
+#### URL Parameters
+
+|Parameter|Description|
+|-|-|
+|servicePort|The port on your local machine that was forwarded earlier|
+|queryId|The id of the Continuous Query you are interested in|
+
+#### Returned Output
+The output from this GET Request will be an array of JSON elements. The first element will contain the header information, and the remaining elements will be JSON objects with a "data" key.
+```json
+[{"header":{"sequence":<sequence-num>,"timestamp":<timestamp>,"state":"running"}},{"data":{"foo":"bar"}},...]
+```
+
+#### Examples
+The examples below showcase how to retrieve the current result set for a Continuous Query with the id of `query1`.
+
+{{< tabpane >}}
+{{< tab header="bash(curl)" lang="bash" >}}
+curl -X GET "localhost:8080/query1"
+{{< /tab >}}
+
+{{< tab header="Javascript" lang="javascript" >}}
+fetch("http://localhost:8080/query1", {
+  method: "GET"
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); 
+  })
+  .then(data => {
+    // Output the data
+    console.log(data);
+
+    // Retrieve the header information
+    const headerObject = data.find(item => item.header);
+
+    const header = headerObject ? headerObject.header : null;
+
+    console.log(header);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+
+{{< /tab >}}
+{{< /tabpane >}}
+
+### Retrieving the data from the current result set
+If you wish to retrieve only the data content of the result set, you can append `/data` to the end of your endpoint. 
+
+#### HTTP Request
+```bash
+GET http://localhost:<servicePort>/<queryId>/data
+```
+
+#### URL Parameters
+
+|Parameter|Description|
+|-|-|
+|servicePort|The port on your local machine that was forwarded earlier|
+|queryId|The id of the Continuous Query you are interested in|
+
+#### Returned Output
+The output from this GET Request will be an array of JSON elements.
+```bash
+[{"foo":"bar"},...]
+``` 
+
+#### Examples
+The examples below showcase how to retrieve the data of the current result set for a Continuous Query with the id of `query1`.
+
+{{< tabpane >}}
+{{< tab header="bash(curl)" lang="bash" >}}
+curl -X GET "localhost:8080/query1/data"
+{{< /tab >}}
+
+{{< tab header="Javascript" lang="javascript" >}}
+fetch("http://localhost:8080/query1/data", {
+  method: "GET"
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); 
+  })
+  .then(data => {
+    // Output the data
+    console.log(data);
+
+    // Retrieve the header information
+    const headerObject = data.find(item => item.header);
+
+    const header = headerObject ? headerObject.header : null;
+
+    console.log(header);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+
+{{< /tab >}}
+{{< /tabpane >}}
+       
+
+### Retrieving the result set at a particular timestamp
 **NOTE:** This feature requires the `view` field of the Continuous Query to be set to `true`, and the `view/retentionPolicy` field to be set to `all` or `expire`. For more information, please navigate to this [link](/concepts/continuous-queries/#configuration).
 
-The following command will retrieve the result set for a ContinuousQuery with the name `query1` at timestamp `123456789`.
+You can also use the Result Reaction to retrieve the result set for a specific timestamp, provided in milliseconds since the epoch.
 
+
+#### HTTP Request
 ```bash
-curl -X GET "localhost:8080/query1/123456789"
+GET http://localhost:<servicePort>/<queryId>/<timestamp>
 ```
 
+#### URL Parameters
+
+|Parameter|Description|
+|-|-|
+|servicePort|The port on your local machine that was forwarded earlier|
+|queryId|The id of the Continuous Query you are interested in|
+|timestamp| The timestamp to retrieve the result set from|
+
+#### Returned Output
+The output from this GET Request will be an array of JSON elements. The first element will contain the header information, and the remaining elements will be JSON objects with a "data" key.
+```json
+[{"header":{"sequence":<sequence-num>,"timestamp":<timestamp>,"state":"running"}},{"data":{"foo":"bar"}},...]
+```
+
+#### Examples
+The examples below showcase how to retrieve the result set at timestamp `123456789` for a Continuous Query with the id of `query1`.
+
+{{< tabpane >}}
+{{< tab header="bash(curl)" lang="bash" >}}
+curl -X GET "localhost:8080/query1/123456789"
+{{< /tab >}}
+
+{{< tab header="Javascript" lang="javascript" >}}
+fetch("http://localhost:8080/query1/123456789", {
+  method: "GET"
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); 
+  })
+  .then(data => {
+    // Output the data
+    console.log(data);
+
+    // Retrieve the header information
+    const headerObject = data.find(item => item.header);
+
+    const header = headerObject ? headerObject.header : null;
+
+    console.log(header);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+
+{{< /tab >}}
+{{< /tabpane >}}
+
+
+### Retrieving the data of the result set at a particular timestamp
+**NOTE:** This feature requires the `view` field of the Continuous Query to be set to `true`, and the `view/retentionPolicy` field to be set to `all` or `expire`. For more information, please navigate to this [link](/concepts/continuous-queries/#configuration).
+
+You can also use the Result Reaction to retrieve the data of the result set for a specific timestamp, provided in milliseconds since the epoch.
+
+
+#### HTTP Request
+```bash
+GET http://localhost:<servicePort>/<queryId>/<timestamp>/data
+```
+
+#### URL Parameters
+
+|Parameter|Description|
+|-|-|
+|servicePort|The port on your local machine that was forwarded earlier|
+|queryId|The id of the Continuous Query you are interested in|
+|timestamp| The timestamp to retrieve the result set from|
+
+
+#### Returned Output
+The output from this GET Request will be an array of JSON elements.
+```bash
+[{"foo":"bar"},...]
+``` 
+
+#### Examples
+The examples below showcase how to retrieve the data of the result set at timestamp `123456789` for a Continuous Query with the id of `query1`.
+
+{{< tabpane >}}
+{{< tab header="bash(curl)" lang="bash" >}}
+curl -X GET "localhost:8080/query1/123456789/data"
+{{< /tab >}}
+
+{{< tab header="Javascript" lang="javascript" >}}
+fetch("http://localhost:8080/query1/123456789/data", {
+  method: "GET"
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); 
+  })
+  .then(data => {
+    // Output the data
+    console.log(data);
+
+    // Retrieve the header information
+    const headerObject = data.find(item => item.header);
+
+    const header = headerObject ? headerObject.header : null;
+
+    console.log(header);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+
+{{< /tab >}}
+{{< /tabpane >}}
+
 ## Modifying the Reaction
-Currently, Drasi does not support the modification of existing Reactions. You must [Delete the Reaction](#deleting-the-reaction), make changes to the Reaction definition file, and [Create the Reaction](#creating-the-reaction) again.
+If you want to modify an existing reaction, you can use the `drasi apply` command to apply the updated YAML file. Ensure that the name of the reaction remains consistent.
 
 ## Deleting the Reaction
 To delete a Reaction you use the `drasi delete` command. There are two ways to do this. 
