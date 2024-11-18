@@ -128,7 +128,7 @@ The examples below showcase how to retrieve the current result set for a Continu
 curl -X GET "localhost:8080/query1"
 {{< /tab >}}
 
-{{< tab header="Javascript" lang="javascript" >}}
+{{< tab header="JavaScript" lang="JavaScript" >}}
 fetch("http://localhost:8080/query1", {
   method: "GET"
 })
@@ -185,7 +185,7 @@ The examples below showcase how to retrieve the data of the current result set f
 curl -X GET "localhost:8080/query1/data"
 {{< /tab >}}
 
-{{< tab header="Javascript" lang="javascript" >}}
+{{< tab header="JavaScript" lang="JavaScript" >}}
 fetch("http://localhost:8080/query1/data", {
   method: "GET"
 })
@@ -247,7 +247,7 @@ The examples below showcase how to retrieve the result set at timestamp `1234567
 curl -X GET "localhost:8080/query1/123456789"
 {{< /tab >}}
 
-{{< tab header="Javascript" lang="javascript" >}}
+{{< tab header="JavaScript" lang="JavaScript" >}}
 fetch("http://localhost:8080/query1/123456789", {
   method: "GET"
 })
@@ -310,7 +310,7 @@ The examples below showcase how to retrieve the data of the result set at timest
 curl -X GET "localhost:8080/query1/123456789/data"
 {{< /tab >}}
 
-{{< tab header="Javascript" lang="javascript" >}}
+{{< tab header="JavaScript" lang="JavaScript" >}}
 fetch("http://localhost:8080/query1/123456789/data", {
   method: "GET"
 })
