@@ -101,3 +101,4 @@ Drasi currently provides the following Reactions:
 - SignalR, to forward Continuous Query results to Web Applications.
 - Gremlin, to use the Continuous Query results as parameters to commands that run against a Gremlin database.
 - Dataverse, to use the Continuous Query results as parameters to commands that run against a Microsoft Dataverse entities.
+- StoredProc, to use the Continuous Query results as parameters to Stored Procedures that run against a SQL database.
