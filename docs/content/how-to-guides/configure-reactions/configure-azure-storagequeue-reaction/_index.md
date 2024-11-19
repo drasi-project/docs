@@ -127,10 +127,59 @@ An Azure Storage Account connection string.
 | Property | Description |
 |-|-|
 | kind | ConnectionString |
-| connectionString | Connection String of Azure Storage Account.|
+| connectionString | Connection String of Azure Storage Account. Can either be inline or a reference to a secret. |
+
+##### Example
+
+```yaml
+kind: Reaction
+apiVersion: v1
+name: my-reaction
+spec:
+  kind: StorageQueue
+  queries:
+    query1:
+    query2:  
+  properties:    
+    queueName: queue1
+    format: unpacked
+  identity:
+    kind: ConnectionString
+    connectionString: DefaultEndpointsProtocol=https;AccountName=...;AccountKey=...
+```
 
 ##### Related links
 * [Configure Azure Storage connection strings](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string)
+
+
+#### Secret Configuration
+It is best practice to store private credentials in a secret, which can be created using `kubectl`. The example below creates a Secret with the name `storage-creds`, containing one key called `connectionString` in the `drasi-system` namespace.  Secrets must be in the same Kubernetes namespace as your Drasi installation in order to be referenced.
+
+```bash
+kubectl create secret generic storage-creds --from-literal="connectionString=DefaultEndpointsProtocol=..." -n drasi-system
+```
+
+##### Example
+
+```yaml
+kind: Reaction
+apiVersion: v1
+name: my-reaction
+spec:
+  kind: StorageQueue
+  queries:
+    query1:
+    query2:  
+  properties:    
+    queueName: queue1
+    format: unpacked
+  identity:
+    kind: ConnectionString
+    connectionString: 
+      kind: Secret
+      name: storage-creds
+      key: connectionString
+```
 
 ## Output formats
 
