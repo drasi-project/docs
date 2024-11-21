@@ -56,13 +56,14 @@ In this definition:
 This table describes the other settings in the **spec** section of the Reaction definition:
 | Property | Description |
 |-|-|
-| addedResultCommand | The Gremlin command to execute when the Reaction receives an `addedResult` |
-| updatedResultCommand | The Gremlin command to execute when the Reaction receives an `updatedResult` |
-| deletedResultCommand | The Gremlin command to execute when the Reaction receives a `deletedResult` |
-| gremlinHost | Hostname of the gremlin server (required) |
-| gremlinPort | Port of the gremlin server (required) |
-| gremlinPassword | Password for connecting to the gremlin server |
-| gremlinUsername | Username for connecting to the gremlin server |
+|queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to. Note that the each Gremlin Command Reaction should only subscribe to one Continuous Query|
+| properties.addedResultCommand | The Gremlin command to execute when the Reaction receives an `addedResult` |
+| properties.updatedResultCommand | The Gremlin command to execute when the Reaction receives an `updatedResult` |
+| properties.deletedResultCommand | The Gremlin command to execute when the Reaction receives a `deletedResult` |
+| properties.gremlinHost | Hostname of the gremlin server (required) |
+| properties.gremlinPort | Port of the gremlin server (required) |
+| properties.gremlinPassword | Password for connecting to the gremlin server |
+| properties.gremlinUsername | Username for connecting to the gremlin server |
 
 Note: When defining the Gremlin commands, add @ before any parameter name to use a query’s return value as the parameter.
 
