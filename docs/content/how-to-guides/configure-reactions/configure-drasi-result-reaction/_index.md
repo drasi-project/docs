@@ -102,6 +102,8 @@ This command forwards port `8080` from your local machine to port `8080` on the 
 
 You can now access the service locally at `http://localhost:8080` and you can send GET requests to retrieve the result set of a particular query.
 
+Alternatively, you can create a Kubernetes Ingress to expose the service externally. This allows you to define a hostname and path for external access without relying on port forwarding.
+
 ### Retrieving the current result set
 This endpoint will return the current result set as well as its metadata, which contains information such as the sequence number and the timestamp. 
 
