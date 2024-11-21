@@ -39,7 +39,7 @@ The documentation website is hosted on Azure in an App Service called ```project
 Currently, we need to manually build and deploy the documentation site. The easiest way to do this is:
 
 1. Open a terminal
-1. Change to the ```docs/docs``` folder
+1. Change to the ```docs``` folder
 1. Run the command ```hugo``` to build the site
 1. Use the ```Azure App Service``` Extension for VS Code to publish the ```docs/docs/public``` folder to the ```project-drasi-docs``` App Service.
 

@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - preview
+      - main
   pull_request:
     branches:
-      - preview
+      - main
 
 permissions:
   id-token: write # Required for requesting the JWT
