@@ -147,7 +147,7 @@ This will return the full definition used to create the Reaction along with more
 
 
 ## Modifying the Reaction
-Currently, Drasi does not support the modification of existing Reactions. You must [Delete the Reaction](#deleting-the-reaction), make changes to the Reaction definition file, and [Create the Reaction](#creating-the-reaction) again.
+If you want to modify an existing reaction, you can use the `drasi apply` command to apply the updated YAML file. Ensure that the name of the reaction remains consistent.
 
 ## Deleting the Reaction
 To delete a Reaction you use the `drasi delete` command. There are two ways to do this. 
