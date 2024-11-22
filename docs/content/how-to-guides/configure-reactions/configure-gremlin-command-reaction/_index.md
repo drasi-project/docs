@@ -63,7 +63,7 @@ This table describes the other settings in the **spec** section of the Reaction 
 | properties.gremlinHost | Hostname of the gremlin server (required) |
 | properties.gremlinPort | Port of the gremlin server (required) |
 | properties.gremlinPassword | Password for connecting to the gremlin server |
-| properties.gremlinUsername | Username for connecting to the gremlin server |
+| properties.gremlinUsername | Username for connecting to the gremlin server. If you are using Cosmos Gremlin, the username should follow this format: `/dbs/<database>/colls/<collection or graphs>`. See this [link](https://learn.microsoft.com/en-us/azure/service-connector/how-to-integrate-cosmos-gremlin?tabs=dotnet#system-assigned-managed-identity) for more details. |
 
 Note: When defining the Gremlin commands, add @ before any parameter name to use a query’s return value as the parameter.
 
