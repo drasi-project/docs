@@ -9,29 +9,15 @@ description: >
     Development tools
 ---
 
-The **Drasi Visual Studio Code extension** integrates with the Drasi platform, enabling developers to manage Drasi resources as well as test and debug Continuous Queries directly within the editor.
+The VS Code extension enables you to rapidly test the validity of your continuous queries by providing a one click `Run` button that will bootstrap, execute and display the results/errors of queries within your VS Code workspace.
 
-## Installation
+## Installing
 
-The Drasi VS Code extension is available for download and installation from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=DrasiProject.drasi). You can search for the Drasi extension and install it from within VS Code. For this, bring up the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of VS Code or the View: Extensions command (⇧⌘X for Mac, Ctrl+Shift+X for Windows).
-
-![Drasi Extension](DrasiExtension.png)
-
+Download the VS Code extension from https://github.com/project-drasi/drasi-platform/releases/download/v0.1.0/drasi-0.0.3.vsix (Ensure that you are logged in to Github). 
+Open the VS Code command palette and run the `Extensions: Install from VSIX` command and select the `drasi-0.0.3.vsix` from your download location.
 
 ## Usage
 
-Once the extension is installed, the `Drasi Explorer` view will be visible in the Activity Bar. The extension scans your workspace directory for YAML files that contain Drasi resources (Sources, Continuous Queries, and Reactions) and displays them in the Workspace tab.
+Once the extension is installed, the `Drasi Explorer` view should be visible in the Activity Bar.  This will scan your workspace for YAML files that contain continuous queries and enable you to execute them once off against your Drasi instance.  You will need to manually deploy any source(s) the your queries depend upon.
 
-![Drasi Explorer](DrasiExplorer.png)
-
- Resources can be deployed using the Apply option available in the Workspace tab.
-
-![DrasiExplorerApply](DrasiExplorerApply.png)
-
-Additionally, queries can be validated using the Debug option.
-
-![DrasiExplorerDebug](DrasiExplorerDebug.png)
-
-An important capability of the Drasi Explorer is its ability to attach a deployed query and display real-time updates for it. The result set automatically updates when new data arrives and can be viewed within VS Code in dedicated panel. Choose the Attach option for this.
-
-![DrasiExplorerAttach](DrasiExplorerAttach.png)
+![Drasi Explorer](drasi-explorer.png)
