@@ -69,3 +69,8 @@ mysql
 mssql
 creds
 storedproc
+MicrosoftEntraWorkloadID
+enqueued
+queueName
+StorageQueue
+enqueues
