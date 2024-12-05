@@ -139,7 +139,7 @@ The following skeleton JSON shows the basic four parts of a standard Debezium ch
 
 A change event's key contains the schema for the Continuous Query result key and the key value for that Continuous Query result.
 
-Note that in most Debezium Connectors, the key consists of a single `id` field which specifies the unique identifier for the document/row/record's that was changed. This Reaction does not have access to the indexing information used by the query containers, so it instead uses the _sequence number_ of a Continuous Query result as the key. For consistency with existing Debezium Connectors, we treat the sequence number as a string and use the field name `id`, even though this is equivalent to the `seq` numeric field in the change event value `source` data we'll see below.
+Note that in most Debezium Connectors, the key consists of a single `id` field which specifies the unique identifier for the document/row/record that was changed. This Reaction does not have access to the indexing information used by the query containers, so it instead uses the _sequence number_ of a Continuous Query result as the key. For consistency with existing Debezium Connectors, we treat the sequence number as a string and use the field name `id`, even though this is equivalent to the `seq` numeric field in the change event value `source` data we'll see below.
 
 To illustrate the structure of the key, we treat this Reaction as if it is a connector with the fixed logical name of `drasi`, with a query container in the `default` namespace, and using the `hello-world-from` Continuous Query results:
 
