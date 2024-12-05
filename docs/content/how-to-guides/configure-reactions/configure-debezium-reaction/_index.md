@@ -12,6 +12,26 @@ The Drasi Debezium Reaction connector generates a Debezium-compatible data chang
 
 While Debezium doesn't spell out a specification for the structure of the data change events, the existing implementations do adhere to a roughly common structure: because Debezium expects the structure of the events to potentially change over time, it supports encapsulating the schema of the key and value in the event itself to make each event self-contained. The events produced by this Reaction a should be analogous to the data change events produced by similar Debezium Connectors, which can be used as a reference model and more detailed commentary. For example, refer to the [Vitess events](https://debezium.io/documentation/reference/2.1/connectors/vitess.html#vitess-events).
 
+
+
+{{% alert title="Note" color="warning" %}}
+Note that unlike other connectors, the Drasi Debezium Reaction doesn't inherit type information from the underlying data sources (e.g. SQL, MongoDB, etc.). Instead, it infers the type information from the Continuous Query result JSON, representing the schema. This means that the type information in the event is not necessarily the same as the type information in the underlying data source, and are limited to the 6 broad JSON types:
+
+- `string`
+- `number`
+- `boolean`
+- `null`
+- `object`
+- `array`
+This is one area where it potentially breaks compatibility with Debezium because the type information associated with the event schemas are expected to be Kafka Connect types, not JSON types. This will need to be addressed in the future.
+
+Types used elsewhere in the schema definitions, such as for the Drasi `source` adhere to Kafka Connect types, with most of them being strings and several fields called out as `Int64`:
+
+- `payload.source.seq`: The sequence number of the query result containing the change event.
+- `payload.source.ts_ms`: The time that the query result containing the change event was published in ms.
+- `payload.ts_ms`: The time that the change event was processed by the Drasi Reaction in ms.
+{{% /alert %}}
+
 ## Requirements
 On the computer from where you will create the Drasi Debezium Reaction, you need to install the following software:
 - [Drasi CLI](/reference/command-line-interface/) 
@@ -284,25 +304,6 @@ Continuing the example of this Reaction as a connector with the fixed logical na
 |8|`source`|Mandatory field that describes the source metadata for the event. This field contains information that you can use to compare this event with other events, with regard to the origin of the events, the order in which the events occurred, and whether events were part of the same transaction. The source metadata includes:<ul><li>Drasi version.</li><li>Name of Drasi Reaction "connector" that generated the event (i.e. always "drasi").</li><li>Timestamp for when the query was complete and the result published in ms.</li><li>Unique sequence number for the result.</li></ul>
 |9|`op`|Mandatory string that describes the type of operation that caused the connector to generate the event. In this example, `u` indicates that the operation is _updated_ so the value is one of the Continuous Query `updatedResults`. Valid values are:<ul><li>`c` = create</li><li>`u` = update</li><li>`d` = delete</li></ul>
 |9|`ts_ms`|Optional field that displays the time at which the Drasi Debezium Reaction processed the event. The time is based on the system clock in running in the Reaction reported in ms. Note that the current implementation always fills in a value here despite it being schematically optional.<br/>In the `source` object, `ts_ms` indicates the time that the query result was published. By comparing the value for `payload.source.ts_ms` with the value for `payload.ts_ms`, you can determine the lag between the query result and the Reaction's handling of it.
-
-### Data type mappings
-
-Note that unlike other connectors, the Drasi Debezium Reaction doesn't inherit type information from the underlying data sources (e.g. SQL, MongoDB, etc.). Instead, it infers the type information from the Continuous Query result JSON, representing the schema. This means that the type information in the event is not necessarily the same as the type information in the underlying data source, and are limited to the 6 broad JSON types:
-
-- `string`
-- `number`
-- `boolean`
-- `null`
-- `object`
-- `array`
-
-> ⚠️ This is one area where it potentially breaks compatibility with Debezium because the type information associated with the event schemas are expected to be Kafka Connect types, not JSON types. This will need to be addressed in the future.
-
-Types used elsewhere in the schema definitions, such as for the Drasi `source` adhere to Kafka Connect types, with most of them being strings and several fields called out as `Int64`:
-
-- `payload.source.seq`: The sequence number of the query result containing the change event.
-- `payload.source.ts_ms`: The time that the query result containing the change event was published in ms.
-- `payload.ts_ms`: The time that the change event was processed by the Drasi Reaction in ms.
 
 ### Testing the Reaction
 Please navigate this [link](https://github.com/drasi-project/drasi-platform/tree/main/reactions/debezium/debezium-reaction#deployment-and-testing) for guidance on how to test the Debezium Reaction.
