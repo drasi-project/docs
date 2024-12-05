@@ -10,7 +10,7 @@ description: >
 The Drasi Debezium Reaction connector generates a Debezium-compatible data change event for each Added, Updated, or Removed in a Drasi result for a given Continuous Query. Each event contains a value and optionally a key, with the structure of both depends on the result returned by the Continuous Query.
 
 
-While Debezium doesn't spell out a specification for the structure of the data change events, the existing implementations do adhere to a roughly common structure: because Debezium expects the structure of the events to potentially change over time, it supports encapsulating the schema of the key and value in the event itself to make each event self-contained. The events produced by this Reaction a should be analogous to the data change events produced by similar Debezium Connectors, which can be used as a reference model and more detailed commentary. For example, refer to the [Vitess events](https://debezium.io/documentation/reference/2.1/connectors/vitess.html#vitess-events).
+The events produced by this Reaction should be analogous to the data change events produced by similar Debezium Connectors, which can be used as a reference model and more detailed commentary.
 
 
 
