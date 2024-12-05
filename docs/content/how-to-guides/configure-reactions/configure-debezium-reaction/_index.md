@@ -15,6 +15,7 @@ The events produced by this Reaction should be analogous to the data change even
 
 
 {{% alert title="Note" color="warning" %}}
+Note that unlike other connectors, the Drasi Debezium Reaction doesn't inherit type information from the underlying data sources (e.g. SQL, MongoDB, etc.). Instead, it infers the type information from the Continuous Query result JSON, representing the schema.
 This means that the type information in the event is not necessarily the same as the type information in the underlying data source, and is limited to the 6 broad JSON types:
 
 - `string`
@@ -25,11 +26,6 @@ This means that the type information in the event is not necessarily the same as
 - `array`
 This is one area where it potentially breaks compatibility with Debezium because the type information associated with the event schemas are expected to be Kafka Connect types, not JSON types. This will need to be addressed in the future.
 
-Types used elsewhere in the schema definitions, such as for the Drasi `source` adhere to Kafka Connect types, with most of them being strings and several fields called out as `Int64`:
-
-- `payload.source.seq`: The sequence number of the query result containing the change event.
-- `payload.source.ts_ms`: The time that the query result containing the change event was published in ms.
-- `payload.ts_ms`: The time that the change event was processed by the Drasi Reaction in ms.
 {{% /alert %}}
 
 ## Requirements
@@ -295,6 +291,13 @@ Continuing the example of this Reaction as a connector with the fixed logical na
 |9|`op`|Mandatory string that describes the type of operation that caused the connector to generate the event. In this example, `u` indicates that the operation is _updated_ so the value is one of the Continuous Query `updatedResults`. Valid values are:<ul><li>`c` = create</li><li>`u` = update</li><li>`d` = delete</li></ul>
 |9|`ts_ms`|Optional field that displays the time at which the Drasi Debezium Reaction processed the event. The time is based on the system clock in running in the Reaction reported in ms. Note that the current implementation always fills in a value here despite it being schematically optional.<br/>In the `source` object, `ts_ms` indicates the time that the query result was published. By comparing the value for `payload.source.ts_ms` with the value for `payload.ts_ms`, you can determine the lag between the query result and the Reaction's handling of it.
 
+
+Notice that in `<2>`, the field types are JSON types instead of Kafka Connect types. Types used elsewhere in the schema definitions, such as for the Drasi `source` adhere to Kafka Connect types, with most of them being strings and several fields called out as `Int64`:
+
+- `payload.source.seq`: The sequence number of the query result containing the change event.
+- `payload.source.ts_ms`: The time that the query result containing the change event was published in ms.
+- `payload.ts_ms`: The time that the change event was processed by the Drasi Reaction in ms.
+- 
 ### Testing the Reaction
 Please navigate this [link](https://github.com/drasi-project/drasi-platform/tree/main/reactions/debezium/debezium-reaction#deployment-and-testing) for guidance on how to test the Debezium Reaction.
 
