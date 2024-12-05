@@ -582,7 +582,7 @@ drasi watch inactive-people
 ```
 
 **Output**:
-When running the `watch` command for a query, the output is a table of the continuously updated result set. Here is an example of that shows the result set of the `inactive-people` query.
+When running the `watch` command for a query, the output is a table of the continuously updated result set. Here is an example that shows the result set of the `inactive-people` query.
 
 ```
 LastMessageTimestamp  | MessageFrom
