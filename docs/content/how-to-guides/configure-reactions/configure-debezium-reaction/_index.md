@@ -236,16 +236,6 @@ Continuing the example of this Reaction as a connector with the fixed logical na
                         "optional": false
                     },
                     {
-                        "field": "container",
-                        "type": "string",
-                        "optional": false
-                    },
-                    {
-                        "field": "hostname",
-                        "type": "string",
-                        "optional": false
-                    },
-                    {
                         "field": "ts_ms",
                         "type": "int64",
                         "optional": false
