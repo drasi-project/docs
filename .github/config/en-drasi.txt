@@ -69,3 +69,5 @@ mysql
 mssql
 creds
 storedproc
+includeKey
+includeSchemas
