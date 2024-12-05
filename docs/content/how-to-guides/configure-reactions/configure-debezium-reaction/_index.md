@@ -15,7 +15,7 @@ The events produced by this Reaction should be analogous to the data change even
 
 
 {{% alert title="Note" color="warning" %}}
-Note that unlike other connectors, the Drasi Debezium Reaction doesn't inherit type information from the underlying data sources (e.g. SQL, MongoDB, etc.). Instead, it infers the type information from the Continuous Query result JSON, representing the schema. This means that the type information in the event is not necessarily the same as the type information in the underlying data source, and are limited to the 6 broad JSON types:
+This means that the type information in the event is not necessarily the same as the type information in the underlying data source, and is limited to the 6 broad JSON types:
 
 - `string`
 - `number`
