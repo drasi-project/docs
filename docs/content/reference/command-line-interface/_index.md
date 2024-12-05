@@ -575,7 +575,7 @@ drasi wait -f drasi-resources.yaml -t 20
 -  `-h|--help`: Display help for the `watch` command.
 
 **Usage Example**:
-The following command will start watching a query result set of a Continuous Query named `inactive-people` in the current default namespace.
+The following command will start watching the query result set of a Continuous Query named `inactive-people` in the current default namespace.
 
 ```
 drasi watch inactive-people
