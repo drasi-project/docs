@@ -114,7 +114,7 @@ The following skeleton JSON shows the basic format of a standard Debezium change
 | Item | Field | Description
 | --- | --- |---
 |1|`payload`|The payload contains the data from the change event value. 
-|2|`before` |An optional field that specifies the state of the document before the event occurred. If the `op` field is set to `c`, the `before` field will be set to `null` as the opreation is _created_.
+|2|`before` |An optional field that specifies the state of the document before the event occurred. If the `op` field is set to `c`, the `before` field will be set to `null` as the operation is _created_.
 |3|`after`|An optional field that specifies the state of the document before the event occurred. If the `op` field is set to `d`, the `after` field will be set to `null` as the operation is _deleted_.
 |4|`source`|Mandatory field that describes the source metadata for the event. This field contains information that you can use to compare this event with other events, with regard to the origin of the events, the order in which the events occurred, and whether events were part of the same transaction. The source metadata includes:<ul><li>Drasi version.</li><li>Name of Drasi Reaction "connector" that generated the event (i.e. always "drasi").</li><li>Timestamp for when the query was complete and the result published in ms.</li><li>Unique sequence number for the result.</li></ul>
 |5|`op`|Mandatory string that describes the type of operation that caused the connector to generate the event. In this example, `c` indicates that the operation is _created_ so the value is one of the Continuous Query `addedResults`. Valid values are:<ul><li>`c` = create</li><li>`u` = update</li><li>`d` = delete</li></ul>
