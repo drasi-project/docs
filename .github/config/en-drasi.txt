@@ -69,3 +69,13 @@ mysql
 mssql
 creds
 storedproc
+storageProfile
+MicrosoftEntraWorkloadID
+dotnet
+environmentcredential
+MicrosoftEntraApplication
+tenantId
+NGINX
+Balancers
+ResultSet
+Vue
