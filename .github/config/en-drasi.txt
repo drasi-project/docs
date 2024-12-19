@@ -70,7 +70,6 @@ mssql
 creds
 storedproc
 storageProfile
-MicrosoftEntraWorkloadID
 dotnet
 environmentcredential
 MicrosoftEntraApplication
@@ -79,3 +78,8 @@ NGINX
 Balancers
 ResultSet
 Vue
+MicrosoftEntraWorkloadID
+enqueued
+queueName
+StorageQueue
+enqueues
