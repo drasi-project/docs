@@ -27,13 +27,11 @@ The Drasi VS Code extension is available for download and installation from the 
 
 Once the extension is installed, the `Drasi Explorer` view will be visible in the Extension view of the VS IDE.
 
-{{< figure src="InstalledDrasiExtetnsion.png" alt="Drasi Extension in VS Code Extension Bar" >}}
+{{< figure src="InstalledDrasiExtension.png" alt="Drasi Extension in VS Code Extension Bar" >}}
 
 ## Managing resources with Drasi Explorer
 
 The extension scans your workspace directory for YAML files that contain Drasi resources (Sources, Continuous Queries, and Reactions) and displays them in the Workspace tab.
-
-{{< figure src="InstalledDrasiExtetnsion.png" alt="Drasi Extension in VS Code Extension Bar" >}}
 
 ### Applying resources
 Resources can be created in your Drasi environment using the Apply option available in the Workspace tab.
@@ -47,17 +45,17 @@ The Drasi Explorer displays the current availability status of resources with vi
 ### Deleting Drasi resources
  The delete capability of the Drasi Explorer allows you to remove resources from the Drasi environment. Click on the “Delete” icon for this.
 
-{{< figure src="DeleteResource.png" alt="Drasi Extension in VS Code Extension Bar" >}}
+{{< figure src="DeleteResource.png" alt="Delete a resource" >}}
 
 ## Testing Continuous Queries
 
 ### Debugging Continuous Queries
 Continuous Queries in your workspace can be validated prior to creating them in your environment using the Debug option.
 
-{{< figure src="DebugQuery.png" alt="Drasi Extension in VS Code Extension Bar" >}}
+{{< figure src="DebugQuery.png" alt="Debug a Continuous Query" >}}
 
 ### Attach a Continuous Query 
 
 An important capability of the Drasi Explorer is its ability to attach a deployed query and display real-time updates for it. The result set automatically updates when new data arrives and can be viewed within VS Code in dedicated panel. Choose the Attach option for this.
 
-{{< figure src="AttachQuery.png" alt="Drasi Extension in VS Code Extension Bar" >}}
+{{< figure src="AttachQuery.png" alt="Attach a Continuous Query to watch result set" >}}
