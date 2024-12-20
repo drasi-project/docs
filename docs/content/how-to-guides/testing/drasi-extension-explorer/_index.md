@@ -38,9 +38,11 @@ The extension scans your workspace directory for YAML files that contain Drasi r
 ### Applying resources
 Resources can be created in your Drasi environment using the Apply option available in the Workspace tab.
 
+{{< figure src="ApplyResource.png" alt="Creating resources in Drasi with the Apply option" >}}
+
 The Drasi Explorer displays the current availability status of resources with visual indicators. For example, the hello-world Source shows as unavailable with a red icon in the picture below.
 
-{{< figure src="ApplyResources.png" alt="Creating resources in Drasi with the Apply option" >}}
+{{< figure src="ResourceStatus.png" alt="Availabilty status of resources in Drasi with visual indicator" >}}
 
 ### Deleting Drasi resources
  The delete capability of the Drasi Explorer allows you to remove resources from the Drasi environment. Click on the “Delete” icon for this.
