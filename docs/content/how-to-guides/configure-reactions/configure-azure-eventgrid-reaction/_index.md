@@ -7,7 +7,7 @@ description: >
     Learn how to configure an Azure Event Grid Reaction
 ---
 
-The Azure Event Grid Reaction generates [CloudEvents](https://cloudevents.io/) and pubslishes them to an Azure Event Grid Topic. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
+The Azure Event Grid Reaction generates [CloudEvents](https://cloudevents.io/) and publishes them to an Azure Event Grid Topic. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
 
 
 NOTE: The Azure Event Grid Reaction is only compatible with Event Grid Topics that use `CloudEventSchemaV1_0` as the input schema.
@@ -16,6 +16,7 @@ NOTE: The Azure Event Grid Reaction is only compatible with Event Grid Topics th
 On the computer from where you will create the Reaction, you need the following software:
 - [Drasi CLI](/reference/command-line-interface/) 
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
+- [Kubectl](https://kubernetes.io/docs/reference/kubectl/) (If creating Kubernetes secrets)
 
 ## Creating the Reaction
 To create a Reaction, execute the `drasi apply` command as follows:
