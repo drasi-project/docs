@@ -236,7 +236,7 @@ GET http://localhost:<servicePort>/<queryId>/<timestamp>
 |-|-|
 |servicePort|The port on your local machine that was forwarded earlier|
 |queryId|The id of the Continuous Query you are interested in|
-|timestamp| The timestamp to retrieve the result set from|
+|timestamp|The timestamp to retrieve the result set from. The timestamp should be provided in milliseconds since the Unix epoch.|
 
 #### Returned Output
 The output from this GET Request will be an array of JSON elements. The first element will contain the header information, and the remaining elements will be JSON objects with a "data" key.
@@ -298,7 +298,7 @@ GET http://localhost:<servicePort>/<queryId>/<timestamp>/data
 |-|-|
 |servicePort|The port on your local machine that was forwarded earlier|
 |queryId|The id of the Continuous Query you are interested in|
-|timestamp| The timestamp to retrieve the result set from|
+|timestamp| The timestamp to retrieve the result set from. The timestamp should be provided in milliseconds since the Unix epoch|
 
 
 #### Returned Output
