@@ -69,6 +69,10 @@ mysql
 mssql
 creds
 storedproc
+gremlinHost
+gremlinPassword
+gremlinPort
+gremlinUsername
 storageProfile
 dotnet
 environmentcredential
@@ -83,3 +87,4 @@ enqueued
 queueName
 StorageQueue
 enqueues
+
