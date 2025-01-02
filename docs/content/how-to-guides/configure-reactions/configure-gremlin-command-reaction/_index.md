@@ -39,7 +39,7 @@ spec:
     query1:
   properties: 
     addedResultCommand: g.addV('Hello-world-from').property('MessageId', @MessageId).property('name',@MessageFrom)
-    updatedResultCommand: g.V()
+    updatedResultCommand: g.addV('Vehicles').property('Id', @before.VehicleId).property('orders',@Orders)
     deletedResultCommand: g.V().has('MessageId', @MessageId).drop()
     gremlinHost: <hostname>
     gremlinPassword: <password>
@@ -59,13 +59,15 @@ This table describes the other settings in the **spec** section of the Reaction 
 |queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to. Note that the each Gremlin Command Reaction should only subscribe to one Continuous Query|
 | properties.addedResultCommand | The Gremlin command to execute when the Reaction receives an `addedResult` |
 | properties.updatedResultCommand | The Gremlin command to execute when the Reaction receives an `updatedResult` |
-| properties.deletedResultCommand | The Gremlin command to execute when the Reaction receives a `deletedResult` |
+| properties.deletedResultCommand | The Gremlin command to execute when the Reaction receives a `deletedResult`|
 | properties.gremlinHost | Hostname of the gremlin server (required) |
 | properties.gremlinPort | Port of the gremlin server (required) |
 | properties.gremlinPassword | Password for connecting to the gremlin server |
 | properties.gremlinUsername | Username for connecting to the gremlin server. If you are using Cosmos Gremlin, the username should follow this format: `/dbs/<database>/colls/<collection or graphs>`. See this [link](https://learn.microsoft.com/en-us/azure/service-connector/how-to-integrate-cosmos-gremlin?tabs=dotnet#system-assigned-managed-identity) for more details. |
 
-Note: When defining the Gremlin commands, add @ before any parameter name to use a query’s return value as the parameter.
+**Note**: When defining the Gremlin commands, add @ before any parameter name to use a query’s return value as the parameter.
+
+For the `updatedResultCommand` field, if the parameter has the prefix `before.`, the value from the result set **before** the change will be used. If the parameter has the `after.` prefix, the value from the result set **after** the change will be used. By default, the result set after the change will be used. In this example, the parameter `VehicleId` will use the value from the **before** result set, whereas the parameter `Orders` will use the **after** result set
 
 #### Secret Configuration
 It is best practice to store private credentials for your database in a Kubernetes secret, which can be created using `kubectl`. The example below creates a Secret with the name `gremlin-creds`, containing one key called `password` in the `drasi-system` namespace.
@@ -84,9 +86,9 @@ spec:
   queries:
     query1:
   properties: 
-    addedResultCommand: g.addV('Hello-world-from').property('MessageId', @MessageId).property('name',@MessageFrom) # Replace with the actual Gremlin command
-    updatedResultCommand: g.V()  # Replace with the actual Gremlin command
-    deletedResultCommand: g.V().has('MessageId', @MessageId).drop()   # Replace with the actual Gremlin command
+    addedResultCommand: g.addV('Hello-world-from').property('MessageId', @MessageId).property('name',@MessageFrom) 
+    updatedResultCommand: g.V()  
+    deletedResultCommand: g.V().has('MessageId', @MessageId).drop() 
     gremlinHost: <hostname>
     gremlinPassword: 
         kind: Secret
