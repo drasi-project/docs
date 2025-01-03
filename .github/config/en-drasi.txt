@@ -85,4 +85,5 @@ enqueued
 queueName
 StorageQueue
 enqueues
-
+saslPassword
+saslUsername
