@@ -69,6 +69,8 @@ mysql
 mssql
 creds
 storedproc
+includeKey
+includeSchemas
 storageProfile
 dotnet
 environmentcredential
@@ -83,3 +85,5 @@ enqueued
 queueName
 StorageQueue
 enqueues
+saslPassword
+saslUsername
