@@ -83,3 +83,7 @@ enqueued
 queueName
 StorageQueue
 enqueues
+CloudEvent
+CloudEvents
+eventGridKey
+eventGridUri
