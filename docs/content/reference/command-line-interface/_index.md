@@ -85,6 +85,7 @@ Available Commands:
   uninstall   Uninstall Drasi
   version     Get Drasi CLI version
   wait        Wait for resources to be ready
+  watch       Watch the result set of a query
 
 Flags:
   -h, --help               help for drasi
@@ -292,12 +293,12 @@ In the above example, the `inactive-people` resource is currently in an error st
 **Purpose**: The `init` command is used to install a Drasi environment to the Kubernetes cluster that is the **current context** in `kubectl` ([see above](#target-the-drasi-environment)). By default, the Drasi environment will be installed into the `drasi-system` namespace, but this can be overridden as described below.
 
 **Flags and Arguments**:
-- `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
-- `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
-- `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
-- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
-- `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
-- `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version) command discussed below.
+- `--dapr-runtime-version <version>` (optional): Specifies the Dapr runtime version to install. The default value is "1.10.0".
+- `--dapr-sidecar-version <version>` (optional): Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
+- `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `-n|--namespace <namespace>` (optional): Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
+- `--registry <registry>` (optional): Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
+- `--version <tag>` (optional): Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version) command discussed below.
 - `-h|--help`: Display help for the `init` command.
 
 **Usage Example**:
@@ -534,6 +535,7 @@ The output of the command will look like this:
 Drasi CLI version: latest
 ```
 
+
 ### drasi wait
 **Purpose**: The `wait` command waits for one or more resources to become operational, or for a timeout interval to be reached. As mentioned in the [apply command](#drasi-apply) section, the `apply` command returns as soon as a resource definition is validated and registered as part of the Drasi configuration; it returns without confirming that the new resource is successfully deployed and ready without error. That is the purpose of the `wait` command.
 
@@ -564,7 +566,30 @@ The following command will also wait on **all** the resources defined in the `dr
 ```
 drasi wait -f drasi-resources.yaml -t 20
 ```
+### drasi watch
+**Purpose**: The `watch` command allows users to continuously monitor the result set of a specified query in real-time.
 
+**Arguments and Flags**:
+- `query name` : This argument specifies the name of the query to watch.
+-  `-n| --namespace <namspace>`:   Specifies the namespace where the resources to be described are hosted. If not provided, the default namespace configured using the `drasi namespace set` command is used.
+-  `-h|--help`: Display help for the `watch` command.
+
+**Usage Example**:
+The following command will start watching the query result set of a Continuous Query named `inactive-people` in the current default namespace.
+
+```
+drasi watch inactive-people
+```
+
+**Output**:
+When the `watch` command for a query is running, a continuously updated result set table is displayed. Here is an example that shows the result set of the `inactive-people` query.
+
+```
+LastMessageTimestamp  | MessageFrom
+----------------------+------------
+2024-11-12 18:47:03.. | Buzz Lightyear
+2024-11-13 15:45:08.. | Brian Kernighan
+```
 ## Drasi CLI Source
 The Drasi CLI is written in Go. If you want to explore how the Drasi CLI works, the source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
 
