@@ -37,6 +37,8 @@ spec:
   properties:
     brokers: <kafka-broker>
     topic: <kafka-topic>
+    saslUsername: <username>
+    saslPassword: <password>
 ```
 
 In this definition: 
@@ -51,6 +53,8 @@ This table describes the other settings in the **spec** section of the Reaction 
 |`queries`| The list of continuous queries you would like the Debezium Reaction to listen to and publish change events for.
 |`properties.brokers`| The Kafka broker to write to, for example `test-kakfa:9092` which is the name of the server set up by applying the `test-kafka.yaml` file.
 |`properties.topic`| The name of the Kafka topic to write to, for example `my-kafka-topic`.
+|`properties.saslUsername`| The username for authenticating with a password-protected Kafka broker. Optional, but required if `saslPassword` is set.
+|`properties.saslPassword`| The password for authenticating with a password-protected Kafka broker. Optional, but required if `saslUsername` is set.
 
 
 ## Inspecting the Reaction
