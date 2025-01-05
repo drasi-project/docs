@@ -596,7 +596,7 @@ Your dev container has Drasi already installed and setup.
 {{% /tab %}}
 {{% tab header="Local Setup" text=true %}}
 
-Ensure that your `kubectl` points to your target Kubernetes cluste.
+Ensure that your `kubectl` points to your target Kubernetes cluster.
 
 Install Drasi using [the instructions here](https://drasi.io/how-to-guides/installation).
 
