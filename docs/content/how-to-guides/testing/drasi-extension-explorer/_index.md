@@ -21,7 +21,7 @@ The Drasi Visual Studio Code extension integrates with the Drasi platform, enabl
 
 The Drasi VS Code extension is available for download and installation from the Visual Studio Marketplace. You can search for the Drasi extension and install it from within VS Code. Bring up the Extensions view by clicking on the Extensions icon in the Activity Bar on the side of VS Code or the View: Extensions command (⇧⌘X for Mac and Ctrl+Shift+X for Windows, Linux).
 
-{{< figure src="DrasiExtetnsion.png" alt="Drasi Extension in the VS Marketplace" >}}
+{{< figure src="DrasiExtension.png" alt="Drasi Extension in the VS Marketplace" >}}
 
 Once the extension is installed, the `Drasi Explorer` view will be visible in the Extension view of the VS IDE.
 
