@@ -87,3 +87,7 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+ReactJS
+VueJS
+frontends
+sortBy
