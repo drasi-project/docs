@@ -69,6 +69,10 @@ mysql
 mssql
 creds
 storedproc
+gremlinHost
+gremlinPassword
+gremlinPort
+gremlinUsername
 includeKey
 includeSchemas
 storageProfile
