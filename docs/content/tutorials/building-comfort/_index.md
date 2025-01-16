@@ -955,7 +955,7 @@ No extra step should be needed if you are going to run the realtime dashboard
 ### Realtime Dashboard
 
 With the SignalR hub available we can write a reactive dashboard with ease. We
-  are able to receive all changelog events from the datasource in any frontend
+  are able to receive all changelog events from the data source in any frontend
   application.
 
 The [signalR-react package for Drasi](https://www.npmjs.com/package/@drasi/signalr-react)
@@ -1132,7 +1132,7 @@ file:///<path-to-learning-repo>/apps/building-comfort/index.html
 {{% /tab %}}
 {{% /tabpane %}}
 
-You should now be able to see this UI for playing with the reactive dashbaord:
+You should now be able to see this UI for playing with the reactive dashboard:
 
 {{< figure src="Screenshot_ReactivenessPortal.png" alt="Screenshot showing the reactiveness portal" width="80%" >}}
 

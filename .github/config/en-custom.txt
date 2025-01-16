@@ -1449,3 +1449,5 @@ OpenPortInBrowser
 DevContainer
 ServerSentEvents
 OpenLiveServer
+vue
+frontends
