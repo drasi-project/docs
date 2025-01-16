@@ -87,3 +87,7 @@ StorageQueue
 enqueues
 saslPassword
 saslUsername
+CloudEvent
+CloudEvents
+eventGridKey
+eventGridUri
