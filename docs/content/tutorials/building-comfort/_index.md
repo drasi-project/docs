@@ -255,7 +255,7 @@ To follow along with a Dev Container, you will need to install:
 - [docker](https://www.docker.com/get-started/)
 
 Next, [clone the learning repo from Github](https://github.com/drasi-project/learning),
-  and open the repo in VS Code. Make sure that Docker deamon
+  and open the repo in VS Code. Make sure that Docker daemon
   (or Docker Desktop) is running.
 
 Once the solution is open in VS Code, follow these steps:
@@ -532,7 +532,7 @@ When the front end launches, you should see a pop up on the bottom right corner
 
 {{< figure src="Screenshot_OpenPortInBrowser.png" alt="Screenshot showing how to open frontend in browser." width="50%" >}}
 
-Click on the button to open it in brower.
+Click on the button to open it in browser.
 
 If you're unable to access the frontend, check the port at which frontend is
   running. You can also open URL from the PORTS tab in the codespace. If the
@@ -663,7 +663,7 @@ You can expect the following response:
 ```
 
 Sources may take a few moments to initialize. You can use the following
-  convenient command to wait for it (upto 120 seconds) to come up:
+  convenient command to wait for it (up to 120 seconds) to come up:
 
 ```sh
 drasi wait source building-facilities -t 120
@@ -871,7 +871,7 @@ You can expect the following response:
 ```
 
 Note that reactions might take some time to come up. You can use the following
-  convenient command to wait for it (upto 120 seconds) to come up:
+  convenient command to wait for it (up to 120 seconds) to come up:
 
 ```sh
 drasi wait reaction building-signalr-hub -t 120
