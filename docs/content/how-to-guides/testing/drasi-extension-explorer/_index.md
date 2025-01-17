@@ -40,7 +40,7 @@ Resources can be created in your Drasi environment using the Apply option availa
 
 The Drasi Explorer displays the current availability status of resources with visual indicators. For example, the hello-world Source shows as unavailable with a red icon in the picture below.
 
-{{< figure src="ResourceStatus.png" alt="Availabilty status of resources in Drasi with visual indicator" >}}
+{{< figure src="ResourceStatus.png" alt="Availability status of resources in Drasi with visual indicator" >}}
 
 #### Deleting Drasi resources
  The delete capability of the Drasi Explorer allows you to remove resources from the Drasi environment. Click on the “Delete” icon for this.
