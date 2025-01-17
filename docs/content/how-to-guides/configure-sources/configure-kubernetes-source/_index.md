@@ -117,7 +117,7 @@ Graphs nodes will be created for the following resources:
 
 The properties of these nodes will be populated with the properties of the corresponding Kubernetes resources. For more information on the properties of these resources, see the [Kubernetes API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) or the [Kubernetes API Explorer](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/)..
 
-In addtion to these nodes, any resources that are owned by a parent resource will be linked to their parent with a relation labeled `OWNS`. For example, Pods will be linked to their parent Deployment or ReplicaSet.
+In addition to these nodes, any resources that are owned by a parent resource will be linked to their parent with a relation labeled `OWNS`. For example, Pods will be linked to their parent Deployment or ReplicaSet.
 
 For example, your could query all Pods owned by a Deployment with the following Cypher query:
 
