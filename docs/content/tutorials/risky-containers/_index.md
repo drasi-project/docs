@@ -11,6 +11,10 @@ description: >
 
 In this tutorial, we will connect a a PostgreSQL source with a Kubernetes source in order to create a Continuous Query that will join the two together.  The PostgreSQL table will hold a list of container image tags that are considered high risk, and the query will join this table to the live Pods running in a Kubernetes cluster to create a real-time dashboard of running containers with an image tag that is marked as risky.
 
+<video width="600" height="350" controls>
+  <source src="walk-through.mp4" type="video/mp4">
+</video>
+
 ### Tutorial Modes
 
 You can follow along the steps below in a Github codespace, a VSCode Dev Container or your own Kubernetes environment.
@@ -255,8 +259,12 @@ drasi apply -f ./resources/queries.yaml
 ```
 
 The VS Code extension Drasi explorer can be used to attach to the query to monitor it in realtime.
+> You may need to click the refresh button in the top right corner to see the newly created query.
 
-{{< figure src="attach-query.png" >}}
+<video width="842" height="344" autoplay loop>
+  <source src="attach-query.mov" type="video/mp4">
+  {{< figure src="attach-query.png" >}}
+</video>
 
 You should see the current result set of the query which lists **my-app:0.1** as a **Security Risk**
 
@@ -289,4 +297,5 @@ Next, we will use **kubectl** to upgrade the Pod from version `0.2` to `0.3`, wh
 kubectl set image pod/my-app-2 app=drasidemo.azurecr.io/my-app:0.3
 ```
 
-> It may take a few seconds for Kubernetes to tear down the old Pod and bring up the new one, once it does you will see the second row disappear from the query result set.
+> It may take more than ten seconds for Kubernetes to tear down the old Pod and bring up the new one, once it does you will see the second row disappear from the query result set.
+
