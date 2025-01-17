@@ -38,7 +38,7 @@ It takes a URL that points to the SignalR hub, a queryId that identifies the que
 </table>
 ```
 
-Opeb a terminal and navigate to the `02-connect-frontends/vue` directory and install the required packages.
+Open a terminal and navigate to the `02-connect-frontends/vue` directory and install the required packages.
 
 ```shell
 cd 02-connect-frontends/vue
