@@ -87,3 +87,6 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+drasidemo
+middleware
+RiskyImage
