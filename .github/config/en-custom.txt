@@ -1453,3 +1453,7 @@ ServerSentEvents
 OpenLiveServer
 vue
 frontends
+EventBridge
+amazonaws
+sts
+EventBus
