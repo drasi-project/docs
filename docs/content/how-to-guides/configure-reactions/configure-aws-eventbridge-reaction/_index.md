@@ -38,7 +38,7 @@ The YAML file passed to `drasi apply` can contain one or more Reaction definitio
 
 1. Create an [OIDC provider](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html) for your EKS cluster.
 2. Create and assign IAM roles to a Kubernetes service account.
-   1. Navigate to the IAM service in the AWS Management COnsole
+   1. Navigate to the IAM service in the AWS Management Console
    2. In the left sidebar, click on Roles and then Create role.
    3. Select **Web identity** as the trusted entity type. Choose the OIDC provider associated with your EKS cluster.
    4. Under **Audience**, select the sts.amazonaws.com option.
