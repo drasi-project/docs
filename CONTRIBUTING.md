@@ -43,7 +43,7 @@ To run the spellchecker locally:
     ```bash
     pip install pyspelling
     ```
-3. From the root of this repository, excute the following command:
+3. Run the following command from the root of this repository:
    ```bash
    pyspelling --config .github/config/.pyspelling.yml -n Markdown 
    ```
