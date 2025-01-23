@@ -68,4 +68,5 @@ psql
 INSERT INTO public."Message" VALUES (101, 'VueJS', 'Hello World');
 ```
 
+Upon inserting the new row into the database table, the Vue page should reflect the changes like shown in the screenshot below:
 {{< figure src="after.png" width="50%" >}}
