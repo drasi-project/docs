@@ -70,4 +70,6 @@ psql
 INSERT INTO public."Message" VALUES (101, 'ReactJS', 'Hello World');
 ```
 
+Upon inserting the new row into the database table, the React page should reflect the changes like shown in the screenshot below:
+
 {{< figure src="after.png" width="50%" >}}
