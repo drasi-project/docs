@@ -249,7 +249,7 @@ The configuration settings in the **spec.sources.subscriptions** section of the 
 - Within each Source, define the Labels of the Nodes and Relations that the the Continuous Query expects from that Source. If you do not map a Node/Relation Label used in the query to a specific Source, it is assumed to come from the first Source configured. 
 - For each Node and Relation, create a mapping between the Label name used in the Source data and the Label name used in the Query. This allows you to write queries independent of the Label/Type names used in the source data, easily use the same Query against multiple sources, and deal with the name collisions across Sources.
 - For each Node and Relation, you also have the ability to disable element level caching. This can be useful when processing append only logs where the main element being processed (i.e. the log record) will never change once created, and will not be referenced in query future query results. 
-- Define a chain of middleware that will process all incoming changes for a given source. The detailed configuration for each middleware is located in **spec.sources.middleware**. The pipeline of middleware for a specific source is located at **spec.sources.subscriptions.pipeline**, which references the middlewares defined for the overall query.
+- Define a chain of middleware that will process all incoming changes for a given source. The middlewares will be executed in the order they are listed in the `pipeline`. The detailed configuration for each middleware is located in **spec.sources.middleware**. The pipeline of middleware for a specific source is located at **spec.sources.subscriptions.pipeline**, which references the middlewares defined for the overall query.
 
 #### Joins
 
