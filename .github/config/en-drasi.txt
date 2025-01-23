@@ -95,6 +95,10 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+ReactJS
+VueJS
+frontends
+sortBy
 DrasiExtension
 InstalledDrasiExtension
 ApplyResource
