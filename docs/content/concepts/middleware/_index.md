@@ -121,7 +121,7 @@ The configuration for mapping an element is as follows
 | Property | Description |
 | - | - |
 | selector | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the part of the payload to use for the new mapped element.  |
-| op | To operation to apply to the mapped element, Insert/Update/Delete |
+| op | The operation to apply to the mapped element, Insert/Update/Delete |
 | label | The label of the new mapped element. |
 | id | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the value to use for the unique identity of the new mapped element. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression |
 | properties | A map of JSONPath expressions. Each key will be a property name on the new element, with the value coming from the JSONPath expression. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression. |
