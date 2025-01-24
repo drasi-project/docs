@@ -95,6 +95,10 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+ReactJS
+VueJS
+frontends
+sortBy
 DrasiExtension
 InstalledDrasiExtension
 ApplyResource
@@ -113,3 +117,6 @@ Reactiveness
 ShowReactiveness
 ReactivenessPortal
 SignalRHub
+Kube
+ReplicaSet
+middleware
