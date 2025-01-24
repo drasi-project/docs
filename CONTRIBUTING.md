@@ -31,6 +31,23 @@ $ git commit -s -m 'This is my commit message'
 
 Visual Studio Code has a setting, `git.alwaysSignOff` to automatically add a Signed-off-by line to commit messages. Search for "sign-off" in VS Code settings to find it and enable it.
 
+## Running the spellchecker locally
+The docs repository has a GitHub Actions workflow that uses [`pyspelling`](https://facelessuser.github.io/pyspelling/) to check for spelling mistakes. Passing this check is required for all PRs.
+
+To run the spellchecker locally:
+1. Install `aspell`
+   ```bash
+   brew install aspell
+   ```
+2. Install `pyspelling`
+    ```bash
+    pip install pyspelling
+    ```
+3. Run the following command from the root of this repository:
+   ```bash
+   pyspelling --config .github/config/.pyspelling.yml -n Markdown 
+   ```
+
 ## Code of conduct
 
 This project has adopted the [Contributor Covenant](http://contributor-covenant.org/).
