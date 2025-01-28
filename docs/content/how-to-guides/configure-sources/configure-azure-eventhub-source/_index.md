@@ -124,7 +124,7 @@ spec:
 1. Take note of the `Issuer URL` under OIDC.
 1. Create or use an existing `User Assigned Managed Identity`.
 1. Take note of the `Client ID` an the `Overview` pane of the Managed Identity.
-1. Grant the `Storage Queue Data Contributor` role to the managed identity in the `Access Control (IAM)` pane of the storage account.
+1. Grant the `Azure Event Hubs Data Receiver` role to the managed identity in the `Access Control (IAM)` pane of the EventHub namespace.
 1. Create a federated credential between the managed identity and the source.
     ```bash
     az identity federated-credential create \
