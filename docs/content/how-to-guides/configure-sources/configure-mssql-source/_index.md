@@ -18,7 +18,6 @@ The SQL Source translates the relational data from change events to more closely
 The SQL Server Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries) section for details. 
 
 
-
 ## Requirements
 On the computer from where you will create the Source, you need the following software:
 - Change data capture must be enabled on the database and each table you wish to observe.  See the documentation on [configuring SQL Server for CDC](./setup-sql-server).
@@ -76,7 +75,6 @@ The following table describes the SQL Server specific properties:
 |database|The name of the SQL database.|
 |encrypt|Does the server require a secure connection, valid values are "true" or "false".|
 |trustServerCertificate|This property is valid only when connecting to a SQL Server instance with a valid certificate. When it is set to true, the transport layer will use SSL to encrypt the channel and bypass walking the certificate chain to validate trust.|
-|authentication|The JDBC authentication type. Set this to `ActiveDirectoryDefault` for Azure Managed Identities.|
 |tables| An array of table names that the source should process changes for. Tables must be prefixed with their schema name.|
 
 
@@ -111,64 +109,6 @@ spec:
       - dbo.Table2
 ```
 
-### Identity
-
-The source supports the following service identities:
-
-#### Microsoft Entra Workload ID
-
-Microsoft Entra Workload Identity enables your source to authenticate to Azure without the need to store sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the service account the source is running against.
-
-| Property | Description |
-|-|-|
-| kind | MicrosoftEntraWorkloadID |
-| clientId | The Client ID of the user managed identity.|
-
-##### Example
-```yaml
-apiVersion: v1
-kind: Source
-name: my-source
-spec:
-  kind: SQLServer
-    identity:
-      kind: MicrosoftEntraWorkloadID
-      clientId: <Client ID of Managed Identity>
-  properties:
-    host: <SQL Server host name>
-    port: 1433
-    authentication: ActiveDirectoryDefault
-    database: database
-    tables:
-      - dbo.Table1
-      - dbo.Table2
-
-```
-##### AKS Setup
-1. On the Azure portal, navigate to the `Security configuration` pane of your AKS cluster.
-1. Ensure `Enable Workload Identity` is enabled.
-1. Take note of the `Issuer URL` under OIDC.
-1. Create or use an existing `User Assigned Managed Identity`.
-1. Take note of the `Client ID` an the `Overview` pane of the Managed Identity.
-1. Grant the `Storage Queue Data Contributor` role to the managed identity in the `Access Control (IAM)` pane of the storage account.
-1. Create a federated credential between the managed identity and the source.
-    ```bash
-    az identity federated-credential create \
-        --name <Give the federated credential a unique name> \
-        --identity-name "<Name of the User Assigned Managed Identity>" \
-        --resource-group "<Your Resource Group>" \
-        --issuer "<The Issuer URL from your AKS cluster OIDC configuration>" \
-        --subject system:serviceaccount:"drasi-system":"source.<Name of your Source>" \
-        --audience api://AzureADTokenExchange
-    ```
-
-##### Related links
-* [What are managed identities for Azure resources](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
-* [What are workload identities](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview)
-* [Azure AD Workload Identity Docs](https://azure.github.io/azure-workload-identity/docs/introduction.html)
-* [Deploy and configure workload identity on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster)
-* [Use Microsoft Entra Workload ID with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview)
-
 ## Inspecting the Source
 You can check the status of the Source using the `drasi list` command:
 ```text
@@ -180,23 +120,34 @@ This will return a simple list of all Sources in the current namespace and their
 --------------------+------------
   my-source         | true
 ```
+
 If an error has occurred during the creation or operation of a Source, the `AVAILABLE` column will contain the error text instead of `true` or `false`.
+
 For more details about the Source you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
+
 ```text
 drasi describe source my-source
 ```
+
 This will return the full definition used to create the Source along with more detailed status information.
 
 ## Modifying the Source
+
 To modify the Source, you can simply use the `drasi apply` command again with the same source name that you used before.
+
 ## Deleting the Source
+
 To delete a Source you use the `drasi delete` command. There are two ways to do this. 
 Firstly, you can specify the type of resource (Source) and its name, for example:
+
 ```text
 drasi delete source my-source
 ```
+
 Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Source(s):
+
 ```text
 drasi delete -f my-source.yaml <file2.yaml> <file3.yaml> <...>
 ```
+
 This is a convenience, especially if a single YAML file contains multiple Source definitions.
