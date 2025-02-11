@@ -98,6 +98,10 @@ eventGridUri
 drasidemo
 middleware
 RiskyImage
+ReactJS
+VueJS
+frontends
+sortBy
 DrasiExtension
 InstalledDrasiExtension
 ApplyResource
@@ -116,4 +120,9 @@ Reactiveness
 ShowReactiveness
 ReactivenessPortal
 SignalRHub
-
+middleware
+middlewares
+Preprocessing
+JSONPath
+Kube
+ReplicaSet
