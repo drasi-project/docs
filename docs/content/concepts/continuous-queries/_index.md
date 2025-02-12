@@ -174,7 +174,8 @@ kind: ContinuousQuery
 name: <continuous_query_id>
 spec:
   mode: <QUERY | filter>
-  indexType: <PERSISTED | memory>
+  container: <query_container_id>
+  storageProfile: <storage_profile_id>
   sources:    
     subscriptions:
       - id: <source_1_id>
@@ -188,6 +189,10 @@ spec:
             queryLabel: <source_1_rel_1_query_label>,
             suppressIndex: <true | FALSE>
           - ...
+        pipeline:
+          - middleware_1
+          - middleware_2
+          - ...
       - id: <source_2_id>
         nodes: ...
         relations: ...
@@ -200,6 +205,13 @@ spec:
             property: <key_2_property_name>
       - id: <join_2_id>
         keys: ...
+    middleware:
+      - name: middleware_1
+        kind: <middleware_type>
+        ...
+      - name: middleware_2
+        kind: <middleware_type>
+        ...
   view:
     enabled: <true | false>
     retentionPolicy:
@@ -221,19 +233,25 @@ The following table provides a summary of the other configuration settings from 
 |Name|Description|
 |-|-|
 |mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
-|indexType|Can have the value **persisted** (default) or **memory**. This settings controls whether Drasi caches the Continuous Query element and solution indexes to a persistent store, or keeps them in memory. Using memory-based indexes is good for testing and is also OK for Continuous Queries that do not require significant bootstrapping when they start.|
-|sources|Contains two sections: **subscriptions** and **joins**. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. Both sections are described in more detail in the [Sources](#sources) section.|
+|container|The logical Query Container that hosts the query. If none is specified **default** will be used, which is the default container created when Drasi is installed. Query Containers host a number of queries and can be scaled up or down. Each Query Container also defines a set storage profiles that hold the configuration of the backing data store for indexes. |
+|storageProfile|The name of the storage profile on the query container to use. This settings controls how Drasi caches the Continuous Query element and solution indexes. These profiles are defined on the query container. The `default` query container has **memory** and **redis** configured by default and **redis** is the default profile if none is specified. Using memory-based indexes is good for testing and is also OK for Continuous Queries that do not require significant bootstrapping when they start.|
+|sources|Contains **subscriptions**, **joins** and **middleware** sections. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. The **middleware** section describes named middleware configurations that can be applied to incoming source changes. Each middleware type has it's own configuration schema, middleware enables custom logic to be executed on incoming source changes, before they are processed by the query. These sections are described in more detail in the [Sources](#sources) section.|
 |params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
 |view|(Optional). Defines the behavior of the results view.  **enabled** controls if the results of the query are cached in the results view. **retentionPolicy** determines how long the results will be stored for.  **latest** (default) only holds the most recent version, **all** holds all previous versions and allows querying at a time point in the past, **expire** holds the non current results for a limited time.|
 |query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Continuous Query Syntax](/reference/query-language/).|
 
 ### Sources
 
+#### Subscriptions
+
 The configuration settings in the **spec.sources.subscriptions** section of the Continuous Query resource definition do the following:
 - Define the Sources the Continuous Query will subscribe to for its change data.
 - Within each Source, define the Labels of the Nodes and Relations that the the Continuous Query expects from that Source. If you do not map a Node/Relation Label used in the query to a specific Source, it is assumed to come from the first Source configured. 
 - For each Node and Relation, create a mapping between the Label name used in the Source data and the Label name used in the Query. This allows you to write queries independent of the Label/Type names used in the source data, easily use the same Query against multiple sources, and deal with the name collisions across Sources.
 - For each Node and Relation, you also have the ability to disable element level caching. This can be useful when processing append only logs where the main element being processed (i.e. the log record) will never change once created, and will not be referenced in query future query results. 
+- Define a chain of middleware that will process all incoming changes for a given source. The middlewares will be executed in the order they are listed in the `pipeline`. The detailed configuration for each middleware is located in **spec.sources.middleware**. The pipeline of middleware for a specific source is located at **spec.sources.subscriptions.pipeline**, which references the middlewares defined for the overall query.
+
+#### Joins
 
 The configuration settings in the **spec.sources.joins** section of the Continuous Query resource definition create a mapping between a Label and Property name pair from one source, with a Label and Property Name pair in another source.
 This allows the Continuous Query to be written as a single unified query without consideration from which Source data is originating from. Drasi will use the mapping to create synthetic relations between Nodes as required.
@@ -246,7 +264,6 @@ kind: ContinuousQuery
 name: curbside-pickup
 spec:
   mode: query
-  indexType: persisted
   sources:    
     subscriptions:
       - id: phys-ops
@@ -272,3 +289,7 @@ spec:
             property: plate
   query: ...
 ```
+
+#### Middleware
+
+The configuration settings in the **spec.sources.middleware** section of the Continuous Query resource definition hold the individual middleware configurations that can be used in a pipeline for a given source. Each middleware definition requires a **name**, which is referenced in by **spec.sources.subscriptions.pipeline**, a **kind**, which defines which middleware implementation to use and and properties required by that specific implementation.  For more details, see the [Middleware](../middleware) documentation.

@@ -21,8 +21,8 @@ In this sample Drasi solution, the source of data (and change) will be a `Messag
 |Message|character varying(200)|The text of the message.|
 
 You will create three Continuous Queries that observe the `Message` table to answer the following questions in real-time:
-1. Which people have sent the message "Hello World"? 
-1. How many times has the same message been sent? 
+1. Which people have sent the message "Hello World"?
+1. How many times has the same message been sent?
 1. Which people haven't sent a message in the last 20 seconds?
 
 Initially, the `Message` table will contain the following messages:
@@ -67,7 +67,7 @@ The Getting Started Tutorial codespace is hosted in the Drasi [learning](https:/
 
 When you see the **Create a new codespace** screen, click the **Create codespace** button; there is no need to change any of the default configuration settings.
 
-The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps. 
+The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps.
 
 Once the codespace creation is complete, in the VS Code Explorer panel you will see two folders:
 - `.devcontainer` contains files used to configure the Codespace.
@@ -79,7 +79,7 @@ You can now proceed with the rest of the tutorial.
 {{% tab header="VS Code Dev Container" text=true %}}
 To use the Drasi Getting Started Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
-- Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
+- Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - [docker](https://www.docker.com/get-started/)
 
 Once you have these prerequisites installed:
@@ -96,11 +96,11 @@ Run the Dev Container as follows:
 2. Type "dev containers:"
 3. Select "Dev Containers: Rebuild and Reopen in Container"
 
-The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies. 
+The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
 
 When you see the ```Done. Press any key to close the terminal.``` message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
 
-If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team. 
+If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team.
 
 {{% /tab %}}
 {{% tab header="Install Drasi" text=true %}}
@@ -134,13 +134,13 @@ spec:
       - public.Message
 ```
 
-This table describes the most important configuration settings in this Source definition. 
+This table describes the most important configuration settings in this Source definition.
 
 |Property|Description|
 |-|-|
 |kind|Specifies that the resource is a **Source**|
 |name|Provides the unique **ID** of the Source. This is used to manage the Source and in Continuous Query definitions to configure which Sources the Continuous Query uses as input.
-|spec.kind|Identifies this Source as a **PostgreSQL** Source that enables connectivity to a PostgreSQL database.| 
+|spec.kind|Identifies this Source as a **PostgreSQL** Source that enables connectivity to a PostgreSQL database.|
 |spec.properties.host|The DNS host name of the PostgreSQL server.|
 |spec.properties.user|The **User ID** that the Source will use to connect to the PostgreSQL database.|
 |spec.properties.port|The port number on which the PostgreSQL server is listening for connections. The default port for PostgreSQL is 5432.|
@@ -163,26 +163,26 @@ drasi list source
 
 You should expect to see a response like this until the Source is ready (AVAILABLE = true):
 ```
-      ID      | AVAILABLE |            MESSAGES             
+      ID      | AVAILABLE |            MESSAGES
 --------------+-----------+---------------------------------
-  hello-world |  false    | query-api - daprd: waiting:     
-              |           | ContainerCreating  query-api:   
-              |           | waiting: ContainerCreating      
-              |           |  reactivator - daprd:           
-              |           | waiting: ContainerCreating      
-              |           |  reactivator: waiting:          
-              |           | ContainerCreating               
-              |           | change-dispatcher -             
-              |           | change-dispatcher: waiting:     
-              |           | ContainerCreating  daprd:       
-              |           | waiting: ContainerCreating      
-              |           |  change-router -                
-              |           | change-router: waiting:         
-              |           | ContainerCreating  daprd:       
-              |           | waiting: ContainerCreating      
-              |           |  proxy - daprd: waiting:        
-              |           | ContainerCreating  proxy:       
-              |           | waiting: ContainerCreating  
+  hello-world |  false    | query-api - daprd: waiting:
+              |           | ContainerCreating  query-api:
+              |           | waiting: ContainerCreating
+              |           |  reactivator - daprd:
+              |           | waiting: ContainerCreating
+              |           |  reactivator: waiting:
+              |           | ContainerCreating
+              |           | change-dispatcher -
+              |           | change-dispatcher: waiting:
+              |           | ContainerCreating  daprd:
+              |           | waiting: ContainerCreating
+              |           |  change-router -
+              |           | change-router: waiting:
+              |           | ContainerCreating  daprd:
+              |           | waiting: ContainerCreating
+              |           |  proxy - daprd: waiting:
+              |           | ContainerCreating  proxy:
+              |           | waiting: ContainerCreating
 ```
 
 If your Source is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
@@ -202,13 +202,13 @@ kind: ContinuousQuery
 name: hello-world-from
 spec:
   mode: query
-  sources:    
+  sources:
     subscriptions:
       - id: hello-world
-  query: > 
-    MATCH 
+  query: >
+    MATCH
       (m:Message {Message: 'Hello World'})
-    RETURN 
+    RETURN
       m.MessageId AS MessageId,
       m.From AS MessageFrom
 ---
@@ -217,13 +217,13 @@ kind: ContinuousQuery
 name: message-count
 spec:
   mode: query
-  sources:    
+  sources:
     subscriptions:
       - id: hello-world
-  query: > 
-    MATCH 
+  query: >
+    MATCH
       (m:Message)
-    RETURN 
+    RETURN
       m.Message AS Message,
       count(m.Message) AS Frequency
 ---
@@ -232,7 +232,7 @@ kind: ContinuousQuery
 name: inactive-people
 spec:
   mode: query
-  sources:    
+  sources:
     subscriptions:
       - id: hello-world
   query: >
@@ -252,7 +252,7 @@ spec:
 
 Notice that the YAML describes three Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
-This table describes the most important configuration settings in these Continuous Query definitions. 
+This table describes the most important configuration settings in these Continuous Query definitions.
 
 |Property|Description|
 |-|-|
@@ -274,7 +274,7 @@ Use the `drasi` CLI to create the Continuous Queries by running the following co
 drasi apply -f ./resources/hello-world-queries.yaml
 ```
 
-To verify the status of the Continuous Queries, execute the following command: 
+To verify the status of the Continuous Queries, execute the following command:
 
 ```bash
 drasi list query
@@ -282,11 +282,11 @@ drasi list query
 
 You should expect to see the following output:
 ```
-         ID        | CONTAINER | ERRORMESSAGE |          HOSTNAME          |  STATUS   
+         ID        | CONTAINER | ERRORMESSAGE |          HOSTNAME          |  STATUS
 -------------------+-----------+--------------+----------------------------+-----------
-  hello-world-from |  default  |              | default-query-host-xxx-xxx |  Running  
-  message-count    |  default  |              | default-query-host-xxx-xxx |  Running  
-  inactive-people  |  default  |              | default-query-host-xxx-xxx |  Running   
+  hello-world-from |  default  |              | default-query-host-xxx-xxx |  Running
+  message-count    |  default  |              | default-query-host-xxx-xxx |  Running
+  inactive-people  |  default  |              | default-query-host-xxx-xxx |  Running
 ```
 
 ## Step 4 - Create the Debug Reaction
@@ -320,7 +320,7 @@ Use the `drasi` CLI to create the Debug Reaction by running the following comman
 drasi apply -f ./resources/hello-world-reaction.yaml
 ```
 
-To verify the status of the Reaction, execute the following command: 
+To verify the status of the Reaction, execute the following command:
 
 ```bash
 drasi list reaction
@@ -329,9 +329,9 @@ drasi list reaction
 You should expect to see the following response:
 
 ```
-         ID         | AVAILABLE | MESSAGES  
+         ID         | AVAILABLE | MESSAGES
 --------------------+-----------+-----------
-  hello-world-debug |  true     |           
+  hello-world-debug |  true     |
 ```
 
 If your Reaction is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
@@ -433,16 +433,24 @@ And if you switch back to the `hello-world-from` Continuous Query, the current r
 {{< figure src="hello-world-from-debug-deleted.png" alt="Message Count" width="70%" >}}
 
 
-This tutorial is now complete. The Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing. 
+This tutorial is now complete. The Dev Container is running a fully functional version of Drasi that you can use for further exploration, development, and testing.
 
 ## Reflection
 In completing the Getting Started Tutorial, you were able to answer questions like "Which people have sent the message `Hello World`", "How many times has each unique message been sent", and "Which people haven't sent messages in the last 20 seconds" using Continuous Queries. Using the Continuous Queries `RESULT` clause, you were able to describe those changes to best meet your needs. And then you could distribute those changes to Reactions for further processing or integration into a broader solution. You did this with no custom code and a minimal amount of configuration information.
 
 Although the data and queries in the tutorial where trivial, the process is exactly the same for richer and more complex scenarios, only the Continuous Query increases in complexity and this depends totally on what question you are trying to answer.
 
-Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement a timer and callback mechanism to create notifications when changes had not happened as expected. You would need to implement unique solutions for each type of source you wanted to support. 
+Without Drasi, to achieve what you just did in the tutorial, you would need to write code to process change logs or periodically poll the database for changes. You would need to maintain your own state to track which data had changed and to calculate the aggregates across the changing data. And you would need to implement a timer and callback mechanism to create notifications when changes had not happened as expected. You would need to implement unique solutions for each type of source you wanted to support.
 
 Hopefully, from this simple tutorial you can see the efficiencies and time saving Drasi offers, and the opportunities it presents for improving and simplifying the ability to detect and react to change in dynamic system as well as its ability to power solutions that are more dynamic and responsive.
+
+## Next Steps
+
+### Connecting a Frontend to a Query
+
+Now that you have completed the Getting Started Tutorial, you can continue your journey by connecting a front end application to a Continuous Query.
+
+The [Connecting a Frontend to a Query](/tutorials/connecting-frontends/) tutorial picks up from the end of this tutorial and shows you how to connect a ReactJS or VueJS application to the Continuous Queries you created in this tutorial.
 
 ## Cleanup
 
