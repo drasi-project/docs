@@ -95,6 +95,9 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+drasidemo
+middleware
+RiskyImage
 ReactJS
 VueJS
 frontends
