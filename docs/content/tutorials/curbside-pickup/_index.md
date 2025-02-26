@@ -38,7 +38,7 @@ We can also imagine a delivery staff that takes the orders that are marked as
 
 ### Order Delivery
 
-Let us say we wan to build a reactive front end dashboard that would alert
+Let us say we want to build a reactive front end dashboard that would alert
     the delivery staff when an order is ready and is matched to a driver who
     has arrived at the curbside pickup zone. The dashboard should get
     dynamically updated as the vehicle location changes or when the order
