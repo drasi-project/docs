@@ -108,7 +108,8 @@ We can explore three different approaches for that below.
 - Polling can introduce a delay (e.g., up to your polling interval).
 - Can be less efficient than event-driven approaches if the polling interval is
     too frequent or the data set is large.
-- Might miss truly instantaneous updates or increase load if you poll too often.
+- Might miss truly instantaneous updates.
+- Increased load on the database if you poll too often.
 
 ### Triggers & Webhooks
 1. We could configure DB triggers oto invoke webhook (HTTP) on a backend server whenever a record changes.
