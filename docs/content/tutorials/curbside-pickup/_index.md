@@ -112,7 +112,7 @@ We can explore three different approaches for that below.
 - Increased load on the database if you poll too often.
 
 ### Triggers & Webhooks
-1. We could configure DB triggers oto invoke webhook (HTTP) on a backend server whenever a record changes.
+1. We could configure DB triggers to invoke webhook (HTTP) on a backend server whenever a record changes.
 1. This is a middleground between event streaming and polling.
 1. A backend service receives these webhook calls and updates its in-memory stores.
 1. The backend server must join the data coming from the stores and notify web hooks.
