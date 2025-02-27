@@ -120,6 +120,7 @@ Reactiveness
 ShowReactiveness
 ReactivenessPortal
 SignalRHub
+eventBusName
 middleware
 middlewares
 Preprocessing
