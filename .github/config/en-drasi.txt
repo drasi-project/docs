@@ -95,6 +95,13 @@ CloudEvent
 CloudEvents
 eventGridKey
 eventGridUri
+drasidemo
+middleware
+RiskyImage
+ReactJS
+VueJS
+frontends
+sortBy
 DrasiExtension
 InstalledDrasiExtension
 ApplyResource
@@ -114,3 +121,9 @@ ShowReactiveness
 ReactivenessPortal
 SignalRHub
 eventBusName
+middleware
+middlewares
+Preprocessing
+JSONPath
+Kube
+ReplicaSet
