@@ -11,9 +11,7 @@ description: >
 
 In this tutorial, we will connect a PostgreSQL source with a Kubernetes source in order to create a Continuous Query that will join the two together.  The PostgreSQL table will hold a list of container image tags that are considered high risk, and the query will join this table to the live Pods running in a Kubernetes cluster to create a real-time dashboard of running containers with an image tag that is marked as risky.
 
-<video width="600" height="350" controls>
-  <source src="walk-through.mp4" type="video/mp4">
-</video>
+{{< youtube irbhm9Xv8Kc >}}
 
 ### Tutorial Modes
 
