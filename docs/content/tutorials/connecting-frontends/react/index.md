@@ -50,6 +50,25 @@ cd 02-connect-frontends/react
 npm install
 ```
 
+If you are running in GitHub codespaces, navigate to `src/App.js`, and update the URL from `http://localhost:8082/hub` to `https://<your codespace id>-8082.app.github.dev/hub`
+
+```html
+<ResultSet
+  url='https://<your codespace id>-8082.app.github.dev/hub'
+  queryId='hello-world-from'
+  sortBy={item => item.MessageFrom}>
+  {item =>
+    <tr>
+      <td>{item.MessageId}</td>
+      <td>{item.MessageFrom}</td>
+    </tr>
+  }
+</ResultSet>
+```
+
+You can also confirm this address in the `Ports` tab:
+![](ports-tab.png)
+
 Start the React App.
 
 ```shell
