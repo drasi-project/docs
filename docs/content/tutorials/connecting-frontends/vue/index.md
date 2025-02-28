@@ -48,6 +48,23 @@ cd 02-connect-frontends/vue
 npm install
 ```
 
+If you are running in GitHub codespaces, navigate to `src/App.vue`, and update the URL from `http://localhost:8082/hub` to `https://<your codespace id>-8082.app.github.dev/hub`
+
+```html
+<ResultSet url="https://<your codespace id>-8082.app.github.dev/hub" queryId="hello-world-from" :sortBy="x => x.MessageFrom">
+  <template #default="{ item, index }">
+    <tr>
+      <td>{{ item.MessageId }}</td>
+      <td>{{ item.MessageFrom }}</td>
+    </tr>
+  </template>
+</ResultSet>
+```
+
+You can also confirm this address in the `Ports` tab:
+![](ports-tab.png)
+
+
 Start the Vue App.
 
 ```shell
