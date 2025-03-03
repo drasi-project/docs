@@ -53,6 +53,7 @@ RocksDB
 rocksDB
 rocksDb
 VentureBeat
+servicePort
 StoredProc
 addedResultCommand
 databaseClient
@@ -69,6 +70,7 @@ mysql
 mssql
 creds
 storedproc
+QueryContainerId
 gremlinHost
 gremlinPassword
 gremlinPort
