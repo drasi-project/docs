@@ -129,3 +129,4 @@ Preprocessing
 JSONPath
 Kube
 ReplicaSet
+trustServerCertificate
