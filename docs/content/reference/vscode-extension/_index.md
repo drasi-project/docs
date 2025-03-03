@@ -14,6 +14,8 @@ The Drasi Visual Studio Code extension integrates with the Drasi platform, enabl
 - Watch the live results of your Continuous Queries.
 - Debug Continuous Queries prior to creating them on your Drasi environment
 
+{{< youtube 39-5oLhNL5o >}}
+
 ### Prerequisites
 - An installation of [Visual Studio Code](https://code.visualstudio.com)
 
