@@ -45,6 +45,9 @@ Forward the SignalR gateway to your local machine on port 8082 with the followin
 ```shell
 kubectl port-forward services/hello-world-signalr-gateway 8082:8080 -n drasi-system
 ```
+If you are using GitHub codespaces, when the dialog pops up, make sure to click `Make Public`.
+
+![alt text](public-port.png)
 
 ## Connect an app to the SignalR reaction
 
