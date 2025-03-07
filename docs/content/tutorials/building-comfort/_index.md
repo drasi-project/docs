@@ -623,7 +623,7 @@ Check the [installation pages](https://drasi.io/how-to-guides/installation)
 #### Drasi Source
 
 Sources in Drasi provide connectivity to the systems that are sources of
-  change. Learn [more about Sources here](https://drasi.io/concepts/sources/).
+  change. Learn {{< relurl "concepts/sources" "more about Sources here" >}}.
 
 In our example, it the postgreSQL DB is going to be modeled as a Drasi source.
   The `source-facilities.yaml` file in `devops/drasi` directory creates a
@@ -695,7 +695,7 @@ Check the logs of pods `building-facilities-reactivator-xxxxx` or
 Continuous Queries are the mechanism by which you tell Drasi what changes to
   detect in source systems as well as the data you want distributed when changes
   are detected. You can read
-  [more about them here](https://drasi.io/concepts/continuous-queries/).
+  {{< relurl "concepts/continuous-queries" "more about them here" >}}.
 
 ##### Query for the UI
 
@@ -827,7 +827,7 @@ This can be seen by running `drasi list query`:
 
 Reactions process the stream of query result changes output by one or more
   Drasi Queries and act on them. You can read
-  [more about Reactions here](https://drasi.io/concepts/reactions/).
+  {{< relurl "concepts/reactions" "more about Reactions here" >}}.
 
 To implement a reactive UI, we can use any number of frameworks, and we
   would need something that can host a websocket for bidirectional
@@ -1187,10 +1187,17 @@ With the SignalR hub giving us data about Buildings, Floors and Rooms, the
 
 With this hypothetical scenario we are able to see how Drasi can help us build
   reactive systems out of existing systems.
-  Learn [more about "Why Drasi?" here](https://drasi.io/concepts/overview/).
+  Learn {{< relurl "concepts/overview" "more about \"Why Drasi?\" here" >}}.
 
 ### What's next?
 
-- Learn more about [Drasi sources here](https://drasi.io/concepts/sources/).
-- Learn more about [Continuous queries here](https://drasi.io/concepts/continuous-queries/).
-- Learn more about [Drasi Reactions here](https://drasi.io/concepts/reactions/).
+You can try the next guided tutorial in our series that demonstrates additional
+capabilities of Drasi - multiple data sources & reacting to non-events.
+{{< relurl "tutorials/curbside-pickup" "The Curbside Pickup tutorial" >}}
+will guide you using a scenario of Curbside Pickup management for a Store.
+
+Here are some additional resources:
+
+- Learn more about {{< relurl "concepts/sources" "Drasi sources here" >}}.
+- Learn more about {{< relurl "concepts/continuous-queries" "Continuous queries here" >}}.
+- Learn more about {{< relurl "concepts/reactions" "Drasi Reactions here" >}}.
