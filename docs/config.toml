@@ -22,20 +22,32 @@ DefaultContentLanguage = "en"
 # Top Nav Bar
 [[menu.main]]
     name = "GitHub"
-    weight = 20
+    weight = 10
     url = "https://github.com/drasi-project"
     pre = "<i class='fab fa-github'></i>"
 [[menu.main]]
     name = "Discord"
-    weight = 30
+    weight = 20
     url = "https://aka.ms/drasidiscord"
     pre = "<i class='fab fa-discord'></i>"
 
 [[menu.main]]
+    name = "YouTube"
+    weight = 30
+    url = "https://www.youtube.com/@DrasiProject"
+    pre = "<i class='fab fa-youtube'></i>"
+
+    [[menu.main]]
+    name = "Bluesky"
+    weight = 40
+    url = "https://bsky.app/profile/drasi-project.bsky.social"
+    pre = "<i class='fa-brands fa-bluesky'></i>"
+    
+[[menu.main]]
   name ="X"
-  weight = 30
+  weight = 50
   url = "https://x.com/drasi_project"
-  icon = "fab fa-x-twitter"
+  icon = "fa-brands fa-x-twitter"
   desc = "Follow us on X to get the latest news!"
 
 [module]
