@@ -129,7 +129,7 @@ This approach leverages change data capture (CDC) to get real-time data streams
   
   - Change Data Capture (CDC):
     - PostgreSQL: Use Debezium to capture changes via logical decoding.
-    - MySQL: Use Debezium to capture changesbinlog streaming.
+    - MySQL: Use Debezium to capture changes via binlog streaming.
   - Message Broker:
     - Apache Kafka with following topics:
         - order_changes: Streams order updates from PostgreSQL.
@@ -184,7 +184,7 @@ With declarative mode of authoring queries like Flink SQL, the queries can
     `location = 'Curbside'`.
 - The `matched_orders` table is setup with format as `changelog-json`. In Flink
     this means that inserts are emitted when a row satisfies the WHERE
-      contition & deletes are emitted when a row no longer satisfies it.
+      condition & deletes are emitted when a row no longer satisfies it.
 
 ##### Delay Dashboard with Flink
 Far more complicated is the query to power a delay dashboard:
@@ -221,7 +221,7 @@ The output to the `delayed_orders` Kafka topic can then be used by the backend
 ### Enter Drasi
 Drasi offers us a unique ability to declaratively write continuously running
   queries across a virtual knowledge graph that can span across multiple
-  heterogenous data sources. Drasi can also take action when the result sets of
+  heterogeneous data sources. Drasi can also take action when the result sets of
   the queries change.
 
 This means that we can simply add both the data sources in Drasi and write
@@ -1027,7 +1027,7 @@ Continuous Queries are the mechanism by which you tell Drasi what changes to
 #### Query for matched orders
 
 When writing queries, Drasi allows us to model all of our data coming possibly
-    coming from disparate heterogenous systems as a single virtual graph of
+    coming from disparate heterogeneous systems as a single virtual graph of
     nodes and relationships. On this graph, we can then write declarative
     queries.
 
@@ -1084,11 +1084,11 @@ The above does a `max` as we want to report when a match happened, which occurs
 #### Synthetic Relationships
 Note that in our Cypher query we want to relate the orders with their
   respective vehicles, even though the entities live in different databases.
-This is achieved by modelling the relationship as a synthetic relationship
+This is achieved by modeling the relationship as a synthetic relationship
   called `PICKUP_BY` which is defined in the `joins` section of the YAML below.
 
 This `joins` section helps Drasi understand on how to stitch together a graph
-  of entities and relationships across arbitrary heterogenous data sources.
+  of entities and relationships across arbitrary heterogeneous data sources.
 
 To be able to create that virtualized graph, we need to tell Drasi on how to
     connect vehicles to orders. In our example, we can do that by Vehicle plate
@@ -1361,7 +1361,7 @@ With the SignalR hub available we can write a reactive dashboard with ease. We
 
 #### Delivery Dashboard
 
-In this section we can finally fulfil the requirements laid out for
+In this section we can finally fulfill the requirements laid out for
   [Realtime dashboard for order delivery](#realtime-dashboard-for-order-delivery).
 
 We have written an example react app for this using the
@@ -1461,7 +1461,7 @@ You should notice that any matched orders immediately show up on the dashboard.
 
 #### Delay Dashboard
 
-In this section we can fulfil the requirements laid out for
+In this section we can fulfill the requirements laid out for
   [Realtime dashboard for delayed orders](#realtime-dashboard-for-delayed-orders).
 
 We have written an example Vue app for this using the
@@ -1687,7 +1687,7 @@ When writing the queries for our scenario, we did not have to worry about the
 
 [Synthetic Relationships](#synthetic-relationships) in Continuous Queries
   helped Drasi in understanding how data across sources is connected so it can
-  be modelled as a single virtual graph against which Cypher-style queries can
+  be modeled as a single virtual graph against which Cypher-style queries can
   be written.
 
 ### No Code
@@ -1717,7 +1717,7 @@ The declarative approach taken by Drasi not only removes the need of writing
 
 ### Reactiveness
 
-The dashboards built with Drasi are reactive to changes almost instantanously.
+The dashboards built with Drasi are reactive to changes almost instantaneously.
   This can be observed by fiddling the vehicles & orders data as described in
   the [Demo time](#demo-time) section.
 
@@ -1758,7 +1758,7 @@ When we deploy a YAML config with our Cypher query, the continuous query is run
   Drasi.
 
 These continuous queries allow you to model all of your data across multiple,
-  disparate and heterogenous systems as a single graph and specify your query
+  disparate and heterogeneous systems as a single graph and specify your query
   declaratively in Cypher.
 
 While a query is running, Drasi maintains an incrementally updated result set.
@@ -1779,9 +1779,9 @@ Drasi can perform actions in many different types of systems, and we also have
 ## Summary
 
 With this example, we hope that we have demonstrated that just by writing a few
-  YAML-config files and Cypher-style declrative queries, we can build new
+  YAML-config files and Cypher-style declarative queries, we can build new
   systems that are truly reactive using data from existing systems even if data
-  lives in disparate and heterogenous systems.
+  lives in disparate and heterogeneous systems.
 
 Learn {{< relurl "concepts/overview" "more about \"Why Drasi?\" here" >}}.
 
