@@ -168,8 +168,8 @@ This approach leverages change data capture (CDC) to get real-time data streams
 A big overhead is also writing complicated Stream Processing jobs.
 With declarative mode of authoring queries like Flink SQL, the queries can
   be a bit easier for simpler scenarios like required by Delivery Dashboard:
-
-{{< gist user="amansinghoriginal" id="995641841662a2856f9b7aab926bb2e5" >}}
+  
+{{< scrollable-code lang="sql" file="content/tutorials/curbside-pickup/MatchedOrders-Flink.sql" />}}
 
 - Connects to the `order_changes` Kafka topic, which streams CDC events from
     the PostgreSQL DB via Debezium.
@@ -189,7 +189,7 @@ With declarative mode of authoring queries like Flink SQL, the queries can
 ##### Delay Dashboard with Flink
 Far more complicated is the query to power a delay dashboard:
 
-{{< gist user="amansinghoriginal" id="0ceb8d8753f1f770d64b7299886c300e" >}}
+{{< scrollable-code lang="sql" file="content/tutorials/curbside-pickup/DelayedOrders-Flink.sql" />}}
 
 One approach (as shown in the SQL above) could be like the following:
 
@@ -1701,14 +1701,14 @@ The difference between the effort involved in getting the Delay Dashboard is
   particularly glaring. Let's take a look at what we did for
   [Delay Dashboard with Flink](#delay-dashboard-with-flink).
 
-{{< gist user="amansinghoriginal" id="0ceb8d8753f1f770d64b7299886c300e" >}}
+{{< scrollable-code lang="sql" file="content/tutorials/curbside-pickup/DelayedOrders-Flink.sql" />}}
 
 If we contrast this with the simple YAML file used for the Drasi query, with
   the much simpler Cypher query using temporal functions, the power and appeal
   of Drasi becomes unmistakably evident. The Cypher query is not just more
   concise but arguably easier to write, understand and maintain over time.
 
-{{< gist user="amansinghoriginal" id="492bc72f22ae0066edf2fd5af1e314b6" >}}
+{{< scrollable-code lang="yaml" file="content/tutorials/curbside-pickup/DelayedOrders-Drasi.yaml" />}}
 
 The declarative approach taken by Drasi not only removes the need of writing
   and maintaining code, its choice of Cypher syntax gives it incredible
