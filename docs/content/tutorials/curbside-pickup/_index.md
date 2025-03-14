@@ -225,7 +225,7 @@ Drasi offers us a unique ability to declaratively write continuously running
   the queries change.
 
 This means that we can simply add both the data sources in Drasi and write
-  declarative queries on top and create a SingalR endpoint in minutes. Here is
+  declarative queries on top and create a SignalR endpoint in minutes. Here is
   all we will need:
 
 1. YAML files for the 2 sources. These allow Drasi to subscribe to change-feeds.
@@ -393,7 +393,7 @@ The `https://<your-codespace-id>-8004.app.github.dev/docs` path should show the
 
 <br />
 
-##### Troubelshooting
+##### Troubleshooting
 During the codespace launch, we have a few scripts that setup PostgreSQL as a
   serve on a k3d cluster. We then use a `port-forward` which helps the backend
   app to connect to the database. Check that the port-forward is running:
@@ -419,10 +419,10 @@ Your backend server will listen on port 8004. This should be accessible on
 Your port will be automatically forwarded by VSCode. You can check this from
     the ports tab in VS Code.
 
-You can check if the Swagger page for the backend API is accessilble at
+You can check if the Swagger page for the backend API is accessible at
   `http://localhost:8004/docs/` like shown in the screenshot below.
 
-##### Troubelshooting
+##### Troubleshooting
 During dev-container launch, we have a few scripts that setup PostgreSQL as a
   serve on a k3d cluster. We then use a `port-forward` which helps the backend
   app to connect to the database. Check that the port-forward is running:
@@ -448,7 +448,7 @@ Your backend server will listen on port 8004. This should be accessible on
 You should be able to access the Swagger page for the backend API at
   `http://localhost:8004/docs/` like shown in the screenshot below.
 
-##### Troubelshooting
+##### Troubleshooting
 
 Make sure that your PostgreSQL is running and is accessible to the backend.
 Ensure that the port-forward we did in the DB setup is still running.
@@ -668,7 +668,7 @@ The `https://<your-codespace-id>-8003.app.github.dev/docs` path should show the
 
 <br />
 
-##### Troubelshooting
+##### Troubleshooting
 During the codespace launch, we have a few scripts that setup PostgreSQL as a
   serve on a k3d cluster. We then use a `port-forward` which helps the backend
   app to connect to the database. Check that the port-forward is running:
@@ -694,10 +694,10 @@ Your backend server will listen on port 8003. This should be accessible on
 Your port will be automatically forwarded by VSCode. You can check this from
     the ports tab in VS Code.
 
-You can check if the Swagger page for the backend API is accessilble at
+You can check if the Swagger page for the backend API is accessible at
   `http://localhost:8003/docs/` like shown in the screenshot below.
 
-##### Troubelshooting
+##### Troubleshooting
 During dev-container launch, we have a few scripts that setup MySQL as a
   serve on a k3d cluster. We then use a `port-forward` which helps the backend
   app to connect to the database. Check that the port-forward is running:
@@ -723,7 +723,7 @@ Your backend server will listen on port 8003. This should be accessible on
 You should be able to access the Swagger page for the backend API at
   `http://localhost:8003/docs/` like shown in the screenshot below.
 
-##### Troubelshooting
+##### Troubleshooting
 
 Make sure that your MySQL is running and is accessible to the backend.
 Ensure that the port-forward we did in the DB setup is still running.
@@ -1768,7 +1768,7 @@ While a query is running, Drasi maintains an incrementally updated result set.
 
 Finally, Drasi reactions allow Drasi to take arbitrary actions in external
   systems when the result set of a query changes. In our example above, we had
-  a SignalR reactiont that was used to send updates to the dashboards.
+  a SignalR reaction that was used to send updates to the dashboards.
 
 Drasi can perform actions in many different types of systems, and we also have
   an SDK that allows you to write your own reaction in the language of your choice.
