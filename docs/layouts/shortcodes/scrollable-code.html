@@ -1,0 +1,12 @@
+<div style="border: 1px solid #ccc; border-radius: 6px; padding: 8px; background-color: #f6f8fa;">
+    <div style="max-height: 400px; overflow: auto; padding: 10px;">
+        {{- $lang := .Get "lang" | default "plaintext" -}}
+        {{- $file := .Get "file" -}}
+        {{- if $file -}}
+            {{ highlight (readFile $file) $lang "style=github"}}
+        {{- else -}}
+            {{ highlight .Inner $lang "style=github"}}
+        {{- end -}}
+    </div>
+</div>
+<br />

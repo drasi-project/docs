@@ -1,0 +1,33 @@
+kind: ContinuousQuery
+apiVersion: v1
+name: delay
+spec:
+  mode: query
+  sources:
+    subscriptions:
+      - id: physical-ops
+        nodes:
+          - sourceLabel: vehicles
+      - id: retail-ops
+        nodes:
+          - sourceLabel: orders
+    joins:
+      - id: PICKUP_BY
+        keys:
+          - label: vehicles
+            property: plate
+          - label: orders
+            property: plate
+  query: >
+    MATCH (o:orders)-[:PICKUP_BY]->(v:vehicles)
+    WHERE o.status != 'ready'
+    WITH
+      o, v,
+      drasi.changeDateTime(v) AS waitingSinceTimestamp
+    WHERE
+      waitingSinceTimestamp != datetime({epochMillis: 0}) AND
+      drasi.trueFor(v.location = 'Curbside', duration ({ seconds: 10 }))
+    RETURN
+      o.id AS orderId,
+      o.customer_name as customerName,
+      waitingSinceTimestamp
