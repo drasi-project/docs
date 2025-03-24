@@ -104,6 +104,10 @@ On the left hand side is a menu listing the three Continuous Queries contained i
 
 If changes occur to the result of the selected Continuous Query while you are viewing it in the Drasi Debug Reaction, you will see the table content update dynamically.
 
+At the top of the left sidebar, you can view the raw event stream received by the Reaction by clicking on the `Event Stream` button. The results are displayed in `packed` format.
+
+{{< figure src="event-stream.png" alt="Event Stream Page" width="70%" >}}
+
 ## Modifying the Reaction
 Currently, Drasi does not support the modification of existing Reactions. You must [Delete the Reaction](#deleting-the-reaction), make changes to the Reaction definition file, and [Create the Reaction](#creating-the-reaction) again.
 
