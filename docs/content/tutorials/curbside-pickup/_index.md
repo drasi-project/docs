@@ -266,7 +266,6 @@ This will open a page with some configuration options. Make sure that the
   alt="Screenshot showing configuration for Codespaces" width="80%" >}}
 
 {{% /tab %}}
-
 {{% tab header="VSCode DevContainer" text=true %}}
 
 To follow along with a Dev Container, you will need to install:
@@ -469,15 +468,15 @@ Let's deploy a React frontend App that uses the APIs exposed by the backend.
 
 Open the config file located at `curbside-pickup/retail-ops/frontend/.env`.
 
-Set the `REACT_APP_API_BASE_URL` to the backend URL for your codespace, which
+Set the `VITE_API_BASE_URL` to the backend URL for your codespace, which
     should look something like this:
     `https://<your-codespace-id>-8004.app.github.dev/`.
 
 Here is how the file should look like:
 
 ```
-REACT_APP_API_BASE_URL=https://<your-codespace-id>-8004.app.github.dev/
-PORT=3004
+VITE_API_BASE_URL=https://<your-codespace-id>-8004.app.github.dev/
+VITE_PORT=3004
 ```
 
 You must also make this backend port accessibly publicly by updating the PORTS
@@ -493,7 +492,7 @@ The commands below assumes that you have your retail ops backend running on port
     8004 on localhost.
 
 If that is not the case, please provide the correct URL
-    for the backend app in the variable `REACT_APP_API_BASE_URL` configured in
+    for the backend app in the variable `VITE_API_BASE_URL` configured in
     the file located at `curbside-pickup/retail-ops/frontend/.env`.
 
 {{% /tab %}}
@@ -504,7 +503,7 @@ The commands below assumes that you have your retail ops backend running on port
     8004 on localhost.
 
 If that is not the case, please provide the correct URL
-    for the backend app in the variable `REACT_APP_API_BASE_URL` configured in
+    for the backend app in the variable `VITE_API_BASE_URL` configured in
     the file located at `curbside-pickup/retail-ops/frontend/.env`.
 
 {{% /tab %}}
@@ -744,14 +743,14 @@ Let's deploy the React frontend App that uses the APIs exposed by the backend.
 
 Open the config file located at `curbside-pickup/physical_ops/frontend/.env`.
 
-Set the `REACT_APP_API_BASE_URL` to the backend URL for your codespace, which
+Set the `VITE_API_BASE_URL` to the backend URL for your codespace, which
     should look something like this:
     `https://<your-codespace-id>-8003.app.github.dev/`.
 
 This is how the file should look:
 ```
-REACT_APP_API_BASE_URL=https://<your-codespace-id>-8003.app.github.dev
-PORT=3003
+VITE_API_BASE_URL=https://<your-codespace-id>-8003.app.github.dev
+VITE_PORT=3003
 ```
 
 You must also make this backend port accessibly publicly by updating the PORTS
@@ -767,7 +766,7 @@ The commands below assumes that you have your physical ops backend running on po
     8003 on localhost.
 
 If that is not the case, please provide the correct URL
-    for the backend app in the variable `REACT_APP_API_BASE_URL` configured in
+    for the backend app in the variable `VITE_API_BASE_URL` configured in
     the file located at `curbside-pickup/physical_ops/frontend/.env`.
 
 {{% /tab %}}
@@ -778,7 +777,7 @@ The commands below assumes that you have your physical ops backend running on po
     8003 on localhost.
 
 If that is not the case, please provide the correct URL
-    for the backend app in the variable `REACT_APP_API_BASE_URL` configured in
+    for the backend app in the variable `VITE_API_BASE_URL` configured in
     the file located at `curbside-pickup/physical_ops/frontend/.env`.
 
 {{% /tab %}}
@@ -869,7 +868,7 @@ Your codespace should have Drasi already installed and setup.
   Continue along with steps below.
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Your dev container should have Drasi already installed and setup.
   Continue along with steps below.
@@ -1331,7 +1330,7 @@ If all works well, you should be able to access the hub URL:
 {{< figure src="Screenshot_SignalRHub.png" alt="Screenshot showing Connection ID Required" width="60%" >}}
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 VS Code will automatically forward port 8080 to localhost.
   You should be able to access the hub URL:
@@ -1341,7 +1340,7 @@ VS Code will automatically forward port 8080 to localhost.
 {{< figure src="Screenshot_SignalRHub.png" alt="Screenshot showing Connection ID Required" width="60%" >}}
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 No extra step should be needed if you are going to run the realtime dashboard
   locally. You should be able to access the hub URL:
@@ -1385,17 +1384,17 @@ The frontend app will launch by default on port 3001. This can also be
 
 ```
 # SignalR endpoint URL
-REACT_APP_SIGNALR_URL=https://<your-codespace-url>-8080.app.github.dev/hub
+VITE_SIGNALR_URL=http://<your-codespace-url>-8080.app.github.dev/hub
 
 # Query ID for ready-for-delivery orders
-REACT_APP_QUERY_ID=delivery
+VITE_QUERY_ID=delivery
 
 # PORT for hosting this dashboard
-PORT=3001
+VITE_PORT=3001
 ```
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Replace port `8080` if you used a different port number when forwarding the port.
 
@@ -1404,13 +1403,13 @@ The frontend app will launch by default on port 3001. This can also be
 
 ```
 # SignalR endpoint URL
-REACT_APP_SIGNALR_URL=http://localhost:8080/hub
+VITE_SIGNALR_URL=http://localhost:8080/hub
 
 # Query ID for ready-for-delivery orders
-REACT_APP_QUERY_ID=delivery
+VITE_QUERY_ID=delivery
 
 # PORT for hosting this dashboard
-PORT=3001
+VITE_PORT=3001
 ```
 
 {{% /tab %}}
@@ -1423,13 +1422,13 @@ The frontend app will launch by default on port 3001. This can also be
 
 ```
 # SignalR endpoint URL
-REACT_APP_SIGNALR_URL=http://localhost:8080/hub
+VITE_SIGNALR_URL=http://localhost:8080/hub
 
 # Query ID for ready-for-delivery orders
-REACT_APP_QUERY_ID=delivery
+VITE_QUERY_ID=delivery
 
 # PORT for hosting this dashboard
-PORT=3001
+VITE_PORT=3001
 ```
 
 {{% /tab %}}
@@ -1480,28 +1479,36 @@ The configuration for the app is in `curbside-pickup/delay-dashboard/.env`.
 Provide the URL of the signalR hub in `.env` file. Replace port `8080` if you
   used a different port number when forwarding the port.
 
-The frontend app will launch by default on port 3001. This can also be
+The frontend app will launch by default on port 3002. This can also be
   configured in the `.env` file as shown below:
 
 ```
+# SignalR endpoint URL
 VITE_SIGNALR_URL=https://<your-codespace-url>-8080.app.github.dev/hub
+
+# Query ID for orders with extended wait times
 VITE_QUERY_ID=delay
-VITE_CRITICAL_WAIT_SECONDS=30
+
+# PORT for hosting this dashboard
 VITE_PORT=3002
 ```
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Replace port `8080` if you used a different port number when forwarding the port.
 
-The frontend app will launch by default on port 3001. This can also be
+The frontend app will launch by default on port 3002. This can also be
   configured in the `.env` file as shown below:
 
 ```
-VITE_SIGNALR_URL=https://localhost:8080/hub
+# SignalR endpoint URL
+VITE_SIGNALR_URL=http://localhost:8080/hub
+
+# Query ID for orders with extended wait times
 VITE_QUERY_ID=delay
-VITE_CRITICAL_WAIT_SECONDS=30
+
+# PORT for hosting this dashboard
 VITE_PORT=3002
 ```
 
@@ -1510,13 +1517,17 @@ VITE_PORT=3002
 
 Replace port `8080` if you used a different port number when forwarding the port.
 
-The frontend app will launch by default on port 3001. This can also be
+The frontend app will launch by default on port 3002. This can also be
   configured in the `.env` file as shown below:
 
 ```
-VITE_SIGNALR_URL=https://localhost:8080/hub
+# SignalR endpoint URL
+VITE_SIGNALR_URL=http://localhost:8080/hub
+
+# Query ID for orders with extended wait times
 VITE_QUERY_ID=delay
-VITE_CRITICAL_WAIT_SECONDS=30
+
+# PORT for hosting this dashboard
 VITE_PORT=3002
 ```
 
@@ -1594,7 +1605,7 @@ https://<your-codespace-id>-5500.app.github.dev/
 ```
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Ensure that the ports are correct in the file `curbside-pickup/index.html`:
 
@@ -1616,7 +1627,7 @@ Right click on the file and select `Open in Live Server`:
 {{< figure src="Screenshot_OpenLiveServer.png" alt="Screenshot showing how to open live server" width="70%" >}}
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 Ensure that the ports are correct in the file `curbside-pickup/index.html`:
 
