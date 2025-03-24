@@ -246,7 +246,7 @@ This will open a page with some configuration options. Make sure that the
 
 {{% /tab %}}
 
-{{% tab header="VS Code Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 To follow along with a Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/)
@@ -301,8 +301,31 @@ Perform the following steps to setup a PostgreSQL database and load it with
   some sample data.
 
 {{< tabpane >}}
+{{% tab header="Github Codespaces" text=true %}}
 
-{{% tab header="Dev Container or Codespaces" text=true %}}
+The container already has a K3D cluster with postgreSQL service running on it
+  with the port forwarded. Verify this by running `psql` and checking that
+  three tables for Building, Floor and Room exist in the DB.
+
+```sh
+psql
+```
+
+<br />
+
+```
+building-comfort-db=# \dt
+         List of relations
+ Schema |   Name   | Type  | Owner 
+--------+----------+-------+-------
+ public | Building | table | test
+ public | Floor    | table | test
+ public | Room     | table | test
+(3 rows)
+```
+
+{{% /tab %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 The container already has a K3D cluster with postgreSQL service running on it
   with the port forwarded. Verify this by running `psql` and checking that
@@ -440,7 +463,7 @@ Here is how your port 58580 entry should look like in the `Ports` tab:
 For troubleshooting, you can check if data from the backend is accessible at `https://<your-codespace-id>-58580.app.github.dev/buildings/building_01/floors/floor_01_01/rooms` as an example.
 
 {{% /tab %}}
-{{% tab header="VSCode Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Your backend server will listen on port `58580`. These should be accessible on `localhost`.
 
@@ -449,7 +472,7 @@ Your port will be automatically forwarded by VSCode. You can check this from the
 For troubleshooting, you can check if data from the backend is accessible at `http://localhost:58580/buildings/building_01/floors/floor_01_01/rooms` as an example.
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 Your backend server will listen on port `58580`. These should be accessible on `localhost`.
 
@@ -481,7 +504,7 @@ Open the file `control-panel/frontend/src/config.json` and provide the
 ```
 
 {{% /tab %}}
-{{% tab header="VSCode Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 By default the backend runs on port 58580 on localhost. If you changed the
   port, then please update the URL in `control-panel/frontend/src/config.json`.
@@ -493,7 +516,7 @@ By default the backend runs on port 58580 on localhost. If you changed the
 ```
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 By default the backend runs on port 58580 on localhost. If you changed the
   port, then please update the URL in `control-panel/frontend/src/config.json`.
@@ -541,7 +564,7 @@ If you're unable to access the frontend, check the port at which frontend is
 
 {{% /tab %}}
 
-{{% tab header="VSCode Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Your backend server will listen on port `58580` and front end accessible on
   port `3000`. These should be accessible on `localhost`.
@@ -553,7 +576,7 @@ If you're unable to access the frontend, check the port at which frontend is
 
 {{% /tab %}}
 
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 Your backend server will listen on port `58580` and front end accessible on
   port `3000`. These should be accessible on `localhost`.
@@ -588,7 +611,7 @@ Your dev container has Drasi already installed and setup.
   Continue along with steps below.
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Your dev container has Drasi already installed and setup.
   Continue along with steps below.
@@ -934,7 +957,7 @@ If all works well, you should be able to access the hub URL:
 {{< figure src="Screenshot_SignalRHub.png" alt="Screenshot showing Connection ID Required" width="70%" >}}
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 VS Code will automatically forward port 8080 to localhost.
   You should be able to access the hub URL:
@@ -942,7 +965,7 @@ VS Code will automatically forward port 8080 to localhost.
   `Connection ID required` on a blank page.
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 No extra step should be needed if you are going to run the realtime dashboard
   locally. You should be able to access the hub URL:
@@ -988,7 +1011,7 @@ Provide the URL of the signalR hub in `dashboard/src/config.json` as follows. Re
 ```
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Replace port `8080` if you used a different port number when forwarding the port.
 
@@ -1043,13 +1066,13 @@ Github will forward it to a URL specific to your codespace like so:
 `https://<your-codespace-name>-3001.app.github.dev`.
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 The reactive dashboard should be running on localhost at port 3001.
 Access it at `http://localhost:3001`.
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 The reactive dashboard should be running on localhost at port 3001.
 Access it at `http://localhost:3001`.
@@ -1092,7 +1115,7 @@ https://<your-codespace-id>-5500.app.github.dev/
 ```
 
 {{% /tab %}}
-{{% tab header="VS Code DevContainer" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 Check if the URLs for both control-panel and dashboard frame are correct in
   the file `index.html` in root directory of the project. Update the ports if
@@ -1110,7 +1133,7 @@ Right click on the file and select `Open in Live Server`:
 {{< figure src="Screenshot_OpenLiveServer.png" alt="Screenshot showing how to open live server" width="50%" >}}
 
 {{% /tab %}}
-{{% tab header="Local setup" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 Check if the URLs for both control-panel and dashboard frame are correct in
   the file `index.html` (at root folder for `building-comfort`). Update the
