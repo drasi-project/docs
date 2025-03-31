@@ -134,3 +134,7 @@ trustServerCertificate
 irbhm
 oLhNL
 youtube
+mysqluser
+gtid
+GTID
+GTIDs
