@@ -70,6 +70,7 @@ indexName = "drasi"
       "javascript",
       "json"
     ]
+custom_js = ["js/sync-tabs.js"]
 # Google Analytics
 googleAnalytics =  "G-MZQ63ZL6GZ"
 
