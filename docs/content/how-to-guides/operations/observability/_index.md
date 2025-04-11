@@ -41,7 +41,7 @@ kubectl port-forward svc/grafana -n drasi-system 3000:3000
 
 In your browser, navigate to `http://localhost:3000` to use the Grafana UI. To login to the dashboard, use `drasi` as both the username and the password.
 
-Navigate to the `Explore` tab in the left sidebar and select `Prometheus` in the main screen. You can now execute queries agains Prometheus using the query builder.
+Navigate to the `Explore` tab in the left sidebar and select `Prometheus` in the main screen. You can now execute queries against Prometheus using the query builder.
 
 ## Observability Level: Full
 
