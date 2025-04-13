@@ -18,7 +18,7 @@ This guide assumes you are familiar with:
 
 You will need admin access to the AKS cluster on which you will install Drasi.
 
-On the computer from which you will install Drasi, you need to install the following software:
+On the computer on which you will install Drasi, you need to install the following software:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [docker](https://www.docker.com/)
 - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli)
@@ -73,7 +73,7 @@ kubectl config use-context <your cluster name>
 ```
 
 ## Install Drasi on the AKS Cluster
-To install Drasi on the AKS cluster using all default settings, simply run the command:
+To install Drasi on the AKS cluster using all default settings, simply run the following command:
 
 ```text
 drasi init
@@ -81,12 +81,12 @@ drasi init
 
 This will install the version of Drasi that matches the version of the Drasi CLI that you are using and will create the Drasi environment in the **drasi-system** namespace, which will be created if it doesn't exist. The Drasi container images will be pulled from the main Drasi container registry located on **ghcr.io**.
 
-The `drasi init` command gives you control over certain aspects of the install process and the configuration of the Drasi environment through these flags and argument:
+The `drasi init` command gives you control over certain aspects of the installation process and the configuration of the Drasi environment through these flags and argument:
 
 - `--dapr-runtime-version <version>`: Specifies the Dapr runtime version to install. The default value is "1.10.0".
 - `--dapr-sidecar-version <version>`: Specifies the Dapr sidecar (daprd) version to install. The default value is "1.9.0".
 - `--local`: If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
-- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
+- `-n|--namespace <namespace>`: Specifies the Kubernetes namespace into which to install Drasi. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>`: Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
 - `--version <tag>`: Container image version tag to use when pulling Drasi images. The default value is the version tag of the Drasi CLI, which is available through the [drasi version](/reference/command-line-interface#drasi-version) command.
 
@@ -131,14 +131,14 @@ Note that the Drasi installation also installs a number of dependencies, includi
 - [Redis](https://redis.io/)
 - [Mongo DB](https://www.mongodb.com/).
 
-If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use, and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
 {{% alert tip %}}
 To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
 {{% /alert %}}
 
 ## Troubleshooting Installation Problems
-If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:
+If any of the installation steps fail, a check mark will appear next to the failed step, and the installation process will abort. For example:
 
 ```
 ℹ Dapr not installed
@@ -155,7 +155,7 @@ Error: drasi API not available
 
 Sometimes, `drasi init` can fail due to transient errors, usually due to failed network connections or timeouts experienced while downloading and installing dependencies. In these situations you can simply rerun the same `drasi init` command and the Drasi CLI will attempt to complete the remaining incomplete steps.
 
-To verify Dapr was installed successfully, you can check what Dapr pods are running using the command:
+To verify that Dapr was installed successfully, you can check what Dapr pods are running using the command:
 
 ```bash
 kubectl get pods -n dapr-system
@@ -189,13 +189,13 @@ Are you sure you want to uninstall Drasi from the namespace drasi-system? (yes/n
 
 Type `yes` and hit `enter` to proceed. 
 
-Once Drasi is successfully uninstalled you will see the following confirmation message:
+Once Drasi is successfully uninstalled, you will see the following confirmation message:
 
 ```
 Drasi uninstalled successfully
 ```
 
-To force the uninstall to proceed without prompting you to confirm you can add the `-y` or `--yes` flag to the command:
+To force the uninstall to proceed without prompting you to confirm,m you can add the `-y` or `--yes` flag to the command:
 
 ```
 drasi uninstall --yes
