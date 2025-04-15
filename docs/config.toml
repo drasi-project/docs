@@ -4,9 +4,8 @@ title = "Drasi Docs"
 theme = "docsy"
 
 # Attribution
-author = "Azure Incubations"
-copyright = "Copyright © 2024, The Drasi Authors."
-
+author = "Copyright © contributors to Drasi, established as Drasi a Series of LF Projects, LLC"
+copyright ="""Copyright&nbsp;©&nbsp;Drasi&nbsp;a&nbsp;Series&nbsp;of&nbsp;LF&nbsp;Projects,&nbsp;LLC. For&nbsp;website&nbsp;terms&nbsp;of&nbsp;use,&nbsp;trademark&nbsp;policy&nbsp;and&nbsp;other&nbsp;project&nbsp;policies&nbsp;please&nbsp;see&nbsp;<a href="https://lfprojects.org/policies/">lfprojects.org/policies/</a>."""
 # Language Configuration
 languageCode = "en"
 DefaultContentLanguage = "en"
