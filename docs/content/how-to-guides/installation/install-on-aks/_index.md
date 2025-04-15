@@ -18,7 +18,7 @@ This guide assumes you are familiar with:
 
 You will need admin access to the AKS cluster on which you will install Drasi.
 
-On the computer on which you will install Drasi, you need to install the following software:
+On the computer which you will use to install Drasi, you need to install the following software:
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [docker](https://www.docker.com/)
 - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli)
