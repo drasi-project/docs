@@ -116,7 +116,7 @@ spec:
     <query-id>:
   properties: 
     eventGridUri: <event-grid-topic-endpoint>
-
+    eventGridSchema: CloudEvents
 ```
 
 ##### AKS Setup
