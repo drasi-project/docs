@@ -44,6 +44,7 @@ spec:
   properties: 
     eventGridUri: <event-grid-topic-endpoint>
     eventGridKey: <topic-access-key>
+    eventGridSchema: CloudEvents
 ```
 
 In this definition: 
@@ -59,6 +60,7 @@ This table describes the other settings in the **spec** section of the Reaction 
 | properties.eventGridUri | The endpoint of your EventGrid Topic. This can be retrieve from the Azure portal |
 | properties.eventGridKey | The access key to your EventGrid Topic. This field is optional if `identity` field is set (see below) |
 | properties.format | The output format for the messages that are enqueued. The can either be **packed** for the raw query output or **unpacked** for a message per result set change. The default value is **packed** |
+| properties.eventGridSchema | The format of the events that will be sent to the Azure Event Grid. Valid options are `CloudEvents` ([CloudEvents v1.0 Schema](https://learn.microsoft.com/en-us/azure/event-grid/cloud-event-schema)) and `EventGrid` ([Event Grid event Schema](https://learn.microsoft.com/en-us/azure/event-grid/event-schema)). The default value is **CloudEvents**. |
 | identity | The service identity provider used for authentication to the Azure Event Grid service, discussed below. |
 
 
@@ -114,7 +116,7 @@ spec:
     <query-id>:
   properties: 
     eventGridUri: <event-grid-topic-endpoint>
-  
+
 ```
 
 ##### AKS Setup
