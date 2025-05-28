@@ -360,8 +360,8 @@ drasi env use docker
 **Flags and Arguments**:
 - `--dapr-runtime-version <version>` (optional): Specifies the Dapr runtime version to install. The default value is the latest stable release.
 - `--dapr-sidecar-version <version>` (optional): Specifies the Dapr sidecar (daprd) version to install. The default value is the latest stable release.
-- `--docker` (optional): If set, a Docker container will be created and a self-contained instance of drasi will be installed into it. You do not need a Kubernetes cluster or the kubectl tooling if using this option. 
-- `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `--docker <name (optional)>` (optional): If set, a Docker container will be created and a self-contained instance of drasi will be installed into it. You do not need a Kubernetes cluster or the kubectl tooling if using this option. You can optionally provide a name for the instance, the default will be `docker`.
+- `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry. If used in conjunction with the `--docker` flag, it will also scan your local Docker cache for all images with the `drasi-project/` prefix and automatically load them into the self contained Drasi instance.
 - `-n|--namespace <namespace>` (optional): Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>` (optional): Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
 - `--version <tag>` (optional): Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version) command discussed below.
