@@ -313,6 +313,17 @@ drasi env all
 #### drasi env current
 **Purpose**: The `env current` command provides the name and details of the currently selected Drasi environment.
 
+**Usage Example**:
+
+```bash
+drasi env current
+```
+
+```
+Current environment:
+  Name:  kind-kind
+  Platform:  kubernetes
+```
 
 #### drasi env delete
 **Purpose**: The `env delete` command will remove the named Drasi environment from the list of Drasi environments stored in your user profile.
@@ -328,9 +339,6 @@ drasi env delete docker
 
 #### drasi env kube
 **Purpose**: The `env kube` command will add the current Kubernetes context as a Drasi configuration and set it as the current environment.
-
-**Arguments**:
-- `<name>`: Specifies the name of the environment to delete.
 
 **Usage Example**:
 
