@@ -138,3 +138,4 @@ mysqluser
 gtid
 GTID
 GTIDs
+kube
