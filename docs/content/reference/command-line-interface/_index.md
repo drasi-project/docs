@@ -74,16 +74,19 @@ Usage:
   drasi [command]
 
 Available Commands:
-  apply       Apply resources
+  apply       Create or update resources
   completion  Generate the autocompletion script for the specified shell
   delete      Delete resources
-  describe    Get spec and status of a resource
+  describe    Show the definition and status of a resource
+  env         Manage Drasi environment configurations.
   help        Help about any command
   init        Install Drasi
-  list        Get status of all resources of a type
-  namespace   Manage namespaces
+  list        Show a list of available resources
+  namespace   Manage CLI namespace settings
+  secret      Manage secrets
+  tunnel      Create a tunnel to a Drasi resource
   uninstall   Uninstall Drasi
-  version     Get Drasi CLI version
+  version     Show the Drasi CLI version
   wait        Wait for resources to be ready
   watch       Watch the result set of a query
 
@@ -286,6 +289,76 @@ status:
 
 In the above example, the `inactive-people` resource is currently in an error state and the `status` section of the output contains details of the error to help diagnose the problem.
 
+### drasi env
+**Purpose**: The `env` command provides a subset of commands to manage a collection of Drasi environment configurations that are stored in your local user profile. When one of these environments is set to the current environment, all Drasi CLI commands are directed to that instance of Drasi.
+
+#### drasi env all
+**Purpose**: The `env all` command provides a list of all the environments that are saved in your local user profile. 
+
+**Usage Example**:
+
+```bash
+drasi env all
+```
+
+**Output**: A list of all the environments that are saved in your local user profile, with that platform type and the currently selected environment is marked with a `*`
+
+```
+    |   NAME    |  PLATFORM   
+----+-----------+-------------
+  * | docker    | docker      
+    | kind-kind | kubernetes 
+```
+
+#### drasi env current
+**Purpose**: The `env current` command provides the name and details of the currently selected Drasi environment.
+
+**Usage Example**:
+
+```bash
+drasi env current
+```
+
+```
+Current environment:
+  Name:  kind-kind
+  Platform:  kubernetes
+```
+
+#### drasi env delete
+**Purpose**: The `env delete` command will remove the named Drasi environment from the list of Drasi environments stored in your user profile.
+
+**Arguments**:
+- `<name>`: Specifies the name of the environment to delete.
+
+**Usage Example**:
+
+```bash
+drasi env delete docker
+```
+
+#### drasi env kube
+**Purpose**: The `env kube` command will add the current Kubernetes context as a Drasi configuration and set it as the current environment.
+
+**Usage Example**:
+
+```bash
+drasi env kube
+```
+
+#### drasi env use
+**Purpose**: The `env use` command will set the named Drasi environment from the list of Drasi environments stored in your user profile to the currently selected environment, that all following commands will be directed to.
+
+**Arguments**:
+- `<name>`: Specifies the name of the environment to use.
+
+**Usage Example**:
+
+```bash
+drasi env use docker
+```
+
+
 ### drasi help
 **Purpose**: The `help` command provides detailed help information about Drasi CLI commands. It is useful for understanding the usage, flags, and arguments of various commands available in the Drasi CLI. See the [Get Help](#get-help) section above.
 
@@ -295,7 +368,8 @@ In the above example, the `inactive-people` resource is currently in an error st
 **Flags and Arguments**:
 - `--dapr-runtime-version <version>` (optional): Specifies the Dapr runtime version to install. The default value is the latest stable release.
 - `--dapr-sidecar-version <version>` (optional): Specifies the Dapr sidecar (daprd) version to install. The default value is the latest stable release.
-- `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry.
+- `--docker <name (optional)>` (optional): If set, a Docker container will be created and a self-contained instance of drasi will be installed into it. You do not need a Kubernetes cluster or the kubectl tooling if using this option. You can optionally provide a name for the instance, the default will be `docker`.
+- `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry. If used in conjunction with the `--docker` flag, it will also scan your local Docker cache for all images with the `drasi-project/` prefix and automatically load them into the self contained Drasi instance.
 - `-n|--namespace <namespace>` (optional): Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>` (optional): Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
 - `--version <tag>` (optional): Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version) command discussed below.
@@ -461,6 +535,64 @@ drasi-system
 
 **Known Issues**: 
 - The `namespace` command does not currently enforce any restrictions on namespace names, nor does it validate that the namespace used in the `namespace set` command exist. Ensure that the namespace names used do not conflict with existing namespaces or reserved names.
+
+
+### drasi secret
+**Purpose**: The `secret` command provides a subset of commands for managing secrets in the default secret store of the hosting platform. In the case of Kubernetes, this will be Kubernetes secrets in the `drasi-system` namespace. These can then be referenced when creating Drasi resources, such as Sources or Reactions with confidential connection information. Secret values are stored under keys within a named secret.
+
+#### drasi secret delete
+**Purpose**: The `secret delete` command will remove the specified secret from the store.
+
+**Arguments**:
+- `name`: Specifies the name of the secret.
+- `key`: Specifies the key within the secret.
+
+
+**Usage Example**:
+This command will delete the `Password` key from the `MyDatabase` secret.
+
+```bash
+drasi secret delete MyDatabase Password
+```
+
+#### drasi secret set
+**Purpose**: The `secret set` command will set the specified secret in the store.
+
+**Arguments**:
+- `name`: Specifies the name of the secret.
+- `key`: Specifies the key within the secret.
+- `value` (optional): Specifies the value to set the secret key to.
+
+
+**Usage Example**:
+This command will set the `Password` key in the `MyDatabase` secret to `foo`.
+
+```bash
+drasi secret set MyDatabase Password foo
+```
+
+The value can also be piped in:
+
+```bash
+echo "foo" | drasi secret set MyDatabase Password
+```
+
+
+### drasi tunnel
+**Purpose**: The `tunnel` command provides a mechanism to open a local port on your machine that maps to a Drasi Source or Reaction that has an endpoint. For example, the SignalR Reaction exposes an endpoint for clients to connect to, this command can expose that endpoint on your local machine for debugging purposes.
+
+**Arguments**:
+- `kind`: The kind of resource to create a tunnel for, this can be `source` or `reaction`
+- `name`: The name of the resource to create a tunnel for.
+- `port`: The local port to use for the tunnel.
+
+**Usage Example**:
+This command will open port 8080 on the local machine and forward it to the endpoint of the Reaction named `my-reaction`.
+
+```bash
+drasi tunnel reaction my-reaction 8080
+```
+
 
 ### drasi uninstall
 **Purpose**: The `uninstall` command removes a Drasi deployment from a Kubernetes cluster by **deleting** the specified namespace, or using the current default namespace if not specified.
