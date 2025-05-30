@@ -86,7 +86,7 @@ spec:
   properties:
     host: retail.postgres.database.azure.com
     port: 5432
-    password:
+    user:
       kind: Secret
       name: pg-creds
       key: user
