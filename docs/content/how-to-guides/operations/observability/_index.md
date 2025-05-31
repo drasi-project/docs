@@ -8,47 +8,41 @@ description: >
     Configuring platform observability
 ---
 
+The `--observability-level` flag in [drasi init](/reference/command-line-interface/#drasi-init) simplifies setting up various types of observability infrastructure in a Drasi environment. This page describes the different components that can be installed using this flag and explains how to use them.
 
-## Setup metrics
+## Observability Level: None
+No observability infrastructure will be deployed if `--observability-level` is set to `none`. This is the default value for this flag.
 
-Custom metrics are collected by [Prometheus](https://prometheus.io/), to enable this, install Prometheus into your Kubernetes cluster.  By default, the operator will configure Prometheus to scrape metrics from the OpenTelemetry collector.
-To publish custom metrics, use the [Prometheus client library](https://prometheus.io/docs/instrumenting/clientlibs/), and push them to `http://otel-collector:4317`
+You can deploy observability tools using `kubectl`. The Drasi system sends metrics and traces to `http://otel-collector:4317`, assuming the OpenTelemetry Collector pod is in the same Kubernetes namespace as Drasi and is exposed through a Kubernetes Service named `otel-collector`.
 
-- JavaScript - https://github.com/siimon/prom-client
-- C# - https://github.com/prometheus-net/prometheus-net
+## Observability Level: Tracing
 
-### Install Prometheus
+When `--observability-level` is set to `tracing`, [Grafana Tempo](https://github.com/organizations/drasi-project/settings/actions/runners), a [Grafana Dashboard](https://grafana.com/grafana/dashboards/) and the OpenTelemetry Collector are deployed to the namespace where you installed Drasi.
 
-```
-kubectl create namespace dapr-monitoring
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring
-```
+To explore the traces, forward a port to the Grafana dashboard to your local machine using the command: 
 
-To explore the metrics, forward a port to the Prometheus server to your local machine.
-
-```
-kubectl port-forward services/dapr-prom-prometheus-server 82:80 -n dapr-monitoring
+```bash
+kubectl port-forward svc/grafana -n drasi-system 3000:3000
 ```
 
-In your browser, go to http://localhost:82 and you will see the Prometheus UI.
+In your browser, navigate to `http://localhost:3000` to use the Grafana UI. To login to the dashboard, use `drasi` as both the username and the password.
 
-## Setup tracing
+Navigate to the `Explore` tab in the left sidebar and select `Tempo` in the main screen. You can now execute TraceQL queries against Tempo to retrieve the traces for Drasi. You can also utilize the `Search` tab to navigate and build your query.
 
-Traces are sent by the Dapr sidecar to Zipkin.  To enable this, install Zipkin in your Kubernetes cluster.
+## Observability Level: Metrics
 
-### Install Zipkin
+When `--observability-level` is set to `metrics`, [Prometheus](https://prometheus.io/), a [Grafana Dashboard](https://grafana.com/grafana/dashboards/) and the OpenTelemetry Collector are deployed to the namespace where you installed Drasi.
 
-```
-kubectl create deployment zipkin --image openzipkin/zipkin
-kubectl expose deployment zipkin --type ClusterIP --port 9411
-```
+To explore the metrics, forward a port to the Grafana dashboard to your local machine using the command: 
 
-To explore the traces, forward a port to the Zipkin server to your local machine.
-
-```
-kubectl port-forward svc/zipkin 9411:9411
+```bash
+kubectl port-forward svc/grafana -n drasi-system 3000:3000
 ```
 
-In your browser, go to http://localhost:9411 and you will see the Zipkin UI.
+In your browser, navigate to `http://localhost:3000` to use the Grafana UI. To login to the dashboard, use `drasi` as both the username and the password.
+
+Navigate to the `Explore` tab in the left sidebar and select `Prometheus` in the main screen. You can now execute queries against Prometheus using the query builder.
+
+## Observability Level: Full
+
+When `--observability-level` is set to `metrics`, [Grafana Tempo](https://github.com/organizations/drasi-project/settings/actions/runners), [Prometheus](https://prometheus.io/), a [Grafana Dashboard](https://grafana.com/grafana/dashboards/) and the OpenTelemetry Collector are deployed to the namespace where you installed Drasi. Refer to the sections above for details on using each component.
