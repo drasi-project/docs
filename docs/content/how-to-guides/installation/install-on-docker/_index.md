@@ -7,6 +7,8 @@ description: >
     Learn how to install Drasi to a Docker container for local development and testing
 ---
 
+Installing Drasi into a Docker container is the fastest way to get started.  It will also allow you to connect to databases running on your local machine, by using the `host.docker.internal` host name.
+
 ## Prerequisites
 
 On the computer where you will install Drasi, you need to install [Docker](https://www.docker.com/products/docker-desktop/)
