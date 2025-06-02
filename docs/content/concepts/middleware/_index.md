@@ -194,7 +194,7 @@ spec:
 
 The **promote** middleware processes `SourceChange` events (`Insert` and `Update`) to copy values from deep-nested locations inside an element’s `properties` map to new top-level properties. Selection is performed with JSONPath expressions, and each promoted value is written under an explicit `target_name`. This is useful for flattening complex structures or making frequently accessed data more readily available.
 
-The configuration for the **promote** component are as follows:
+The configuration for the **promote** component is as follows:
 
 | Property             | Type                                | Description                                                                                                | Required | Default       |
 |----------------------|-------------------------------------|------------------------------------------------------------------------------------------------------------|----------|---------------|
