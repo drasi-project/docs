@@ -334,7 +334,7 @@ The `event_details` property now contains the parsed JSON object, which can be q
 
 The **decoder** middleware processes `SourceChange` events (specifically `Insert` and `Update`) to decode a string value found in a specified property of an `Element`. It supports various common encoding formats such as Base64, Hexadecimal, URL encoding, and JSON string escapes. This is useful when data from a source is encoded for transmission or storage.
 
-The configuration for the **decoder** component are as follows:
+The configuration for the **decoder** component is as follows:
 
 | Property                  | Type                                     | Description                                                                                                                               | Required | Default |
 |---------------------------|------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
