@@ -276,7 +276,7 @@ The `userId`, `city`, `orderTotal`, and `meta` fields are now available as top-l
 
 The **parse_json** middleware processes `SourceChange` events (specifically `Insert` and `Update`) to parse a string property containing a JSON document into a structured `ElementValue` (Object or List). This is useful when a data source provides JSON data embedded within a string field, which needs to be accessible as a structured object or array for querying.
 
-The configuration for the **parse_json** component are as follows:
+The configuration for the **parse_json** component is as follows:
 
 | Property                  | Type                          | Description                                                                                                                               | Required | Default       |
 |---------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
