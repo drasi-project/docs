@@ -7,7 +7,7 @@ description: >
     Learn how to configure a Reaction to synchronize Drasi Continuous Query results with a Dapr State Store.
 ---
 
-The Sync Dapr State Store Reaction materializes the results of Drasi Continuous Queries (CQs) into a [Dapr state store](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-management-overview/). It performs an initial bulk load of all query results and then incrementally processes changes (adds, updates, deletes) from the CQs to keep the Dapr state store up-to-date.
+The Sync Dapr State Store Reaction materializes the results of Drasi Continuous Queries into a [Dapr state store](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-management-overview/). It performs an initial bulk load of all query results and then incrementally processes changes (adds, updates, deletes) from a Continuous Query to keep the Dapr state store up-to-date.
 
 This enables Dapr-based microservices to easily access sophisticated, pre-computed, and continuously updated data views through the standard Dapr state management API.
 
@@ -16,8 +16,8 @@ This enables Dapr-based microservices to easily access sophisticated, pre-comput
 This reaction can power several vital scenarios for Dapr users:
 
 *   **Simplified Composite API Implementation**: Pre-compute and materialize aggregated data views from multiple sources. API-serving microservices can then read this data directly from Dapr State with low latency, simplifying their logic.
-*   **Building New Functionality Non-Invasively**: Introduce new features or services that consume tailored data views from existing systems without modifying those original services. Drasi CQs transform and project data, and this reaction makes it available in Dapr State for new microservices.
-*   **Efficient Query Side of CQRS**: Use Drasi CQs to define and maintain read models for CQRS. The reaction materializes these optimized query views into Dapr State, allowing query-handling microservices to read them efficiently.
+*   **Building New Functionality without Disruption**: Introduce new features or services that consume tailored data views from existing systems without modifying those original services. In Drasi, Continuous Queries transform and project data, and this reaction makes it available in Dapr State for new microservices.
+*   **Efficient Query Side of CQRS**: Use Drasi Continuous Queries to define and maintain read models for CQRS. The reaction materializes these optimized query views into Dapr State, allowing query-handling microservices to read them efficiently.
 *   **Decoupled Data Views**: Provide different microservices with specific "slices" or perspectives of the same underlying data, each materialized in Dapr State for easy consumption.
 *   **Improved Read Performance**: Offload complex querying from source databases by having read-optimized views readily available in a Dapr state store, accessed via simple key-value lookups.
 
@@ -42,7 +42,7 @@ Before deploying this reaction, ensure the following are in place in your Kubern
     *   **`metadata.name`**: The `name` of this Dapr component in `drasi-system` **must match** the `stateStoreName` you will specify in the Drasi Reaction's configuration (see `spec.queries` later). For example, if your application uses a state store component named `mystatestore`, and you want the Reaction to write to it, you will create a component also named `mystatestore` in the `drasi-system` namespace.
     *   **`metadata.namespace`**: This component manifest must specify `namespace: drasi-system`.
     *   **`spec` (type, version, metadata/connection details)**: The `spec` section of this component (including `type`, `version`, and all connection `metadata` like `redisHost`, `redisPassword`, etc.) must be **identical** to the Dapr state store component used by your application. It needs to point to the *same underlying physical state store*.
-    *   **`spec.metadata.keyPrefix`**: **IMPORTANT!** For both the application's Dapr state store component AND the corresponding component in `drasi-system`, it is highly recommended to explicitly set the `keyPrefix` strategy to `"none"`. This ensures that the keys used by the Drasi Reaction (derived directly from the `keyField` in your CQ results) are stored and retrieved without any automatic Dapr-managed prefixes. This consistency is vital for both the Reaction and your application to access the same data items using the same keys.
+    *   **`spec.metadata.keyPrefix`**: **IMPORTANT!** For both the application's Dapr state store component AND the corresponding component in `drasi-system`, it is highly recommended to explicitly set the `keyPrefix` strategy to `"none"`. This ensures that the keys used by the Drasi Reaction (derived directly from the `keyField` in your query results) are stored and retrieved without any automatic Dapr-managed prefixes. This consistency is vital for both the Reaction and your application to access the same data items using the same keys.
         ```yaml
         # Example snippet for spec.metadata in your Dapr component
         # ...
@@ -60,7 +60,7 @@ Before deploying this reaction, ensure the following are in place in your Kubern
         ```
 
     **Why is `keyPrefix: "none"` important?**
-    If `keyPrefix` is not set to `"none"` (e.g., it defaults to `appid` or is explicitly set to another strategy), Dapr will automatically add prefixes (like the Dapr App ID) to the keys. The Drasi Reaction writes keys based purely on your CQ's `keyField`. If your application's Dapr component expects prefixed keys, it won't find the data written by the Reaction, and vice-versa. Setting `keyPrefix: "none"` on both components ensures that the raw `keyField` value is the actual key in the underlying store, accessible by both.
+    If `keyPrefix` is not set to `"none"` (e.g., it defaults to `appid` or is explicitly set to another strategy), Dapr will automatically add prefixes (like the Dapr App ID) to the keys. The Drasi Reaction writes keys based purely on your query's `keyField`. If your application's Dapr component expects prefixed keys, it won't find the data written by the Reaction, and vice-versa. Setting `keyPrefix: "none"` on both components ensures that the raw `keyField` value is the actual key in the underlying store, accessible by both.
 
     **Example Structure:**
 
@@ -159,11 +159,11 @@ name: my-app-state-synchronizer # A unique name for your reaction instance
 spec:
   kind: SyncDaprStateStore # Must match the registered ReactionProvider name
   queries:
-    # Example 1: Sync results from 'orders-ready-for-pickup' CQ
+    # Example 1: Sync results from 'orders-ready-for-pickup' query
     # This will use the Dapr component named 'mystatestore' in the drasi-system namespace
     orders-ready-for-pickup: '{"stateStoreName": "mystatestore", "keyField": "orderId"}'
     
-    # Example 2: Sync results from 'active-user-profiles' CQ
+    # Example 2: Sync results from 'active-user-profiles' query
     # This will use the Dapr component named 'userprofilecache' in the drasi-system namespace
     active-user-profiles: '{"stateStoreName": "userprofilecache", "keyField": "profileId"}'
 ```
@@ -201,7 +201,7 @@ var daprClient = new DaprClientBuilder().Build();
 // Your app uses its 'mystatestore' component, which points to the same Redis
 // as the 'mystatestore' component in 'drasi-system' used by the Reaction.
 string daprStateStoreNameForApp = "mystatestore"; 
-string orderIdToFetch = "some-specific-order-id"; // This key comes from the 'keyField' of a CQ result
+string orderIdToFetch = "some-specific-order-id"; // This key comes from the 'keyField' of a query result
 
 var orderDetails = await daprClient.GetStateAsync<MyOrderDataType>(daprStateStoreNameForApp, orderIdToFetch);
 
@@ -215,11 +215,11 @@ else
     Console.WriteLine($"Order with ID {orderIdToFetch} not found in {daprStateStoreNameForApp}.");
 }
 
-// Define MyOrderDataType according to the structure of your CQ results
+// Define MyOrderDataType according to the structure of your query results
 // public class MyOrderDataType {
 //    public string OrderId { get; set; } // Matches 'keyField' if it's part of the data
 //    public string CustomerName { get; set; }
-//    // ... other fields from your CQ result
+//    // ... other fields from your query result
 // }
 ```
 
