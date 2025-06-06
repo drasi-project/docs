@@ -1485,3 +1485,10 @@ binlog
 PollingApproach
 EventStreamingApproach
 TraceQL
+filepath
+lookups
+keyPrefix
+mystatestore
+redisHost
+redisPassword
+yourRedisPassword
