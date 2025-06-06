@@ -26,6 +26,7 @@ This reaction can power several vital scenarios for Dapr users:
 On the computer from where you will create the Reaction, you need the following software:
 - [Drasi CLI](/reference/command-line-interface/)
 - [Kubectl](https://kubernetes.io/docs/reference/kubectl/) (for Dapr component configuration)
+- Note the namespace in which Drasi was installed. By default, Drasi uses `drasi-system` namespace. If you chose a custom namespace during installation of Drasi, use that in place of `drasi-system` when configuring the reaction.
 
 ## Dapr Environment Prerequisites
 
@@ -33,10 +34,10 @@ Before deploying this reaction, ensure the following are in place in your Kubern
 
 1.  **Application's Dapr State Store**: Your Dapr microservice(s) (e.g., running in `my-app-namespace`) must have a Dapr state store component configured and deployed. This component tells your application's Dapr sidecar how to connect to the underlying state store (e.g., Redis, Cosmos DB). Let's say this component is named `mystatestore`.
 
-2.  **Data Store Accessibility**: The actual data store (e.g., your Redis instance) that backs your Dapr state component must be network-accessible from the `drasi-system` Kubernetes namespace. This is because the Drasi Reaction pod runs in `drasi-system` and will need to connect to this data store.
+2.  **Data Store Accessibility**: The actual data store (e.g., your Redis instance) that backs your Dapr state component must be network-accessible from the Kubernetes namespace in which drasi was installed (default: `drasi-system`). This is because the Drasi Reaction pod runs in `drasi-system` (or the namespace chosen during installation) and will need to connect to this data store.
 
 3.  **Crucial: Dapr State Store Component for Drasi in `drasi-system` Namespace**:
-    This is a key step. The Drasi `SyncDaprStateStore` Reaction runs as a pod in the `drasi-system` namespace. Like any Dapr-enabled application, it relies on its *own* Dapr sidecar (running alongside it in `drasi-system`) to interact with Dapr building blocks, including state stores.
+    This is a key step. The Drasi `SyncDaprStateStore` Reaction runs as a pod in the Kubernetes namespace in which Drasi was installed (default: `drasi-system`). Like any Dapr-enabled application, it relies on its *own* Dapr sidecar (running alongside it in `drasi-system`) to interact with Dapr building blocks, including state stores.
     Therefore, you **must** deploy a Dapr state store component manifest specifically for the Drasi Reaction in the `drasi-system` namespace. This component tells the Reaction's Dapr sidecar how to connect to your *existing* state store.
 
     *   **`metadata.name`**: The `name` of this Dapr component in `drasi-system` **must match** the `stateStoreName` you will specify in the Drasi Reaction's configuration (see `spec.queries` later). For example, if your application uses a state store component named `mystatestore`, and you want the Reaction to write to it, you will create a component also named `mystatestore` in the `drasi-system` namespace.
@@ -85,14 +86,14 @@ Before deploying this reaction, ensure the following are in place in your Kubern
       # ... other configurations
     ```
 
-    You **must** create a corresponding Dapr component for Drasi in the `drasi-system` namespace, for example, in `drasi-components/drasi-statestore-access.yaml`:
+    You **must** create a corresponding Dapr component for Drasi in the namespace in which drasi was installed (by default, `drasi-system`), for example, in `drasi-components/drasi-statestore-access.yaml`:
     ```yaml
     # filepath: drasi-components/drasi-statestore-access.yaml
     apiVersion: dapr.io/v1alpha1
     kind: Component
     metadata:
       name: mystatestore # CRITICAL: Same name as your app's component if the Reaction targets it
-      namespace: drasi-system # CRITICAL: Must be drasi-system
+      namespace: drasi-system # CRITICAL: Must be drasi-system (or the namespace in which drasi was installed)
     spec:
       type: state.redis # Identical spec to your app's component
       version: v1
@@ -180,7 +181,7 @@ This table describes the settings in the `spec` section:
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `queries`       | An object where each key is the **name** of a Drasi Continuous Query to subscribe to. The value for each key is a JSON string specifying the configuration for that query's synchronization.             |
 |                 | The JSON string for each query must contain:                                                                                                                                                            |
-|                 | - `stateStoreName` (string): The `metadata.name` of the Dapr state store component (e.g., `"mystatestore"`, `"userprofilecache"`) that the Reaction should use. **It is important to note that this refers to the Dapr component defined in the `drasi-system` namespace.** |
+|                 | - `stateStoreName` (string): The `metadata.name` of the Dapr state store component (e.g., `"mystatestore"`, `"userprofilecache"`) that the Reaction should use. **It is important to note that this refers to the Dapr component defined in the namespace in which drasi was installed (by default - `drasi-system`).** |
 |                 | - `keyField` (string): The name of the field within each result item from the Drasi Continuous Query that will be used as the unique key when storing that item in the Dapr state store.                 |
 
 ## How Dapr Microservices Access the Synchronized Data
