@@ -9,7 +9,22 @@ description: >
 
 The `PostDaprPubSub` Reaction forwards change events and control signals from Drasi Continuous Queries to specified [Dapr publish/subscribe topics](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/). This enables Dapr-enabled microservices to react to sophisticated, real-time data changes detected by Drasi in various backend systems.
 
-Messages are published as [CloudEvents](httpsa://cloudevents.io/), with the Drasi event (either in "packed" or "unpacked" format) contained within the `data` field of the CloudEvent.
+Messages are published as [CloudEvents](https://cloudevents.io/), with the Drasi event (either in "packed" or "unpacked" format) contained within the `data` field of the CloudEvent.
+
+ ### CloudEvent Envelope Structure
+
+  All events published by this reaction include the following CloudEvents  attributes:
+
+  | Attribute | Description | Example |
+  |-----------|-------------|---------|
+  | `specversion` | CloudEvents specification version | `"1.0"` |
+  | `type` | Event type identifier | `"com.dapr.event.sent"` |
+  | `source` | Identifies the reaction instance | `"stock-notifications-publisher-reaction"` |
+  | `id` | Unique event identifier | `"378d12a1-ce64-4477-81e0-ed025609923a"` |
+  | `time` | Timestamp of when the event was created | `"2025-06-09T20:33:02Z"` |
+  | `datacontenttype` | Content type of the data field | `"application/json"` |
+  | `data` | The Drasi event payload | (see format examples below) |
+
 
 ## Scenarios Powered by this Reaction
 
