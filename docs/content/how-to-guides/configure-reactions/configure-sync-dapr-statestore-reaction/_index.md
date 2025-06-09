@@ -1,7 +1,7 @@
 ---
 type: "docs"
 title: "Configure a Sync Dapr State Store Reaction"
-linkTitle: "Sync Dapr State Store"
+linkTitle: "Configure a Sync Dapr State Store Reaction"
 weight: 30
 description: >
     Learn how to configure a Reaction to synchronize Drasi Continuous Query results with a Dapr State Store.
