@@ -1492,3 +1492,8 @@ mystatestore
 redisHost
 redisPassword
 yourRedisPassword
+NoSQL
+drasisystem
+pubsubName
+CloudEvent's
+ChangeEvent

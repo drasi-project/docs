@@ -103,4 +103,5 @@ Drasi currently provides the following Reactions:
 - [Gremlin](/how-to-guides/configure-reactions/configure-gremlin-command-reaction/), to use the Continuous Query results as parameters to commands that run against a Gremlin database.
 - [StoredProc](/how-to-guides/configure-reactions/configure-sql-stored-proc-reaction/), to use the Continuous Query results as parameters to Stored Procedures that run against a SQL database.
 - [Sync Dapr State Store](/how-to-guides/configure-reactions/configure-sync-dapr-statestore-reaction/), to create an incrementally up-to-date materialized view of the query result set in a Dapr State Store.
+- [Post Dapr Pub Sub](/how-to-guides/configure-reactions/configure-post-dapr-pubsub-reaction/), to post change notifications emitted by a Drasi Query to a Dapr Pub/Sub topic.
 - [Dataverse](/how-to-guides/configure-reactions/configure-dataverse-reaction/), to use the Continuous Query results as parameters to commands that run against a Microsoft Dataverse entities.
