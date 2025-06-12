@@ -63,7 +63,7 @@ Complete one of the options described below before continuing to [Step 2](#step-
 
 The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/drasi-project/learning?machine=standardLinux32gb&ref=main&devcontainer_path=.devcontainer%2Fdevcontainer.json)
 
 When you see the **Create a new codespace** screen, click the **Create codespace** button; there is no need to change any of the default configuration settings.
 
