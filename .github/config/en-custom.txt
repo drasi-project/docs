@@ -1484,3 +1484,16 @@ MatchedOrders
 binlog
 PollingApproach
 EventStreamingApproach
+TraceQL
+filepath
+lookups
+keyPrefix
+mystatestore
+redisHost
+redisPassword
+yourRedisPassword
+NoSQL
+drasisystem
+pubsubName
+CloudEvent's
+ChangeEvent

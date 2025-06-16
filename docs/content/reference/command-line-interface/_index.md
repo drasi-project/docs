@@ -9,7 +9,7 @@ description: >
 
 The Drasi Command Line Interface (CLI) is a tool designed to streamline the installation of Drasi and the management of Drasi environments. This section provides comprehensive instructions on how to use the CLI to apply, delete, describe, and manage resources within your Drasi environment. Whether you are installing Drasi for the first time or managing existing resources, the CLI commands and flags detailed here will help you perform these tasks efficiently and effectively.
 
-> The Drasi CLI is a convenient command line interface that wraps the [Drasi Management API](/reference/management-api/). Anything you can do through the Drasi CLI you can do programmatically through the Management API.
+> The Drasi CLI is a convenient command line interface that wraps the [Drasi Management API](/reference/management-api/). Anything you can do through the **Drasi** CLI you can do programmatically through the Management API.
 
 ## Drasi Resources
 In Drasi, a `resource` is a user-definable component that is created and managed using the Drasi CLI. There are currently six types of resource:
@@ -372,6 +372,11 @@ drasi env use docker
 - `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry. If used in conjunction with the `--docker` flag, it will also scan your local Docker cache for all images with the `drasi-project/` prefix and automatically load them into the self contained Drasi instance.
 - `-n|--namespace <namespace>` (optional): Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>` (optional): Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
+- `--observability-level` (optional): Specifies the observability infrastructure to install. For more information on using observability infrastructure in Drasi, see [observability](/how-to-guides/operations/observability/). There are currently four options for this flag: 
+  - `none` (**Default value**): No observability infrastructure will be deployed.
+  - `tracing`: Deploys Tempo, Grafana, and OpenTelemetry Collector.
+  - `metrics`: Deploys Prometheus, Grafana, and OpenTelemetry Collector.
+  - `full`: Deploys Tempo, Prometheus, Grafana, and OpenTelemetry Collector.
 - `--version <tag>` (optional): Container image version tag to use when pulling Drasi images. The default value is the version tag from the Drasi CLI, which is available through the [drasi version](#drasi-version) command discussed below.
 - `-h|--help`: Display help for the `init` command.
 

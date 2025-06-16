@@ -189,3 +189,208 @@ spec:
         s.sensorId,
         s.currentValue    
 ```
+
+### Promote
+
+The **promote** middleware processes `SourceChange` events (`Insert` and `Update`) to copy values from deep-nested locations inside an element’s `properties` map to new top-level properties. Selection is performed with JSONPath expressions, and each promoted value is written under an explicit `target_name`. This is useful for flattening complex structures or making frequently accessed data more readily available.
+
+The configuration for the **promote** component is as follows:
+
+| Property             | Type                                | Description                                                                                                | Required | Default       |
+|----------------------|-------------------------------------|------------------------------------------------------------------------------------------------------------|----------|---------------|
+| `kind`               | String                              | Must be **promote**.                                                                                       | Yes      |               |
+| `name`               | String                              | The name of this configuration, that can be used in a source pipeline.                                     | Yes      |               |
+| `config`             | Object                              | Contains the specific configuration for the promote middleware.                                            | Yes      |               |
+| `config.mappings`    | Array of *Mapping* objects          | Defines the promotion rules. Must contain at least one mapping entry.                                      | Yes      | –             |
+| `config.on_conflict` | `"overwrite"` \| `"skip"` \| `"fail"` | Specifies the action to take if a `target_name` already exists in the top-level properties of the element. | No       | `"overwrite"` |
+| `config.on_error`    | `"skip"` \| `"fail"`                | Determines the behavior when a mapping encounters an error (e.g., JSONPath selects 0 or >1 items, type conversion fails). | No       | `"fail"`      |
+
+The `Mapping Object` within the `config.mappings` array has the following properties:
+
+| Property      | Type   | Description                                                                    | Required |
+|---------------|--------|--------------------------------------------------------------------------------|----------|
+| `path`        | String | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression that must select exactly one value from the element's properties. | Yes      |
+| `target_name` | String | The name of the new top-level property that will receive the selected value.   | Yes      |
+
+#### Example
+
+Here's an example of how to configure the **promote** middleware to extract user and order data to top-level properties. This configuration will attempt to promote several fields; if a target property already exists, it will be skipped, and if a JSONPath expression fails to resolve, that specific mapping will be skipped.
+
+```yaml
+spec:
+  sources:
+    middleware:
+      - name: promote_user_and_order_data
+        kind: promote
+        config:
+          mappings:
+            - path: "$.user.id"
+              target_name: "userId"
+            - path: "$.user.location.city"
+              target_name: "city"
+            - path: "$.order.total"
+              target_name: "orderTotal"
+            - path: "$.metadata" # Promoting an entire object
+              target_name: "meta"
+          on_conflict: skip   # Keep existing values if 'userId', 'city', etc. already exist
+          on_error:    skip   # Skip mappings that error (e.g., if '$.order.total' doesn't exist)
+```
+
+For instance, if an incoming node has properties like this:
+```json
+{
+    "user": {
+        "id": "user123",
+        "location": {
+            "city": "New York"
+        }
+    },
+    "order": {
+        "total": 100.50
+    },
+    "metadata": { "source": "api", "version": "1.1" }
+}
+```
+After processing with the `promote_user_and_order_data` middleware configured above, the node's properties would be transformed to:
+```json
+{
+    "user": {
+        "id": "user123",
+        "location": {
+            "city": "New York"
+        }
+    },
+    "order": {
+        "total": 100.50
+    },
+    "metadata": { "source": "api", "version": "1.1" },
+    "userId": "user123",
+    "city": "New York",
+    "orderTotal": 100.50,
+    "meta": { "source": "api", "version": "1.1" }
+}
+```
+The `userId`, `city`, `orderTotal`, and `meta` fields are now available as top-level properties.
+
+### ParseJson
+
+The **parse_json** middleware processes `SourceChange` events (specifically `Insert` and `Update`) to parse a string property containing a JSON document into a structured `ElementValue` (Object or List). This is useful when a data source provides JSON data embedded within a string field, which needs to be accessible as a structured object or array for querying.
+
+The configuration for the **parse_json** component is as follows:
+
+| Property                  | Type                          | Description                                                                                                                               | Required | Default       |
+|---------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|----------|---------------|
+| `kind`                    | String                        | Must be **parse_json**.                                                                                                                   | Yes      |               |
+| `name`                    | String                        | The name of this configuration, that can be used in a source pipeline.                                                                    | Yes      |               |
+| `config`                  | Object                        | Contains the specific configuration for the parse_json middleware.                                                                        | Yes      |               |
+| `config.target_property`  | String                        | The name of the element property containing the JSON string to be parsed.                                                                 | Yes      |               |
+| `config.output_property`  | String                        | Optional. The name of the property where the parsed `ElementValue` should be stored. If omitted or `null`, `target_property` will be overwritten. | No       | `null`        |
+| `config.on_error`         | String (`"skip"` or `"fail"`) | Defines behavior when an error occurs (e.g., target property not found, value is not a string, JSON parsing fails, or conversion fails). `"skip"` logs a warning and passes the change through unchanged; `"fail"` stops processing and returns an error. | No       | `"fail"`      |
+| `config.max_json_size`    | Integer (bytes)               | Maximum size (in bytes) of the JSON string that will be parsed. Helps guard against unexpectedly large payloads.                            | No       | `1_048_576` (1MB) |
+| `config.max_nesting_depth`| Integer                       | Maximum allowed nesting depth for objects/arrays within the JSON document. Prevents issues with excessively nested structures.              | No       | `20`          |
+
+#### Example
+
+Here's an example of how to configure the **parse_json** middleware to parse a JSON string from the `raw_event_json` property and store the resulting structured object in a new property named `event_details`. If an error occurs during parsing, the change will be skipped.
+
+```yaml
+spec:
+  sources:
+    middleware:
+      - name: parse_event_data
+        kind: parse_json
+        config:
+          target_property: "raw_event_json"
+          output_property: "event_details"
+          on_error: "skip"
+```
+
+For example, if an incoming node has properties like:
+```json
+{
+    "id": "event001",
+    "timestamp": "2025-06-01T12:00:00Z",
+    "raw_event_json": "{\"user\": \"alice\", \"action\": \"login\", \"details\": {\"ip\": \"192.168.1.100\"}}"
+}
+```
+After processing with the `parse_event_data` middleware, the node's properties would be transformed to:
+```json
+{
+    "id": "event001",
+    "timestamp": "2025-06-01T12:00:00Z",
+    "raw_event_json": "{\"user\": \"alice\", \"action\": \"login\", \"details\": {\"ip\": \"192.168.1.100\"}}",
+    "event_details": {
+        "user": "alice",
+        "action": "login",
+        "details": {
+            "ip": "192.168.1.100"
+        }
+    }
+}
+```
+The `event_details` property now contains the parsed JSON object, which can be queried directly.
+
+### Decoder
+
+The **decoder** middleware processes `SourceChange` events (specifically `Insert` and `Update`) to decode a string value found in a specified property of an `Element`. It supports various common encoding formats such as Base64, Hexadecimal, URL encoding, and JSON string escapes. This is useful when data from a source is encoded for transmission or storage.
+
+The configuration for the **decoder** component is as follows:
+
+| Property                  | Type                                     | Description                                                                                                                               | Required | Default |
+|---------------------------|------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
+| `kind`                    | String                                   | Must be **decoder**.                                                                                                                      | Yes      |         |
+| `name`                    | String                                   | The name of this configuration, that can be used in a source pipeline.                                                                    | Yes      |         |
+| `config`                  | Object                                   | Contains the specific configuration for the decoder middleware.                                                                           | Yes      |         |
+| `config.encoding_type`    | String                                   | The encoding format of the `target_property` value. Supported types: `base64`, `base64url`, `hex`, `url`, `json_escape`.                   | Yes      |         |
+| `config.target_property`  | String                                   | The name of the element property containing the encoded string to be decoded.                                                             | Yes      |         |
+| `config.output_property`  | String                                   | Optional. The name of the property where the decoded string should be stored. If omitted or `null`, `target_property` will be overwritten. | No       | `null`  |
+| `config.strip_quotes`     | Boolean                                  | If `true`, removes surrounding double quotes (`"`) from the `target_property` value *before* attempting to decode it.                     | No       | `false` |
+| `config.on_error`         | String (`"skip"` or `"fail"`)            | Defines behavior when an error occurs (e.g., target property not found, value is not a string, or decoding fails). `"skip"` logs a warning and passes the change through unchanged; `"fail"` stops processing and returns an error. | No       | `"fail"`|
+
+#### Encoding Types Supported:
+*   **`base64`**: Standard Base64 encoding (RFC 4648).
+*   **`base64url`**: URL-safe Base64 encoding (RFC 4648 §5), without padding.
+*   **`hex`**: Hexadecimal encoding (e.g., `48656c6c6f`).
+*   **`url`**: Percent-encoding (e.g., `Hello%20World`).
+*   **`json_escape`**: Decodes JSON string escape sequences (e.g., `\"`, `\\`, `\n`, `\uXXXX`). Assumes the input is the *content* of a JSON string literal, not the literal itself including quotes.
+
+#### Example
+
+Here's an example of how to configure the **decoder** middleware to decode a Base64 encoded string. The string is located in the `raw_user_payload` property, may be surrounded by quotes which should be stripped, and the decoded result will be stored in a new `user_data` property. Errors will be skipped.
+
+```yaml
+spec:
+  sources:
+    middleware:
+      - name: decode_user_data
+        kind: decoder
+        config:
+          encoding_type: "base64"
+          target_property: "raw_user_payload"
+          output_property: "user_data"
+          strip_quotes: true
+          on_error: "skip"
+```
+
+For example, if an incoming node has properties like:
+```json
+{
+    "message_id": "msg123",
+    "raw_user_payload": "\"SGVsbG8gV29ybGQh\"" 
+}
+```
+(The string `SGVsbG8gV29ybGQh` is "Hello World!" encoded in Base64.)
+
+After processing with the `decode_user_data` middleware:
+1.  `strip_quotes: true` removes the surrounding double quotes from `"SGVsbG8gV29ybGQh"` to yield `SGVsbG8gV29ybGQh`.
+2.  This resulting string is then Base64 decoded to `Hello World!`.
+
+The node's properties would be transformed to:
+```json
+{
+    "message_id": "msg123",
+    "raw_user_payload": "\"SGVsbG8gV29ybGQh\"",
+    "user_data": "Hello World!"
+}
+```
+The `user_data` property now contains the decoded string "Hello World!".

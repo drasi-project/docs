@@ -235,7 +235,7 @@ The easiest way to follow along with this tutorial is to launch a Github
   application within your browser without setting up anything on your own
   machines.
 
-[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning?devcontainer_path=.devcontainer%2Fbuilding-comfort%2Fdevcontainer.json)
+[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning?devcontainer_path=.devcontainer%2Fbuilding-comfort%2Fdevcontainer.json&machine=standardLinux32gb)
 
 This will open a page with some configuration options. Make sure that the
   'Branch' selected is `main` and set the 'Dev Container configuration' to

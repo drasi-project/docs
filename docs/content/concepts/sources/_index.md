@@ -96,7 +96,9 @@ drasi delete source human-resources
 Drasi currently provides Sources for the following source systems:
 
 - [Azure Cosmos DB Gremlin API](/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/)
+- [MySQL](/how-to-guides/configure-sources/configure-mysql-source/)
 - [PostgreSQL](/how-to-guides/configure-sources/configure-postgresql-source/)
-- Event Hubs
-- Microsoft SQL Server
-- Microsoft Dataverse
+- [Event Hubs](/how-to-guides/configure-sources/configure-azure-eventhub-source/)
+- [Microsoft SQL Server](/how-to-guides/configure-sources/configure-mssql-source/)
+- [Kubernetes](/how-to-guides/configure-sources/configure-kubernetes-source/)
+- [Microsoft Dataverse](/how-to-guides/configure-sources/configure-dataverse-source/)
