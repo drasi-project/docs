@@ -13,6 +13,7 @@ description: >
 
 | Title | Source | Date |
 |-------|--------|------|
+|[Drasi accepted into CNCF sandbox for change-driven solutions](https://opensource.microsoft.com/blog/2025/06/10/drasi-accepted-into-cncf-sandbox-for-change-driven-solutions) |  Microsoft Open Source Blog |  June 10, 2025 |
 |[Optimizing Change-Driven Architectures with Drasi](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/optimizing-change-driven-architectures-with-drasi/4404675) | Microsoft Linux and Open Source Blog | Apr 17, 2025 |
 | [Detect and react intelligently to changes in data with Drasi](https://opensource.microsoft.com/blog/2024/10/22/detect-and-react-intelligently-to-changes-in-data-with-drasi/) | Microsoft Open Source Blog | Oct 22, 2024 |
 | [Drasi: Microsoft’s newest open-source project simplifies change detection and reaction in complex systems](https://azure.microsoft.com/en-us/blog/drasi-microsofts-newest-open-source-project-simplifies-change-detection-and-reaction-in-complex-systems) | Microsoft Azure Blog | Oct 3, 2024 |
