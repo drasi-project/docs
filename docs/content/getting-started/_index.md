@@ -82,10 +82,26 @@ To use the Drasi Getting Started Dev Container, you will need to install:
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - [docker](https://www.docker.com/get-started/)
 
+#### Recommended Docker Resources
+
+For optimal performance with the Drasi Dev Container, we recommend configuring Docker with the following minimum resources:
+
+- **CPU**: 3 cores or more
+- **Memory**: 4 GB or more
+- **Swap**: 1 GB or more
+- **Disk**: 272 GB available space 
+
+To adjust these settings in Docker Desktop:
+1. Open Docker Desktop
+2. Go to Settings (gear icon)
+3. Navigate to "Resources" → "Advanced"
+4. Adjust the sliders to meet or exceed the recommended values
+5. Click "Apply & Restart"
+
 Once you have these prerequisites installed:
 1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
-1. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
-1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
+2. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
+3. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
 If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:
 - `.devcontainer` contains files that VS Code requires to configure the Dev Container
