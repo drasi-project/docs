@@ -4,7 +4,7 @@ This repo contains the documentation source for [https://drasi.io](https://drasi
 ## Contributing
 Follow the guidance in this file to learn how to contribute to Drasi's documentation. 
 
-Please review our [Contributions](https://github.com/drasi-project/docs/blob/preview/CONTRIBUTING.md) guide.
+Please review our [Contributions](https://github.com/drasi-project/docs/blob/preview/CONTRIBUTING.md) guide prior to making contributions.
 
 Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. 
 
