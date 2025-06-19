@@ -138,3 +138,6 @@ mysqluser
 gtid
 GTID
 GTIDs
+kube
+eventGridSchema
+ParseJson
