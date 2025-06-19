@@ -2,7 +2,7 @@
 type: "docs"
 title: "Media Coverage"
 linkTitle: "Media Coverage"
-weight: 20
+weight: 90
 toc_hide: false
 hide_summary: false
 description: >
