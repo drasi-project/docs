@@ -2,59 +2,50 @@
 This repo contains the documentation source for [https://drasi.io](https://drasi.io).
 
 ## Contributing
-Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. Follow the guidance in here to learn how to get started with contributing and creating new documents for Drasi. Please review our [Contributions](https://github.com/drasi-project/docs/blob/preview/CONTRIBUTING.md) guide.
+Follow the guidance in this file to learn how to contribute to Drasi's documentation. 
 
-## Pre-requisites
- * [Node.js](https://nodejs.org/en/)
+Please review our [Contributions](https://github.com/drasi-project/docs/blob/preview/CONTRIBUTING.md) guide.
 
-## Building the docs
+Drasi's documentation follows the [Diataxis framework](https://diataxis.fr/) for its structure and content. 
+
 The documentation website is generated with the [Hugo](https://gohugo.io/) framework.
 
-You can follow the instructions below to setup and run a local server to view your changes.
-Alternatively, you can use the pre-configured devcontainer for this repository in VSCode or GitHub Codespaces.
+The documentation website uses the [Docsy](https://www.docsy.dev/) theme. Refer to the [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/) for helpful tips on creating content.
+
+## Building the docs
+You can use the pre-configured dev container for this repository in Visual Studio Code or GitHub Codespaces.
 
 [![Launch in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/docs)
 
-### Setup Theme
-The [Docsy](https://www.docsy.dev/) theme is used to style the generated site. Refer to the [Docsy authoring guide](https://www.docsy.dev/docs/adding-content/) for helpful tips on creating content for Drasi.
+Alternatively, you can follow the instructions below to setup and run a local Hugo server to edit and view your changes.
+
+### Pre-requisites
+ * [Node.js](https://nodejs.org/en/)
+
+### Setup Hugo and Docsy
 
 1. Install [Hugo](https://gohugo.io/)
-1. Clone the drasi-project/docs repo
-2. Change to the docs subfolder
+1. Clone the [drasi-project/docs](https://github.com/drasi-project/docs) repo
+1. The Docsy theme is configured as a submodule which needs to be pulled. From the root of the drasi-project/docs repo (where this readme is located) run: 
 
-   ``` cd docs/docs```
- 
-1. From the root of the drasi-project/docs repo, where this readme is located, run ```git submodule update --init --recursive --remote``` to pull Docsy code that is configured as a submodule.
-1. Switch to  the Docsy theme folder
+    ```git submodule update --init --recursive --remote``` 
 
-   ```docs/themes/docsy``` folder
+1. Switch to  the Docsy theme folder:
 
-1. Run the command ```npm install```
+   ```cd docs/themes/docsy```
 
-### Run local server
-Follow these steps to build the docs locally
+1. Build the Docsy theme by running:
 
-1. Open a terminal window
-1. Ensure that you are in the  ```docs/docs``` folder of the repo
-1. Run the command ```hugo server```
+     ```npm install```
 
+### Run the Hugo server
+1. Ensure you are in the  ```docs``` folder of the drasi-project/docs repo.
+1. Run the command:
+
+     ```hugo server --disableFastRender```
+
+### Browse the documentation
 The documentation website will be accessible on the URL **http://localhost:1313/**
-
-## Deploying to Azure
-
-The documentation website is hosted on Azure in an App Service called ```project-drasi-docs``` in the ```project-drasi-docs``` Resource Group in the ```Azure Incubations Dev``` subscription.
-
-Currently, we need to manually build and deploy the documentation site. The easiest way to do this is:
-
-1. Open a terminal
-1. Change to the ```docs``` folder
-1. Run the command ```hugo``` to build the site
-1. Use the ```Azure App Service``` Extension for VS Code to publish the ```docs/docs/public``` folder to the ```project-drasi-docs``` App Service.
-
-Once deployed, the documentation site is accessible at the URL [https://project-drasi-docs.azurewebsites.net/](https://project-drasi-docs.azurewebsites.net/).
-
-Access to the site is restricted to people that are members of the [Project Drasi Preview Users](https://ms.portal.azure.com/#view/Microsoft_AAD_IAM/GroupDetailsMenuBlade/~/Overview/groupId/01063f6b-d581-48e5-806a-29d531cba3ff) AD Group.
-
 
 ## Code of Conduct
 Please refer to Drasi's [Community Code of Conduct](https://github.com/drasi-project/community/blob/main/CODE_OF_CONDUCT.md).
