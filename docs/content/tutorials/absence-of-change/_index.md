@@ -43,14 +43,21 @@ Next, [clone the learning repo from Github](https://github.com/drasi-project/lea
   and open the repo in VS Code. Make sure that Docker daemon
   (or Docker Desktop) is running.
 
-#### Recommended Docker Resources
+Once the solution is open in VS Code, follow these steps:
+- Press Cmd + Shift + P (on MacOS) or Ctrl + Shift + P (Windows or Linux) to
+    launch the command palette.
+- Select `Dev Containers: Rebuild and Reopen in Container`.
+- Select the `Absence of Change with Drasi` option to launch this tutorial.
+
+
+##### Recommended Docker Resources
 
 For optimal performance with the Drasi Dev Container, we recommend configuring Docker with the following minimum resources:
 
 - **CPU**: 3 cores or more
 - **Memory**: 4 GB or more
 - **Swap**: 1 GB or more
-- **Disk**: 272 GB available space 
+- **Disk**: 50 GB available space 
 
 To adjust these settings in Docker Desktop:
 1. Open Docker Desktop
@@ -59,11 +66,6 @@ To adjust these settings in Docker Desktop:
 4. Adjust the sliders to meet or exceed the recommended values
 5. Click "Apply & Restart"
 
-Once the solution is open in VS Code, follow these steps:
-- Press Cmd + Shift + P (on MacOS) or Ctrl + Shift + P (Windows or Linux) to
-    launch the command palette.
-- Select `Dev Containers: Rebuild and Reopen in Container`.
-- Select the `Absence of Change with Drasi` option to launch this tutorial.
 
 {{% /tab %}}
 
