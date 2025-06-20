@@ -82,10 +82,11 @@ To use the Drasi Getting Started Dev Container, you will need to install:
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - [docker](https://www.docker.com/get-started/)
 
+
 Once you have these prerequisites installed:
 1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
-1. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
-1. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
+2. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
+3. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
 If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:
 - `.devcontainer` contains files that VS Code requires to configure the Dev Container
@@ -99,6 +100,22 @@ Run the Dev Container as follows:
 The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
 
 When you see the ```Done. Press any key to close the terminal.``` message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
+
+##### Recommended Docker Resources
+
+For optimal performance with the Drasi Dev Container, we recommend configuring Docker with the following minimum resources:
+
+- **CPU**: 3 cores or more
+- **Memory**: 4 GB or more
+- **Swap**: 1 GB or more
+- **Disk**: 50 GB available space 
+
+To adjust these settings in Docker Desktop:
+1. Open Docker Desktop
+2. Go to Settings (gear icon)
+3. Navigate to "Resources" → "Advanced"
+4. Adjust the sliders to meet or exceed the recommended values
+5. Click "Apply & Restart"
 
 If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team.
 
