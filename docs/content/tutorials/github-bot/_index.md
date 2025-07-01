@@ -145,6 +145,48 @@ drasi wait -f source.yaml
 
 ## Deploy the open issues query
 
+Next, we will create a continuous query that will monitor open issues. The basic structure of the message from GitHub will look as follows:
+
+
+```json
+{
+  "action": "opened",
+  "issue": {
+    "url": "https://api.github.com/repos/my-org/test-repo",
+    "repository_url": "https://api.github.com/repos/my-org/test-repo",
+    "id": 100,
+    "number": 55,
+    "title": "Issue title",
+    "user": {
+      "login": "xxxxxx",
+      "id": 200,
+      "type": "User"
+    },
+    "labels": [
+    ],
+    "state": "open",
+    "assignees": [
+    ],
+    "body": "Issue body"
+  },
+  "repository": {
+    "id": 300,
+    "name": "test-repo",
+    "full_name": "my-org/test-repo",
+    "default_branch": "main"
+  }
+}
+```
+
+We will use the `map` middleware to map the incoming JSON document onto a graph node. The following query will emit added results when an issue is opened and deleted results when the issue is closed. All changes from the EventHub source will be reflected as an `insert`, with the label of the EventHub itself, in this case, it is `github`. 
+
+The middleware defined in this query will extract the `issue` object from the JSON document (`selector: $.issue`), and when the `event` property is `issues` and the `action` property is `opened` (`condition: $[?(@.event == 'issues' && @.action == 'opened')]`), it will apply and insert/update a graph node with the label `Issue` (`label: Issue`) and the ID of the `id` property within the `issue` object in the source JSON (`id: $['$selected'].id`).
+
+When the `event` property is `issues` and the `action` property is `closed`, it will apply a delete to the graph node.
+
+After that, we have a Cypher query that just returns all the `Issue` nodes in the graph. 
+
+
 ```yaml
 kind: ContinuousQuery
 apiVersion: v1
@@ -171,8 +213,6 @@ spec:
               properties:
                 id: $['$selected'].id
                 title: $['$selected'].title
-                body: $['$selected'].body
-                state: $['$selected'].state
                 number: $['$selected'].number
                 creator: $['$selected'].user.login
                 repo: $.repository.full_name
@@ -188,18 +228,21 @@ spec:
     RETURN 
       i.id AS id, 
       i.title AS title, 
-      i.body AS body, 
-      i.state AS state, 
       i.repo AS repo, 
       i.number AS issue_number, 
       i.creator AS creator
 ```
+
+This query already exists in the tutorial folder, so you can deploy it with the following command:
+
 
 ```bash
 drasi apply -f query-open-issues.yaml
 ```
 
 ## Create a GitHub PAT
+
+In order to invoke actions on GitHub, we will need to be authenticated. To do this we will use a personal access token. At this point, if you wish to create a dedicated GitHub account for your bot, you can do so.
 
 Go to the `Settings` > `Developer Settings` > `Personal access tokens` > `Fine-grained tokens` page in your GitHub profile.
 
@@ -220,10 +263,14 @@ drasi secret set github token "<GitHub PAT>"
 
 ## Deploy the open issues reaction
 
+We will use the `Http` reaction to invoke GitHub APIs when the query emits diffs to the result set. This reaction enables you to define the URL and body of the Http request using Handlebars templates, where the fields of the result can be accessed via the `before` and `after` objects.
+
+In this case, when an issue is created, we will post a thank you comment. When it is closed, we will post a comment to say so.
+
 ```yaml
 kind: Reaction
 apiVersion: v1
-name: my-reaction
+name: open-reaction
 spec:
   kind: Http
   properties:
@@ -249,6 +296,8 @@ spec:
             "body": "This issue has now been closed."
           }
 ```
+
+This reaction already exists in the tutorial folder, so you can deploy it with the following command:
 
 ```bash
 drasi apply -f reaction-open-issues.yaml
