@@ -179,9 +179,17 @@ Next, we will create a continuous query that will monitor open issues. The basic
 
 We will use the `map` middleware to map the incoming JSON document onto a graph node. The following query will emit added results when an issue is opened and deleted results when the issue is closed. All changes from the EventHub source will be reflected as an `insert`, with the label of the EventHub itself, in this case, it is `github`. 
 
-The middleware defined in this query will extract the `issue` object from the JSON document (`selector: $.issue`), and when the `event` property is `issues` and the `action` property is `opened` (`condition: $[?(@.event == 'issues' && @.action == 'opened')]`), it will apply and insert/update a graph node with the label `Issue` (`label: Issue`) and the ID of the `id` property within the `issue` object in the source JSON (`id: $['$selected'].id`).
+The middleware defined in this query:
 
-When the `event` property is `issues` and the `action` property is `closed`, it will apply a delete to the graph node.
+* Extracts the `issue` object from the JSON document using: `selector: $.issue`
+* When an issue is opened:
+  * Checks condition: `$[?(@.event == 'issues' && @.action == 'opened')]`
+  * Applies an insert/update operation to create a graph node: `op: Update`
+  * Labels the node as `Issue`: `label: Issue`
+  * Uses the issue's ID as the node ID: (`id: $['$selected'].id`)
+* When an issue is closed:
+  * Checks condition: `$[?(@.event == 'issues' && @.action == 'closed')]`
+  * Applies a delete operation to remove the graph node: `op: Delete`
 
 [Click here to learn more about the Map middleware](../../concepts/middleware/#map)
 
