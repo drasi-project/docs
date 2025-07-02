@@ -1,19 +1,20 @@
 ---
 type: "docs"
-title: "GitHub bot"
-linkTitle: "GitHub bot"
+title: "GitHub Bot"
+linkTitle: "GitHub Bot"
 weight: 90
 description: >
-    Building a GitHub bot with Drasi
+    Building a GitHub Bot with Drasi
 ---
 
 ## Scenario
 
-In this tutorial, we will build a GitHub bot. The bot will monitor issues in a GitHub repository, with the following behaviour:
+In this tutorial, we will build a GitHub Bot. The bot will monitor issues in a GitHub repository, with the following behaviour:
 - When a new issue is opened, it will automatically comment with a thank you message.
 - When an issue is closed, it will automatically comment.
-- When an issue has not had a comment for x amount of time, it will add a `stale` label to it.
-- When a stale issue is commented on, the `stale` label should be removed.
+- When an open issue has not had a comment for x amount of time, it will add a `stale` label to it.
+- When an open issue that is stale, is commented on, the `stale` label should be removed.
+- When an issue is closed, it is not considered stale.
 
 ### Tutorial Modes
 
@@ -162,11 +163,9 @@ Next, we will create a continuous query that will monitor open issues. The basic
       "id": 200,
       "type": "User"
     },
-    "labels": [
-    ],
+    "labels": [ ],
     "state": "open",
-    "assignees": [
-    ],
+    "assignees": [ ],
     "body": "Issue body"
   },
   "repository": {
@@ -183,6 +182,8 @@ We will use the `map` middleware to map the incoming JSON document onto a graph 
 The middleware defined in this query will extract the `issue` object from the JSON document (`selector: $.issue`), and when the `event` property is `issues` and the `action` property is `opened` (`condition: $[?(@.event == 'issues' && @.action == 'opened')]`), it will apply and insert/update a graph node with the label `Issue` (`label: Issue`) and the ID of the `id` property within the `issue` object in the source JSON (`id: $['$selected'].id`).
 
 When the `event` property is `issues` and the `action` property is `closed`, it will apply a delete to the graph node.
+
+[Click here to learn more about the Map middleware](../../concepts/middleware/#map)
 
 After that, we have a Cypher query that just returns all the `Issue` nodes in the graph. 
 
@@ -240,7 +241,7 @@ This query already exists in the tutorial folder, so you can deploy it with the 
 drasi apply -f query-open-issues.yaml
 ```
 
-## Create a GitHub PAT
+## Create a GitHub Access Token
 
 In order to invoke actions on GitHub, we will need to be authenticated. To do this we will use a personal access token. At this point, if you wish to create a dedicated GitHub account for your bot, you can do so.
 
@@ -266,6 +267,8 @@ drasi secret set github token "<GitHub PAT>"
 We will use the `Http` reaction to invoke GitHub APIs when the query emits diffs to the result set. This reaction enables you to define the URL and body of the Http request using Handlebars templates, where the fields of the result can be accessed via the `before` and `after` objects.
 
 In this case, when an issue is created, we will post a thank you comment. When it is closed, we will post a comment to say so.
+
+For details on the GitHub API, please see the [GitHub API documentation](https://docs.github.com/en/rest)
 
 ```yaml
 kind: Reaction
@@ -305,6 +308,21 @@ drasi apply -f reaction-open-issues.yaml
 
 
 ## Deploy the stale issues query
+
+Next, we will create a continuous query that will monitor issues that have become stale. This query will track when issues haven't received comments for a specified period of time.
+
+The middleware defined in this query will extract both `issue` and `comment` objects from the JSON documents. For issue events, it will update the graph node with basic issue information including the creation time (`createdAt`). For comment events, it will update the same issue node with the timestamp of the last comment (`lastCommentAt`).
+
+Here's what the Cypher query is doing:
+
+- `MATCH (i:Issue)` - Finds all nodes labeled as "Issue" in the graph.
+- `WHERE i.state = 'open'` - Filters for issues that are currently open.
+- `AND drasi.trueNowOrLater(...)` - Evaluates if an issue has become stale.
+  - `coalesce(i.lastCommentAt, i.createdAt)` - Gets the timestamp of either the last comment or the issue creation (if no comments)
+  - `datetime(...) + duration({ seconds: 15 })` - Calculates the time when the issue becomes stale (15 seconds after last activity)
+  - `<= datetime.realtime()` - Checks if that stale time has been reached. `datetime.realtime()` returns the current timestamp.
+  - The second parameter `datetime.transaction() + duration({ seconds: 15 })` tells the system when to check again if the condition isn't true yet. `datetime.transaction()` returns the timestamp of the change coming from the source.
+  - The `drasi.trueNowOrLater` function ensures that the query result is updated at the moment when an issue becomes stale, even if no new events occur. [Click here to learn more about this function](../../reference/query-language/#drasi-future-functions)
 
 
 ```yaml
@@ -348,19 +366,27 @@ spec:
       (i:Issue)
     WHERE i.state = 'open'
     AND drasi.trueNowOrLater(
-          (datetime(coalesce(i.lastCommentAt, i.createdAt)) + duration({ seconds: 10 })) <= datetime.realtime(), 
-          datetime.transaction() + duration({ seconds: 10 })
+          (datetime(coalesce(i.lastCommentAt, i.createdAt)) + duration({ seconds: 15 })) <= datetime.realtime(), 
+          datetime.transaction() + duration({ seconds: 15 })
         )
     RETURN 
       i.id AS id,       
       i.title AS title,
       i.repo AS repo,
       i.number AS issue_number
+```
 
+This query already exists in the tutorial folder, so you can deploy it with the following command:
+
+```bash
+drasi apply -f query-stale-issues.yaml
 ```
 
 ## Deploy the stale issues reaction
 
+We will use the `Http` reaction to invoke GitHub APIs when the stale issues query emits diffs to the result set. This reaction will manage the `stale` label on GitHub issues based on their activity status.
+
+When an issue becomes stale (appears in the query results), the reaction will add a `stale` label to the issue. When an issue is no longer stale (gets removed from the query results, typically due to new activity), the reaction will remove the `stale` label.
 
 ```yaml
 kind: Reaction
@@ -386,4 +412,10 @@ spec:
       deleted:
         url: "/repos/{{before.repo}}/issues/{{before.issue_number}}/labels/stale"
         method: "DELETE"
+```
+
+This reaction already exists in the tutorial folder, so you can deploy it with the following command:
+
+```bash
+drasi apply -f reaction-stale-issues.yaml
 ```
