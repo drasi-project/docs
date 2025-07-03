@@ -73,7 +73,12 @@ kubectl config use-context <your cluster name>
 ```
 
 ## Install Drasi on the AKS Cluster
-To install Drasi on the AKS cluster using all default settings, simply run the following command:
+Before installing Drasi, set your environment to use the AKS cluster by running the following command:
+```text
+drasi env kube
+```
+
+Then, to install Drasi on the AKS cluster using all default settings, simply run the following command:
 
 ```text
 drasi init
