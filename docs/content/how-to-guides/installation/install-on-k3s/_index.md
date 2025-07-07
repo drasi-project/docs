@@ -16,8 +16,8 @@ On the computer where you will install k3d/k3s, you need to install the followin
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [docker](https://www.docker.com/)
 
-## Install k3d
-The [k3d installation](https://k3d.io/v5.6.3/#installation) instructions describe multiple ways to install k3d on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install k3d on your computer before continuing.
+## Install k3s
+The [k3s installation](https://docs.k3s.io/installation) instructions describe multiple ways to install k3s on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install k3s on your computer before continuing.
 
 ## Create a k3s Cluster
 To create a k3s cluster, open a terminal or command prompt and run the following command: 
@@ -91,10 +91,12 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 This guide focuses on how to install Drasi on a k3s cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 ## Install Drasi on the k3s Cluster
-Before installing Drasi, set your environment to use the k3s cluster by running the following command:
+Before installing Drasi, ensure that your kubectl context is set to the k3s cluster where you want to install Drasi. Then, configure a new Drasi CLI environment by running the following command:
 ```text
 drasi env kube
 ```
+
+This command adds the current Kubernetes context as a Drasi configuration and set it as the current Drasi environment. The Drasi CLI will use this environment to install Drasi on the k3s cluster.
 
 Then, to install Drasi on the k3s cluster using all default settings, simply run the command:
 
