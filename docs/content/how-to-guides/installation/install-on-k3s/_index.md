@@ -16,8 +16,9 @@ On the computer where you will install k3d/k3s, you need to install the followin
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [docker](https://www.docker.com/)
 
-## Install k3s
-The [k3s installation](https://docs.k3s.io/installation) instructions describe multiple ways to install k3s on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install k3s on your computer before continuing.
+## Install k3d
+The [k3d installation](https://k3d.io/v5.6.3/#installation) instructions describe multiple ways to install k3d on macOS, Windows, and Linux. The options include downloading binaries, using a package manager, and building from source. Review the available installation options and use one to install k3d on your computer before continuing.
+
 
 ## Create a k3s Cluster
 To create a k3s cluster, open a terminal or command prompt and run the following command: 
