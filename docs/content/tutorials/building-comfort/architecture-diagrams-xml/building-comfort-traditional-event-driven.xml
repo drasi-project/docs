@@ -1,0 +1,114 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" version="27.2.0">
+  <diagram name="Event-Driven Architecture" id="event-driven-arch">
+    <mxGraphModel dx="1426" dy="825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sensors" value="Sensors" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="80" y="95" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" value="PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;strokeColor=#56517e;fillColor=#d0cee2;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="200" y="90" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="debezium" value="Debezium&lt;br&gt;Connector" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="320" y="95" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka" value="Kafka&lt;br&gt;Message Broker" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="440" y="80" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="stream-proc" value="Stream&lt;br&gt;Processor&lt;br&gt;(Kafka Streams/&lt;br&gt;Flink)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="580" y="85" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rule-engine" value="Rule Engine/&lt;br&gt;Script Engine" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="735" y="190" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="k82QjkelKqhVcJHMRIRm-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="config-store" target="rule-engine">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="config-store" value="Config Store&lt;br&gt;(Consul/etcd)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="860" y="190" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="websocket" value="WebSocket&lt;br&gt;Endpoint" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="860" y="95" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dashboard" value="Dashboard&lt;br&gt;UI" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="980" y="95" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="state-store" value="State Store" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="580" y="190" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" value="" style="endArrow=classic;html=1;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="sensors" target="postgres" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="130" y="124.5" as="sourcePoint" />
+            <mxPoint x="160" y="125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2" value="" style="endArrow=classic;html=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="postgres" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="120" as="sourcePoint" />
+            <mxPoint x="320" y="120" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3" value="" style="endArrow=classic;html=1;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="120" as="sourcePoint" />
+            <mxPoint x="440" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow4" value="" style="endArrow=classic;html=1;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="120" as="sourcePoint" />
+            <mxPoint x="580" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow5" value="" style="endArrow=classic;html=1;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="120" as="sourcePoint" />
+            <mxPoint x="720" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow6" value="" style="endArrow=classic;html=1;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="agg-processor" edge="1" target="websocket">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="120" as="sourcePoint" />
+            <mxPoint x="840" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow8" value="" style="endArrow=classic;html=1;strokeWidth=2;curved=1;dashed=1;strokeColor=#FF0000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="websocket" target="dashboard" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="145" as="sourcePoint" />
+            <mxPoint x="1000" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow9" value="" style="endArrow=classic;startArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;dashed=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="state-store" edge="1">
+          <mxGeometry x="0.04" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="155" as="sourcePoint" />
+            <mxPoint x="630" y="180" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow10" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;dashed=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="config-store" target="rule-engine" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="910" y="195" as="sourcePoint" />
+            <mxPoint x="760" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LFefzZMzi0mVU3RhpXlP-4" value="" style="endArrow=classic;html=1;strokeWidth=2;" parent="1" target="agg-processor" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="800" y="120" as="sourcePoint" />
+            <mxPoint x="840" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="agg-processor" value="Aggregation&lt;br&gt;Processor&lt;div&gt;(Kafka Streams/Flink)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="720" y="80" width="110" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="k82QjkelKqhVcJHMRIRm-3" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#666666;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="rule-engine" target="agg-processor">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="880" y="210" as="sourcePoint" />
+            <mxPoint x="840" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
