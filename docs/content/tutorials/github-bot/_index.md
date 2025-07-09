@@ -9,7 +9,7 @@ description: >
 
 ## Scenario
 
-In this tutorial, we will build a GitHub Bot. The bot will monitor issues in a GitHub repository, with the following behaviour:
+In this tutorial, we will build a GitHub Bot. The bot will monitor issues in a GitHub repository, with the following behavior:
 - When a new issue is opened, it will automatically comment with a thank you message.
 - When an issue is closed, it will automatically comment.
 - When an open issue has not had a comment for x amount of time, it will add a `stale` label to it.
@@ -139,7 +139,7 @@ spec:
 
 This can be deployed using the following command:
 
-```
+```bash
 drasi apply -f source.yaml
 drasi wait -f source.yaml
 ```
@@ -427,3 +427,18 @@ This reaction already exists in the tutorial folder, so you can deploy it with t
 ```bash
 drasi apply -f reaction-stale-issues.yaml
 ```
+
+## Try it out
+
+Go to your GitHub repo and create a new issue. You should see a thank message generated, and if you wait 15 seconds without adding a new comment, it will be labeled as `stale`.
+
+
+{{< figure src="issue-1.png" width="600px" >}}
+
+Now, add a comment to the issue and the `stale` label should be removed.
+
+{{< figure src="issue-2.png" width="600px" >}}
+
+Now, close the issue and a comment will be automatically added stating that it has been closed. If it had a `stale` label, it will also be removed when the issue is closed because the `WHERE i.state = 'open'` clause in the query filters it out of the result set for the stale issues query.
+
+{{< figure src="issue-3.png" width="600px" >}}
