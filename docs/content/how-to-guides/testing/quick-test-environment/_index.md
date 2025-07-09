@@ -31,20 +31,20 @@ You also need access to the Drasi environment that you want to test.
 To run the quick test on a Drasi environment that is installed in the default `drasi-system` namespace, run the following command:
 
 {{< tabpane langEqualsHeader=true >}}
-{{< tab header="MacOS or VS Code Dev Container" lang="Bash" >}}
+{{< tab header="MacOS or VS Code Dev Container" lang="bash" >}}
 curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/dev-tools/testing/quick-test-environment/quick-test-environment.sh | /bin/bash
 {{< /tab >}}
-{{< tab header="Windows PowerShell" lang="Bash" >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
 Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://raw.githubusercontent.com/drasi-project/drasi-platform/main/dev-tools/testing/quick-test-environment/quick-test-environment.ps1')))) 
 {{< /tab >}}
 {{< /tabpane >}}
 
 If you need to test a Drasi environment installed in a non-default namespace, you will need to provide the namespace name as an argument to the command, as shown with the `<namespace>` placeholder in the following commands:
 {{< tabpane langEqualsHeader=true >}}
-{{< tab header="MacOS or VS Code Dev Container" lang="Bash" >}}
+{{< tab header="MacOS or VS Code Dev Container" lang="bash" >}}
 curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/dev-tools/testing/quick-test-environment/quick-test-environment.sh | /bin/bash -s <namespace>
 {{< /tab >}}
-{{< tab header="Windows PowerShell" lang="Bash" >}}
+{{< tab header="Windows PowerShell" lang="powershell" >}}
 Invoke-Command -ScriptBlock ([scriptblock]::Create([System.Text.Encoding]::UTF8.GetString((New-Object Net.WebClient).DownloadData('https://raw.githubusercontent.com/drasi-project/drasi-platform/main/dev-tools/testing/quick-test-environment/quick-test-environment.ps1')))) -ArgumentList <namespace>
 {{< /tab >}}
 {{< /tabpane >}}
