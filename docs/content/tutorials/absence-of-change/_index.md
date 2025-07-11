@@ -49,6 +49,24 @@ Once the solution is open in VS Code, follow these steps:
 - Select `Dev Containers: Rebuild and Reopen in Container`.
 - Select the `Absence of Change with Drasi` option to launch this tutorial.
 
+
+##### Recommended Docker Resources
+
+For optimal performance with the Drasi Dev Container, we recommend configuring Docker with the following minimum resources:
+
+- **CPU**: 3 cores or more
+- **Memory**: 4 GB or more
+- **Swap**: 1 GB or more
+- **Disk**: 50 GB available space 
+
+To adjust these settings in Docker Desktop:
+1. Open Docker Desktop
+2. Go to Settings (gear icon)
+3. Navigate to "Resources" → "Advanced"
+4. Adjust the sliders to meet or exceed the recommended values
+5. Click "Apply & Restart"
+
+
 {{% /tab %}}
 
 {{% tab header="Local Setup" text=true %}}
