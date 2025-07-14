@@ -235,13 +235,13 @@ The easiest way to follow along with this tutorial is to launch a Github
   application within your browser without setting up anything on your own
   machines.
 
-[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning?devcontainer_path=.devcontainer%2Ftutorial-building-comfort%2Fdevcontainer.json&machine=standardLinux32gb)
+[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=778887889&skip_quickstart=true&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fbuilding-comfort%2Fdevcontainer.json)
 
 This will open a page with some configuration options. Make sure that the
   'Branch' selected is `main` and set the 'Dev Container configuration' to
   'Building Comfort with Drasi'.
 
-{{< figure src="Screenshot_BuildingComfort_CodespacesConfig.png"
+{{< figure src="Screenshot_CodespacesConfig.png"
   alt="GitHub Codespaces configuration page showing main branch and Building Comfort dev container selection" width="80%" >}}
 
 **Note:** The codespace will launch and run some setup scripts. Please wait for the scripts to complete. This should take less than 5 minutes to complete.
@@ -309,7 +309,18 @@ To adjust these settings in Docker Desktop:
 4. Adjust the sliders to meet or exceed the recommended values
 5. Click "Apply & Restart"
 
-**Step 1: Create k3d cluster**
+**Step 1: Clone the `learning` repo**
+
+[Clone the learning repo from Github](https://github.com/drasi-project/learning),
+  and navigate to the building comfort directory (`learning/tutorial/building-comfort`)
+
+```sh
+git clone https://github.com/drasi-project/learning
+cd learning/tutorial/building-comfort
+```
+<br/>
+
+**Step 2: Create k3d cluster**
 
 Use the commands below to create your own k3d cluster:
 
@@ -326,7 +337,7 @@ This creates a cluster with Traefik v2.x ingress controller included. The port m
 
 <br />
 
-**Step 2: Deploy apps, Setup Ingress & Initialize Drasi**
+**Step 3: Deploy apps, Setup Ingress & Initialize Drasi**
 
 To make things easy, we have provided a helper script. The script will:
 - Check for required tools (kubectl, Drasi CLI)
@@ -427,7 +438,7 @@ You should see a **disconnected** demo page like shown below.
 {{< figure src="Codespaces_04_BlankDashboard.png"
   alt="Demo portal showing disconnected dashboard before SignalR setup" width="100%" >}}
 
-**Note:** This page shows **Disconnected** because the dashboard frontend has no websocket backend yet.
+**Note:** This page shows **Disconnected** on the top right corner because the dashboard frontend has no websocket backend yet.
 We will use Drasi to deploy a SignalR server which will work as our websocket backend.
 
 🚀 If you're able to see this, your environment is setup correctly and you can proceed.
@@ -463,6 +474,9 @@ You should see a disconnected demo page like shown below.
 {{< figure src="Devcontainer_06_BlankDashboard.png"
   alt="Demo portal showing disconnected dashboard before SignalR setup" width="100%" >}}
 
+**Note:** This page shows **Disconnected** on the top right corner because the dashboard frontend has no websocket backend yet.
+We will use Drasi to deploy a SignalR server which will work as our websocket backend.
+
 🚀 If you're able to see this, your environment is setup correctly and you can proceed.
 
 👍 The dashboard is still blank because our websocket server is not deployed
@@ -480,6 +494,9 @@ You should see a **disconnected** demo page like shown below.
 
 {{< figure src="Devcontainer_06_BlankDashboard.png"
   alt="Demo portal showing disconnected dashboard before SignalR setup" width="100%" >}}
+
+**Note:** This page shows **Disconnected** on the top right corner because the dashboard frontend has no websocket backend yet.
+We will use Drasi to deploy a SignalR server which will work as our websocket backend.
 
 🚀 If you're able to see this, your environment is setup correctly and you can proceed.
 
@@ -1100,17 +1117,16 @@ Or, you can delete the docker container from Docker Desktop.
 
 {{% tab header="Local Setup" text=true %}}
 
-To clean up the tutorial:
+To clean up the tutorial, you can run the following scripts at the path **`tutorial/building-comfort`:**
 
 **macOS/Linux:**
 ```sh
-cd tutorial/building-comfort
 ./scripts/cleanup-tutorial.sh
 ```
+<br/>
 
 **Windows (PowerShell):**
 ```powershell
-cd tutorial\building-comfort
 .\scripts\cleanup-tutorial.ps1
 ```
 <br />
