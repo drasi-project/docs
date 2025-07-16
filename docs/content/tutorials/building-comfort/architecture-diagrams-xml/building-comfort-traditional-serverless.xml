@@ -1,0 +1,100 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" version="27.2.0">
+  <diagram name="Serverless Architecture" id="serverless-arch">
+    <mxGraphModel dx="1426" dy="825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sensors" value="Sensors" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="80" y="120" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="timeseries" value="Time-Series&lt;br&gt;Database" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;strokeColor=#56517e;fillColor=#d0cee2;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="200" y="110" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda1" value="Lambda&lt;br&gt;(Comfort Calc)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="400" y="120" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="lambda2" value="Lambda&lt;br&gt;(Aggregation)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="550" y="120" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dashboard" value="Dashboard&lt;br&gt;UI" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="807" y="120" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="S3 Bucket&lt;br&gt;(Formula)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#f5f5f5;strokeWidth=1;dashed=1" parent="1" vertex="1">
+          <mxGeometry x="410" y="200" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="param-store" value="Parameter Store&lt;br&gt;(Config)" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#f5f5f5;strokeWidth=1;dashed=1" parent="1" vertex="1">
+          <mxGeometry x="555" y="195" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="trigger1" value="Periodic trigger" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#666666" parent="1" vertex="1">
+          <mxGeometry x="320" y="90" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="trigger2" value="OR Event trigger" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=2;fontColor=#666666" parent="1" vertex="1">
+          <mxGeometry x="300" y="170" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cold-start" value="⚠️ Cold Start Latency" style="text;html=1;strokeColor=none;fillColor=#ffeeee;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#CC0000" parent="1" vertex="1">
+          <mxGeometry x="470" y="90" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" value="" style="endArrow=classic;html=1;strokeWidth=2;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="160" y="145" as="sourcePoint" />
+            <mxPoint x="200" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2a" value="" style="endArrow=classic;html=1;strokeWidth=2;dashed=1;strokeColor=#b85450;exitX=1;exitY=0;exitDx=0;exitDy=10;exitPerimeter=0;" parent="1" edge="1" source="timeseries">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="110" as="sourcePoint" />
+            <mxPoint x="400" y="130" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="350" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow2b" value="" style="endArrow=classic;html=1;strokeWidth=2;dashed=1;strokeColor=#b85450" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="160" as="sourcePoint" />
+            <mxPoint x="400" y="160" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="350" y="170" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3" value="" style="endArrow=classic;html=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" edge="1" target="lambda2" source="lambda1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="145" as="sourcePoint" />
+            <mxPoint x="600" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow5" value="" style="endArrow=classic;html=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" edge="1" target="dashboard" source="websocket">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="880" y="145" as="sourcePoint" />
+            <mxPoint x="960" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow6" value="" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#666666;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" edge="1" target="lambda1" source="s3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="200" as="sourcePoint" />
+            <mxPoint x="450" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow7" value="" style="endArrow=classic;html=1;strokeWidth=1;strokeColor=#666666;dashed=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" edge="1" target="lambda2" source="param-store">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="200" as="sourcePoint" />
+            <mxPoint x="650" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1CyD7qnfPQC1NIuG1oyq-1" value="⚠️ Must Replace DB with Time Series DB" style="text;html=1;strokeColor=none;fillColor=#ffeeee;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1;fontColor=#CC0000" vertex="1" parent="1">
+          <mxGeometry x="70" y="190" width="230" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1CyD7qnfPQC1NIuG1oyq-3" value="" style="endArrow=classic;html=1;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="lambda2" target="websocket">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="145" as="sourcePoint" />
+            <mxPoint x="800" y="145" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="websocket" value="WebSocket&lt;br&gt;Endpoint" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#e6e6e6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="688" y="120" width="80" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

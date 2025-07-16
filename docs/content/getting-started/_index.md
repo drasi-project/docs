@@ -63,15 +63,24 @@ Complete one of the options described below before continuing to [Step 2](#step-
 
 The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/drasi-project/learning?machine=standardLinux32gb&ref=main&devcontainer_path=.devcontainer%2Fdevcontainer.json)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=778887889&skip_quickstart=true&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fdevcontainer.json)
 
 When you see the **Create a new codespace** screen, click the **Create codespace** button; there is no need to change any of the default configuration settings.
 
-The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps.
+{{< figure src="Codespaces_01_Configuration.png"
+  alt="Codespace configurations where defaults are fine" width="100%" >}}
 
-Once the codespace creation is complete, in the VS Code Explorer panel you will see two folders:
-- `.devcontainer` contains files used to configure the Codespace.
-- `resources` contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions
+The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps.
+**Wait for the setup scripts to complete like shown here:
+{{< figure src="Codespaces_02_Loading.png"
+  alt="Codespace setup scripts running" width="100%" >}}
+
+Once the codespace creation is complete, it should look like this:
+{{< figure src="Codespaces_03_ReadyScreen.png"
+  alt="Codespace ready with welcome message and README file open" width="100%" >}}
+
+As shown in the screenshot above, in the VS Code Explorer panel you will see a folder called **`resources`**.
+This folder contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions.
 
 You can now proceed with the rest of the tutorial.
 
@@ -88,10 +97,6 @@ Once you have these prerequisites installed:
 2. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
 3. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
-If you have opened the correct folder, in the VS Code Explorer panel you will see two folders:
-- `.devcontainer` contains files that VS Code requires to configure the Dev Container
-- `resources` contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions
-
 Run the Dev Container as follows:
 1. Open the Command Palette using `Ctrl + Shift + P` (Win/Linux) or `Cmd + Shift + P` (Mac)
 2. Type "dev containers:"
@@ -99,7 +104,15 @@ Run the Dev Container as follows:
 
 The Drasi Dev Container will take a few minutes to initialize depending on how many images it needs to download and the speed of your internet connection. The first time you run the Dev Container, it could take around 10 minutes because VS Code needs to download multiple images, install PostgreSQL, and install Drasi and its dependencies.
 
-When you see the ```Done. Press any key to close the terminal.``` message in the Dev Container terminal, it is ready to use and you can proceed with the rest of the tutorial.
+Once the setup process is complete, it should look like this:
+
+{{< figure src="Devcontainer_03_ReadyScreen.png"
+  alt="Codespace ready with welcome message and README file open" width="100%" >}}
+
+As shown in the screenshot above, in the VS Code Explorer panel you will see a folders called `resources`.
+This folder contains files you will use later in the tutorial to create the Drasi Sources, Continuous Queries, and Reactions.
+
+You can now proceed with the rest of the tutorial.
 
 ##### Recommended Docker Resources
 

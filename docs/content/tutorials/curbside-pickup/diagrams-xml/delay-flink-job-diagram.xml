@@ -1,0 +1,115 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36" version="27.2.0">
+  <diagram name="Delay Flink Job" id="delay-flink-flow">
+    <mxGraphModel dx="1018" dy="1402" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="postgres" value="PostgreSQL&#xa;(Orders)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="560" y="-47.5" width="100" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="mysql" value="MySQL&#xa;(Vehicles)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="980" y="-50" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="debezium1" value="Debezium CDC&#xa;(PostgreSQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="715" y="-40" width="95" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="debezium2" value="Debezium CDC&#xa;(MySQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="860" y="-40" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka1" value="Kafka Topic&#xa;order_changes" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="655" y="30" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka2" value="Kafka Topic&#xa;vehicle_changes" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="800" y="30" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="flink-box" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="560" y="80" width="520" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="flink-label" value="Apache Flink SQL Processing (Complex Temporal Logic)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="840" y="90" width="260" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="source-table1" value="orders_with_watermarks&#xa;PK: pickup_vehicle_plate&#xa;WATERMARK FOR event_time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="580" y="130" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="source-table2" value="vehicles_with_watermarks&#xa;PK: pickup_vehicle_plate&#xa;WATERMARK FOR event_time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="760" y="130" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="temporal-join" value="TEMPORAL JOINS&#xa;Create streams with both&#xa;vehicle_location AND order_status" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="640" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="events-state" value="events_with_state&#xa;Calculate is_waiting:&#xa;(location=&#39;Curbside&#39; AND status≠&#39;Ready&#39;)&#xa;Use LAG() to detect state changes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f3ff;strokeColor=#4d90fe;" parent="1" vertex="1">
+          <mxGeometry x="620" y="340" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="waiting-events" value="waiting_start_end_events&#xa;Identify when is_waiting&#xa;transitions true→false" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="655" y="450" width="190" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="interval-join" value="INTERVAL LEFT OUTER JOIN&#xa;Check if end event occurs&#xa;within 5 minutes of start&#xa;(NULL = still waiting)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="635" y="540" width="230" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="output" value="delayed_orders&#xa;op: &#39;insert&#39; (when delay &gt; 5min)&#xa;op: &#39;delete&#39; (when resolved)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="830" y="640" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka-output" value="Kafka Topic&#xa;delayed_orders" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="850" y="740" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="backend" value="Backend Service&#xa;(WebSocket Push)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="860" y="810" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" parent="1" source="postgres" target="debezium1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" parent="1" source="mysql" target="debezium2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" parent="1" source="debezium1" target="kafka1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" parent="1" source="debezium2" target="kafka2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" parent="1" source="kafka1" target="source-table1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" parent="1" source="kafka2" target="source-table2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" parent="1" source="source-table1" target="temporal-join" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" parent="1" source="source-table2" target="temporal-join" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" parent="1" source="temporal-join" target="events-state" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge10" parent="1" source="events-state" target="waiting-events" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge11" parent="1" source="waiting-events" target="interval-join" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge12" parent="1" source="interval-join" target="output" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge13" parent="1" source="output" target="kafka-output" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge14" parent="1" source="kafka-output" target="backend" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note1" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Watermarks enable&lt;br&gt;event-time processing&lt;br&gt;for temporal operations&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=#ffffcc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="950" y="140" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="note2" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;LAG() window function&lt;br&gt;compares current state&lt;br&gt;with previous to detect&lt;br&gt;transitions&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=#ffffcc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="900" y="310" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="note3" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;Watermark triggers&lt;br&gt;&#39;insert&#39; when no end&lt;br&gt;event found within&lt;br&gt;5 minute window&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=#ffffcc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="895" y="460" width="135" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="complexity" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;⚠️ HIGH COMPLEXITY&lt;br&gt;Requires understanding of:&lt;br&gt;• Watermarks&lt;br&gt;• Temporal Joins&lt;br&gt;• Window Functions&lt;br&gt;• Interval Joins&lt;br&gt;• Event Time Processing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcccc;strokeColor=#ff0000;strokeWidth=2;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="580" y="730" width="230" height="130" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
