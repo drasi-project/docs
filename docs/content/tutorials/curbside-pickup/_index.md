@@ -275,7 +275,7 @@ The easiest way to follow along with this tutorial is to launch a Github
   application within your browser without setting up anything on your own
   machines.
 
-[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/drasi-project/learning?devcontainer_path=.devcontainer%2Ftutorial-curbside-pickup%2Fdevcontainer.json&machine=standardLinux32gb)
+[![Open in Github Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=778887889&skip_quickstart=true&machine=standardLinux32gb&devcontainer_path=.devcontainer%2Fcurbside-pickup%2Fdevcontainer.json)
 
 This will open a page with some configuration options. Make sure that the
   'Branch' selected is `main` and set the 'Dev Container configuration' to
@@ -354,7 +354,18 @@ To adjust these settings in Docker Desktop:
 4. Adjust the sliders to meet or exceed the recommended values
 5. Click "Apply & Restart"
 
-**Step 1: Create k3d cluster**
+**Step 1: Clone the `learning` repo**
+
+[Clone the learning repo from Github](https://github.com/drasi-project/learning),
+  and navigate to the curbside pickup directory (`learning/tutorial/curbside-pickup`)
+
+```sh
+git clone https://github.com/drasi-project/learning
+cd learning/tutorial/curbside-pickup
+```
+<br/>
+
+**Step 2: Create k3d cluster**
 
 The setup script requires a running Kubernetes cluster. Create one before proceeding:
 
@@ -368,7 +379,7 @@ kubectl cluster-info
 
 This creates a cluster with Traefik v2.x ingress controller included. The port mapping `8123:80` allows you to access applications at `http://localhost:8123`.
 
-**Step 2: Run the setup script**
+**Step 3: Run the setup script**
 
 Once your cluster is ready, run the interactive setup script for your platform:
 
@@ -420,7 +431,7 @@ The following applications are containerized and deployed on Kubernetes:
 
 3. **Delivery Dashboard** (`/delivery-dashboard`)
   - React app with SignalR integration
-  - Shows orders that are ready and the respective pickup driers have arrived
+  - Shows orders that are ready and the respective pickup drivers have arrived
 
 4. **Delay Dashboard** (`/delay-dashboard`)
   - Vue.js app with SignalR integration
@@ -812,11 +823,11 @@ In the query above, we only match those vehicles for which orders are not ready
   drasi.trueFor(v.location = 'Curbside', duration ({ seconds: 10 }))
 ```
 
-Here we utilize the temporal function `drasi.trueFor` which evaluates whether a
+Here we utilize the future function `drasi.trueFor` which evaluates whether a
   boolean expression remains true for at least a period of time, starting from
   the time when the change being evaluated occurred.
 
-Read more about `trueFor` and other [temporal functions here](http://localhost:1313/reference/query-language/#drasi-temporal-functions).
+Read more about `trueFor` and other [future functions here](../../reference/query-language/#drasi-future-functions).
 
 For our mock scenario, when we launch the apps some vehicles may already be
   at curbside at the beginning (epoch), and to filter those out we use this:
@@ -1170,18 +1181,16 @@ Or, you can delete the docker container from Docker Desktop.
 
 {{% tab header="Local Setup" text=true %}}
 
-To clean up the tutorial:
+To clean up the tutorial, you can run the following scripts at the path **`tutorial/curbside-pickup`:**
 
 **macOS/Linux:**
 ```sh
-cd tutorial/building-comfort
 ./scripts/cleanup-tutorial.sh
 ```
 <br/>
 
 **Windows (PowerShell):**
 ```powershell
-cd tutorial\building-comfort
 .\scripts\cleanup-tutorial.ps1
 ```
 <br />
@@ -1236,7 +1245,7 @@ The difference between the effort involved in getting the Delay Dashboard is
 {{< scrollable-code lang="sql" file="content/tutorials/curbside-pickup/DelayedOrders-Flink.sql" />}}
 
 If we contrast this with the simple YAML file used for the Drasi query, with
-  the much simpler Cypher query using temporal functions, the power and appeal
+  the much simpler Cypher query using future functions, the power and appeal
   of Drasi becomes unmistakably evident. The Cypher query is not just more
   concise but arguably easier to write, understand and maintain over time.
 
