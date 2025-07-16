@@ -57,16 +57,16 @@ Once the solution is open in VS Code, follow these steps:
 
 {{% tab header="Local Setup" text=true %}}
 
-You need to have your own Kubernetes cluster setup.
-You can use any Kubernetes setup.
-For a local testing setup, you can choose one of alternatives
-  like Kind, Minikube or k3d.
+You need to have Docker Desktop on your local machine, or your own Kubernetes cluster.
 
-Make sure that `kubectl` on your system points to your Kubernetes cluster.
+For guidance on how to install Drasi for Docker:
+  - [Install on Docker](../../how-to-guides/installation/install-on-docker)
 
-You will need [VS Code](https://code.visualstudio.com/)
+To setup a local Kubernetes cluster and install Drasi on it, K3s and Kind are both good options:
+  - [Install on k3s](../../how-to-guides/installation/install-on-k3s)
+  - [Install on Kind](../../how-to-guides/installation/install-on-kind)
 
-You will need the [Drasi VS Code extension](https://marketplace.visualstudio.com/items?itemName=DrasiProject.drasi)
+Next, [clone the learning repo from Github](https://github.com/drasi-project/learning) and open a terminal in the `/tutorial/github-bot` directory.
 
 {{% /tab %}}
 
@@ -81,10 +81,9 @@ To capture the change feed from GitHub, we will use the [GitHub Webhooks](https:
 For this tutorial, you will need an Azure account. The setup of the Function and EventHub has been packaged into an ARM template, that can be deployed using the button below:
 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdanielgerlag%2Fdrasi-learning%2Frefs%2Fheads%2Fgithub-bot%2Ftutorial%2Fgithub-bot%2Fazure-resources.json" target="_blank" rel="noopener">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fdrasi-project%2Flearning%2Frefs%2Fheads%2Fmain%2Ftutorial%2Fgithub-bot%2Fazure-resources.json" target="_blank" rel="noopener">
   <img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure">
 </a>
-
 
 After clicking this button, it should take you to the Azure portal to confirm the parameters for the deployment:
 
@@ -104,7 +103,9 @@ Navigate to [GitHub](https://github.com/) and create a new private repository fo
 
 Once you have created the repository, go to the `Settings` > `Webhooks` page, and create a new webhook.
 
-Paste the Function URL into the `Payload URL` field, and set the `Content type` to `application/json`.
+Paste the Function URL into the `Payload URL` field.
+
+Set the `Content type` to `application/json`.
 
 For `Which events would you like to trigger this webhook?`, pick the `Send me everything` option.
 
