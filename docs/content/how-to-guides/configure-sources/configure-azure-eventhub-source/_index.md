@@ -8,7 +8,72 @@ description: >
 ---
 
 The Event Hubs source enables messages streaming through Azure Event Hubs to be mapped into graph nodes that can be referenced by a continuous query.
-It can observe multiple Event Hubs within the same Event Hubs namespace, each incoming message will upsert graph node that will carry the label of the Event Hub name, and be queryable from a continuous query.
+It can observe multiple Event Hubs within the same Event Hubs namespace.
+
+## Data Model
+
+Each incoming message from an Event Hub will create a graph node in Drasi's graph database. The mapping follows these rules:
+
+- **Node Label**: The label of the created node will be the name of the Event Hub from which the message originated.
+- **Node Properties**: The properties of the node will be the JSON object contained in the Event Hub message body.
+- **Change Type**: All EventHub messages are processed as **insert** operations, meaning each message creates a new node in the graph, if it already exists it is updated.
+
+For example, if you have an Event Hub named `vehicle-telemetry` and it receives a message with the following JSON payload:
+
+```json
+{
+    "vehicleId": "truck-001",
+    "speed": 65,
+    "location": {
+        "lat": 47.6062,
+        "lng": -122.3321
+    },
+    "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+
+This will create a graph node that can be queried using Cypher as follows:
+
+```cypher
+MATCH (v:`vehicle-telemetry`)
+RETURN v.vehicleId, v.speed, v.location.lat, v.timestamp
+```
+
+**Important Note on Event Hub Names**: Event Hub names commonly contain dashes (e.g., `vehicle-telemetry`, `order-events`). When referencing these labels in Cypher queries, you must escape them using backticks since dashes are not valid characters in unescaped Cypher identifiers.
+
+### Using Middleware for Schema Transformation
+
+While the default mapping creates nodes with the Event Hub name as the label, you can use [middleware](/concepts/middleware/) to transform the incoming data into a different graph schema. This is particularly useful when:
+
+- You want to normalize data from multiple Event Hubs into a common schema
+- You need to extract nested properties to top-level nodes
+- You want to create relationships between different message types
+- You need to filter or conditionally process messages
+
+For example, using the **map** middleware, you could transform the vehicle telemetry data into a more structured schema:
+
+```yaml
+middleware:
+  - kind: map
+    name: vehicle-mapper
+    vehicle-telemetry:
+      insert:
+        - selector: $
+          op: Insert
+          label: Vehicle
+          id: $.vehicleId
+          properties:
+            id: $.vehicleId
+            currentSpeed: $.speed
+            lastUpdate: $.timestamp
+```
+
+This would create `Vehicle` nodes instead of `vehicle-telemetry` nodes, allowing for cleaner Cypher queries:
+
+```cypher
+MATCH (v:Vehicle)
+RETURN v.id, v.currentSpeed, v.lastUpdate
+```
 
 
 ## Requirements
