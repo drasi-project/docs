@@ -39,7 +39,8 @@ The configuration properties for unwinding an element are as follows
 | selector | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the array to unwind within the properties of the incoming node.  |
 | label | The label of the newly created child Node, there will be one for each element in the array, |
 | key | (optional) A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate a unique key for the child node within the context of the parent node. This will be used to align updates and deletes.  If none is specified, then the index within the array is used. |
-| relation | The label of the relation that will be created between the parent and child nodes. |
+| relation | (optional) The label of the relation that will be created between the parent and child nodes. |
+| condition | (optional) A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression that filters whether this mapping should be applied. If the expression returns no result or empty, the mapping is skipped. This allows for conditional processing based on the properties of the incoming node. |
 
 #### Example
 
@@ -77,6 +78,7 @@ apiVersion: v1
 kind: ContinuousQuery
 name: query
 spec:
+  mode: query
   sources:    
     subscriptions:
       - id: source
@@ -100,6 +102,69 @@ spec:
         t.position,
         t.pressure
 ```
+
+#### Conditional Unwind Example
+
+The **condition** property allows you to selectively apply the unwind operation based on properties of the incoming node. For example, you might want to unwind arrays only for nodes with a specific action or status.
+
+Consider a scenario where you have Kubernetes Pod events that contain container statuses, but you only want to unwind container information when the action is "update":
+
+```json
+{
+    "action": "update",
+    "metadata": {
+        "name": "pod-1",
+        "namespace": "default"
+    },
+    "status": {
+        "containerStatuses": [
+            {
+                "containerID": "c1",
+                "name": "nginx"
+            },
+            {
+                "containerID": "c2", 
+                "name": "redis"
+            }
+        ]
+    }
+}
+```
+
+You can use a condition to only unwind containers when the action is "update":
+
+```yaml
+apiVersion: v1
+kind: ContinuousQuery
+name: query
+spec:
+  mode: query
+  sources:    
+    subscriptions:
+      - id: source
+        nodes:
+          - sourceLabel: Pod
+        pipeline:
+          - extract-containers
+    middleware:
+      - name: extract-containers
+        kind: unwind
+        Pod:
+          - selector: $.status.containerStatuses[*]
+            label: Container
+            key: $.containerID
+            relation: OWNS
+            condition: $[?(@.action == 'update')]
+  query: >
+    MATCH
+        (p:Pod)-[:OWNS]->(c:Container)
+    RETURN
+        p.metadata.name,
+        c.containerID,
+        c.name
+```
+
+In this configuration, the containers will only be unwound into separate Container nodes when the Pod event has `action: "update"`. Events with other actions (like "delete" or "create") will be processed normally but won't trigger the unwinding of container information.
 
 
 ### Map
@@ -125,6 +190,7 @@ The configuration for mapping an element is as follows
 | label | The label of the new mapped element. |
 | id | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the value to use for the unique identity of the new mapped element. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression |
 | properties | A map of JSONPath expressions. Each key will be a property name on the new element, with the value coming from the JSONPath expression. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression. |
+| condition | (optional) A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression that filters whether this mapping should be applied. If the expression returns no result or empty, the mapping is skipped. This allows for conditional processing based on the properties of the incoming element. |
 
 #### Example
 
@@ -162,6 +228,7 @@ apiVersion: v1
 kind: ContinuousQuery
 name: query
 spec:
+  mode: query
   sources:    
     subscriptions:
       - id: source
@@ -189,6 +256,91 @@ spec:
         s.sensorId,
         s.currentValue    
 ```
+
+#### Conditional Map Example
+
+The **condition** property enables you to apply different mapping operations based on the content of the incoming element. This is particularly useful when working with event-driven data sources where you need to handle different action types differently.
+
+For example, consider a GitHub webhook payload that includes an `action` field indicating the type of event:
+
+```json
+{
+    "action": "opened",
+    "issue": {
+        "id": 123,
+        "title": "Bug report",
+        "state": "open"
+    },
+    "repository": {
+        "id": 456,
+        "name": "my-repo"
+    }
+}
+```
+
+You can use conditions to apply different mappings based on the action:
+
+```yaml
+apiVersion: v1
+kind: ContinuousQuery
+name: query
+spec:
+  mode: query
+  sources:    
+    subscriptions:
+      - id: source
+        nodes:
+          - sourceLabel: WebhookEvent
+        pipeline:
+          - process-github-events
+    middleware:
+      - kind: map
+        name: process-github-events
+        WebhookEvent:        
+          insert:
+            # Map issue opened events to create Issue nodes
+            - selector: $
+              op: Insert
+              label: Issue
+              id: $.issue.id
+              condition: $[?(@.action == 'opened')]
+              properties:
+                id: $.issue.id
+                title: $.issue.title
+                state: $.issue.state
+                repositoryId: $.repository.id
+            # Map issue closed events to update Issue nodes
+            - selector: $
+              op: Update
+              label: Issue
+              id: $.issue.id
+              condition: $[?(@.action == 'closed')]
+              properties:
+                id: $.issue.id
+                state: "closed"
+            # Map issue deleted events to delete Issue nodes
+            - selector: $
+              op: Delete
+              label: Issue
+              id: $.issue.id
+              condition: $[?(@.action == 'deleted')]
+  query: >
+    MATCH (i:Issue)
+    RETURN 
+        i.id,
+        i.title,
+        i.state,
+        i.repositoryId
+```
+
+In this configuration:
+- When `action` is "opened", a new Issue node is created with all relevant properties
+- When `action` is "closed", the existing Issue node is updated to set the state to "closed"
+- When `action` is "deleted", the Issue node is removed
+- Other action types are ignored as they don't match any condition
+
+This allows a single middleware configuration to handle multiple types of events from the same source, routing them to different operations based on their content.
+
 
 ### Promote
 
