@@ -370,6 +370,7 @@ drasi env use docker
 - `--dapr-sidecar-version <version>` (optional): Specifies the Dapr sidecar (daprd) version to install. The default value is the latest stable release.
 - `--docker <name (optional)>` (optional): If set, a Docker container will be created and a self-contained instance of drasi will be installed into it. You do not need a Kubernetes cluster or the kubectl tooling if using this option. You can optionally provide a name for the instance, the default will be `docker`.
 - `--local` (optional): If set, the Drasi CLI will use locally available images to install Drasi instead of pulling them from a remote container registry. If used in conjunction with the `--docker` flag, it will also scan your local Docker cache for all images with the `drasi-project/` prefix and automatically load them into the self contained Drasi instance.
+- `--manifest <directory (optional)>` (optional): If set, generates Kubernetes manifests instead of performing a direct installation. This creates two manifest files: one for Kubernetes infrastructure and one for Drasi resources. The manifests will be output to the specified directory, or to the current directory if no directory is provided. Note that Dapr must be pre-installed, and the Kubernetes manifest must be applied before the Drasi manifest. Use `drasi env kube` to point your Drasi CLI to your current Kubernetes context when applying the generated Drasi manifest.
 - `-n|--namespace <namespace>` (optional): Specifies the Kubernetes namespace to install Drasi into. This namespace will be created if it does not exist. The default value is "drasi-system".
 - `--registry <registry>` (optional): Address of the container registry to pull Drasi images from. The default value is "ghcr.io".
 - `--observability-level` (optional): Specifies the observability infrastructure to install. For more information on using observability infrastructure in Drasi, see [observability](/how-to-guides/operations/observability/). There are currently four options for this flag: 
@@ -392,6 +393,24 @@ If you are doing development or testing and want to deploy Drasi to the `drasi-d
 ```bash
 drasi init --local -n drasi-dev -version dev
 ```
+
+To generate Kubernetes manifests instead of performing a direct installation, you can use the `--manifest` flag:
+
+```bash
+drasi init --manifest
+```
+
+This will generate two manifest files in the current directory: one for Kubernetes infrastructure and one for Drasi resources. You can also specify a different output directory:
+
+```bash
+drasi init --manifest /path/to/output
+```
+
+When using the manifest approach, follow these steps:
+1. Ensure Dapr is pre-installed in your cluster
+2. Apply the Kubernetes manifest first: `kubectl apply -f kubernetes-manifest.yaml`
+3. Use `drasi env kube` to configure the Drasi CLI for your current Kubernetes context
+4. Apply the Drasi manifest: `drasi apply -f drasi-manifest.yaml`
 
 > Note: If you use the `local`, `registry`, or `version` flags to make the `init` command look for non-standard images in a non-standard location and the images it needs are not available. The installation will fail.
 
