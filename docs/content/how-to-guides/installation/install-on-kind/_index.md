@@ -79,7 +79,14 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 This guide focuses on how to install Drasi on a kind cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
 ## Install Drasi on the kind Cluster
-To install Drasi on the kind cluster using all default settings, simply run the command:
+Before installing Drasi, ensure that your kubectl context is set to the kind cluster where you want to install Drasi. Then, configure a new Drasi CLI environment by running the following command:
+```text
+drasi env kube
+```
+
+This command adds the current Kubernetes context as a Drasi configuration and set it as the current Drasi environment. The Drasi CLI will use this environment to install Drasi on the kind cluster.
+
+Then, to install Drasi on the kind cluster using all default settings, simply run the command:
 
 ```text
 drasi init
