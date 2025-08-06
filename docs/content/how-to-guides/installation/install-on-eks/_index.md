@@ -161,7 +161,14 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 
 
 ## Install Drasi on the EKS Cluster
-To install Drasi on the EKS cluster using all default settings, simply run the command:
+Before installing Drasi, ensure that your kubectl context is set to the EKS cluster where you want to install Drasi. Then, configure a new Drasi CLI environment by running the following command:
+```text
+drasi env kube
+```
+
+This command adds the current Kubernetes context as a Drasi configuration and set it as the current Drasi environment. The Drasi CLI will use this environment to install Drasi on the EKS cluster.
+
+Then, to install Drasi on the EKS cluster using all default settings, simply run the command:
 
 ```text
 drasi init

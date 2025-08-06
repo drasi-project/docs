@@ -57,6 +57,34 @@ Drasi currently supports the following subset of the Cypher Query Language:
 
 *Functions that are not documented in the openCypher [Cypher Query Language Reference](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf), are based on [Neo4js Cypher version 4.4 documentation](https://neo4j.com/docs/cypher-manual/4.4/functions/temporal/)*
 
+## Identifier Escaping
+
+In Cypher, identifiers such as labels, property names, and variable names must follow certain naming conventions. However, when working with data sources that contain identifiers with special characters (such as spaces, dashes, or other symbols), or when you need to avoid conflicts with reserved words, you can use backticks (`) to escape these identifiers.
+
+This is particularly common when working with data sources that have labels or property names containing dashes, or when your data contains identifiers that match Cypher reserved words like `MATCH`, `WHERE`, `RETURN`, etc. For example, if you have a label called `Customer-Account`, a property named `first-name`, or a label that conflicts with a reserved word like `Match`, you would need to escape them using backticks.
+
+### Examples
+
+```cypher
+// Escaping a label with dashes
+MATCH (c:`Customer-Account`)
+RETURN c
+
+// Escaping property names with special characters
+MATCH (p:Person)
+RETURN p.`first-name`, p.`last-name`
+
+// Escaping identifiers that conflict with reserved words
+MATCH (m:`Match`)  // 'Match' conflicts with the MATCH keyword
+RETURN m.`return`  // 'return' conflicts with the RETURN keyword
+
+// Escaping variable names (though this is less common)
+MATCH (`customer-node`:Customer)
+RETURN `customer-node`.name
+```
+
+Without backticks, these identifiers would cause syntax errors as Cypher would interpret the dashes as subtraction operators or mistake the identifiers for reserved keywords.
+
 ## Drasi Functions
 Drasi is not simply running graph queries across data, it is using the Cypher Query Language as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language in order to meet its needs for detecting and reacting to change (or an absence of change).
 
