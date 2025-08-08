@@ -24,36 +24,8 @@ On the computer which you will use to install Drasi, you need to install the fol
 - [Azure CLI](https://learn.microsoft.com//cli/azure/install-azure-cli)
 
 ## Get the Drasi CLI
-You will install Drasi on the AKS cluster using the [Drasi CLI](/reference/command-line-interface/). 
 
-You can get the Drasi CLI for your platform using one of the following options:
-
-{{< tabpane >}}
-{{< tab header="macOS" lang="bash" >}}
-curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh | /bin/bash
-{{< /tab >}}
-{{< tab header="Windows PowerShell" lang="powershell" >}}
-iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
-{{< /tab >}}
-{{< tab header="Linux" lang="shell" >}}
-wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
-{{< /tab >}}
-{{% tab header="Binaries" text=true %}}
-Download a specific version of the CLI from the [drasi-platform releases](https://github.com/drasi-project/drasi-platform/releases) page on GitHub. The file to download for your platform is:
-- **macOS arm64** - drasi-darwin-arm64
-- **macOS x64** - drasi-darwin-x64
-- **Windows x64** - drasi-windows-x64.exe
-- **Linux x64** - drasi-linux-x64
-- **Linux arm64** - drasi-linux-arm64
-
-Once downloaded, rename the file to `drasi` (macOS and Linux) or `drasi.exe` (Windows) and add it to your path.
-{{% /tab %}}
-{{% tab header="Build from Source" text=true %}}
-The Drasi CLI source code is in the [drasi-platform repo](https://github.com/drasi-project/drasi-platform) in the [cli folder](https://github.com/drasi-project/drasi-platform/tree/main/cli).
-
-The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
-{{% /tab %}}
-{{< /tabpane >}}
+{{< read file= "/shared-content/installation/drasi-cli/cli-installation.md" >}}
 
 This guide focuses on how to install Drasi on an AKS cluster and covers only a few features of the Drasi CLI. Refer to the [Drasi CLI Command Reference](/reference/command-line-interface/#command-reference) for a complete description of the functionality it provides.
 
