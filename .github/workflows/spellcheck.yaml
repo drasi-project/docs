@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout docs
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Spellcheck
       uses: rojopolis/spellcheck-github-actions@0.51.0
       with:
