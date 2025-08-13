@@ -478,99 +478,204 @@ GQL provides various built-in functions for data manipulation, type conversion, 
 
 Text functions provide string manipulation capabilities for processing textual data in queries.
 
-#### UPPER
+#### Upper
 
-Converts a string to uppercase.
+**Syntax**
+```
+upper(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A string to be converted into uppercase |
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, upper(p.name) AS upper_name
 ```
 
-#### LOWER
+#### Lower
 
-Converts a string to lowercase.
+**Syntax**
+```
+lower(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A string to be converted into lowercase |
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, lower(p.name) AS lower_name
 ```
 
-#### TRIM
+#### Trim
 
-Removes whitespace from both ends of a string.
+**Syntax**
+```
+trim(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A value from which all leading and trailing whitespace will be removed |
 
 ```gql
 MATCH (p:Person)
 RETURN trim(p.name) AS trimmed_name
 ```
 
-#### LTRIM
+#### Ltrim
 
-Removes whitespace from the left end of a string.
+**Syntax**
+```
+ltrim(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A value from which the leading trim character will be removed |
 
 ```gql
 MATCH (p:Person)
 RETURN ltrim(p.name) AS left_trimmed
 ```
 
-#### RTRIM
+#### Rtrim
 
-Removes whitespace from the right end of a string.
+**Syntax**
+```
+rtrim(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A value from which the trailing trim character will be removed |
 
 ```gql
 MATCH (p:Person)
 RETURN rtrim(p.name) AS right_trimmed
 ```
 
-#### REVERSE
+#### Reverse
 
-Reverses the characters in a string.
+**Syntax**
+```
+reverse(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | The string to be reversed |
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, reverse(p.name) AS reversed_name
 ```
 
-#### LEFT
+#### Left
 
-Returns a substring from the left side of a string.
+**Syntax**
+```
+left(input, length)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | The string to extract from |
+| length | INTEGER | The number of characters to extract |
 
 ```gql
 MATCH (p:Person)
 RETURN left(p.name, 3) AS first_three_chars
 ```
 
-#### RIGHT
+#### Right
 
-Returns a substring from the right side of a string.
+**Syntax**
+```
+right(input, length)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | The string to extract from |
+| length | INTEGER | The number of characters to extract |
 
 ```gql
 MATCH (p:Person)
 RETURN right(p.name, 3) AS last_three_chars
 ```
 
-#### REPLACE
+#### Replace
 
-Replaces occurrences of a substring with another string.
+**Syntax**
+```
+replace(input, search, replacement)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | The original string |
+| search | STRING | The substring to find |
+| replacement | STRING | The string to replace with |
 
 ```gql
 MATCH (p:Person)
 RETURN replace(p.name, 'John', 'Jane') AS modified_name
 ```
 
-#### SPLIT
+#### Split
 
-Splits a string into a list based on a delimiter.
+**Syntax**
+```
+split(input, delimiter)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | The string to split |
+| delimiter | STRING or LIST | The delimiter(s) to split on |
 
 ```gql
 MATCH (p:Person)
 RETURN split(p.full_name, ' ') AS name_parts
 ```
 
-#### SUBSTRING
+```gql
+MATCH (p:Person)
+RETURN split(p.full_name, [' ', ',', '.']) AS name_parts
+```
 
-Extracts a substring from a string.
+#### Substring
+
+**Syntax**
+```
+substring(original, start, length)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| original | STRING | The string to be shortened |
+| start | INTEGER | The start position of the new string |
+| length | INTEGER | The length of the new string (optional) |
+
+```gql
+MATCH (p:Person)
+RETURN substring(p.name, 2) AS name_from_index
+```
 
 ```gql
 MATCH (p:Person)
@@ -581,36 +686,84 @@ RETURN substring(p.name, 1, 5) AS name_substring
 
 Numeric functions perform mathematical operations on numeric values.
 
-#### ABS
+#### Abs
 
-Returns the absolute value of a number.
+**Syntax**
+```
+abs(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | INTEGER or FLOAT | A numeric value from which the absolute number will be returned |
+
+**Returns**
+Returns INTEGER or FLOAT
 
 ```gql
 MATCH (t:Transaction)
 RETURN t.amount, abs(t.amount) AS absolute_amount
 ```
 
-#### CEIL
+#### Ceil
 
-Returns the smallest integer greater than or equal to a number.
+**Syntax**
+```
+ceil(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | INTEGER or FLOAT | A value to be rounded to the nearest higher integer |
+
+**Returns**
+FLOAT
 
 ```gql
 MATCH (p:Product)
 RETURN p.price, ceil(p.price) AS price_ceiling
 ```
 
-#### FLOOR
+#### Floor
 
-Returns the largest integer less than or equal to a number.
+**Syntax**
+```
+floor(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | INTEGER or FLOAT | A value to be rounded to the nearest lower integer |
+
+**Returns**
+FLOAT
 
 ```gql
 MATCH (p:Product)
 RETURN p.price, floor(p.price) AS price_floor
 ```
 
-#### ROUND
+#### Round
 
-Rounds a number to the nearest integer.
+**Syntax**
+```
+round(value)
+round(value, precision)
+round(value, precision, mode)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| value | INTEGER or FLOAT | A value to be rounded |
+| precision | INTEGER | The rounding precision (optional) |
+| mode | STRING | A precision rounding mode: UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN (optional) |
+
+**Returns**
+FLOAT if value is FLOAT, INTEGER if value is INTEGER
 
 ```gql
 MATCH (p:Product)
@@ -621,45 +774,107 @@ RETURN p.price, round(p.price) AS rounded_price
 
 Scalar functions operate on individual values and return single results.
 
-#### CHAR_LENGTH
+#### Char_length
 
-Returns the number of characters in a string.
+**Syntax**
+```
+char_length(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING | A string value for which the character count will be returned |
+
+**Returns**
+INTEGER
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, char_length(p.name) AS name_length
 ```
 
-#### SIZE
+#### Size
 
-Returns the size of a list or string.
+**Syntax**
+```
+size(input)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| input | LIST or STRING | A list or string value for which the size will be returned |
+
+**Returns**
+INTEGER
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, size(p.name) AS name_length
 ```
 
-#### COALESCE
+#### Coalesce
 
-Returns the first non-null value from a list of expressions.
+**Syntax**
+```
+coalesce(expression1, expression2, ...)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression1, expression2, ... | ANY | A list of expressions to evaluate |
+
+**Returns**
+ANY (type of the first non-null expression)
 
 ```gql
 MATCH (p:Person)
 RETURN coalesce(p.nickname, p.name, 'Unknown') AS display_name
 ```
 
-#### LAST
+#### Last
 
-Returns the last element of a list.
+**Syntax**
+```
+last(list)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| list | LIST | A list from which the last element will be returned |
+
+**Returns**
+ANY (type of the last element in the list)
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, last(p.addresses) AS current_address
 ```
 
-#### CAST
+#### Cast
 
-Performs explicit type conversion by converting values from one data type to another.
+**Syntax**
+```
+cast(value AS target_type)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| value | ANY | The value to be converted |
+| target_type | STRING | The target data type: STRING, INTEGER, INT, FLOAT, BOOLEAN, BOOL |
+
+**Returns**
+The specified target type
+
+**Supported Conversions**
+- **To STRING**: Converts INTEGER, FLOAT, STRING, BOOLEAN, LIST to string representation
+- **To INTEGER**: Converts FLOAT (floor), BOOLEAN (true=1, false=0), STRING (parsed or null)
+- **To FLOAT**: Converts INTEGER, STRING (parsed or null)  
+- **To BOOLEAN**: Converts INTEGER (0=false, non-zero=true), STRING ("true"/"false" or null)
 
 ```gql
 MATCH (v:Vehicle)
@@ -671,23 +886,47 @@ RETURN v.make, v.model
 
 List functions operate on list data structures.
 
-#### REDUCE
+#### Reduce
 
-Applies an operation across all elements in a list to produce a single result.
+**Syntax**
+```
+reduce(accumulator = initial_value, variable IN list | expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| accumulator | Variable assignment | The accumulator variable and its initial value |
+| variable IN list | Iterator expression | Iterates over each element in the list |
+| expression | Expression | The operation to perform for each element |
+
+**Returns**
+ANY (type depends on the accumulator and operations)
 
 ```gql
-MATCH (order:Order)-[:CONTAINS]->(items:Item)
-WITH order, collect(items.price) AS prices
-RETURN order.id, reduce(total = 0, price IN prices | total + price) AS order_total
+MATCH (p:Person)
+LET numbers = [1, 2, 3, 4, 5]
+RETURN reduce(sum = 0, n IN numbers | sum + n) AS total
 ```
 
 ### Metadata Functions
 
 Metadata functions provide access to element metadata and system information.
 
-#### ELEMENT_ID
+#### Element_id
 
-Returns the unique identifier of a graph element.
+**Syntax**
+```
+element_id(element)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| element | ELEMENT | A graph element (node or relationship) |
+
+**Returns**
+STRING
 
 ```gql
 MATCH (n:Person)
@@ -698,45 +937,102 @@ RETURN n.name, element_id(n) AS node_id
 
 Aggregation functions compute single values from collections of values.
 
-#### SUM
+#### Sum
 
-Returns the sum of numeric values.
+**Syntax**
+```
+sum(expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression | INTEGER, FLOAT, or DURATION | A numeric or duration expression to sum |
+
+**Returns**
+- FLOAT (for INTEGER and FLOAT inputs)
+- DURATION (for DURATION inputs)
 
 ```gql
 MATCH (p:Product)
 RETURN sum(p.price) AS total_value
 ```
 
-#### AVG
+#### Avg
 
-Returns the average of numeric values.
+**Syntax**
+```
+avg(expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression | INTEGER, FLOAT, or DURATION | A numeric or duration expression to average |
+
+**Returns**
+- FLOAT (for INTEGER and FLOAT inputs)
+- DURATION (for DURATION inputs)
 
 ```gql
 MATCH (p:Product)
 RETURN avg(p.price) AS average_price
 ```
 
-#### COUNT
+#### Count
 
-Returns the count of values or rows.
+**Syntax**
+```
+count(expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression | ANY | An expression to count non-null values |
+
+**Returns**
+INTEGER
 
 ```gql
 MATCH (p:Person)
 RETURN count(p) AS person_count
 ```
 
-#### MIN
+#### Min
 
-Returns the minimum value.
+**Syntax**
+```
+min(expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression | INTEGER, FLOAT, DATE, TIME, DATETIME, or DURATION | An expression to find the minimum value |
+
+**Returns**
+Same type as the input expression
 
 ```gql
 MATCH (p:Product)
 RETURN min(p.price) AS lowest_price
 ```
 
-#### MAX
+#### Max
 
-Returns the maximum value.
+**Syntax**
+```
+max(expression)
+```
+
+**Arguments**
+| Name | Type | Description |
+|------|------|-------------|
+| expression | INTEGER, FLOAT, DATE, TIME, DATETIME, or DURATION | An expression to find the maximum value |
+
+**Returns**
+Same type as the input expression
 
 ```gql
 MATCH (p:Product)
