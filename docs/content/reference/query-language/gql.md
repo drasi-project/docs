@@ -15,6 +15,13 @@ Drasi supports a subset of the [Graph Query Language (GQL)](https://www.iso.org/
 
 The `MATCH` statement expands the current working table with matches from a graph pattern. It allows you to describe what you are looking for using ASCII art syntax where round brackets represent nodes and arrows represent relationships. When executed, `MATCH` finds all instances of the specified pattern in the graph and adds them to the working table.
 
+**Supported Path Patterns:**
+- Fixed length paths with non-anonymous nodes and relations
+- Variable binding for nodes and relationships
+- Label expressions
+- Property key-value expressions
+- Only fixed length MATCH paths with non-anonymous nodes and relations
+
 #### Arguments
 
 | Name | Description |
@@ -116,6 +123,45 @@ WHERE 2024 - v.year < 5
 RETURN v.make, v.model
 ```
 
+### LET
+
+The `LET` statement adds columns to the current working table. It defines new variables using a comma-separated list of variable definitions, where each definition assigns a value expression result to a binding variable.
+
+#### Syntax
+
+```gql
+LET variable = expression [, variable = expression]*
+```
+
+#### Arguments
+
+| Name | Description |
+|------|-------------|
+| variable | The name of the new variable to create |
+| expression | An expression that computes the value for the variable |
+
+#### Basic variable definition
+
+Define a simple computed variable:
+
+```gql
+MATCH (v:Vehicle)
+LET isRed = v.color = 'Red'
+RETURN v.color, isRed
+```
+
+#### Multiple variable definitions
+
+Define multiple variables in a single LET statement:
+
+```gql
+MATCH (v:Vehicle)
+LET isRed = v.color = 'Red',
+    age = 2024 - v.year,
+    category = CASE WHEN v.year > 2020 THEN 'New' ELSE 'Used' END
+RETURN v, isRed, age, category
+```
+
 ### FILTER
 
 The `FILTER` statement selects a subset of the records of the current working table. It updates the current working table to include only the records that satisfy the specified search condition.
@@ -176,46 +222,6 @@ FILTER z.type = 'Parking'
 RETURN v.make, z.name
 ```
 
-### LET
-
-The `LET` statement adds columns to the current working table. It defines new variables using a comma-separated list of variable definitions, where each definition assigns a value expression result to a binding variable.
-
-#### Syntax
-
-```gql
-LET variable = expression [, variable = expression]*
-```
-
-#### Arguments
-
-| Name | Description |
-|------|-------------|
-| variable | The name of the new variable to create |
-| expression | An expression that computes the value for the variable |
-
-#### Basic variable definition
-
-Define a simple computed variable:
-
-```gql
-MATCH (v:Vehicle)
-LET isRed = v.color = 'Red'
-RETURN v.color, isRed
-```
-
-#### Multiple variable definitions
-
-Define multiple variables in a single LET statement:
-
-```gql
-MATCH (v:Vehicle)
-LET isRed = v.color = 'Red',
-    age = 2024 - v.year,
-    category = CASE WHEN v.year > 2020 THEN 'New' ELSE 'Used' END
-RETURN v, isRed, age, category
-```
-
-
 ### YIELD
 
 The `YIELD` clause selects and renames columns of a binding table. It projects specific columns from the current working table by specifying yield items, where each yield item consists of a field name and an optional alias. When no alias is provided, the field name must be a binding variable and is used as both the source and target name.
@@ -260,7 +266,7 @@ Only the columns specified in YIELD are available to subsequent clauses:
 ```gql
 MATCH (v:Vehicle {color: 'Red'})-[:LOCATED_IN]->(z:Zone)
 YIELD v.make AS make, z.name AS name
-FILTER name = 'Parking Lot A'
+FILTER name = 'Parking Lot'
 RETURN make
 ```
 
@@ -360,7 +366,7 @@ When a `GROUP BY` clause is present, only the listed expressions are used as gro
 ```gql
 MATCH (v:Vehicle)
 RETURN v.color AS color, count(v) AS vehicle_count
-GROUP BY v.color
+GROUP BY color
 ```
 
 #### Grouping constraints
@@ -454,18 +460,14 @@ FILTER location_type = 'Parking'
 RETURN color, location_type
 ```
 
-#### Complex pipeline
-
-Create sophisticated query pipelines with multiple transformations:
-
-```gql
-MATCH (v:Vehicle)-[:LOCATED_IN]->(z:Zone)
-RETURN v, z
-NEXT YIELD v AS vehicle, z AS zone
-LET loc_type = zone.type
-NEXT FILTER loc_type = 'Parking'
-RETURN vehicle.color, vehicle.make, loc_type
-```
+### Unsupported GQL Features
+The following GQL features are not currently supported:
+- Optional MATCH statements
+- ORDER BY clause
+- LIMIT and OFFSET/SKIP clauses
+- DISTINCT in RETURN statements
+- CALL statements for procedures
+- Some functions and operators
 
 ## Functions
 
