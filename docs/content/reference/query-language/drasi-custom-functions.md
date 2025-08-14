@@ -1,7 +1,7 @@
 ---
 type: "docs"
-title: "Drasi Functions"
-linkTitle: "Drasi Functions"
+title: "Drasi Custom Functions"
+linkTitle: "Drasi Custom Functions"
 weight: 40
 description: >
     Extended functions for continuous query processing

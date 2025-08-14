@@ -6,10 +6,8 @@ weight: 30
 description: >
     Graph Query Language support in Drasi
 ---
-
-Drasi supports a subset of the [Graph Query Language (GQL)](https://www.iso.org/standard/76120.html) ISO standard for querying graph databases. This subset includes the core statements and functions needed for continuous query processing.
-
 ## GQL Support
+Drasi supports a subset of the [Graph Query Language (GQL)](https://www.iso.org/standard/76120.html) ISO standard for querying graph databases. This subset includes the core statements and functions needed for continuous query processing.
 
 ### MATCH
 
@@ -27,7 +25,7 @@ The `MATCH` statement expands the current working table with matches from a grap
 | Name | Description |
 |------|-------------|
 | pattern | A graph pattern consisting of nodes and relationships |
-| condition | An optional WHERE condition to filter matches |
+| condition | Optional WHERE condition to filter matches |
 
 #### Basic node matching
 
@@ -237,7 +235,7 @@ YIELD field_name [AS alias] [, field_name [AS alias]]*
 | Name | Description |
 |------|-------------|
 | field_name | The name of the field/column to project from the current working table |
-| alias | An optional alias name for the projected field |
+| alias | Optional alias name for the projected field |
 
 #### Basic projection with aliases
 
@@ -478,175 +476,235 @@ GQL provides various built-in functions for data manipulation, type conversion, 
 
 Text functions provide string manipulation capabilities for processing textual data in queries.
 
-#### Upper
+#### Upper()
+The `upper` function converts a string to uppercase.
 
-**Syntax**
-```
+##### Syntax
+```gql
 upper(input)
 ```
 
-**Arguments**
+##### Arguments
+The `upper` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A string to be converted into uppercase |
+
+##### Returns
+The `upper` function returns a STRING in uppercase format.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, upper(p.name) AS upper_name
 ```
 
-#### Lower
+#### Lower()
+The `lower` function converts a string to lowercase.
 
-**Syntax**
-```
+##### Syntax
+```gql
 lower(input)
 ```
 
-**Arguments**
+##### Arguments
+The `lower` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A string to be converted into lowercase |
+
+##### Returns
+The `lower` function returns a STRING in lowercase format.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, lower(p.name) AS lower_name
 ```
 
-#### Trim
+#### Trim()
+The `trim` function removes leading and trailing whitespace from a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 trim(input)
 ```
 
-**Arguments**
+##### Arguments
+The `trim` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A value from which all leading and trailing whitespace will be removed |
+
+##### Returns
+The `trim` function returns a STRING with whitespace removed from both ends.
 
 ```gql
 MATCH (p:Person)
 RETURN trim(p.name) AS trimmed_name
 ```
 
-#### Ltrim
+#### Ltrim()
+The `ltrim` function removes leading whitespace from a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 ltrim(input)
 ```
 
-**Arguments**
+##### Arguments
+The `ltrim` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A value from which the leading trim character will be removed |
+
+##### Returns
+The `ltrim` function returns a STRING with whitespace removed from the beginning.
 
 ```gql
 MATCH (p:Person)
 RETURN ltrim(p.name) AS left_trimmed
 ```
 
-#### Rtrim
+#### Rtrim()
+The `rtrim` function removes trailing whitespace from a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 rtrim(input)
 ```
 
-**Arguments**
+##### Arguments
+The `rtrim` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A value from which the trailing trim character will be removed |
+
+##### Returns
+The `rtrim` function returns a STRING with whitespace removed from the end.
 
 ```gql
 MATCH (p:Person)
 RETURN rtrim(p.name) AS right_trimmed
 ```
 
-#### Reverse
+#### Reverse()
+The `reverse` function returns a string with characters in reverse order.
 
-**Syntax**
-```
+##### Syntax
+```gql
 reverse(input)
 ```
 
-**Arguments**
+##### Arguments
+The `reverse` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | The string to be reversed |
+
+##### Returns
+The `reverse` function returns a STRING with characters in reverse order.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, reverse(p.name) AS reversed_name
 ```
 
-#### Left
+#### Left()
+The `left` function returns a specified number of leftmost characters from a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 left(input, length)
 ```
 
-**Arguments**
+##### Arguments
+The `left` function accepts two arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | The string to extract from |
 | length | INTEGER | The number of characters to extract |
+
+##### Returns
+The `left` function returns a STRING containing the specified number of leftmost characters.
 
 ```gql
 MATCH (p:Person)
 RETURN left(p.name, 3) AS first_three_chars
 ```
 
-#### Right
+#### Right()
+The `right` function returns a specified number of rightmost characters from a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 right(input, length)
 ```
 
-**Arguments**
+##### Arguments
+The `right` function accepts two arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | The string to extract from |
 | length | INTEGER | The number of characters to extract |
+
+##### Returns
+The `right` function returns a STRING containing the specified number of rightmost characters.
 
 ```gql
 MATCH (p:Person)
 RETURN right(p.name, 3) AS last_three_chars
 ```
 
-#### Replace
+#### Replace()
+The `replace` function replaces all occurrences of a search string with a replacement string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 replace(input, search, replacement)
 ```
 
-**Arguments**
+##### Arguments
+The `replace` function accepts three arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | The original string |
 | search | STRING | The substring to find |
 | replacement | STRING | The string to replace with |
 
+##### Returns
+The `replace` function returns a STRING with all occurrences of the search string replaced.
+
 ```gql
 MATCH (p:Person)
 RETURN replace(p.name, 'John', 'Jane') AS modified_name
 ```
 
-#### Split
+#### Split()
+The `split` function divides a string into a list based on a delimiter or delimiters.
 
-**Syntax**
-```
+##### Syntax
+```gql
 split(input, delimiter)
 ```
 
-**Arguments**
+##### Arguments
+The `split` function accepts two arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | The string to split |
 | delimiter | STRING or LIST | The delimiter(s) to split on |
+
+##### Returns
+The `split` function returns a LIST of strings. When using a single string delimiter, it splits on the exact string. When using a list of delimiters, it performs character-level matching for any of the characters in the list.
 
 ```gql
 MATCH (p:Person)
@@ -658,19 +716,25 @@ MATCH (p:Person)
 RETURN split(p.full_name, [' ', ',', '.']) AS name_parts
 ```
 
-#### Substring
+#### Substring()
+The `substring` function returns a substring from the given string, beginning with a 0-based index start.
 
-**Syntax**
-```
+##### Syntax
+```gql
 substring(original, start, length)
 ```
 
-**Arguments**
+##### Arguments
+The `substring` function accepts two or three arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | original | STRING | The string to be shortened |
 | start | INTEGER | The start position of the new string |
-| length | INTEGER | The length of the new string (optional) |
+| length | INTEGER | (optional) Length of the new string |
+
+##### Returns
+The `substring` function returns a STRING. If length is omitted, returns the substring from start to the end of original. If length is provided, returns a substring of that length.
 
 ```gql
 MATCH (p:Person)
@@ -686,84 +750,96 @@ RETURN substring(p.name, 1, 5) AS name_substring
 
 Numeric functions perform mathematical operations on numeric values.
 
-#### Abs
+#### Abs()
+The `abs` function returns the absolute value of a number.
 
-**Syntax**
-```
+##### Syntax
+```gql
 abs(input)
 ```
 
-**Arguments**
+##### Arguments
+The `abs` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | INTEGER or FLOAT | A numeric value from which the absolute number will be returned |
 
-**Returns**
-Returns INTEGER or FLOAT
+##### Returns
+The `abs` function returns INTEGER or FLOAT, preserving the original type.
 
 ```gql
 MATCH (t:Transaction)
 RETURN t.amount, abs(t.amount) AS absolute_amount
 ```
 
-#### Ceil
+#### Ceil()
+The `ceil` function rounds a number up to the nearest integer.
 
-**Syntax**
-```
+##### Syntax
+```gql
 ceil(input)
 ```
 
-**Arguments**
+##### Arguments
+The `ceil` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | INTEGER or FLOAT | A value to be rounded to the nearest higher integer |
 
-**Returns**
-FLOAT
+##### Returns
+The `ceil` function returns a FLOAT representing the smallest integer greater than or equal to the input.
 
 ```gql
 MATCH (p:Product)
 RETURN p.price, ceil(p.price) AS price_ceiling
 ```
 
-#### Floor
+#### Floor()
+The `floor` function rounds a number down to the nearest integer.
 
-**Syntax**
-```
+##### Syntax
+```gql
 floor(input)
 ```
 
-**Arguments**
+##### Arguments
+The `floor` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | INTEGER or FLOAT | A value to be rounded to the nearest lower integer |
 
-**Returns**
-FLOAT
+##### Returns
+The `floor` function returns a FLOAT representing the largest integer less than or equal to the input.
 
 ```gql
 MATCH (p:Product)
 RETURN p.price, floor(p.price) AS price_floor
 ```
 
-#### Round
+#### Round()
+The `round` function rounds a number to a specified precision using various rounding modes.
 
-**Syntax**
-```
+##### Syntax
+```gql
 round(value)
 round(value, precision)
 round(value, precision, mode)
 ```
 
-**Arguments**
+##### Arguments
+The `round` function accepts one to three arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | value | INTEGER or FLOAT | A value to be rounded |
-| precision | INTEGER | The rounding precision (optional) |
-| mode | STRING | A precision rounding mode: UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN (optional) |
+| precision | INTEGER | (optional) Rounding precision |
+| mode | STRING | (optional) Precision rounding mode: UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN |
 
-**Returns**
-FLOAT if value is FLOAT, INTEGER if value is INTEGER
+##### Returns
+The `round` function returns FLOAT if value is FLOAT, INTEGER if value is INTEGER. The precision parameter specifies decimal places for rounding, and the mode parameter controls the rounding behavior.
 
 ```gql
 MATCH (p:Product)
@@ -774,101 +850,116 @@ RETURN p.price, round(p.price) AS rounded_price
 
 Scalar functions operate on individual values and return single results.
 
-#### Char_length
+#### Char_length()
+The `char_length` function returns the number of characters in a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 char_length(input)
 ```
 
-**Arguments**
+##### Arguments
+The `char_length` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | STRING | A string value for which the character count will be returned |
 
-**Returns**
-INTEGER
+##### Returns
+The `char_length` function returns an INTEGER representing the number of characters in the string.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, char_length(p.name) AS name_length
 ```
 
-#### Size
+#### Size()
+The `size` function returns the number of elements in a list or characters in a string.
 
-**Syntax**
-```
+##### Syntax
+```gql
 size(input)
 ```
 
-**Arguments**
+##### Arguments
+The `size` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | input | LIST or STRING | A list or string value for which the size will be returned |
 
-**Returns**
-INTEGER
+##### Returns
+The `size` function returns an INTEGER representing the number of elements in a list or characters in a string.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, size(p.name) AS name_length
 ```
 
-#### Coalesce
+#### Coalesce()
+The `coalesce` function returns the first non-null value from a list of expressions.
 
-**Syntax**
-```
+##### Syntax
+```gql
 coalesce(expression1, expression2, ...)
 ```
 
-**Arguments**
+##### Arguments
+The `coalesce` function accepts multiple arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression1, expression2, ... | ANY | A list of expressions to evaluate |
 
-**Returns**
-ANY (type of the first non-null expression)
+##### Returns
+The `coalesce` function returns ANY (type of the first non-null expression), or null if all expressions are null.
 
 ```gql
 MATCH (p:Person)
 RETURN coalesce(p.nickname, p.name, 'Unknown') AS display_name
 ```
 
-#### Last
+#### Last()
+The `last` function returns the last element from a list.
 
-**Syntax**
-```
+##### Syntax
+```gql
 last(list)
 ```
 
-**Arguments**
+##### Arguments
+The `last` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | list | LIST | A list from which the last element will be returned |
 
-**Returns**
-ANY (type of the last element in the list)
+##### Returns
+The `last` function returns ANY (type of the last element in the list), or null if the list is empty.
 
 ```gql
 MATCH (p:Person)
 RETURN p.name, last(p.addresses) AS current_address
 ```
 
-#### Cast
+#### Cast()
+The `cast` function converts a value from one data type to another.
 
-**Syntax**
-```
+##### Syntax
+```gql
 cast(value AS target_type)
 ```
 
-**Arguments**
+##### Arguments
+The `cast` function accepts two arguments:
+
 | Name | Type | Description |
 |------|------|-------------|
 | value | ANY | The value to be converted |
 | target_type | STRING | The target data type: STRING, INTEGER, INT, FLOAT, BOOLEAN, BOOL |
 
-**Returns**
-The specified target type
+##### Returns
+The `cast` function returns the value converted to the specified target type.
 
 **Supported Conversions**
 - **To STRING**: Converts INTEGER, FLOAT, STRING, BOOLEAN, LIST to string representation
@@ -886,22 +977,25 @@ RETURN v.make, v.model
 
 List functions operate on list data structures.
 
-#### Reduce
+#### Reduce()
+The `reduce` function applies an operation to each element in a list, accumulating results.
 
-**Syntax**
-```
+##### Syntax
+```gql
 reduce(accumulator = initial_value, variable IN list | expression)
 ```
 
-**Arguments**
+##### Arguments
+The `reduce` function accepts three components:
+
 | Name | Type | Description |
 |------|------|-------------|
 | accumulator | Variable assignment | The accumulator variable and its initial value |
 | variable IN list | Iterator expression | Iterates over each element in the list |
 | expression | Expression | The operation to perform for each element |
 
-**Returns**
-ANY (type depends on the accumulator and operations)
+##### Returns
+The `reduce` function returns ANY (type depends on the accumulator and operations). It processes each element in the list sequentially, updating the accumulator with the result of the expression.
 
 ```gql
 MATCH (p:Person)
@@ -913,20 +1007,23 @@ RETURN reduce(sum = 0, n IN numbers | sum + n) AS total
 
 Metadata functions provide access to element metadata and system information.
 
-#### Element_id
+#### Element_id()
+The `element_id` function returns the unique identifier of a graph element.
 
-**Syntax**
-```
+##### Syntax
+```gql
 element_id(element)
 ```
 
-**Arguments**
+##### Arguments
+The `element_id` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | element | ELEMENT | A graph element (node or relationship) |
 
-**Returns**
-STRING
+##### Returns
+The `element_id` function returns a STRING representing the unique identifier of the graph element.
 
 ```gql
 MATCH (n:Person)
@@ -937,19 +1034,23 @@ RETURN n.name, element_id(n) AS node_id
 
 Aggregation functions compute single values from collections of values.
 
-#### Sum
+#### Sum()
+The `sum` function calculates the sum of numeric or duration values.
 
-**Syntax**
-```
+##### Syntax
+```gql
 sum(expression)
 ```
 
-**Arguments**
+##### Arguments
+The `sum` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression | INTEGER, FLOAT, or DURATION | A numeric or duration expression to sum |
 
-**Returns**
+##### Returns
+The `sum` function returns:
 - FLOAT (for INTEGER and FLOAT inputs)
 - DURATION (for DURATION inputs)
 
@@ -958,19 +1059,23 @@ MATCH (p:Product)
 RETURN sum(p.price) AS total_value
 ```
 
-#### Avg
+#### Avg()
+The `avg` function calculates the average of numeric or duration values.
 
-**Syntax**
-```
+##### Syntax
+```gql
 avg(expression)
 ```
 
-**Arguments**
+##### Arguments
+The `avg` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression | INTEGER, FLOAT, or DURATION | A numeric or duration expression to average |
 
-**Returns**
+##### Returns
+The `avg` function returns:
 - FLOAT (for INTEGER and FLOAT inputs)
 - DURATION (for DURATION inputs)
 
@@ -979,60 +1084,69 @@ MATCH (p:Product)
 RETURN avg(p.price) AS average_price
 ```
 
-#### Count
+#### Count()
+The `count` function returns the number of non-null values.
 
-**Syntax**
-```
+##### Syntax
+```gql
 count(expression)
 ```
 
-**Arguments**
+##### Arguments
+The `count` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression | ANY | An expression to count non-null values |
 
-**Returns**
-INTEGER
+##### Returns
+The `count` function returns an INTEGER representing the number of non-null values.
 
 ```gql
 MATCH (p:Person)
 RETURN count(p) AS person_count
 ```
 
-#### Min
+#### Min()
+The `min` function returns the minimum value from a set of values.
 
-**Syntax**
-```
+##### Syntax
+```gql
 min(expression)
 ```
 
-**Arguments**
+##### Arguments
+The `min` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression | INTEGER, FLOAT, DATE, TIME, DATETIME, or DURATION | An expression to find the minimum value |
 
-**Returns**
-Same type as the input expression
+##### Returns
+The `min` function returns the same type as the input expression, representing the minimum value.
 
 ```gql
 MATCH (p:Product)
 RETURN min(p.price) AS lowest_price
 ```
 
-#### Max
+#### Max()
+The `max` function returns the maximum value from a set of values.
 
-**Syntax**
-```
+##### Syntax
+```gql
 max(expression)
 ```
 
-**Arguments**
+##### Arguments
+The `max` function accepts one argument:
+
 | Name | Type | Description |
 |------|------|-------------|
 | expression | INTEGER, FLOAT, DATE, TIME, DATETIME, or DURATION | An expression to find the maximum value |
 
-**Returns**
-Same type as the input expression
+##### Returns
+The `max` function returns the same type as the input expression, representing the maximum value.
 
 ```gql
 MATCH (p:Product)
@@ -1043,4 +1157,299 @@ RETURN max(p.price) AS highest_price
 
 Temporal functions work with date, time, and duration values.
 
-#### WIP
+#### Date()
+The `date` function creates or parses date values.
+
+##### Syntax
+```gql
+date(input)
+```
+
+##### Arguments
+The `date` function accepts one optional argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING, OBJECT, or DATE | (optional) Date string to parse, date components object, or existing date |
+
+##### Returns
+The `date` function returns a DATE value.
+
+**Behavior**
+- **Without input:** Returns the current system date
+- **With STRING input:** Parses a date string into a DATE value
+- **With OBJECT input:** Constructs a date from component fields
+- **With DATE input:** Returns the date unchanged
+- **With NULL input:** Returns null
+
+**Object Components**
+When using an object, supported keys include:
+- `year` - The year
+- `month` - The month (1-12)
+- `day` - The day of the month
+- `week` - Week number
+- `ordinalDay` - Day of the year
+- `quarter` - Quarter of the year
+- `dayOfWeek` - Day of the week
+- `dayOfQuarter` - Day within the quarter
+
+```gql
+MATCH (p:Person)
+RETURN date() AS current_date, 
+       date('2024-01-15') AS parsed_date,
+       date({year: 2024, month: 3, day: 15}) AS constructed_date
+```
+
+#### Time()
+The `time` function creates or parses zoned time values.
+
+##### Syntax
+```gql
+time(input)
+```
+
+##### Arguments
+The `time` function accepts one optional argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING, OBJECT, or ZONED_TIME | (optional) Time string to parse, time components object, or existing zoned time |
+
+##### Returns
+The `time` function returns a ZONED_TIME value.
+
+**Behavior**
+- **Without input:** Returns the current system time in UTC timezone
+- **With STRING input:** Parses a time string into a ZONED_TIME value
+- **With OBJECT input:** Constructs a time from component fields
+- **With ZONED_TIME input:** Returns the time unchanged
+- **With NULL input:** Returns null
+
+**Object Components**
+When using an object, supported keys include:
+- `hour` - The hour (0-23)
+- `minute` - The minute (0-59)
+- `second` - The second (0-59)
+- `millisecond` - The millisecond (0-999)
+- `microsecond` - The microsecond (0-999)
+- `nanosecond` - The nanosecond (0-999)
+- `timezone` - The timezone (IANA timezone name or offset like "+05:00")
+
+**Special timezone behavior:**
+- If only `timezone` is specified in the object, returns current time in that timezone
+- Default timezone is UTC if not specified
+
+```gql
+MATCH (p:Person)
+RETURN time() AS current_time,
+       time('14:30:00+02:00') AS parsed_time,
+       time({hour: 14, minute: 30, timezone: 'America/New_York'}) AS constructed_time
+```
+
+#### Local_time()
+The `local_time` function creates or parses local time values.
+
+##### Syntax
+```gql
+local_time(input)
+```
+
+##### Arguments
+The `local_time` function accepts one optional argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING, OBJECT, or LOCAL_TIME | (optional) Time string to parse, time components object, or existing local time |
+
+##### Returns
+The `local_time` function returns a LOCAL_TIME value.
+
+**Behavior**
+- **Without input:** Returns the current system local time (no timezone information)
+- **With STRING input:** Parses a time string into a LOCAL_TIME value
+- **With OBJECT input:** Constructs a time from component fields
+- **With LOCAL_TIME input:** Returns the time unchanged
+- **With NULL input:** Returns null
+
+**Object Components**
+When using an object, supported keys include:
+- `hour` - The hour (0-23)
+- `minute` - The minute (0-59)
+- `second` - The second (0-59)
+- `millisecond` - The millisecond (0-999)
+- `microsecond` - The microsecond (0-999)
+- `nanosecond` - The nanosecond (0-999)
+
+```gql
+MATCH (p:Person)
+RETURN local_time() AS current_local_time,
+       local_time('14:30:00') AS parsed_local_time,
+       local_time({hour: 14, minute: 30, second: 15}) AS constructed_local_time
+```
+
+#### Zoned_datetime()
+The `zoned_datetime` function creates or parses zoned datetime values.
+
+##### Syntax
+```gql
+zoned_datetime(input)
+```
+
+##### Arguments
+The `zoned_datetime` function accepts one optional argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING, OBJECT, or ZONED_DATETIME | (optional) DateTime string to parse, datetime components object, or existing zoned datetime |
+
+##### Returns
+The `zoned_datetime` function returns a ZONED_DATETIME value.
+
+**Behavior**
+- **Without input:** Returns the current system datetime in UTC timezone
+- **With STRING input:** Parses a datetime string into a ZONED_DATETIME value
+- **With OBJECT input:** Constructs a datetime from component fields
+- **With ZONED_DATETIME input:** Returns the datetime unchanged
+- **With NULL input:** Returns null
+
+**Object Components**
+When using an object, supported keys include:
+
+*Date components:*
+- `year` - The year
+- `month` - The month (1-12)
+- `day` - The day of the month
+- `week` - Week number
+- `ordinalDay` - Day of the year
+- `quarter` - Quarter of the year
+- `dayOfWeek` - Day of the week
+- `dayOfQuarter` - Day within the quarter
+
+*Time components:*
+- `hour` - The hour (0-23)
+- `minute` - The minute (0-59)
+- `second` - The second (0-59)
+- `millisecond` - The millisecond (0-999)
+- `microsecond` - The microsecond (0-999)
+- `nanosecond` - The nanosecond (0-999)
+
+*Timezone and epoch:*
+- `timezone` - The timezone (IANA timezone name or offset like "+05:00")
+- `epochSeconds` - Unix timestamp in seconds
+- `epochMillis` - Unix timestamp in milliseconds
+
+**Special behaviors:**
+- If only `timezone` is specified, returns current datetime in that timezone
+- If `epochSeconds` or `epochMillis` is provided, creates datetime from Unix timestamp
+- Default timezone is UTC if not specified
+
+```gql
+MATCH (p:Person)
+RETURN zoned_datetime() AS current_datetime,
+       zoned_datetime('2024-01-15T14:30:00+02:00') AS parsed_datetime,
+       zoned_datetime({year: 2024, month: 1, day: 15, hour: 14, minute: 30, timezone: 'America/New_York'}) AS constructed_datetime
+```
+
+#### Local_datetime()
+The `local_datetime` function creates or parses local datetime values.
+
+##### Syntax
+```gql
+local_datetime(input)
+```
+
+##### Arguments
+The `local_datetime` function accepts one optional argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| input | STRING, OBJECT, or LOCAL_DATETIME | (optional) DateTime string to parse, datetime components object, or existing local datetime |
+
+##### Returns
+The `local_datetime` function returns a LOCAL_DATETIME value.
+
+**Behavior**
+- **Without input:** Returns the current system local datetime (no timezone information)
+- **With STRING input:** Parses a datetime string into a LOCAL_DATETIME value
+- **With OBJECT input:** Constructs a datetime from component fields
+- **With LOCAL_DATETIME input:** Returns the datetime unchanged
+- **With NULL input:** Returns null
+
+**Object Components**
+When using an object, supported keys include:
+
+*Date components:*
+- `year` - The year
+- `month` - The month (1-12)
+- `day` - The day of the month
+- `week` - Week number
+- `ordinalDay` - Day of the year
+- `quarter` - Quarter of the year
+- `dayOfWeek` - Day of the week
+- `dayOfQuarter` - Day within the quarter
+
+*Time components:*
+- `hour` - The hour (0-23)
+- `minute` - The minute (0-59)
+- `second` - The second (0-59)
+- `millisecond` - The millisecond (0-999)
+- `microsecond` - The microsecond (0-999)
+- `nanosecond` - The nanosecond (0-999)
+
+*Special timezone behavior:*
+- `timezone` - If specified, returns current datetime in that timezone converted to local datetime
+
+**Special behavior:**
+- If only `timezone` is specified, returns current datetime from that timezone as local datetime (timezone info is stripped)
+
+```gql
+MATCH (p:Person)
+RETURN local_datetime() AS current_local_datetime,
+       local_datetime('2024-01-15T14:30:00') AS parsed_local_datetime,
+       local_datetime({year: 2024, month: 1, day: 15, hour: 14, minute: 30}) AS constructed_local_datetime
+```
+
+#### Duration_between()
+The `duration_between` function calculates the duration between two temporal values.
+
+##### Syntax
+```gql
+duration_between(start, end)
+```
+
+##### Arguments
+The `duration_between` function accepts two arguments:
+
+| Name | Type | Description |
+|------|------|-------------|
+| start | DATE, LOCAL_TIME, ZONED_TIME, LOCAL_DATETIME, or ZONED_DATETIME | The start temporal value |
+| end | DATE, LOCAL_TIME, ZONED_TIME, LOCAL_DATETIME, or ZONED_DATETIME | The end temporal value |
+
+##### Returns
+The `duration_between` function returns a DURATION value.
+
+**Behavior**
+Calculates the duration between two temporal values. The function supports mixed temporal types and handles timezone conversions automatically.
+
+**Supported type combinations:**
+- **DATE to/from any temporal type** - Date is treated as midnight
+- **LOCAL_TIME to/from any temporal type** - Uses appropriate date context
+- **ZONED_TIME to/from any temporal type** - Handles timezone offsets
+- **LOCAL_DATETIME to/from any temporal type** - Converts to appropriate timezone when needed
+- **ZONED_DATETIME to/from any temporal type** - Full timezone-aware calculations
+- **NULL inputs** - Returns null if either argument is null
+
+**Timezone handling:**
+- When mixing zoned and local types, the zoned type's timezone is used for conversion
+- When both are zoned types, timezone differences are properly calculated
+- Local types are converted using appropriate context (date from other value, etc.)
+
+```gql
+MATCH (e:Event)
+RETURN duration_between(e.start_date, e.end_date) AS event_duration,
+       duration_between(local_time('09:00'), local_time('17:30')) AS work_hours,
+       duration_between(date('2024-01-01'), zoned_datetime('2024-01-15T10:30:00+02:00')) AS days_elapsed
+```
+
+#### Duration Functions
+Additional duration functions are available for working with durations. For detailed documentation on these functions including `duration()`, `duration.inMonths()`, `duration.inDays()`, and `duration.inSeconds()`, see the [Neo4j Cypher Manual Duration Functions](https://neo4j.com/docs/cypher-manual/current/functions/temporal/duration/#functions-durations).

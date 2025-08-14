@@ -13,7 +13,7 @@ Continuous Queries are written using a subset of the [Cypher Query Language](htt
 
 - **[Cypher Query Language](cypher/)** - openCypher subset supported by Drasi
 - **[Graph Query Language (GQL)](gql/)** - GQL subset supported by Drasi  
-- **[Drasi Functions](drasi-functions/)** - Extended functions for continuous query processing
+- **[Drasi Custom Functions](drasi-custom-functions/)** - Extended functions for continuous query processing
 
 ## Learning Resources
 
