@@ -11,7 +11,9 @@ Drasi supports a subset of the [Graph Query Language (GQL)](https://www.iso.org/
 
 ### MATCH
 
-The `MATCH` statement expands the current working table with matches from a graph pattern. It allows you to describe what you are looking for using ASCII art syntax where round brackets represent nodes and arrows represent relationships. When executed, `MATCH` finds all instances of the specified pattern in the graph and adds them to the working table.
+`MATCH` expands the current working table with matches from a graph pattern.
+It describes what is being searched for using ASCII art syntax where round brackets represent nodes and arrows represent relationships.
+When executed, `MATCH` finds all instances of the specified pattern in the graph and adds them to the working table.
 
 **Supported Path Patterns:**
 - Fixed length paths with non-anonymous nodes and relations
@@ -144,8 +146,8 @@ Define a simple computed variable:
 
 ```gql
 MATCH (v:Vehicle)
-LET isRed = v.color = 'Red'
-RETURN v.color, isRed
+LET color = v.color
+RETURN color
 ```
 
 #### Multiple variable definitions
@@ -164,7 +166,8 @@ RETURN v, isRed, age, category
 
 The `FILTER` statement selects a subset of the records of the current working table. It updates the current working table to include only the records that satisfy the specified search condition.
 
-FILTER is a standalone statement that removes rows from the current working table based on a specified condition. While GQL still supports a WHERE clause for filtering during the MATCH phase (similar to openCypher), the FILTER statement provides additional flexibility by allowing you to filter the results after previous steps. It does not create a new table; instead, it updates the working table. Unlike openCypher's WHERE clause, which is tied to a MATCH or WITH, GQL's FILTER can be applied independently at various points in the query pipeline.
+FILTER is a standalone statement that removes rows from the current working table based on a specified condition.
+While GQL still supports a WHERE clause for filtering during the MATCH phase, the FILTER statement provides additional flexibility by allowing results to be filtered after previous steps.
 
 #### Syntax
 
@@ -325,7 +328,7 @@ RETURN v.color, count(v) AS vehicle_count
 
 ### GROUP BY
 
-The `GROUP BY` clause defines the set of grouping keys to be used during grouping operations. It specifies which expressions should be used to partition the data into groups for aggregation. The clause can contain a list of grouping elements or an empty grouping set for overall aggregation.
+The `GROUP BY` clause defines the set of grouping keys to be used during grouping operations. The clause can contain a list of grouping elements or an empty grouping set for overall aggregation.
 
 #### Syntax
 
