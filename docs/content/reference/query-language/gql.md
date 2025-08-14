@@ -65,8 +65,6 @@ MATCH (v:Vehicle {color: 'Red'})
 RETURN v
 ```
 
-
-
 ### WHERE
 
 The `WHERE` clause computes a new binding table by selecting records from the current working table that fulfill the specified search condition. For each record in the current working table, it evaluates the search condition and includes the record in the result only if the condition evaluates to true.
@@ -92,7 +90,6 @@ MATCH (v:Vehicle)
 WHERE v.color = 'Red'
 RETURN v
 ```
-
 #### Complex conditions
 
 Use logical operators to combine multiple conditions:
@@ -297,7 +294,6 @@ Return specific columns from the working table:
 MATCH (v:Vehicle)
 RETURN v.make, v.model, v.year
 ```
-
 #### Projection with aliases
 
 Rename columns in the output using aliases:
@@ -324,7 +320,6 @@ Use aggregate functions to summarize data:
 MATCH (v:Vehicle)
 RETURN v.color, count(v) AS vehicle_count
 ```
-
 
 ### GROUP BY
 
@@ -473,7 +468,6 @@ The following GQL features are not currently supported:
 ## Functions
 
 GQL provides various built-in functions for data manipulation, type conversion, and computation within queries.
-
 
 ### Text Functions
 
