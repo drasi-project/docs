@@ -247,15 +247,17 @@ kind: ContinuousQuery
 name: message-count
 spec:
   mode: query
+  queryLanguage: GQL
   sources:
     subscriptions:
       - id: hello-world
   query: >
     MATCH
       (m:Message)
+    LET Message = m.Message
     RETURN
-      m.Message AS Message,
-      count(m.Message) AS Frequency
+      Message,
+      count(Message) AS Frequency
 ---
 apiVersion: v1
 kind: ContinuousQuery
@@ -280,7 +282,7 @@ spec:
         LastMessageTimestamp
 ```
 
-Notice that the YAML describes three Continuous Queries. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
+Notice that the YAML describes three Continuous Queries. The `message-count` query uses GQL (Graph Query Language) as indicated by the `queryLanguage: GQL` property, while the other queries use the default Cypher query language. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
 This table describes the most important configuration settings in these Continuous Query definitions.
 
@@ -288,10 +290,11 @@ This table describes the most important configuration settings in these Continuo
 |-|-|
 |kind|Specifies that the resource is a **Continuous Query**|
 |name|Provides the **ID** of the Continuous Query. This is used to manage the Continuous Query and in the Reaction configuration below to tell the Reaction which Continuous Queries to subscribe to.|
+|spec.queryLanguage|Optional property that specifies the query language. Can be either **GQL** or **Cypher** (default).|
 |spec.source.subscriptions.id| Identifies the **ID** of the Source the Continuous Query will subscribe to as a source of change data. In this instance, the id "hello-world" refers to the PostgreSQL Source you created in the previous step.|
-|spec.query|Contains the [Cypher Query](/reference/query-language/) that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
+|spec.query|Contains the query that defines the behavior of the Continuous Query i.e. what data it is observing to detect change and the content of its result set.|
 
-The following table describes the Cypher Query used by each of the Continuous Queries you are about to create:
+The following table describes the query used by each of the Continuous Queries you are about to create:
 |Query&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|Description|
 |-|-|
 |hello-world-from|Matches all nodes with a label (type) `Message` and filters for only those that have a `Message` field containing the value "Hello World". For records that match that pattern, it includes their `MessageId` and `From` fields in the query result.|
