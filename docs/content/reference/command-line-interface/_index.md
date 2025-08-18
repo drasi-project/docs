@@ -54,6 +54,7 @@ Available Commands:
   describe    Show the definition and status of a resource
   env         Manage Drasi environment configurations.
   help        Help about any command
+  ingress     Manage ingress controllers for Drasi Sources and Reactions
   init        Install Drasi
   list        Show a list of available resources
   namespace   Manage CLI namespace settings
@@ -335,6 +336,23 @@ drasi env use docker
 
 ### drasi help
 **Purpose**: The `help` command provides detailed help information about Drasi CLI commands. It is useful for understanding the usage, flags, and arguments of various commands available in the Drasi CLI. See the [Get Help](#get-help) section above.
+
+### drasi ingress
+**Purpose**: The `ingress` command manages the Kubernetes Ingress controller that Drasi uses by default. It includes the `drasi ingress init` subcommand.
+
+#### drasi ingress init
+**Purpose**: The `drasi ingress init` command initializes the Ingress controller for use with Drasi. It can either install and configure the Contour ingress controller automatically, or integrate with existing ingress controllers already deployed to your cluster using the `--use-existing` flag.
+
+**Flags and Arguments**:
+- `--use-existing` (optional): If set, the command will attempt to integrate with an existing ingress controller in the cluster instead of installing the Contour ingress controller. If this flag is set, then the `--ingress-service-name`, `--ingress-namespace` and `--ingress-class-name` must be set.
+- `--ingress-service-name <name>` (required when `--use-existing` is set): The name of the Kubernetes service for the existing ingress controller.
+- `--ingress-namespace <namespace>` (required when `--use-existing` is set): The namespace where the existing ingress controller service is located.
+- `--ingress-class-name <name>` (required when `--use-existing` is set): The class name that the Kubernetes ingress resource will use. It lets the ingress controller know which class of ingress it should handle.
+
+**Usage example**:
+
+
+{{< read file= "/shared-content/ingress/ingress-init.md" >}}
 
 ### drasi init
 **Purpose**: The `init` command is used to install a Drasi environment to the Kubernetes cluster that is the **current context** in `kubectl` ([see above](#target-the-drasi-environment)). By default, the Drasi environment will be installed into the `drasi-system` namespace, but this can be overridden as described below.
