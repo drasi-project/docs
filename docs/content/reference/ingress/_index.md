@@ -24,7 +24,7 @@ For more information on the `drasi ingress` command, refer to the [Drasi CLI doc
 ### Ingress Configuration
 You can configure ingress deployment for your Source or Reaction by setting the `gateway` field in your YAML file. To expose an endpoint externally, set the `setting` field to external and specify a port number in the `target` field. This target port will be used for the Kubernetes Service that gets provisioned alongside the Ingress resource.
 
-Below is a sample YAML file for a Debug Reaction:
+Below is a sample YAML file for a Debug Reaction. In this example, we are configuring an endpoint called `ingress` to be an external endpoint:
 ```yaml
 apiVersion: v1
 kind: Reaction
@@ -36,7 +36,7 @@ spec:
   services:
     reaction:
       endpoints:
-        service:
+        ingress:
           setting: external
           target: "8080"
 ```
