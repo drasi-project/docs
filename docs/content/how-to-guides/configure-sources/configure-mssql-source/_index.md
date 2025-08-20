@@ -155,7 +155,7 @@ When using the `MicrosoftEntraWorkloadID` identity, you must also set `authentic
 1. Ensure `Enable Workload Identity` is enabled.
 1. Take note of the `Issuer URL` under OIDC.
 1. Create or use an existing `User Assigned Managed Identity`.
-1. Take note of the `Client ID` an the `Overview` pane of the Managed Identity.
+1. Take note of the `Client ID` on the `Overview` pane of the Managed Identity.
 1. Grant the `Reader` role of the SQL Server to the managed identity in the `Azure role assignments` pane of the managed identity.
 1. Create a federated credential between the managed identity and the source.
     ```bash
