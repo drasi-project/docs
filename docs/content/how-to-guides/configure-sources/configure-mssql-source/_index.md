@@ -73,10 +73,10 @@ The following table describes the SQL Server specific properties:
 |user|The **user id** to use for authentication against the server.|
 |password|The **password** for the user account specified in the **user** property.|
 |database|The name of the SQL database.|
+|authentication|The [JDBC authentication method](https://learn.microsoft.com/en-us/sql/connect/jdbc/connecting-using-azure-active-directory-authentication) to use. Set this to `ActiveDirectoryManagedIdentity` when using Managed Identities, omit it for username / password authentication.|
 |encrypt|Does the server require a secure connection, valid values are "true" or "false".|
 |trustServerCertificate|This property is valid only when connecting to a SQL Server instance with a valid certificate. When it is set to true, the transport layer will use SSL to encrypt the channel and bypass walking the certificate chain to validate trust.|
 |tables| An array of table names that the source should process changes for. Tables must be prefixed with their schema name.|
-
 
 ### Secret Configuration
 
@@ -108,6 +108,83 @@ spec:
       - dbo.Table1
       - dbo.Table2
 ```
+
+### Identity
+
+The source supports the following service identities:
+
+#### Microsoft Entra Workload ID
+
+Microsoft Entra Workload Identity enables your source to authenticate to Azure without the need to store sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the service account the source is running against.
+
+The `Identity` section of the `spec` object can be used to configure this.
+
+| Property | Description |
+|-|-|
+| kind | MicrosoftEntraWorkloadID |
+| clientId | The Client ID of the user managed identity.|
+
+##### Example
+```yaml
+apiVersion: v1
+kind: Source
+name: my-source
+spec:
+  kind: SQLServer
+  identity:
+    kind: MicrosoftEntraWorkloadID
+    clientId: 00000000-0000-0000-0000-000000000000
+  properties:
+    host: my-database.database.windows.net
+    port: 1433
+    database: db
+    authentication: ActiveDirectoryManagedIdentity
+    encrypt: true
+    tables:
+      - dbo.Table1
+```
+
+{{% alert title="Note" color="warning" %}}
+When using the `MicrosoftEntraWorkloadID` identity, you must also set `authentication` to `ActiveDirectoryManagedIdentity` under properties instead of providing a username and password.
+{{% /alert %}}
+
+
+##### AKS Setup
+
+1. On the Azure portal, navigate to the `Security configuration` pane of your AKS cluster.
+1. Ensure `Enable Workload Identity` is enabled.
+1. Take note of the `Issuer URL` under OIDC.
+1. Create or use an existing `User Assigned Managed Identity`.
+1. Take note of the `Client ID` an the `Overview` pane of the Managed Identity.
+1. Grant the `Reader` role of the SQL Server to the managed identity in the `Azure role assignments` pane of the managed identity.
+1. Create a federated credential between the managed identity and the source.
+    ```bash
+    az identity federated-credential create \
+        --name <Give the federated credential a unique name> \
+        --identity-name "<Name of the User Assigned Managed Identity>" \
+        --resource-group "<Your Resource Group>" \
+        --issuer "<The Issuer URL from your AKS cluster OIDC configuration>" \
+        --subject system:serviceaccount:"drasi-system":"source.<Name of your Source>" \
+        --audience api://AzureADTokenExchange
+    ```
+
+##### Grant SQL Permissions
+
+Create a SQL user with the name of the exact same managed identity, and grant it read permissions.
+
+```sql
+CREATE USER [<Name of the User Assigned Managed Identity>] FROM EXTERNAL PROVIDER;
+
+ALTER ROLE db_datareader ADD MEMBER [<Name of the User Assigned Managed Identity>];
+```
+
+##### Related links
+* [What are managed identities for Azure resources](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
+* [What are workload identities](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview)
+* [Azure AD Workload Identity Docs](https://azure.github.io/azure-workload-identity/docs/introduction.html)
+* [Deploy and configure workload identity on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster)
+* [Use Microsoft Entra Workload ID with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview)
+
 
 ## Inspecting the Source
 You can check the status of the Source using the `drasi list` command:
