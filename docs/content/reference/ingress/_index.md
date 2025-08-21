@@ -52,3 +52,62 @@ The URL follows the pattern `http://{name}.drasi.{loadbalancer-ip}.nip.io`, wher
 
 - `{name}` is the name of the Ingress resource
 - `{loadbalancer-ip}` is the load balancer IP address of the Ingress controller service
+
+### Using Azure Application Gateway Ingress Controller (AGIC) for AKS 
+The Application Gateway Ingress Controller (AGIC) is a Kubernetes application that enables AKS customers to leverage Azure's native Application Gateway L7 load-balancer to expose services to the Internet. AGIC monitors your Kubernetes cluster and continuously updates the Application Gateway configuration.
+
+#### Prerequisites
+- An AKS cluster with Drasi installed. See this [link](/how-to-guides/installation/install-on-aks/) for installation instructions.
+- az CLI
+
+
+#### AGIC installation
+AGIC can be installed on a new AKS cluster either via Helm or as an add-on. This [tutorial](https://review.learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new?branch=main) will guide you through the installation process.
+
+#### Drasi configuration
+First, get credentials to the AKS cluster by running the `az aks get-credentials` command:
+```bash
+az aks get-credentials -n myCluster -g myResourceGroup
+```
+
+Set the Drasi context to the AKS cluster:
+
+```bash
+drasi env kube
+```
+
+Obtain the public IP address of the Application Gateway from the Azure portal; this IP address will be used as the `--gateway-ip-address` when configuring Drasi.
+
+Execute the following command to configure Drasi with the Application Gateway IP address:
+
+```bash
+drasi ingress init --use-existing --ingress-class-name azure-application-gateway --gateway-ip-address <ip-address>
+```
+
+### Using AWS Load Balancer Controller for EKS
+The AWS Load Balancer Controller manages AWS Elastic Load Balancers for Kubernetes clusters, enabling you to expose cluster applications to the internet. It provisions Application Load Balancers (ALBs) for Kubernetes Ingress resources and Network Load Balancers (NLBs) for Kubernetes Service resources with appropriate annotations. The controller monitors your Kubernetes cluster and automatically configures load balancers based on your Kubernetes resource specifications.
+
+
+#### Prerequisites
+- An EKS cluster with Drasi installed. See this [link](/how-to-guides/installation/install-on-eks/) for installation instructions.
+- aws CLI
+
+#### ALB Configuration
+Please refer to this [guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html) for installing AWS Load Balancer Controller.
+
+#### Drasi configuration
+First, get credentials to the EKS cluster by running the `aws eks update-kubeconfig` command:
+```bash
+aws eks update-kubeconfig --region <region-code> --name <cluster-name>
+```
+
+Set the Drasi context to the AKS cluster:
+
+```bash
+drasi env kube
+```
+
+Unlike Azure Application Gateway which requires a static IP address, ALBs are dynamically provisioned with DNS names rather than fixed IP addresses. Execute the following command to configure Drasi with the appropriate ingress class name:
+```bash
+drasi ingress init --use-existing --ingress-class-name alb
+```

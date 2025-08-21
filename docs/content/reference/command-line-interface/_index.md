@@ -344,9 +344,10 @@ drasi env use docker
 **Purpose**: The `drasi ingress init` command initializes the Ingress controller for use with Drasi. It can either install and configure the Contour ingress controller automatically, or integrate with existing ingress controllers already deployed to your cluster using the `--use-existing` flag.
 
 **Flags and Arguments**:
-- `--use-existing` (optional): If set, the command will attempt to integrate with an existing ingress controller in the cluster instead of installing the Contour ingress controller. If this flag is set, then the `--ingress-service-name`, `--ingress-namespace` and `--ingress-class-name` must be set.
-- `--ingress-service-name <name>` (required when `--use-existing` is set): The name of the Kubernetes service for the existing ingress controller.
-- `--ingress-namespace <namespace>` (required when `--use-existing` is set): The namespace where the existing ingress controller service is located.
+- `--use-existing` (optional): If set, the command will attempt to integrate with an existing ingress controller in the cluster instead of installing the Contour ingress controller. If this flag is set, then the `--ingress-class-name` flag must be set.
+- `--gateway-ip-address <ip>` (optional): Public IP address of the Load Balancer (used when using AGIC or AWS Load Balancer Controller)
+- `--ingress-service-name <name>` (optional): The name of the Kubernetes service for the existing ingress controller (useful when using an ingress controller is already deployed in the cluster)
+- `--ingress-namespace <namespace>` (optional): The namespace where the existing ingress controller service is located (useful when using an ingress controller is already deployed in the cluster)
 - `--ingress-class-name <name>` (required when `--use-existing` is set): The class name that the Kubernetes ingress resource will use. It lets the ingress controller know which class of ingress it should handle.
 
 **Usage example**:
