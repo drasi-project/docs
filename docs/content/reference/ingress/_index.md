@@ -41,17 +41,23 @@ spec:
           target: "8080"
 ```
 
-When applied using `drasi apply`, the CLI will output a URL for the Ingress resource:
+After running `drasi apply`, you can view the Ingress URL by running the `drasi list` command. For example:
+
 ```bash
 drasi apply -f reaction.yaml
 ✓ Apply: Reaction/hello-world: complete
-ℹ Ingress URL: http://hello-world.drasi.20.3.25.74.nip.io
+drasi list reaction
+         ID         | AVAILABLE |                    INGRESS URL                     | MESSAGES  
+--------------------+-----------+----------------------------------------------------+-----------
+  hello-world-debug | true      | http://hello-world-debug.drasi.x.xxx.xx.xxx.nip.io |         
 ```
 
 The URL follows the pattern `http://{name}.drasi.{loadbalancer-ip}.nip.io`, where:
 
 - `{name}` is the name of the Ingress resource
 - `{loadbalancer-ip}` is the load balancer IP address of the Ingress controller service
+
+If you are using AWS Load Balancer Controller for EKS, the Ingress URL will be different. The controller provisions an Application Load Balancer (ALB) and assigns a DNS name to it. 
 
 ### Using Azure Application Gateway Ingress Controller (AGIC) for AKS 
 The Application Gateway Ingress Controller (AGIC) is a Kubernetes application that enables AKS customers to leverage Azure's native Application Gateway L7 load-balancer to expose services to the Internet. AGIC monitors your Kubernetes cluster and continuously updates the Application Gateway configuration.
