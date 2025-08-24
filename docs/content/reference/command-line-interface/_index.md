@@ -472,12 +472,22 @@ When listing static resources like `sourceprovider` and `reactionprovider`, the 
   CosmosGremlin
 ```
 
-When listing `querycontainer`, `source`, and `reaction` resources, the output is a table showing the name of the resource and a status showing whether the resource is available, like this list of **Query Containers**:
+When listing querycontainer, source, and reaction resources, the output is a table showing the ID of the resource, an availability status indicating whether the resource is available, and any error messages, like this list of **Sources**:
 
 ```
-    ID    | AVAILABLE
-----------+------------
-  default | true
+drasi list source  
+      ID      | AVAILABLE | MESSAGES  
+--------------+-----------+-----------
+  hello-world | true      |                  
+```
+
+If the resource contains an ingress, `drasi list` will also display the ingress URL:
+
+```
+drasi list reaction
+         ID         | AVAILABLE |                    INGRESS URL                     | MESSAGES  
+--------------------+-----------+----------------------------------------------------+-----------
+  hello-world-debug | true      | http://hello-world-debug.drasi.x.xxx.xx.xxx.nip.io |         
 ```
 
 When listing `continuousquery` (or `query`) resources, the output is a table the shows where the **Continuous Query** is running and what its current status is. Here is an example containing multiple **Continuous Queries**, two of which are `Running` and one of which is in a `TerminalError` state:
