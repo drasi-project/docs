@@ -260,27 +260,130 @@ Services are accessible on `localhost:8123`:
 
 Now let's deploy the Drasi sources, queries, and reactions that will power our enhanced services:
 
+{{< tabpane >}}
+
+{{% tab header="VSCode Extension" text=true %}}
+
+If you're following the tutorial in a Codespace or DevContainer, you can use the VSCode Extension available for Drasi as shown here. The `Drasi Explorer` shows the state of your Drasi clusters, and the `Workspace` shows the Drasi YAML files detected in the project.
+
+{{< figure src="Extension-01-Overview.png"
+  alt="Drasi extension shown here in a VSCode DevContainer" width="40%" >}}
+
+Apply the `products-source` yaml like from the workspace shown below:
+
+{{< figure src="Extension-02-Add-Products-Source.png"
+  alt="Find the Products source yaml in Drasi Extension's workspace and click Apply" width="40%" >}}
+
+Similarly apply the other three sources - `reviews-source`, `orders-source`, `customers-source`. You should see the sources in Red in the Drasi Explorer as shown here:
+
+{{< figure src="Extension-03-All-Sources-Added.png"
+  alt="All sources are shown added in the Drasi Explorer, still in red" width="40%" >}}
+
+Wait for the sources to become available. They should become available in a couple minutes. If not, try the refresh button on the Drasi Explorer. Once available, all sources will show up as green:
+
+{{< figure src="Extension-04-All-Sources-Available.png"
+  alt="Sources are now available, showing up as green in Drasi explorer" width="40%" >}}
+
+Now, apply all the queries from the workspace one by one:
+
+{{< figure src="Extension-05-Add-Catalogue-Query.png"
+  alt="Apply Products Catalogue Query from Drasi Extension's Workspace" width="40%" >}}
+
+Wait for them to bootstrap and once they're running, they will show up as green:
+
+{{< figure src="Extension-06-All-Queries-Available.png"
+  alt="All queries are now available and running as indicated by green color in the extension." width="40%" >}}
+
+Finally, apply all the reactions from the workspace one by one:
+
+{{< figure src="Extension-07-Add-SignalR-Reaction.png"
+  alt="Apply SignalR reaction from Drasi Extension's Workspace" width="40%" >}}
+
+Wait for them to bootstrap and once they're running, they will show up as green:
+
+{{< figure src="Extension-08-All-Reactions-Available.png"
+  alt="All reactions are now available and running as indicated by green color in the extension." width="40%" >}}
+
+{{% /tab %}}
+
+{{% tab header="Drasi CLI" text=true %}}
+
+Deploy Drasi Sources and wait for them to be live:
 ```bash
-# Deploy Drasi Sources and wait for them to be live
 drasi apply -f drasi/sources/*
 drasi wait -f drasi/sources/*
-
-# Deploy Continuous Queries and wait for them to be live
-drasi apply -f drasi/queries/*
-drasi wait -f drasi/queries/*
-
-# Deploy Reactions and wait for them to be live
-drasi apply -f drasi/reactions/*
-drasi wait -f drasi/reactions/*
 ```
-
-Verify Drasi components are ready:
+<br/>
+Verify Drasi sources are ready:
 
 ```bash
 drasi list sources
-drasi list queries
-drasi list reactions
 ```
+<br/>
+The source must report `Available` as `true`. Expected output:
+
+```plaintext
+         ID        | AVAILABLE | MESSAGES  
+-------------------+-----------+-----------
+  products-source  | true      |           
+  reviews-source   | true      |           
+  orders-source    | true      |           
+  customers-source | true      |    
+```
+
+<br/>
+Next, deploy Continuous Queries and wait for them to be live:
+
+```bash
+drasi apply -f drasi/queries/*
+drasi wait -f drasi/queries/*
+```
+<br/>
+Verify Drasi queries are ready:
+
+```bash
+drasi list query
+```
+<br/>
+The queries must report `Status` as `Running`. Expected output:
+
+```plaintext
+              ID             | CONTAINER | ERRORMESSAGE |              HOSTNAME              | STATUS   
+-----------------------------+-----------+--------------+------------------------------------+----------
+  product-catalogue-query    | default   |              | default-query-host-57c7796d5-fnttx | Running  
+  low-stock-event-query      | default   |              | default-query-host-57c7796d5-fnttx | Running  
+  delayed-gold-orders-query  | default   |              | default-query-host-57c7796d5-fnttx | Running  
+  critical-stock-event-query | default   |              | default-query-host-57c7796d5-fnttx | Running  
+  at-risk-orders-query       | default   |              | default-query-host-57c7796d5-fnttx | Running
+```
+
+<br/>
+Finally, deploy Reactions and wait for them to be live:
+
+```bash
+drasi apply -f drasi/reactions/*
+drasi wait -f drasi/reactions/*
+```
+<br/>
+Verify Drasi queries are ready:
+
+```bash
+drasi list reaction
+```
+<br/>
+The reactions must report `Available` as `true`. Expected output:
+
+```plaintext
+               ID               | AVAILABLE | MESSAGES  
+--------------------------------+-----------+-----------
+  stock-notifications-publisher | true      |           
+  maintain-product-catalogue    | true      |           
+  signalr                       | true      |  
+```
+
+{{% /tab %}}
+
+{{% /tabpane %}}
 
 ### Demo 1: Materialized State Store
 
