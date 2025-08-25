@@ -261,14 +261,17 @@ Services are accessible on `localhost:8123`:
 Now let's deploy the Drasi sources, queries, and reactions that will power our enhanced services:
 
 ```bash
-# Deploy Drasi Sources (monitors PostgreSQL databases)
-kubectl apply -f drasi/sources/
+# Deploy Drasi Sources and wait for them to be live
+drasi apply -f drasi/sources/*
+drasi wait -f drasi/sources/*
 
-# Deploy Continuous Queries
-kubectl apply -f drasi/queries/
+# Deploy Continuous Queries and wait for them to be live
+drasi apply -f drasi/queries/*
+drasi wait -f drasi/queries/*
 
-# Deploy Reactions
-kubectl apply -f drasi/reactions/
+# Deploy Reactions and wait for them to be live
+drasi apply -f drasi/reactions/*
+drasi wait -f drasi/reactions/*
 ```
 
 Verify Drasi components are ready:
