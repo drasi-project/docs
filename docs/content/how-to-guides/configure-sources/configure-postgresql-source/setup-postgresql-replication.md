@@ -25,9 +25,9 @@ Initiate logical replication from an AWS account that has the `rds_replication` 
 Set the Azure replication support to logical. You can use the Azure CLI or the Azure Portal to configure this. For example, to use the Azure CLI, here are the az postgres server commands that you need to execute:
 
 ```sh
-az postgres server configuration set --resource-group mygroup --server-name myserver --name azure.replication_support --value logical
+az postgres flexible-server parameter set --resource-group mygroup --server-name myserver --name wal_level --value logical
 
-az postgres server restart --resource-group mygroup --name myserver
+az postgres flexible-server restart --resource-group mygroup --name myserver
 ```
 
 ## Configuring the PostgreSQL server

@@ -176,6 +176,7 @@ spec:
   mode: <QUERY | filter>
   container: <query_container_id>
   storageProfile: <storage_profile_id>
+  queryLanguage: <Cypher | GQL>
   sources:    
     subscriptions:
       - id: <source_1_id>
@@ -235,6 +236,7 @@ The following table provides a summary of the other configuration settings from 
 |mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
 |container|The logical Query Container that hosts the query. If none is specified **default** will be used, which is the default container created when Drasi is installed. Query Containers host a number of queries and can be scaled up or down. Each Query Container also defines a set storage profiles that hold the configuration of the backing data store for indexes. |
 |storageProfile|The name of the storage profile on the query container to use. This settings controls how Drasi caches the Continuous Query element and solution indexes. These profiles are defined on the query container. The `default` query container has **memory** and **redis** configured by default and **redis** is the default profile if none is specified. Using memory-based indexes is good for testing and is also OK for Continuous Queries that do not require significant bootstrapping when they start.|
+|queryLanguage|(Optional). Specifies which query language and function set to use for the continuous query. Supported values are **Cypher** (default) and **GQL**.|
 |sources|Contains **subscriptions**, **joins** and **middleware** sections. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. The **middleware** section describes named middleware configurations that can be applied to incoming source changes. Each middleware type has it's own configuration schema, middleware enables custom logic to be executed on incoming source changes, before they are processed by the query. These sections are described in more detail in the [Sources](#sources) section.|
 |params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
 |view|(Optional). Defines the behavior of the results view.  **enabled** controls if the results of the query are cached in the results view. **retentionPolicy** determines how long the results will be stored for.  **latest** (default) only holds the most recent version, **all** holds all previous versions and allows querying at a time point in the past, **expire** holds the non current results for a limited time.|
