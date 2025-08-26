@@ -67,6 +67,8 @@ This table describes the other settings in the **spec** section of the Reaction 
 | identity | The service identity provider used for authentication to the Azure SignalR Service, discussed below. |
 
 
+By default, the Drasi SignalR Reaction will expose its Web UI on port 8080. If you wish to create an ingress for the SignalR Reaction, please refer to the [Ingress documentation](/reference/ingress/) for more information.
+
 ### Identity
 
 The reaction supports the following service identities:

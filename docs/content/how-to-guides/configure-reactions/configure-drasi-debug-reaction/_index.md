@@ -35,9 +35,7 @@ spec:
   queries:
     hello-world-from:
     message-count:
-    inactive-people:
-  endpoints:
-    gateway: 8080    
+    inactive-people:    
 ```
 
 In this definition: 
@@ -50,7 +48,8 @@ This table describes the other settings in the **spec** section of the Reaction 
 |Property|Description|
 |-|-|
 |queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to.|
-|endpoints.gateway|Specifies the **port** on which the Drasi Debug Reaction will expose its Web UI. If not specified, this defaults to 8080. |
+
+By default, the Drasi Debug Reaction will expose its Web UI on port 8080. If you wish to create an ingress for the Debug Reaction, please refer to the [Ingress documentation](/reference/ingress/) for more information.
 
 ## Inspecting the Reaction
 As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
