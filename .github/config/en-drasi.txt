@@ -20,6 +20,10 @@ listMin
 MessageFrom
 Neo4js
 openCypher
+openCypher's
+GQL
+GQL's
+queryLanguage
 PostgreSQL
 programmatically
 realtime
@@ -208,3 +212,4 @@ webhook
 baseUrl
 backticks
 unescaped
+JDBC
