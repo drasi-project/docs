@@ -18,13 +18,12 @@ You can initialize ingress in your Drasi environment using the CLI.
 
 {{< read file= "/shared-content/ingress/ingress-init.md" >}}
 
-For more information on the `drasi ingress` command, refer to the [Drasi CLI documentation](/reference/command-line-interface/#drasi-ingress).
 
 
 ### Ingress Configuration
 You can configure ingress deployment for your Source or Reaction by setting the `gateway` field in your YAML file. To expose an endpoint externally, set the `setting` field to external and specify a port number in the `target` field. This target port will be used for the Kubernetes Service that gets provisioned alongside the Ingress resource.
 
-Below is a sample YAML file for a Debug Reaction. In this example, we are configuring an endpoint called `ingress` to be an external endpoint:
+Below is a sample YAML file for a Debug Reaction. In this example, we are configuring an endpoint called `gateway` to be an external endpoint:
 ```yaml
 apiVersion: v1
 kind: Reaction
@@ -36,7 +35,7 @@ spec:
   services:
     reaction:
       endpoints:
-        ingress:
+        gateway:
           setting: external
           target: "8080"
 ```
@@ -68,7 +67,7 @@ The Application Gateway Ingress Controller (AGIC) is a Kubernetes application th
 
 
 #### AGIC installation
-AGIC can be installed on a new AKS cluster either via Helm or as an add-on. This [tutorial](https://review.learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new?branch=main) will guide you through the installation process.
+AGIC can be installed on a new AKS cluster either via Helm or as an add-on. This [tutorial](https://learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-new) will guide you through the installation process.
 
 #### Drasi configuration
 First, get credentials to the AKS cluster by running the `az aks get-credentials` command:
@@ -82,12 +81,12 @@ Set the Drasi context to the AKS cluster:
 drasi env kube
 ```
 
-Obtain the public IP address of the Application Gateway from the Azure portal; this IP address will be used as the `--gateway-ip-address` when configuring Drasi.
+Obtain the public IP address of the Application Gateway from the Azure portal; this IP address will be used as the `--ingress-ip-address` when configuring Drasi.
 
 Execute the following command to configure Drasi with the Application Gateway IP address:
 
 ```bash
-drasi ingress init --use-existing --ingress-class-name azure-application-gateway --gateway-ip-address <ip-address>
+drasi ingress init --use-existing --ingress-class-name azure-application-gateway --ingress-ip-address <ip-address>
 ```
 
 ### Using AWS Load Balancer Controller for EKS
@@ -113,7 +112,7 @@ Set the Drasi context to the AKS cluster:
 drasi env kube
 ```
 
-Unlike Azure Application Gateway which requires a static IP address, ALBs are dynamically provisioned with DNS names rather than fixed IP addresses. Execute the following command to configure Drasi with the appropriate ingress class name:
+Unlike Azure Application Gateway which requires a static IP address, ALBs are dynamically provisioned with DNS names rather than fixed IP addresses. Execute the following command to configure Drasi with the appropriate ingress class name and required annotations:
 ```bash
-drasi ingress init --use-existing --ingress-class-name alb
+drasi ingress init --use-existing --ingress-class-name alb --ingress-annotation "alb.ingress.kubernetes.io/scheme=internet-facing" --ingress-annotation "alb.ingress.kubernetes.io/target-type=ip"
 ```
