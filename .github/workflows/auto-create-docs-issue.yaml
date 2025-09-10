@@ -1,0 +1,65 @@
+---
+name: Auto-create Documentation Issue
+
+'on':
+  repository_dispatch:
+    types: [platform-pr-merged]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-docs-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create documentation issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = '${{ github.event.client_payload.pr_number }}';
+            const prTitle = '${{ github.event.client_payload.pr_title }}';
+            const prAuthor = '${{ github.event.client_payload.pr_author }}';
+            const mergedBy = '${{ github.event.client_payload.merged_by }}';
+            const mergedAt = '${{ github.event.client_payload.merged_at }}';
+            const prUrl = '${{ github.event.client_payload.pr_url }}';
+            const changedFiles = '${{ github.event.client_payload.changed_files }}';
+            const prDescription = '${{ github.event.client_payload.pr_description }}';
+
+            const { data: issue } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📝 Update documentation for merged PR #${prNumber}`,
+              body: `## Documentation Update Required
+
+            A pull request has been merged in the [drasi-platform repository](${prUrl}) that may require documentation updates.
+
+            **Merged PR Details:**
+            - **PR Number:** #${prNumber}
+            - **Title:** ${prTitle}
+            - **Author:** @${prAuthor}
+            - **Merged by:** @${mergedBy}
+            - **Merge Date:** ${mergedAt}
+            - **PR URL:** ${prUrl}
+
+            **Action Required:**
+            Please review the merged changes and update the documentation as needed:
+
+            - [ ] Review the changes in the merged PR
+            - [ ] Identify documentation that needs to be updated or created
+            - [ ] Update relevant documentation pages
+            - [ ] Test any code examples or instructions
+            - [ ] Close this issue when documentation is complete
+
+            **Files that may need documentation updates:**
+            ${changedFiles}
+
+            **PR Description:**
+            ${prDescription}
+
+            ---
+            *This issue was automatically created when PR #${prNumber} was merged in the drasi-platform repository.*`,
+              labels: ['documentation', 'auto-generated', 'platform-update']
+            });
+
+            console.log(`Created issue #${issue.number}: ${issue.title}`);
