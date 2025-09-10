@@ -73,3 +73,42 @@ The automatically created issues will include:
 - Direct link to the merged PR
 - Checklist for documentation tasks
 - Labels: `documentation`, `auto-generated`, `platform-update`
+
+#### Example Generated Issue
+
+**Title:** `📝 Update documentation for merged PR #123`
+
+**Body:**
+```markdown
+## Documentation Update Required
+
+A pull request has been merged in the [drasi-platform repository](https://github.com/drasi-project/drasi-platform/pull/123) that may require documentation updates.
+
+**Merged PR Details:**
+- **PR Number:** #123
+- **Title:** Add new reactive query feature
+- **Author:** @developer
+- **Merged by:** @maintainer
+- **Merge Date:** 2024-01-15T10:30:00Z
+- **PR URL:** https://github.com/drasi-project/drasi-platform/pull/123
+
+**Action Required:**
+Please review the merged changes and update the documentation as needed:
+
+- [ ] Review the changes in the merged PR
+- [ ] Identify documentation that needs to be updated or created
+- [ ] Update relevant documentation pages
+- [ ] Test any code examples or instructions
+- [ ] Close this issue when documentation is complete
+
+**Files that may need documentation updates:**
+src/reactive/query.go, docs/api.md
+
+**PR Description:**
+This PR adds support for reactive queries with real-time updates...
+
+---
+*This issue was automatically created when PR #123 was merged in the drasi-platform repository.*
+```
+
+**Labels:** `documentation`, `auto-generated`, `platform-update`
