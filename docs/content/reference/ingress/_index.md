@@ -116,3 +116,70 @@ Unlike Azure Application Gateway which requires a static IP address, ALBs are dy
 ```bash
 drasi ingress init --use-existing --ingress-class-name alb --ingress-annotation "alb.ingress.kubernetes.io/scheme=internet-facing" --ingress-annotation "alb.ingress.kubernetes.io/target-type=ip"
 ```
+
+### Using Ingress in Local Clusters (kind)
+When running Drasi in local Kubernetes clusters like [kind](https://kind.sigs.k8s.io/), you need to configure ingress differently since you don't have cloud load balancers available.
+
+#### Prerequisites
+- A kind cluster with Drasi installed
+- kubectl configured to connect to your kind cluster
+
+#### Setting up Ingress Controller
+For local development with kind, you can use the built-in Contour ingress controller that Drasi can install:
+
+```bash
+drasi ingress init
+```
+
+This will install Contour as the ingress controller in your kind cluster.
+
+#### NodePort Access
+There are two ways of using ingress in a local cluster like kind. The examples below are for kind clusters.
+
+You can configure kind to expose ports directly:
+
+1. Create your kind cluster with port mapping:
+```yaml
+# kind-config.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 8080
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 8443
+    protocol: TCP
+```
+
+2. Create the cluster:
+```bash
+kind create cluster --config kind-config.yaml
+```
+
+3. Install Drasi and configure ingress:
+```bash
+drasi ingress init
+```
+
+With this setup, your ingress resources will be accessible directly via `http://localhost:8080`.
+
+#### Alternative: Port Forwarding for Local Access
+Alternatively, since kind clusters don't have external load balancers, you can use port forwarding to access your ingress resources locally:
+
+1. First, find the Contour envoy service:
+```bash
+kubectl get svc -n projectcontour
+```
+
+2. Forward the ingress controller port to your local machine:
+```bash
+kubectl port-forward -n projectcontour svc/envoy 8080:80
+```
+
+3. After applying your Drasi resources with ingress configuration, you can access them via `localhost:8080` with the appropriate Host header:
+```bash
+curl -H "Host: hello-world-debug.drasi.127.0.0.1.nip.io" http://localhost:8080
+```

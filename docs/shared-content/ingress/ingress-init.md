@@ -34,20 +34,4 @@ drasi ingress init --use-existing --ingress-service-name ingress-nginx-controlle
 ```
 
 
-<!-- ### Azure Application Gateway Ingress Controller (AGIC)
-
-To use Azure Application Gateway Ingress Controller, specify the ingress class to be "azure-application-gateway" and provide the public IP address of the Application Gateway:
-
-```bash
-drasi ingress init --use-existing --ingress-class-name azure-application-gateway --ingress-ip-address <ip-address>
-```
-
-### AWS Load Balancer Controller
-
-To use AWS Load Balancer Controller with required annotations:
-
-```bash
-drasi ingress init --use-existing --ingress-class-name alb --ingress-annotation "alb.ingress.kubernetes.io/scheme=internet-facing" --ingress-annotation "alb.ingress.kubernetes.io/target-type=ip"
-``` -->
-
 For more information on setting up Azure Application Gateway or AWS Load Balancer controller, refer to this [documentation](/reference/ingress)
