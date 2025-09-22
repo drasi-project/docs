@@ -9,7 +9,7 @@ description: >
 
 Drasi allows you to deploy and manage Kubernetes ingress resources for your applications easily in your Drasi YAML file, without using `kubectl`. You can use the Drasi CLI to install [Contour](https://projectcontour.io/) as your ingress controller, or use an existing ingress controller that is already deployed in your Kubernetes cluster.
 
-Currently, Drasi only support deploying ingress resources for Drasi Sources and Reactions.
+Currently, Drasi only supports deploying ingress resources for Drasi Sources and Reactions.
 
 
 ### Ingress Initialization
