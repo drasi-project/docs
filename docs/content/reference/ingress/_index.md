@@ -106,7 +106,7 @@ First, get credentials to the EKS cluster by running the `aws eks update-kubecon
 aws eks update-kubeconfig --region <region-code> --name <cluster-name>
 ```
 
-Set the Drasi context to the AKS cluster:
+Set the Drasi context to the EKS cluster:
 
 ```bash
 drasi env kube
