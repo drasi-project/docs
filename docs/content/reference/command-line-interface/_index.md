@@ -54,6 +54,7 @@ Available Commands:
   describe    Show the definition and status of a resource
   env         Manage Drasi environment configurations.
   help        Help about any command
+  ingress     Manage ingress controllers for Drasi Sources and Reactions
   init        Install Drasi
   list        Show a list of available resources
   namespace   Manage CLI namespace settings
@@ -336,6 +337,25 @@ drasi env use docker
 ### drasi help
 **Purpose**: The `help` command provides detailed help information about Drasi CLI commands. It is useful for understanding the usage, flags, and arguments of various commands available in the Drasi CLI. See the [Get Help](#get-help) section above.
 
+### drasi ingress
+**Purpose**: The `ingress` command manages the Kubernetes Ingress controller that Drasi uses by default. It includes the `drasi ingress init` subcommand.
+
+#### drasi ingress init
+**Purpose**: The `drasi ingress init` command initializes the Ingress controller for use with Drasi. It can either install and configure the Contour ingress controller automatically, or integrate with existing ingress controllers already deployed to your cluster using the `--use-existing` flag.
+
+**Flags and Arguments**:
+- `--use-existing` (optional): If set, the command will attempt to integrate with an existing ingress controller in the cluster instead of installing the Contour ingress controller. If this flag is set, then the `--ingress-class-name` flag must be set.
+- `--ingress-ip-address <ip>` (optional): Public IP address of the Load Balancer (used when using AGIC or AWS Load Balancer Controller)
+- `--ingress-service-name <name>` (optional): The name of the Kubernetes service for the existing ingress controller (useful when using an ingress controller is already deployed in the cluster)
+- `--ingress-namespace <namespace>` (optional): The namespace where the existing ingress controller service is located (useful when using an ingress controller is already deployed in the cluster)
+- `--ingress-class-name <name>` (required when `--use-existing` is set): The class name that the Kubernetes ingress resource will use. It lets the ingress controller know which class of ingress it should handle.
+- `--ingress-annotation <name>=<value>` (optional): Custom annotations to add to the ingress resource. Can be specified multiple times to add multiple annotations.
+
+**Usage example**:
+
+
+{{< read file= "/shared-content/ingress/ingress-init.md" >}}
+
 ### drasi init
 **Purpose**: The `init` command is used to install a Drasi environment to the Kubernetes cluster that is the **current context** in `kubectl` ([see above](#target-the-drasi-environment)). By default, the Drasi environment will be installed into the `drasi-system` namespace, but this can be overridden as described below.
 
@@ -453,12 +473,22 @@ When listing static resources like `sourceprovider` and `reactionprovider`, the 
   CosmosGremlin
 ```
 
-When listing `querycontainer`, `source`, and `reaction` resources, the output is a table showing the name of the resource and a status showing whether the resource is available, like this list of **Query Containers**:
+When listing querycontainer, source, and reaction resources, the output is a table showing the ID of the resource, an availability status indicating whether the resource is available, and any error messages, like this list of **Sources**:
 
 ```
-    ID    | AVAILABLE
-----------+------------
-  default | true
+drasi list source  
+      ID      | AVAILABLE | MESSAGES  
+--------------+-----------+-----------
+  hello-world | true      |                  
+```
+
+If the resource contains an ingress, `drasi list` will also display the ingress URL:
+
+```
+drasi list reaction
+         ID         | AVAILABLE |                    INGRESS URL                     | MESSAGES  
+--------------------+-----------+----------------------------------------------------+-----------
+  hello-world-debug | true      | http://hello-world-debug.drasi.x.xxx.xx.xxx.nip.io |         
 ```
 
 When listing `continuousquery` (or `query`) resources, the output is a table the shows where the **Continuous Query** is running and what its current status is. Here is an example containing multiple **Continuous Queries**, two of which are `Running` and one of which is in a `TerminalError` state:
