@@ -36,8 +36,6 @@ spec:
   kind: Result
   queries:
     query1:
-  endpoints:
-    gateway: 8080  
   properties:
     QueryContainerId: default
 ```
@@ -52,8 +50,9 @@ This table describes the other settings in the **spec** section of the Reaction 
 |Property|Description|
 |-|-|
 |queries|Specifies the set of **names** of the Continuous Queries the Reaction will subscribe to.|
-|endpoints.gateway|Specifies the **port** on which the Drasi Result Reaction operates. If not specified, this defaults to 8080. |
 |properties.QueryContainerId|Specifies the ID of the Query Container where the Continuous Query resides. If this field is not set, the ID `default` will be used, which is the default Query Container ID created during `drasi init`.|
+
+By default, the Drasi Result Reaction will expose its Web UI on port 8080. If you wish to create an ingress for the Result Reaction, please refer to the [Ingress documentation](/reference/ingress/) for more information.
 
 ## Inspecting the Reaction
 As soon as the Reaction is created it will start running, subscribing to the specified list of Continuous Queries and processing changes to the Continuous Query results.
