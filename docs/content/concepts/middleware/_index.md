@@ -167,15 +167,21 @@ spec:
 In this configuration, the containers will only be unwound into separate Container nodes when the Pod event has `action: "update"`. Events with other actions (like "delete" or "create") will be processed normally but won't trigger the unwinding of container information.
 
 
-### Map
+### JQ
 
-The **map** middleware component can be used to remap an incoming insert/update/delete from a source to a different insert/update/delete for another element.
+The **jq** middleware component can be used to transform an incoming source change into a different shape or project it out into multiple changes. It is built on the popular [jq](https://jqlang.org/) tool.
 
-The configuration properties for the **map** component are as follows
+#### Links
+
+- [JQ Manual](https://jqlang.org/manual/)
+- [JQ playground](https://play.jqlang.org/)
+
+
+The configuration properties for the **jq** component are as follows
 
 | Property | Description |
 | - | - |
-| kind | Must be **map** |
+| kind | Must be **jq** |
 | name | The name of this configuration, that can be used in a source pipeline |
 | {Label}.insert | The map configuration for all elements with the given label, when an insert change is received from the source | 
 | {Label}.update | The map configuration for all elements with the given label, when an update change is received from the source | 
@@ -185,22 +191,20 @@ The configuration for mapping an element is as follows
 
 | Property | Description |
 | - | - |
-| selector | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the part of the payload to use for the new mapped element.  |
-| op | The operation to apply to the mapped element, Insert/Update/Delete |
-| label | The label of the new mapped element. |
-| id | A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression to locate the value to use for the unique identity of the new mapped element. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression |
-| properties | A map of JSONPath expressions. Each key will be a property name on the new element, with the value coming from the JSONPath expression. `$` points to the root of the incoming element, and `$['$selected']` points to the payload extracted by the **selector** expression. |
-| condition | (optional) A [JSONPath](https://en.wikipedia.org/wiki/JSONPath) expression that filters whether this mapping should be applied. If the expression returns no result or empty, the mapping is skipped. This allows for conditional processing based on the properties of the incoming element. |
+| op | The operation to apply to the output element(s), Insert/Update/Delete |
+| query | The JQ query to apply to the incoming source change. The output can either be a single object or an array of objects.
+| label | (optional )A JQ query that will be used to extract a new label for each element projected by the JQ `query` |
+| id | (optional )A JQ query that will be used to extract a new ID for each element projected by the JQ `query` |
 
 #### Example
 
-For example, if you had a source that was an append only log of sensor readings, but your query is only ever interested in the latest value. 
+For example, if you had a source that was an append only log of sensor readings, but your query is only ever interested in the latest value. The incoming values are also expressed as stings but you need them as a number.
 
 ```json
 {
     "id": "log-1",
     "sensorId": "thermostat-1",
-    "value": 25
+    "value": "25"
 }
 ```
 
@@ -208,7 +212,7 @@ For example, if you had a source that was an append only log of sensor readings,
 {
     "id": "log-2",
     "sensorId": "thermostat-1",
-    "value": 27
+    "value": "27"
 }
 ```
 
@@ -216,7 +220,7 @@ For example, if you had a source that was an append only log of sensor readings,
 {
     "id": "log-3",
     "sensorId": "thermostat-1",
-    "value": 28
+    "value": "28"
 }
 ```
 
@@ -237,18 +241,18 @@ spec:
         pipeline:
           - extract-latest
     middleware:
-      - kind: map
+      - kind: jq
         name: extract-latest
         SensorLog:        
           insert:
-            - selector: $
-              op: Update
-              label: Sensor
-              id: $.sensorId
-              properties:
-                sensorId: $.sensorId
-                currentValue: $.value
-
+            - op: Update
+              query: |
+                {
+                  "sensorId": .sensorId,
+                  "currentValue": .value | tonumber
+                }
+              label: "Sensor"
+              id: .sensorId
   query: >
     MATCH
         (s:Sensor)
@@ -257,9 +261,72 @@ spec:
         s.currentValue    
 ```
 
-#### Conditional Map Example
+#### Select Example
 
-The **condition** property enables you to apply different mapping operations based on the content of the incoming element. This is particularly useful when working with event-driven data sources where you need to handle different action types differently.
+The [JQ select](https://jqlang.org/manual/#select) enables you to extract values from an array based on a filter.
+
+For example, consider the following vehicle telemetry payload, that includes the speed of the vehicle as an item within an array, identified by the `name` field of the array item as `Vehicle.Speed`.
+
+```json
+{
+    "signals": [
+        {
+            "name": "Vehicle.CurrentLocation.Heading",
+            "value": "96"
+        },
+        {
+            "name": "Vehicle.Speed",
+            "value": "119"
+        },
+        {
+            "name": "Vehicle.TraveledDistance",
+            "value": "4563"
+        }
+    ],
+    "vehicleId": "v1"
+}
+```
+
+For this use case, we want to maintain a set of vehicles with the most recent recorded speed only:
+
+```yaml
+apiVersion: v1
+kind: ContinuousQuery
+name: query
+spec:
+  mode: query
+  sources:    
+    subscriptions:
+      - id: source
+        nodes:
+          - sourceLabel: Telemetry
+        pipeline:
+          - process-telemetry
+    middleware:
+      - kind: jq
+        name: process-telemetry
+        Telemetry:        
+          insert:
+            - op: Insert
+              query: |
+                {
+                  "id": .vehicleId,
+                  "currentSpeed": .signals[] | select(.name == "Vehicle.Speed").value | tonumber
+                }
+              label: "Vehicle"
+              id: .id
+            
+  query: >
+    MATCH (v:Vehicle)
+    RETURN 
+        v.id,
+        v.currentSpeed
+```
+
+
+#### Conditional Example
+
+The [JQ conditionals](https://jqlang.org/manual/#if-then-else-end) allow you to apply different mapping operations based on the content of the incoming element. This is particularly useful when working with event-driven data sources where you need to handle different action types differently.
 
 For example, consider a GitHub webhook payload that includes an `action` field indicating the type of event:
 
@@ -294,36 +361,43 @@ spec:
         pipeline:
           - process-github-events
     middleware:
-      - kind: map
+      - kind: jq
         name: process-github-events
         WebhookEvent:        
           insert:
             # Map issue opened events to create Issue nodes
-            - selector: $
-              op: Insert
-              label: Issue
-              id: $.issue.id
-              condition: $[?(@.action == 'opened')]
-              properties:
-                id: $.issue.id
-                title: $.issue.title
-                state: $.issue.state
-                repositoryId: $.repository.id
+            - op: Insert
+              query: |
+                if .action == "opened" then
+                  .issue + { "repositoryId": .repository.id }
+                else
+                  empty
+                end
+              label: "Issue"
+              id: .id
             # Map issue closed events to update Issue nodes
-            - selector: $
-              op: Update
-              label: Issue
-              id: $.issue.id
-              condition: $[?(@.action == 'closed')]
-              properties:
-                id: $.issue.id
-                state: "closed"
+            - op: Update
+              query: |
+                if .action == "closed" then
+                  { 
+                    "id": .issue.id,
+                    "state": "closed"
+                  }
+                else
+                  empty
+                end
+              label: "Issue"
+              id: .id
             # Map issue deleted events to delete Issue nodes
-            - selector: $
-              op: Delete
-              label: Issue
-              id: $.issue.id
-              condition: $[?(@.action == 'deleted')]
+            - op: Delete
+              query: |
+                if .action == "deleted" then
+                  { "id": .issue.id }
+                else
+                  empty
+                end
+              label: "Issue"
+              id: .id
   query: >
     MATCH (i:Issue)
     RETURN 
