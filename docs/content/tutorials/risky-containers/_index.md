@@ -112,7 +112,7 @@ A PostgreSQL table named `RiskyImage` has been pre-loaded with that following da
 
 | Id  | Image                             | Reason        |
 |-----|-----------------------------------|---------------|
-| 1   | drasidemo.azurecr.io/my-app:0.1   | Security Risk |
+| 1   | ghcr.io/drasi-project/my-app:0.1  | Security Risk |
 | 2   | docker.io/library/redis:6.2.3-alpine   | Compliance Issue  |
 
 
@@ -197,7 +197,7 @@ Here is a sample of the Pod payload from the Kubernetes API.
         "containerStatuses": [
             {
                 "containerID": "containerd://...",
-                "image": "drasidemo.azurecr.io/my-app:0.1",
+                "image": "ghcr.io/drasi-project/my-app:0.1",
                 "name": "app",
                 "ready": true,
                 "restartCount": 0,
@@ -298,7 +298,7 @@ psql
 Then run the following SQL script:
 
 ```sql
-insert into "RiskyImage" ("Id", "Image", "Reason") values (101, 'drasidemo.azurecr.io/my-app:0.2', 'Critical Bug');
+insert into "RiskyImage" ("Id", "Image", "Reason") values (101, 'ghcr.io/drasi-project/my-app:0.2', 'Critical Bug');
 ```
 
 You should now also see **my-app:0.2** in the query results.
@@ -310,7 +310,7 @@ You should now also see **my-app:0.2** in the query results.
 Next, we will use **kubectl** to upgrade the Pod from version `0.2` to `0.3`, which will make it disappear from the result set.
 
 ```shell
-kubectl set image pod/my-app-2 app=drasidemo.azurecr.io/my-app:0.3
+kubectl set image pod/my-app-2 app=ghcr.io/drasi-project/my-app:0.3
 ```
 
 > It may take more than ten seconds for Kubernetes to tear down the old Pod and bring up the new one, once it does you will see the second row disappear from the query result set.
