@@ -208,31 +208,41 @@ curl http://localhost:8080 -H "Host: <reaction/source name>.drasi.127.0.0.1.nip.
 
 #### Using Ingress with k3s/k3d
 
-##### Prerequisites
-- A k3d cluster with Drasi installed
-- kubectl configured to connect to your k3d cluster
 
 ##### About k3s and k3d
 [k3d](https://k3d.io/) is a lightweight wrapper to run [k3s](https://k3s.io/) (Rancher's minimal Kubernetes distribution) in Docker. k3s comes with Traefik as the default ingress controller, but you can disable it and use Contour instead for consistency with other environments.
 
-##### Option 1: Using k3d with Contour (Recommended)
+##### Option 1: Using k3d with Contour
 
 1. Create your k3d cluster with Traefik disabled and port mapping:
 ```bash
-k3d cluster create my-cluster \
-  --port 8080:80@loadbalancer \
-  --port 8443:443@loadbalancer \
-  --k3s-arg "--disable=traefik@server:0"
+k3d cluster create -p '8081:30080@server:0' --k3s-arg '--disable=traefik@server:0'
+
+# **Note:** The `--k3s-arg` parameter is optional. You can omit it if you want to keep Traefik enabled.
 ```
 
-2. Install Drasi and configure ingress with Contour:
+2. Install Drasi by following the [installation guide](/how-to-guides/installation/install-on-k3d/).
+3. Initialize ingress with the `--local-cluster` and Contour websocket annotation:
 ```bash
-drasi ingress init
+drasi ingress init --local-cluster --ingress-annotation "projectcontour.io/websocket-routes=/"
 ```
 
-With this setup, your ingress resources will be accessible directly via `http://localhost:8080`.
+With this setup, access your ingress resources by appending `:8081` to the INGRESS URL shown in `drasi list`.
+**Example:**
+If you've deployed a Drasi Reaction called `hello-world-debug`, running `drasi list reaction` will show:
+```bash
+            ID          | AVAILABLE |                    INGRESS URL                    | MESSAGES
+  ----------------------+-----------+---------------------------------------------------+-----------
+    hello-world-debug   | true      | http://hello-world-debug.drasi.127.0.0.1.nip.io   |
+```
 
-##### Option 2: Using k3d with Traefik (Default)
+You can then access this Reaction at:
+```
+http://hello-world-debug.drasi.127.0.0.1.nip.io:8081
+```
+
+
+##### Option 2: Using k3d with Traefik
 
 If you prefer to use the built-in Traefik ingress controller:
 
@@ -245,21 +255,38 @@ k3d cluster create my-cluster \
 
 2. Configure Drasi to use the existing Traefik ingress controller:
 ```bash
-drasi ingress init --use-existing --ingress-class-name traefik
+drasi ingress init --use-existing --ingress-class-name traefik --local-cluster
 ```
 
-With this setup, your ingress resources will be accessible directly via `http://localhost:8080`.
+With this setup, access your ingress resources by appending `:8080` to the INGRESS URL shown in `drasi list`.
+**Example:**
+If you've deployed a Drasi Reaction called `hello-world-debug`, running `drasi list reaction will show:
+```bash
+            ID          | AVAILABLE |                    INGRESS URL                    | MESSAGES
+  ----------------------+-----------+---------------------------------------------------+-----------
+    hello-world-debug   | true      | http://hello-world-debug.drasi.127.0.0.1.nip.io  |
+```
+You can then access this Reaction at:
+```
+http://hello-world-debug.drasi.127.0.0.1.nip.io:8080
+```
 
 ##### Option 3: Port Forwarding for Local Access
 
 Similar to kind, you can use port forwarding if you didn't configure port mapping during cluster creation:
 
-1. If using Contour, find the Contour envoy service:
+
+1. Install Drasi by following the [installation guide](/how-to-guides/installation/install-on-kind/).
+2. Initialize ingress with the `--local-cluster` flag:
 ```bash
-kubectl get svc -n projectcontour
+# For Contour
+drasi ingress init --local-cluster --ingress-annotation "projectcontour.io/websocket-routes=/"
+
+# For Traefik
+drasi ingress init --use-existing --ingress-class-name traefik --ingress-ip-address 127.0.0.1
 ```
 
-2. Forward the ingress controller port to your local machine:
+3. Forward the ingress controller port to your local machine:
 ```bash
 # For Contour
 kubectl port-forward -n projectcontour svc/envoy 8080:80
@@ -268,7 +295,24 @@ kubectl port-forward -n projectcontour svc/envoy 8080:80
 kubectl port-forward -n kube-system svc/traefik 8080:80
 ```
 
-3. After applying your Drasi resources with ingress configuration, you can access them via `localhost:8080` with the appropriate Host header:
+
+There two ways to access your ingress resources. 
+
+**Method A: Browser Access (requires /etc/hosts entries)**
+
+Add entries to `/etc/hosts` for each of your ingress resources:
 ```bash
-curl -H "Host: hello-world-debug.drasi.127.0.0.1.nip.io" http://localhost:8080
+echo "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io" | sudo tee -a /etc/hosts
+```
+
+Then access in your browser:
+```
+http://<reaction/source name>.drasi.127.0.0.1.nip.io:8080
+```
+
+**Method B: Using curl with Host header (no /etc/hosts needed)**
+
+This method is simpler and doesn't require modifying system files:
+```bash
+curl http://localhost:8080 -H "Host: <reaction/source name>.drasi.127.0.0.1.nip.io"
 ```
