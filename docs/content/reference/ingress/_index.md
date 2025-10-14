@@ -117,26 +117,13 @@ Unlike Azure Application Gateway which requires a static IP address, ALBs are dy
 drasi ingress init --use-existing --ingress-class-name alb --ingress-annotation "alb.ingress.kubernetes.io/scheme=internet-facing" --ingress-annotation "alb.ingress.kubernetes.io/target-type=ip"
 ```
 
-### Using Ingress in Local Clusters (kind)
-When running Drasi in local Kubernetes clusters like [kind](https://kind.sigs.k8s.io/), you need to configure ingress differently since you don't have cloud load balancers available.
+### Using Ingress in Local Clusters
+When running Drasi in local Kubernetes clusters like [kind](https://kind.sigs.k8s.io/) or [k3d](https://k3d.io/), you need to configure ingress differently since you don't have cloud load balancers available.
 
-#### Prerequisites
-- A kind cluster with Drasi installed
-- kubectl configured to connect to your kind cluster
+#### Using Ingress with kind
 
-#### Setting up Ingress Controller
-For local development with kind, you can use the built-in Contour ingress controller that Drasi can install:
-
-```bash
-drasi ingress init
-```
-
-This will install Contour as the ingress controller in your kind cluster.
-
-#### NodePort Access
-There are two ways of using ingress in a local cluster like kind. The examples below are for kind clusters.
-
-You can configure kind to expose ports directly:
+##### Option 1: Direct Port Access
+You can configure kind to expose ports directly by creating your cluster with port mapping. This would require you to create a custom kind configuration file and then create the cluster using that configuration:
 
 1. Create your kind cluster with port mapping:
 ```yaml
@@ -146,12 +133,12 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   extraPortMappings:
-  - containerPort: 80
-    hostPort: 8080
-    protocol: TCP
-  - containerPort: 443
-    hostPort: 8443
-    protocol: TCP
+  - containerPort: 30080  # Maps to contour-envoy NodePort 30080
+    hostPort: 8001
+    listenAddress: "0.0.0.0"
+  - containerPort: 30443  # Maps to contour-envoy NodePort 30443
+    hostPort: 443
+    listenAddress: "0.0.0.0"
 ```
 
 2. Create the cluster:
@@ -159,24 +146,126 @@ nodes:
 kind create cluster --config kind-config.yaml
 ```
 
-3. Install Drasi and configure ingress:
+3. Install Drasi by following the [installation guide](/how-to-guides/installation/install-on-kind/).
+
+
+4. Initialize ingress with the `--local-cluster` flag:
+```bash
+drasi ingress init --local-cluster
+```
+
+With this setup, access your ingress resources by appending `:8001` to the INGRESS URL shown in `drasi list`.
+
+**Example:**
+
+If you've deployed a Drasi Reaction called `hello-world-debug`, running `drasi list reaction` will show:
+```bash
+            ID          | AVAILABLE |                    INGRESS URL                    | MESSAGES
+  ----------------------+-----------+---------------------------------------------------+-----------
+    hello-world-debug   | true      | http://hello-world-debug.drasi.127.0.0.1.nip.io   |
+```
+
+You can then access this Reaction at:
+```
+http://hello-world-debug.drasi.127.0.0.1.nip.io:8001
+```
+
+
+##### Option 2: Port Forwarding for Local Access
+If you didn't configure port mapping during cluster creation, you can use port forwarding to access your ingress resources. 
+
+1. Install Drasi by following the [installation guide](/how-to-guides/installation/install-on-kind/).
+2. Initialize ingress with the `--local-cluster` flag:
+```bash
+drasi ingress init --local-cluster
+```
+
+3. Forward the Contour service to localhost:
+```bash
+kubectl port-forward -n projectcontour svc/contour-envoy 8080:80
+```
+
+There two ways to access your ingress resources. 
+
+**Method A: Browser Access (requires /etc/hosts entries)**
+
+Add entries to `/etc/hosts` for each of your ingress resources:
+```bash
+echo "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io" | sudo tee -a /etc/hosts
+```
+
+Then access in your browser:
+```
+http://<reaction/source name>.drasi.127.0.0.1.nip.io:8080
+```
+
+**Method B: Using curl with Host header (no /etc/hosts needed)**
+
+This method is simpler and doesn't require modifying system files:
+```bash
+curl http://localhost:8080 -H "Host: <reaction/source name>.drasi.127.0.0.1.nip.io"
+```
+
+#### Using Ingress with k3s/k3d
+
+##### Prerequisites
+- A k3d cluster with Drasi installed
+- kubectl configured to connect to your k3d cluster
+
+##### About k3s and k3d
+[k3d](https://k3d.io/) is a lightweight wrapper to run [k3s](https://k3s.io/) (Rancher's minimal Kubernetes distribution) in Docker. k3s comes with Traefik as the default ingress controller, but you can disable it and use Contour instead for consistency with other environments.
+
+##### Option 1: Using k3d with Contour (Recommended)
+
+1. Create your k3d cluster with Traefik disabled and port mapping:
+```bash
+k3d cluster create my-cluster \
+  --port 8080:80@loadbalancer \
+  --port 8443:443@loadbalancer \
+  --k3s-arg "--disable=traefik@server:0"
+```
+
+2. Install Drasi and configure ingress with Contour:
 ```bash
 drasi ingress init
 ```
 
 With this setup, your ingress resources will be accessible directly via `http://localhost:8080`.
 
-#### Alternative: Port Forwarding for Local Access
-Alternatively, since kind clusters don't have external load balancers, you can use port forwarding to access your ingress resources locally:
+##### Option 2: Using k3d with Traefik (Default)
 
-1. First, find the Contour envoy service:
+If you prefer to use the built-in Traefik ingress controller:
+
+1. Create your k3d cluster with port mapping (Traefik enabled by default):
+```bash
+k3d cluster create my-cluster \
+  --port 8080:80@loadbalancer \
+  --port 8443:443@loadbalancer
+```
+
+2. Configure Drasi to use the existing Traefik ingress controller:
+```bash
+drasi ingress init --use-existing --ingress-class-name traefik
+```
+
+With this setup, your ingress resources will be accessible directly via `http://localhost:8080`.
+
+##### Option 3: Port Forwarding for Local Access
+
+Similar to kind, you can use port forwarding if you didn't configure port mapping during cluster creation:
+
+1. If using Contour, find the Contour envoy service:
 ```bash
 kubectl get svc -n projectcontour
 ```
 
 2. Forward the ingress controller port to your local machine:
 ```bash
+# For Contour
 kubectl port-forward -n projectcontour svc/envoy 8080:80
+
+# For Traefik
+kubectl port-forward -n kube-system svc/traefik 8080:80
 ```
 
 3. After applying your Drasi resources with ingress configuration, you can access them via `localhost:8080` with the appropriate Host header:
