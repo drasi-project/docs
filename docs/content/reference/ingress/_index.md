@@ -185,13 +185,20 @@ drasi ingress init --local-cluster
 kubectl port-forward -n projectcontour svc/contour-envoy 8080:80
 ```
 
-There two ways to access your ingress resources. 
+There are two ways to access your ingress resources.
 
-**Method A: Browser Access (requires /etc/hosts entries)**
+**Method A: Browser Access (requires hosts file entries)**
 
-Add entries to `/etc/hosts` for each of your ingress resources:
+Add entries to your hosts file for each of your ingress resources:
+
+On **Linux/macOS**:
 ```bash
 echo "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io" | sudo tee -a /etc/hosts
+```
+
+On **Windows** (run PowerShell as Administrator):
+```powershell
+Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io"
 ```
 
 Then access in your browser:
@@ -296,13 +303,20 @@ kubectl port-forward -n kube-system svc/traefik 8080:80
 ```
 
 
-There two ways to access your ingress resources. 
+There are two ways to access your ingress resources.
 
-**Method A: Browser Access (requires /etc/hosts entries)**
+**Method A: Browser Access (requires hosts file entries)**
 
-Add entries to `/etc/hosts` for each of your ingress resources:
+Add entries to your hosts file for each of your ingress resources:
+
+On **Linux/macOS**:
 ```bash
 echo "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io" | sudo tee -a /etc/hosts
+```
+
+On **Windows** (run PowerShell as Administrator):
+```powershell
+Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value "127.0.0.1 <reaction/source name>.drasi.127.0.0.1.nip.io"
 ```
 
 Then access in your browser:
