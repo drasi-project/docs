@@ -7,7 +7,6 @@ curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/c
 {{< tab header="Windows PowerShell" lang="powershell" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
-
 {{< tab header="Linux" lang="shell" >}}
 wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
 {{< /tab >}}
