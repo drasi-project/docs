@@ -7,6 +7,7 @@ curl -fsSL https://raw.githubusercontent.com/drasi-project/drasi-platform/main/c
 {{< tab header="Windows PowerShell" lang="powershell" >}}
 iwr -useb "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.ps1" | iex
 {{< /tab >}}
+
 {{< tab header="Linux" lang="shell" >}}
 wget -q "https://raw.githubusercontent.com/drasi-project/drasi-platform/main/cli/installers/install-drasi-cli.sh" -O - | /bin/bash
 {{< /tab >}}
@@ -26,6 +27,8 @@ The Drasi CLI source code is in the [drasi-platform repo](https://github.com/dra
 The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/README.md) file in the `cli` folder describes how to build and install the Drasi CLI on your computer.
 {{% /tab %}}
 {{< /tabpane >}}
+
+> **Note:** The Drasi CLI installation script is not supported in [Windows PowerShell Constrained Language Mode](https://devblogs.microsoft.com/powershell/powershell-constrained-language-mode/). If you are running in a constrained environment, please use the **Binaries** tab to download and manually install the CLI.
 
 > If you encounter sudo-related errors during installation (such as "no new privileges" flag restrictions in certain containerized or restricted environments), you can install the Drasi CLI to a user directory instead of the default system-wide location. Set the DRASI_INSTALL_DIR environment variable to a directory in your home folder before running the installation script. Below is the sample script for Linux:
 > ```bash
