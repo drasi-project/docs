@@ -214,3 +214,5 @@ backticks
 unescaped
 JDBC
 labelMappings
+JQ
+jq
