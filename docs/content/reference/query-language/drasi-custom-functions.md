@@ -11,11 +11,15 @@ Drasi is not simply running graph queries across data, it is using the Cypher Qu
 
 | Function                | Description                           |
 |-------------------------|---------------------------------------|
+| **[METADATA FUNCTIONS](#drasi-metadata-functions)** ||
+| [drasi.changeDateTime](#drasichangedatetime) | Gets a ZONED DATETIME of when a specified element was changed |
+| **[DELTA FUNCTIONS](#drasi-delta-functions)** ||
+| [drasi.beforeChange](#drasibeforechange) | Gets the value of an expression within a query as it was before the current change |
+| [drasi.previousDistinctValue](#drasipreviousdistinctvalue) | Gets the previous value of an expression within a query that was different from the current value  |
 | **[LIST FUNCTIONS](#drasi-list-functions)** ||
 | [drasi.listMin](#drasilistmin)  | Returns the minimum value contained in a LIST |
 | [drasi.listMax](#drasilistmax)  | Returns the maximum value contained in a LIST |
 | **[TEMPORAL FUNCTIONS](#drasi-temporal-functions)** ||
-| [drasi.changeDateTime](#drasichangedatetime) | Gets a ZONED DATETIME of when a specified element was changed |
 | [drasi.getVersionByTimestamp](#drasigetversionbytimestamp) | Retrieves the version of a specified Element as it was at a specified point in time |
 | [drasi.getVersionsByTimeRange](#drasigetversionsbytimerange) | Retrieves a LIST of all versions of a specified Element that existed within a specified time range |
 | **[FUTURE FUNCTIONS](#drasi-future-functions)** ||
@@ -24,6 +28,98 @@ Drasi is not simply running graph queries across data, it is using the Cypher Qu
 | [drasi.trueFor](#drasitruefor) | Evaluates if a BOOLEAN expression remains TRUE for a specified duration |
 | **[STATISTICAL FUNCTIONS](#drasi-statistical-functions)** ||
 | [drasi.linearGradient](#drasilinearGradient) | Fits a straight line to a set of X and Y coordinates and returns the slope of that line |
+
+
+## Drasi METADATA Functions
+
+### drasi.changeDateTime()
+The `drasi.changeDateTime` function returns the ZONED DATETIME of when the provided element was last changed.
+
+#### Syntax
+```cypher
+drasi.changeDateTime(element)
+```
+
+#### Arguments
+The `drasi.changeDateTime` function accepts one argument:
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| element | ELEMENT | A Node or Relation.|
+
+#### Returns
+
+The `drasi.changeDateTime` function returns a ZONED DATETIME. 
+
+
+## Drasi DELTA Functions
+
+### drasi.beforeChange()
+The `drasi.beforeChange` function returns the value of an expression within a query as it was before the current change.
+
+#### Syntax
+```cypher
+drasi.beforeChange(expression, default)
+```
+
+#### Arguments
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| expression | EXPRESSION | An expression that resolves to a scalar value.|
+| default (optional) | EXPRESSION | The default value, if there has not yet been a value for this expression before the current change.|
+
+#### Returns
+
+The `drasi.beforeChange` function returns the value of the given expression as it was before the current change.
+
+#### Example
+
+For example, if we wanted to know when any `Task` changes from the `pending` state to the `active` state. This could be achieved with the following clause:
+
+```sql
+WHERE t.state = 'active' AND drasi.beforeChange(t.state) = 'pending'
+```
+
+In this case:
+ - When the `Task` transitions from `pending` to `active`, this clause will evaluate to `true`
+ - When the `Task` transitions from `cancelled` to `active`, this clause will evaluate to `false`
+ - When the `Task` had already transitioned from `pending` to `active` but subsequently the `tag` field was changed but the `state` field remained as `active`, this clause will evaluate to `false` because the value of `t.state` was also `active` prior to the final change
+
+
+### drasi.previousDistinctValue()
+The `drasi.previousDistinctValue` function returns the previous value of an expression within a query that was different from the current value of that expression. 
+
+#### Syntax
+```cypher
+drasi.previousDistinctValue(expression, default)
+```
+
+#### Arguments
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| expression | EXPRESSION | An expression that resolves to a scalar value.|
+| default (optional) | EXPRESSION | The default value, if there has not yet been a value for this expression before the current change.|
+
+#### Returns
+
+The `drasi.previousDistinctValue` function returns the previous value of an expression within a query that was different from the current value of that expression.
+
+
+#### Example
+
+For example, if we wanted to keep a result set of all the `Tasks` that are currently in the `active` state but which the immediately previous state was `pending`. This could be achieved with the following clause:
+
+```sql
+WHERE t.state = 'active' AND drasi.previousDistinctValue(t.state) = 'pending'
+```
+
+In this case:
+ - When the `Task` transitions from `pending` to `active`, this clause will evaluate to `true`
+ - When the `Task` transitions from `cancelled` to `active`, this clause will evaluate to `false`
+ - When the `Task` had already transitioned from `pending` to `active` but subsequently the `tag` field was changed but the `state` field remained as `active`, this clause will evaluate to `true` because the previously distinct value of `t.state` was `pending` even though it was not altered by the final change
+
 
 ## Drasi LIST Functions
 Drasi LIST functions simplify some LIST handling operations that are common in Drasi Continuous Queries.
@@ -77,26 +173,7 @@ The `drasi.listMax` function returns a single value, which is the maximum value 
 ## Drasi TEMPORAL Functions
 Drasi TEMPORAL functions make it possible to write Continuous Queries that use previous values of Nodes and Relations in the logic of the query. 
 
-A Continuous Query containing FUTURE functions must have a temporal Element Index enabled.
-
-### drasi.changeDateTime()
-The `drasi.changeDateTime` function returns the ZONED DATETIME of when the provided element was changed.
-
-#### Syntax
-```cypher
-drasi.changeDateTime(element)
-```
-
-#### Arguments
-The `drasi.changeDateTime` function accepts one argument:
-
-| Name | Type | Description |
-|-------------------------|-----------------------|----------------|
-| element | ELEMENT | A Node or Relation.|
-
-#### Returns
-
-The `drasi.changeDateTime` function returns a ZONED DATETIME. 
+A Continuous Query containing TEMPORAL functions must have a temporal Element Index enabled.
 
 ### drasi.getVersionByTimestamp()
 The `drasi.getVersionByTimestamp` function returns the version of a specified Element as it was at the specified time.
