@@ -99,4 +99,13 @@
       height: 300px; // Adjust card height for smaller screens
     }
   }
+// Footer style override to prevent overlap of elements
+  .td-footer__right {
+    position: relative;
+    z-index: 1;
+  }
+  .td-footer__center {
+    position: relative;
+    z-index: 2;
+  }
   
