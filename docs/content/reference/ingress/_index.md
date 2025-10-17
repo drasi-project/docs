@@ -262,7 +262,7 @@ k3d cluster create my-cluster \
 
 2. Configure Drasi to use the existing Traefik ingress controller:
 ```bash
-drasi ingress init --use-existing --ingress-class-name traefik --local-cluster
+drasi ingress init --use-existing --ingress-class-name traefik --ingress-ip-address 127.0.0.1
 ```
 
 With this setup, access your ingress resources by appending `:8080` to the INGRESS URL shown in `drasi list`.
