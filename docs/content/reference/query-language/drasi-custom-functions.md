@@ -14,7 +14,7 @@ Drasi is not simply running graph queries across data, it is using the Cypher Qu
 | **[METADATA FUNCTIONS](#drasi-metadata-functions)** ||
 | [drasi.changeDateTime](#drasichangedatetime) | Gets a ZONED DATETIME of when a specified element was changed |
 | **[DELTA FUNCTIONS](#drasi-delta-functions)** ||
-| [drasi.beforeChange](#drasibeforechange) | Gets the value of an expression within a query as it was before the current change |
+| [drasi.previousValue](#drasipreviousvalue) | Gets the value of an expression within a query as it was before the current change |
 | [drasi.previousDistinctValue](#drasipreviousdistinctvalue) | Gets the previous value of an expression within a query that was different from the current value  |
 | **[LIST FUNCTIONS](#drasi-list-functions)** ||
 | [drasi.listMin](#drasilistmin)  | Returns the minimum value contained in a LIST |
@@ -54,12 +54,12 @@ The `drasi.changeDateTime` function returns a ZONED DATETIME.
 
 ## Drasi DELTA Functions
 
-### drasi.beforeChange()
-The `drasi.beforeChange` function returns the value of an expression within a query as it was before the current change.
+### drasi.previousValue()
+The `drasi.previousValue` function returns the value of an expression within a query as it was before the current change.
 
 #### Syntax
 ```cypher
-drasi.beforeChange(expression, default)
+drasi.previousValue(expression, default)
 ```
 
 #### Arguments
@@ -71,14 +71,14 @@ drasi.beforeChange(expression, default)
 
 #### Returns
 
-The `drasi.beforeChange` function returns the value of the given expression as it was before the current change.
+The `drasi.previousValue` function returns the value of the given expression as it was before the current change.
 
 #### Example
 
 For example, if we wanted to know when any `Task` changes from the `pending` state to the `active` state. This could be achieved with the following clause:
 
 ```sql
-WHERE t.state = 'active' AND drasi.beforeChange(t.state) = 'pending'
+WHERE t.state = 'active' AND drasi.previousValue(t.state) = 'pending'
 ```
 
 In this case:
