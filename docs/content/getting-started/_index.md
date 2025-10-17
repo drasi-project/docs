@@ -154,6 +154,7 @@ Or, if you are using Traefik as the ingress controller, run:
 drasi ingress init --use-existing --ingress-class-name traefik --ingress-ip-address 127.0.0.1
 ```
 
+
 You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server on Kubernetes and to load the required data.
 
 Finally, download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial. Unzip the file to a suitable location on your computer and you can proceed with the rest of the tutorial.
@@ -429,7 +430,15 @@ http://hello-world-debug.drasi.127.0.0.1.nip.io:8080
 {{% /tab %}}
 
 {{% tab header="Local Setup" text=true %}}
+- **AKS/EKS:** You can access the Debug Reaction using the ingress URL from the `drasi list reaction` command output. 
+- **Kind/k3d:** Please refer to the [ingress setup instructions](/reference/ingress/#using-ingress-in-local-clusters) for your local cluster to access the Debug Reaction using the ingress.
 
+In addition to accessing the Debug Reaction via ingress, you can also port-forward the Debug Reaction service to your local machine. Run the following command in a terminal window:
+```bash
+kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
+```
+Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
+{{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 {{% /tab %}}
 
 {{% /tabpane %}}
@@ -456,6 +465,7 @@ psql
 {{% /tab %}}
 
 {{% tab header="Local Setup" text=true %}}
+You can connect to the PostgreSQL database using tools like `psql`.
 If you prefer to use a GUI interface, you can install [pgAdmin](https://www.pgadmin.org/) on your local machine and use the following connections settings:
 
 |Setting|Value|
