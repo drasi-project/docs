@@ -135,7 +135,24 @@ If the Dev Container startup fails, it is usually due to a problem with Docker r
 {{% /tab %}}
 {{% tab header="Local Setup" text=true %}}
 
-As an alternative to completing this tutorial using a GitHub Codespace or VS Code Dev Container you can install Drasi on one of the supported platforms [Drasi Installation Guides](/how-to-guides/installation/). The complexity and time this will take depends on the platform you choose.
+As an alternative to completing this tutorial using a GitHub Codespace or VS Code Dev Container you can install Drasi on one of the supported platforms [Drasi Installation Guides](/how-to-guides/installation/). The complexity and time this will take depends on the platform you choose. After the installation completes, you will also need to configure the ingress controller in order to access the Debug Reaction later in the tutorial. 
+
+- **AKS/EKS**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init
+```
+- **Kind**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init --local-cluster
+```
+- **k3d**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init --local-cluster --ingress-annotation "projectcontour.io/websocket-routes=/"
+```
+Or, if you are using Traefik as the ingress controller, run:
+```bash
+drasi ingress init --use-existing --ingress-class-name traefik --ingress-ip-address 127.0.0.1
+```
 
 You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server on Kubernetes and to load the required data.
 
@@ -381,6 +398,26 @@ Access the Debug Reaction Web UI as follows:
 
 {{< tabpane >}}
 {{% tab header="Github Codespaces" text=true %}}
+By default, the Debug Reaction is configured with an ingress. However, because Codespaces run in a containerized environment, you can't directly access the ingress URL shown in the output of the `drasi list reaction` command.
+
+To access the Debug Reaction in Codespaces, you'll need to first apply a patch to configure the ingress properly:
+```bash
+kubectl patch ingress hello-world-debug-reaction-ingress -n drasi-system \
+  --type=json \
+  --patch-file=resources/ingress-codespace-patch.yaml
+```
+
+The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
+
+1. Go to the PORTS tab in VS Code and **Right click on port 8080**
+2. Select Port Visibility
+3. Mark it as public
+4. Make sure that the port is marked as Public.
+
+{{< figure src="Codespaces_04_EnsurePublicPort.png"
+  alt="VS Code Ports tab showing how to make port 8080 public" width="100%" >}}
+
+The demo should now be accessible at **`https://<your-codespace-id>-8080.app.github.dev/`**. You can access the UI by clicking on the browser link shown in the PORTS tab for port 8080.
 
 {{% /tab %}}
 
