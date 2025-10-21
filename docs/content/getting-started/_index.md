@@ -71,7 +71,8 @@ When you see the **Create a new codespace** screen, click the **Create codespace
   alt="Codespace configurations where defaults are fine" width="100%" >}}
 
 The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps.
-**Wait for the setup scripts to complete like shown here:
+
+**Wait for the setup scripts to complete like shown here**:
 {{< figure src="Codespaces_02_Loading.png"
   alt="Codespace setup scripts running" width="100%" >}}
 
