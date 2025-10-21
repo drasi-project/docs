@@ -1522,3 +1522,6 @@ balancers
 ecommerce
 catalogue
 ImhYfLplM
+beforeChange
+previousValue
+previousDistinctValue
