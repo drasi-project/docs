@@ -400,16 +400,7 @@ Access the Debug Reaction Web UI as follows:
 
 {{< tabpane >}}
 {{% tab header="Github Codespaces" text=true %}}
-By default, the Debug Reaction is configured with an ingress. However, because Codespaces run in a containerized environment, you can't directly access the ingress URL shown in the output of the `drasi list reaction` command.
-
-To access the Debug Reaction in Codespaces, you'll need to first apply a patch to configure the ingress properly:
-```bash
-kubectl patch ingress hello-world-debug-reaction-ingress -n drasi-system \
-  --type=json \
-  --patch-file=resources/ingress-codespace-patch.yaml
-```
-
-The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
+By default, the Debug Reaction is configured with ingress. The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
 
 1. Go to the PORTS tab in VS Code and **Right click on port 8080**
 2. Select Port Visibility
