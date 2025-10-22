@@ -27,6 +27,8 @@ The [readme.md](https://github.com/drasi-project/drasi-platform/blob/main/cli/RE
 {{% /tab %}}
 {{< /tabpane >}}
 
+> **Note:** The Drasi CLI installation script is not supported in [Windows PowerShell Constrained Language Mode](https://devblogs.microsoft.com/powershell/powershell-constrained-language-mode/). If you are running in a constrained environment, please use the **Binaries** tab to download and manually install the CLI.
+
 > If you encounter sudo-related errors during installation (such as "no new privileges" flag restrictions in certain containerized or restricted environments), you can install the Drasi CLI to a user directory instead of the default system-wide location. Set the DRASI_INSTALL_DIR environment variable to a directory in your home folder before running the installation script. Below is the sample script for Linux:
 > ```bash
 > export DRASI_INSTALL_DIR="$HOME/.local/bin"
