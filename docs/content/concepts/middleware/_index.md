@@ -546,3 +546,90 @@ The node's properties would be transformed to:
 }
 ```
 The `user_data` property now contains the decoded string "Hello World!".
+
+### Relabel
+
+The **relabel** middleware processes `SourceChange` events (`Insert`, `Update`, and `Delete`) and rewrites element labels according to a user‑defined mapping. It is useful for:
+
+* Normalizing heterogeneous source systems to a common domain vocabulary (e.g. `Person` → `User`, `Company` → `Organization`).
+* Consolidating legacy or versioned labels into a current canonical label.
+* Preparing data so continuous queries can target a simplified, stable set of labels regardless of upstream naming.
+
+#### Configuration
+
+| Property | Description |
+| - | - |
+| kind | Must be **relabel** |
+| name | The name of this configuration, referenced in a source pipeline |
+| labelMappings | (Required) Object mapping original labels to new labels. Must contain at least one entry. |
+
+Behavior details:
+* Each label on an element is looked up in `labelMappings`. If present it is replaced by the mapped value; otherwise it is retained.
+* Multiple different source labels can map to different targets in the same element.
+* If two source labels map to the same target label, duplicates may be collapsed by downstream consumers; avoid ambiguous mappings if uniqueness matters for your queries.
+* Applies equally to Node and Relation labels, and to `Insert`, `Update`, and `Delete` changes (so deletes still match the expected label in queries).
+
+#### Basic Example
+
+Normalize several personnel related labels for querying only `User` entities:
+
+```yaml
+spec:
+  sources:
+    subscriptions:
+      - id: source
+        nodes:
+          - sourceLabel: RawPeople
+        pipeline:
+          - normalize-user-labels
+    middleware:
+      - name: normalize-user-labels
+        kind: relabel
+        labelMappings:
+          Person: User
+          Employee: Staff
+          Company: Organization
+  query: >
+    MATCH (u:User)
+    RETURN u.name, u.email, u.role
+```
+
+Incoming node labels before → after:
+
+| Incoming Labels | After Relabel |
+| - | - |
+| `[Person]` | `[User]` |
+| `[Person, Employee]` | `[User, Staff]` |
+| `[Company]` | `[Organization]` |
+| `[UnmappedLabel]` | `[UnmappedLabel]` (unchanged) |
+
+#### Relationship Label Remapping
+
+You can also remap relation labels to align with domain terminology:
+
+```yaml
+spec:
+  sources:
+    middleware:
+      - name: relabel-links
+        kind: relabel
+        labelMappings:
+          KNOWS: CONNECTED_TO
+          WORKS_FOR: EMPLOYED_BY
+    subscriptions:
+      - id: social
+        nodes:
+          - sourceLabel: Person
+        pipeline: 
+          - relabel-links
+  query: >
+    MATCH (a:User)-[r:CONNECTED_TO]->(b:User)
+    RETURN a.name, b.name
+```
+
+An incoming relation labeled `KNOWS` will appear to the query as `CONNECTED_TO` after middleware processing.
+
+#### Delete & Update Preservation
+
+Because relabeling also applies to `Update` and `Delete` changes, previously remapped elements continue to match the target labels throughout their lifecycle (e.g. a delete with original label `Person` will be seen with label `User`).
+
