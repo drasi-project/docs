@@ -399,7 +399,7 @@ Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World sol
 Access the Debug Reaction Web UI as follows:
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 By default, the Debug Reaction is configured with ingress. The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
 
 1. Go to the PORTS tab in VS Code and **Right click on port 8080**
