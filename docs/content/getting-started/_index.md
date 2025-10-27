@@ -59,7 +59,7 @@ To complete this tutorial, you need a Drasi environment and a PostgreSQL databas
 Complete one of the options described below before continuing to [Step 2](#step-2---create-the-postgresql-source):
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
 
