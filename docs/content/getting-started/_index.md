@@ -559,7 +559,7 @@ The [Connecting a Frontend to a Query](/tutorials/connecting-frontends/) tutoria
 Cleanup steps depend on how you ran the Getting Started Tutorial:
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 If you no longer need the Codespace and want to cleanup, you can go to [Your codespaces](https://github.com/codespaces) page on GitHub and delete the codespace.
 
