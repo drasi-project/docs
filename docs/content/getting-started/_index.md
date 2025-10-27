@@ -440,8 +440,8 @@ Now open your browser and navigate to [http://localhost:8080](http://localhost:8
 To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands.
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
-The Github Codespace is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
+{{% tab header="GitHub Codespaces" text=true %}}
+The GitHub Codespace is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
 
 ```bash
 psql
