@@ -195,10 +195,11 @@ The configuration for mapping an element is as follows
 | query | The JQ query to apply to the incoming source change. The output can either be a single object or an array of objects.
 | label | (optional )A JQ query that will be used to extract a new label for each element projected by the JQ `query` |
 | id | (optional )A JQ query that will be used to extract a new ID for each element projected by the JQ `query` |
+| haltOnError | (optional) If true, when an error occurs during JQ processing, the query will stop processing changes. If false, the middleware will skip processing the change causing the error. Default is false.
 
 #### Example
 
-For example, if you had a source that was an append only log of sensor readings, but your query is only ever interested in the latest value. The incoming values are also expressed as stings but you need them as a number.
+For example, if you had a source that was an append only log of sensor readings, but your query is only ever interested in the latest value. The incoming values are also expressed as strings but you need them as a number.
 
 ```json
 {
