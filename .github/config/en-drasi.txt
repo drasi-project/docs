@@ -216,3 +216,4 @@ JDBC
 labelMappings
 JQ
 jq
+haltOnError
