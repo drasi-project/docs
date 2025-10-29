@@ -59,7 +59,7 @@ To complete this tutorial, you need a Drasi environment and a PostgreSQL databas
 Complete one of the options described below before continuing to [Step 2](#step-2---create-the-postgresql-source):
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
 
@@ -399,7 +399,7 @@ Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World sol
 Access the Debug Reaction Web UI as follows:
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 By default, the Debug Reaction is configured with ingress. The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
 
 1. Go to the PORTS tab in VS Code and **Right click on port 8080**
@@ -440,8 +440,8 @@ Now open your browser and navigate to [http://localhost:8080](http://localhost:8
 To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands.
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
-The Github Codespace is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
+{{% tab header="GitHub Codespaces" text=true %}}
+The GitHub Codespace is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
 
 ```bash
 psql
@@ -559,7 +559,7 @@ The [Connecting a Frontend to a Query](/tutorials/connecting-frontends/) tutoria
 Cleanup steps depend on how you ran the Getting Started Tutorial:
 
 {{< tabpane >}}
-{{% tab header="Github Codespaces" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 If you no longer need the Codespace and want to cleanup, you can go to [Your codespaces](https://github.com/codespaces) page on GitHub and delete the codespace.
 
