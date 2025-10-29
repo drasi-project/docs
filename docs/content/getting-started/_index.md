@@ -94,7 +94,7 @@ To use the Drasi Getting Started Dev Container, you will need to install:
 
 
 Once you have these prerequisites installed:
-1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
+1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/latest/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
 2. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
 3. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
