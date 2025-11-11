@@ -124,9 +124,6 @@ To configure the Dataverse Source to use Microsoft Entra Workload Identity, foll
 * [Deploy and configure workload identity on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster)
 * [Use Microsoft Entra Workload ID with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview)
 
-
-## Inspecting the Source
-
 ## Inspecting the Source
 
 You can check the status of the Source using the `drasi list` command:
