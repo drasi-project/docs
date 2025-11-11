@@ -37,7 +37,7 @@ On the computer from where you will create the Source, you need the following so
 - [Drasi CLI](/reference/command-line-interface/) 
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
 
-The Dataverse table you want to use to must have Change Tracking enabled. For more information, see [Enable change tracking for an entity (table)](https://learn.microsoft.com/en-us/power-platform/admin/enable-change-tracking-control-data-synchronization).
+The Dataverse table you want to use must have Change Tracking enabled. For more information, see [Enable change tracking for an entity (table)](https://learn.microsoft.com/en-us/power-platform/admin/enable-change-tracking-control-data-synchronization).
 
 You also need a Kubernetes cluster with Drasi installed. For more information, see [Install Drasi](/how-to-guides/installation/).
 
