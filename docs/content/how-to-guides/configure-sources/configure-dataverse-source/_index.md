@@ -95,7 +95,7 @@ To configure the Dataverse Source to use Microsoft Entra Workload Identity, foll
 2. Ensure `Enable Workload Identity` is enabled.
 3. Take note of the `Issuer URL` under OIDC.
 4. Create or use an existing `User Assigned Managed Identity`.
-5. Take note of the `Client ID` an the `Overview` pane of the Managed Identity.
+5. Take note of the `Client ID` on the `Overview` pane of the Managed Identity.
 6. Grant the managed identity access in Dataverse  
    1. Go to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.  
    2. Add the **User-Assigned Managed Identity** by pasting its **Client ID**.  
