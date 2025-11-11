@@ -65,7 +65,7 @@ spec:
     kind: MicrosoftEntraWorkloadID
     clientId: <client-id>
   properties:
-    endpoint: <https://your-org.api.crm.dynamics.com>
+    endpoint: https://<your-org>.api.crm.dynamics.com
     entities: <logical_name_of_table1>,<logical_name_of_table2>
     maxInterval: <max-interval-in-seconds>
 ```
