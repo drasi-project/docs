@@ -27,10 +27,13 @@ The Dataverse Source supports the following data types:
 |Decimal Number|Float|
 |Floating Point Number|Float|
 |Date and Time|DateTime|
+|Lookup|Object*|
 |Currency|Float|
 |Choice (Yes/No)|Boolean|
 |Choice (single-select)|Integer (underlying value)|
 |Choices (multi-select)|Array of integers|
+
+*Lookup fields are represented as objects containing three keys: `id` (the GUID of the referenced record), `logicalName` (the logical name of the referenced table), and `name` (the primary name of the referenced record). If you are interested in just the value of the lookup, you can access the `name` property of the object. For example, if you have a lookup field called `primarycontactid`, you can access the name of the referenced contact using `primarycontactid.name`.
 
 ## Requirements
 On the computer from where you will create the Source, you need the following software:
