@@ -89,7 +89,11 @@ The following table describes the Dataverse specific properties:
 |entities|A comma-separated list of **logical names** of the Dataverse tables to track. The logical name can be found in the table's settings in the Power Apps portal and typically has a prefix that corresponds to your Dataverse environment.|
 |maxInterval|Optional. The maximum interval in seconds between checks. The default value is calculated based on the number of entities being tracked. Increasing this value can reduce API calls but may increase latency in change detection. |
 
-### Authentication using Microsoft Entra Workload Identity
+### Authentication
+The Dataverse Source supports authentication using [Microsoft Entra Workload Identity](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview) or Service Principals with Client Secrets. 
+
+#### Using Microsoft Entra Workload Identity
+
 Microsoft Entra Workload Identity enables your source to authenticate to Azure without the need to store sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the service account the source is running against. You can use Workload Identity with Azure Kubernetes Service (AKS) clusters.
 
 To configure the Dataverse Source to use Microsoft Entra Workload Identity, follow these steps:
@@ -123,6 +127,38 @@ To configure the Dataverse Source to use Microsoft Entra Workload Identity, foll
 * [Azure AD Workload Identity Docs](https://azure.github.io/azure-workload-identity/docs/introduction.html)
 * [Deploy and configure workload identity on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster)
 * [Use Microsoft Entra Workload ID with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview)
+
+
+#### Using Service Principal with Client Secret
+To configure the Dataverse Source to use a Service Principal with Client Secret, follow these steps:
+1. Register an application in [Azure Active Directory](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade).
+2. Create a client secret for the application and take note of the secret value.
+3. Grant the application access in Dataverse
+  1. Go to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
+  2. Add the application by pasting its **Application (client) ID**.
+  3. Assign the **Basic User** security role (or desired role).
+  4. Click **Create**.
+4. In the Source definition YAML file, set the `spec.properties.clientId` property to the Application (client) ID of the registered application and set the `spec.properties.clientSecret` property to the client secret value created in step 2. Also set the `spec.identity.tenantId` property to your Azure AD tenant ID. 
+
+The example below is a sample Source yaml file using secret-based authentication. The client secret is stored in a Kubernetes Secret named `dataverse-creds` with the key `clientSecret`.
+
+
+```yaml
+apiVersion: v1
+kind: Source
+name: task
+spec:
+  kind: Dataverse
+  properties:
+    endpoint: https://org443a463f.crm.dynamics.com
+    entities: cr21a_task
+    clientId: <client-id>
+    clientSecret: 
+      kind: Secret
+      name: dataverse-creds
+      key: clientSecret
+    tenantId: <tenant-id>
+```
 
 ## Inspecting the Source
 
