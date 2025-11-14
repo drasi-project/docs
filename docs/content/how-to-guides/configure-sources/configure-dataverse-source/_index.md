@@ -90,36 +90,69 @@ The following table describes the Dataverse specific properties:
 |maxInterval|Optional. The maximum interval in seconds between checks. The default value is calculated based on the number of entities being tracked. Increasing this value can reduce API calls but may increase latency in change detection. |
 
 ### Authentication
-The Dataverse Source supports authentication using [Microsoft Entra Workload Identity](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview) or Service Principals with Client Secrets. 
+The Dataverse Source supports two authentication methods:
+- **Microsoft Entra Workload Identity** (recommended for AKS deployments)
+- **Service Principal with Client Secret**
 
 #### Using Microsoft Entra Workload Identity
 
-Microsoft Entra Workload Identity enables your source to authenticate to Azure without the need to store sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the service account the source is running against. You can use Workload Identity with Azure Kubernetes Service (AKS) clusters.
+Microsoft Entra Workload Identity enables your source to authenticate to Dataverse without storing sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the Kubernetes service account that the source runs under. This method is available for Azure Kubernetes Service (AKS) clusters.
 
-To configure the Dataverse Source to use Microsoft Entra Workload Identity, follow these steps:
+**Prerequisites:**
+- An AKS cluster with Workload Identity enabled
+- The Drasi source must be deployed in the `drasi-system` namespace
 
-1. On the Azure portal, navigate to the `Security configuration` pane of your AKS cluster.
-2. Ensure `Enable Workload Identity` is enabled.
-3. Take note of the `Issuer URL` under OIDC.
-4. Create or use an existing `User Assigned Managed Identity`.
-5. Take note of the `Client ID` on the `Overview` pane of the Managed Identity.
-6. Grant the managed identity access in Dataverse  
-   1. Go to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.  
-   2. Add the **User-Assigned Managed Identity** by pasting its **Client ID**.  
-   3. Assign the **Basic User** security role (or desired role).  
+**Configuration steps:**
+
+1. **Verify AKS Workload Identity is enabled**
+
+   In the Azure portal, navigate to your AKS cluster → **Security configuration** → verify that **Enable Workload Identity** is enabled and note the **OIDC Issuer URL**.
+
+2. **Create or identify a User-Assigned Managed Identity**
+
+   Create a new managed identity or use an existing one. Note the **Client ID** from the managed identity's **Overview** page.
+
+3. **Grant the managed identity access to Dataverse**
+
+   1. Navigate to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
+   2. Paste the managed identity's **Client ID** to add it as an application user.
+   3. Assign an appropriate security role (e.g., **Basic User** or a custom role with read permissions on the tables you want to track).
    4. Click **Create**.
-7. Create a federated credential between the managed identity and the source.
-    ```bash
-    az identity federated-credential create \
-        --name <Give the federated credential a unique name> \
-        --identity-name "<Name of the User Assigned Managed Identity>" \
-        --resource-group "<Your Resource Group>" \
-        --issuer "<The Issuer URL from your AKS cluster OIDC configuration>" \
-        --subject system:serviceaccount:"drasi-system":"source.<Name of your Source>" \
-        --audience api://AzureADTokenExchange
-    ```
 
-8. In the Source definition YAML file, set the `spec.identity.kind` property to `MicrosoftEntraWorkloadID` and set the `spec.identity.clientId` property to the Client ID of the managed identity.
+4. **Create a federated credential**
+
+   Link the managed identity to the Drasi source's service account:
+   ```bash
+   az identity federated-credential create \
+       --name drasi-dataverse-source-fedcred \
+       --identity-name "<managed-identity-name>" \
+       --resource-group "<resource-group>" \
+       --issuer "<oidc-issuer-url>" \
+       --subject system:serviceaccount:drasi-system:source.<source-name> \
+       --audience api://AzureADTokenExchange
+   ```
+
+   Replace the placeholders:
+   - `<managed-identity-name>`: Name of your User-Assigned Managed Identity
+   - `<resource-group>`: Azure resource group containing the managed identity
+   - `<oidc-issuer-url>`: The OIDC Issuer URL from your AKS cluster
+   - `<source-name>`: The name you'll give to your Dataverse source (must match the `name` field in your YAML)
+
+5. **Configure the Source definition**
+
+   In your Source YAML file, configure the identity section:
+   ```yaml
+   kind: Source
+   apiVersion: v1
+   name: my-source
+   spec:
+     kind: Dataverse
+     identity:
+       kind: MicrosoftEntraWorkloadID
+       clientId: <client-id>
+      properties:
+        ...
+   ```
 
 ##### Related links
 * [What are managed identities for Azure resources](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
@@ -130,35 +163,45 @@ To configure the Dataverse Source to use Microsoft Entra Workload Identity, foll
 
 
 #### Using Service Principal with Client Secret
-To configure the Dataverse Source to use a Service Principal with Client Secret, follow these steps:
-1. Register an application in [Azure Active Directory](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade).
-2. Create a client secret for the application and take note of the secret value.
-3. Grant the application access in Dataverse
-  1. Go to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
-  2. Add the application by pasting its **Application (client) ID**.
-  3. Assign the **Basic User** security role (or desired role).
-  4. Click **Create**.
-4. In the Source definition YAML file, set the `spec.properties.clientId` property to the Application (client) ID of the registered application and set the `spec.properties.clientSecret` property to the client secret value created in step 2. Also set the `spec.identity.tenantId` property to your Azure AD tenant ID. 
 
-The example below is a sample Source yaml file using secret-based authentication. The client secret is stored in a Kubernetes Secret named `dataverse-creds` with the key `clientSecret`.
+This method uses an Azure application registration with a client secret to authenticate to Dataverse.
 
+**Configuration steps:**
 
-```yaml
-apiVersion: v1
-kind: Source
-name: task
-spec:
-  kind: Dataverse
-  properties:
-    endpoint: https://org443a463f.crm.dynamics.com
-    entities: cr21a_task
-    clientId: <client-id>
-    clientSecret: 
-      kind: Secret
-      name: dataverse-creds
-      key: clientSecret
-    tenantId: <tenant-id>
-```
+1. **Register an application in Microsoft Entra ID**
+
+   Navigate to the [Azure portal](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) → **App registrations** → **+ New registration**. Note the **Application (client) ID** and **Directory (tenant) ID** from the app's overview page.
+
+2. **Create a client secret**
+
+   In your app registration, go to **Certificates & secrets** → **Client secrets** → **+ New client secret**. Add a description and expiration period, then click **Add**. Copy the secret **Value** immediately (it won't be shown again).
+
+3. **Grant the application access to Dataverse**
+
+   1. Navigate to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
+   2. Paste the **Application (client) ID** to add the application as an application user.
+   3. Assign an appropriate security role (e.g., **Basic User** or a custom role with read permissions on the tables you want to track).
+   4. Click **Create**.
+
+4. **Configure the Source definition**
+
+   In your Source YAML file, configure the authentication properties. It's recommended to store the client secret in a Kubernetes Secret for security:
+   ```yaml
+   apiVersion: v1
+   kind: Source
+   name: my-source
+   spec:
+     kind: Dataverse
+     properties:
+       endpoint: https://your-org.crm.dynamics.com
+       entities: cr21a_task,cr21a_project
+       clientId: <application-client-id>
+       clientSecret:
+         kind: Secret
+         name: dataverse-creds
+         key: clientSecret
+       tenantId: <tenant-id>
+   ```
 
 ## Inspecting the Source
 
