@@ -3,80 +3,60 @@ type: "docs"
 title: "Connect to Microsoft Dataverse"
 linkTitle: "Connect to Microsoft Dataverse"
 weight: 30
-toc_hide: true
-hide_summary: true
 description: >
     Learn how to configure a Dataverse Source to connect to Microsoft Dataverse
 ---
 
-The Dataverse source enables changes to tables in Microsoft Dataverse to be mapped into graph nodes that can be referenced by a continuous query.
+The Dataverse Source connects to Microsoft Dataverse tables and tracks changes in real-time using Dataverse's change tracking capabilities.
 
-#### Source Requirements
+## Data Model
+The Dataverse Source translates Dataverse table data into a format that can be processed by Drasi Continuous Queries. Similar to how relational databases are handled, the Dataverse Source treats each table row as a graph node:
 
-##### App registration
+- Each change to a table row is represented as a change to a node, with the table columns represented as properties of the node.
+- Each node is assigned a unique **id** that corresponds to the row's **primary key** in Dataverse (typically in GUID format). This **id** is part of the node's metadata, not a property of the node.
+- The node is assigned a **label** name that matches the **logical name of the Dataverse table** (e.g., `<dataverse_prefix>_account` for the Account table).
 
-The Dataverse source authenticates with Dataverse using OAuth, you must first register an application in your Microsoft Entra ID tenant.
+The Dataverse Source uses Dataverse's built-in change tracking feature to detect data modifications. It maintains delta tokens to track the position in the change stream, ensuring that all changes are captured even if the source restarts. The Dataverse Source **does not** interpret relationships or lookups from Dataverse as graph relations or edges.
 
-Registering your application establishes a trust relationship between your app and the Microsoft identity platform. The trust is unidirectional: your app trusts the Microsoft identity platform, and not the other way around. Once created, the application object cannot be moved between different tenants.
+The Dataverse Source supports the following data types:
 
-Follow these steps to create the app registration:
-
-1. Sign in to the Microsoft Entra admin center as at least a Cloud Application Administrator.
-
-1. If you have access to multiple tenants, use the Settings icon  in the top menu to switch to the tenant in which you want to register the application from the Directories + subscriptions menu.
-
-1. Browse to Identity > Applications > App registrations and select New registration.
-
-1. Enter a display Name for your application. Users of your application might see the display name when they use the app, for example during sign-in. You can change the display name at any time and multiple app registrations can share the same name. The app registration's automatically generated Application (client) ID, not its display name, uniquely identifies your app within the identity platform.
-
-1. Select Register to complete the initial app registration.
-
-When registration finishes, the Microsoft Entra admin center displays the app registration's Overview pane. You see the Application (client) ID. Also called the client ID, this value uniquely identifies your application in the Microsoft identity platform.
-
-Next, you need to add credentials to the application. Credentials allow your application to authenticate as itself, requiring no interaction from a user at runtime.
-
-1. In the Microsoft Entra admin center, in App registrations, select your application.
-1. Select Certificates & secrets > Client secrets > New client secret.
-1. Add a description for your client secret.
-1. Select an expiration for the secret or specify a custom lifetime.
-1. Select Add.
-1. Record the secret's value for use in your client application code. This secret value is never displayed again after you leave this page.
-
-For more information see [Use OAuth authentication with Microsoft Dataverse](https://learn.microsoft.com/en-ca/power-apps/developer/data-platform/authenticate-oauth)
-
-##### Create and bind Dataverse user account to the registered app
-
-The first thing you must do is create a custom security role that will define what access and privileges this account will have within the Dataverse organization. More information: [Create or configure a custom security role](https://learn.microsoft.com/en-us/power-platform/admin/database-security#create-or-configure-a-custom-security-role)
-
-After you have created the custom security role, you must create the user account which will use it.
-
-The procedure to create this user is different from creating a licensed user. Use the following steps:
-
-1. Navigate to Settings > Security > Users
-
-1. In the view drop-down, select Application Users.
-
-1. Click New. Then verify that you are using the Application user form.
-If you do not see the Application ID, Application ID URI and Azure AD Object ID fields in the form, you must select the Application User form from the list.
-
-1. Add the appropriate values to the fields:
-|Field|Value|
+|Dataverse Data Type|Processed As|
 |-|-|
-|User Name|A name for the user|
-|Application ID|The Application ID value for the application registered with Microsoft Entra ID.|
-|Full Name|The name of your application.|
-|Primary Email|The email address for the user.|
+|Text|String|
+|Whole Number|Integer|
+|Decimal Number|Float|
+|Floating Point Number|Float|
+|Date and Time|DateTime|
+|Lookup|Object*|
+|Currency|Float|
+|Choice (Yes/No)|Boolean|
+|Choice (single-select)|Integer (underlying value)|
+|Choices (multi-select)|Array of integers|
 
-1. Associate the application user with the custom security role you created.
+*Lookup fields are represented as objects containing three keys: `id` (the GUID of the referenced record), `logicalName` (the logical name of the referenced table), and `name` (the primary name of the referenced record). If you are interested in just the value of the lookup, you can access the `name` property of the object. For example, if you have a lookup field called `primarycontactid`, you can access the name of the referenced contact using `primarycontactid.name`.
 
-More information: [Manually create a Dataverse application user](https://learn.microsoft.com/en-ca/power-apps/developer/data-platform/authenticate-oauth#manually-create-a-dataverse-application-user)
+## Requirements
+On the computer from where you will create the Source, you need the following software:
+- [Drasi CLI](/reference/command-line-interface/) 
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
 
-##### Enable change tracking
+The Dataverse table you want to use must have Change Tracking enabled. For more information, see [Enable change tracking for an entity (table)](https://learn.microsoft.com/en-us/power-platform/admin/enable-change-tracking-control-data-synchronization).
 
-For each table that you wish to observe, you need to enable `Track Changes` under the properties of that table in the [Power Apps builder](https://make.powerapps.com).
-Also, take note of the internal system name of the tables that you wish to observe.
+You also need a Kubernetes cluster with Drasi installed. For more information, see [Install Drasi](/how-to-guides/installation/).
 
-#### Configuration Settings
+## Creating the Source
+To create a Dataverse Source, execute the `drasi apply` command as follows:
+
+```text
+drasi apply -f my-source.yaml -n drasi-namespace
+```
+
+The `drasi apply` command is how you create all new Drasi resources (in this case a Source). The `-f` flag specifies that the definition of the new Source is contained in the referenced YAML file `my-source.yaml` and the `-n` flag specifies the Drasi namespace in which to create the Source (Drasi must already be installed in that namespace).
+
+## Source Definitions
+The YAML file passed to `drasi apply` can contain one or more Source definitions.
+
+Here is an example of a Dataverse source definition:
 
 ```yaml
 kind: Source
@@ -84,18 +64,189 @@ apiVersion: v1
 name: my-source
 spec:
   kind: Dataverse
+  identity:
+    kind: MicrosoftEntraWorkloadID
+    clientId: <client-id>
   properties:
-    endpoint: https://xxxxx.api.crm4.dynamics.com/
-    clientId: 00000000-0000-0000-000000000000
-    secret: xxxxxx
-    entities:
-      - msdyn_customerasset
+    endpoint: https://<your-org>.api.crm.dynamics.com
+    entities: <logical_name_of_table1>,<logical_name_of_table2>
+    maxInterval: <max-interval-in-seconds>
 ```
+
+
+In the Source resource definition:
+
+- **apiVersion** must be **v1**
+- **kind** must be **Source**
+- **name** is the **id** of the Source and must be unique. This id is used in a Continuous Query definitions to identify which Sources the Continuous Query subscribes to for change events.
+- **spec.kind** must be **Dataverse**
+
 
 The following table describes the Dataverse specific properties:
 |Property|Description|
 |-|-|
-|endpoint|The API endpoint for the Dataverse environment.  This can be found in the [Power Platform admin center](https://admin.powerplatform.microsoft.com/home), under Environments|
-|clientId|The clientId of the app registration|
-|secret|The secret under the credentials of the app registration|
-|entities|A list of tables to observe.  In the form of the internal system name, visible in [Power Apps](https://make.powerapps.com)|
+|endpoint|The Dataverse API endpoint URL for your organization (e.g., `https://your-org.api.crm.dynamics.com`).|
+|entities|A comma-separated list of **logical names** of the Dataverse tables to track. The logical name can be found in the table's settings in the Power Apps portal and typically has a prefix that corresponds to your Dataverse environment.|
+|maxInterval|Optional. The maximum interval in seconds between checks. The default value is calculated based on the number of entities being tracked. Increasing this value can reduce API calls but may increase latency in change detection. |
+
+### Authentication
+The Dataverse Source supports two authentication methods:
+- **Microsoft Entra Workload Identity** (recommended for AKS deployments)
+- **Service Principal with Client Secret**
+
+#### Using Microsoft Entra Workload Identity
+
+Microsoft Entra Workload Identity enables your source to authenticate to Dataverse without storing sensitive credentials. It works by creating a federated identity between a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and the Kubernetes service account that the source runs under. This method is available for Azure Kubernetes Service (AKS) clusters.
+
+**Prerequisites:**
+- An AKS cluster with Workload Identity enabled
+- The Drasi source must be deployed in the `drasi-system` namespace
+
+**Configuration steps:**
+
+1. **Verify AKS Workload Identity is enabled**
+
+   In the Azure portal, navigate to your AKS cluster → **Security configuration** → verify that **Enable Workload Identity** is enabled and note the **OIDC Issuer URL**.
+
+2. **Create or identify a User-Assigned Managed Identity**
+
+   Create a new managed identity or use an existing one. Note the **Client ID** from the managed identity's **Overview** page.
+
+3. **Grant the managed identity access to Dataverse**
+
+   1. Navigate to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
+   2. Paste the managed identity's **Client ID** to add it as an application user.
+   3. Assign an appropriate security role (e.g., **Basic User** or a custom role with read permissions on the tables you want to track).
+   4. Click **Create**.
+
+4. **Create a federated credential**
+
+   Link the managed identity to the Drasi source's service account:
+   ```bash
+   az identity federated-credential create \
+       --name drasi-dataverse-source-fedcred \
+       --identity-name "<managed-identity-name>" \
+       --resource-group "<resource-group>" \
+       --issuer "<oidc-issuer-url>" \
+       --subject system:serviceaccount:drasi-system:source.<source-name> \
+       --audience api://AzureADTokenExchange
+   ```
+
+   Replace the placeholders:
+   - `<managed-identity-name>`: Name of your User-Assigned Managed Identity
+   - `<resource-group>`: Azure resource group containing the managed identity
+   - `<oidc-issuer-url>`: The OIDC Issuer URL from your AKS cluster
+   - `<source-name>`: The name you'll give to your Dataverse source (must match the `name` field in your YAML)
+
+5. **Configure the Source definition**
+
+   In your Source YAML file, configure the identity section:
+   ```yaml
+   kind: Source
+   apiVersion: v1
+   name: my-source
+   spec:
+     kind: Dataverse
+     identity:
+       kind: MicrosoftEntraWorkloadID
+       clientId: <client-id>
+      properties:
+        ...
+   ```
+
+##### Related links
+* [What are managed identities for Azure resources](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
+* [What are workload identities](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview)
+* [Azure AD Workload Identity Docs](https://azure.github.io/azure-workload-identity/docs/introduction.html)
+* [Deploy and configure workload identity on an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster)
+* [Use Microsoft Entra Workload ID with Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview)
+
+
+#### Using Service Principal with Client Secret
+
+This method uses an Azure application registration with a client secret to authenticate to Dataverse.
+
+**Configuration steps:**
+
+1. **Register an application in Microsoft Entra ID**
+
+   Navigate to the [Azure portal](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) → **App registrations** → **+ New registration**. Note the **Application (client) ID** and **Directory (tenant) ID** from the app's overview page.
+
+2. **Create a client secret**
+
+   In your app registration, go to **Certificates & secrets** → **Client secrets** → **+ New client secret**. Add a description and expiration period, then click **Add**. Copy the secret **Value** immediately (it won't be shown again).
+
+3. **Grant the application access to Dataverse**
+
+   1. Navigate to [Power Platform Admin Center](https://admin.powerplatform.microsoft.com) → **Environments** → select your environment → **Settings** → **Application users** → **+ New app user**.
+   2. Paste the **Application (client) ID** to add the application as an application user.
+   3. Assign an appropriate security role (e.g., **Basic User** or a custom role with read permissions on the tables you want to track).
+   4. Click **Create**.
+
+4. **Configure the Source definition**
+
+   In your Source YAML file, configure the authentication properties. It's recommended to store the client secret in a Kubernetes Secret for security:
+   ```yaml
+   apiVersion: v1
+   kind: Source
+   name: my-source
+   spec:
+     kind: Dataverse
+     properties:
+       endpoint: https://your-org.crm.dynamics.com
+       entities: cr21a_task,cr21a_project
+       clientId: <application-client-id>
+       clientSecret:
+         kind: Secret
+         name: dataverse-creds
+         key: clientSecret
+       tenantId: <tenant-id>
+   ```
+
+## Inspecting the Source
+
+You can check the status of the Source using the `drasi list` command:
+
+```text
+drasi list source
+```
+
+This will return a simple list of all Sources in the current namespace and their overall status. For example:
+
+```
+     ID     | AVAILABLE | INGRESS URL | MESSAGES  
+------------+-----------+-------------+-----------
+  my-source | true      |             |           
+```
+If an error has occurred during the creation or operation of a Source, the `AVAILABLE` column will contain the error text instead of `true` or `false`.
+
+For more details about the Source you can use the [drasi describe](/reference/command-line-interface#drasi-describe) command:
+
+```text
+drasi describe source my-source
+```
+
+This will return the full definition used to create the Source along with more detailed status information.
+
+
+## Modifying the Source
+To modify the Source, you can simply use the `drasi apply` command again with the same source name that you used before.
+
+## Deleting the Source
+To delete a Source you use the `drasi delete` command. There are two ways to do this. 
+
+Firstly, you can specify the type of resource (Source) and its name, for example:
+
+```text
+drasi delete source my-source
+```
+
+Secondly, you can refer to the YAML file(s) that contain the definitions used to create the Source(s):
+
+```text
+drasi delete -f my-source.yaml <file2.yaml> <file3.yaml> <...>
+```
+
+This is a convenience, especially if a single YAML file contains multiple Source definitions. 
+
+

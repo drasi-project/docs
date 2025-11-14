@@ -217,3 +217,5 @@ labelMappings
 JQ
 jq
 haltOnError
+Dataverse's
+maxInterval
