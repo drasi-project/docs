@@ -60,6 +60,10 @@ indexName = "drasi"
 
 # UI Customization
 [params]
+  # GitHub repository for "Edit this page" links
+  github_repo = "https://github.com/drasi-project/docs"
+  github_branch = "main"
+  github_subdir = "docs"
   prism_syntax_highlighting = true
   [params.prism]
     languages = [
