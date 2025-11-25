@@ -60,6 +60,10 @@ indexName = "drasi"
 
 # UI Customization
 [params]
+  # GitHub repository for "Edit this page" links
+  github_repo = "https://github.com/drasi-project/docs"
+  github_branch = "main"
+  github_subdir = "docs"
   prism_syntax_highlighting = true
   [params.prism]
     languages = [
@@ -80,3 +84,15 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
   sidebar_menu_truncate = 500
   ul_show = 1
   navbar_logo = true
+  # Show reading time on documentation pages
+  readingtime.enable = true
+
+# Feedback widget - "Was this page helpful?"
+# Note: Response messages are customized in layouts/_partials/feedback.html
+# to support dynamic page titles and opening links in new tabs
+[params.ui.feedback]
+  enable = true
+
+# Enable git-based last modified date detection
+[frontmatter]
+  lastmod = [":git", "lastmod", "date", "publishDate"]
