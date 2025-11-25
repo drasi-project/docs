@@ -79,6 +79,99 @@ pre {
   border-radius: 6px;
 }
 
+// =============================================================================
+// PRISM DARK MODE SYNTAX HIGHLIGHTING
+// Override the default light Prism theme for dark mode
+// =============================================================================
+[data-bs-theme="dark"] {
+  code[class*="language-"],
+  pre[class*="language-"] {
+    color: #abb2bf;
+    background: #282c34;
+    text-shadow: none;
+  }
+
+  pre[class*="language-"] {
+    background: #282c34;
+  }
+
+  :not(pre) > code[class*="language-"] {
+    background: #282c34;
+  }
+
+  // Prism token colors for dark mode (One Dark theme)
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #7f848e;
+  }
+
+  .token.punctuation {
+    color: #abb2bf;
+  }
+
+  .token.namespace {
+    opacity: 0.7;
+  }
+
+  .token.property,
+  .token.tag,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
+    color: #e06c75;
+  }
+
+  .token.boolean,
+  .token.number {
+    color: #d19a66;
+  }
+
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: #98c379;
+  }
+
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string {
+    color: #56b6c2;
+    background: transparent;
+  }
+
+  .token.atrule,
+  .token.attr-value,
+  .token.keyword {
+    color: #c678dd;
+  }
+
+  .token.function,
+  .token.class-name {
+    color: #61afef;
+  }
+
+  .token.regex,
+  .token.important,
+  .token.variable {
+    color: #c678dd;
+  }
+
+  // Toolbar styling for dark mode
+  div.code-toolbar > .toolbar > .toolbar-item > a,
+  div.code-toolbar > .toolbar > .toolbar-item > button,
+  div.code-toolbar > .toolbar > .toolbar-item > span {
+    color: #abb2bf;
+    background: #3e4451;
+  }
+}
+
 // Blockquote styling
 blockquote {
   margin: 1.5rem 0;
@@ -159,6 +252,16 @@ blockquote {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   }
+
+  // Dark mode: more visible border and stronger shadows
+  [data-bs-theme="dark"] & {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+  }
 }
 
 // Card icon area (for landing page cards with icons)
@@ -170,6 +273,12 @@ blockquote {
   background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($secondary, 0.05) 100%);
   font-size: 3rem;
   color: $primary;
+
+  // Dark mode: use lighter icon color for visibility
+  [data-bs-theme="dark"] & {
+    color: $secondary;
+    background: linear-gradient(135deg, rgba($secondary, 0.1) 0%, rgba($secondary, 0.05) 100%);
+  }
 }
 
 // Card image area (for source/installation cards)
@@ -185,6 +294,11 @@ blockquote {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+  }
+
+  // Dark mode: use light background so dark logos are visible
+  [data-bs-theme="dark"] & {
+    background-color: #f8f9fa;
   }
 }
 
@@ -255,6 +369,16 @@ blockquote {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   }
+
+  // Dark mode: add visible border and adjust shadow
+  [data-bs-theme="dark"] & {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+  }
 }
 
 .extension-card-image {
@@ -270,6 +394,11 @@ blockquote {
     max-height: 100%;
     object-fit: contain;
     margin: 0;
+  }
+
+  // Dark mode: use light background so dark logos are visible
+  [data-bs-theme="dark"] & {
+    background-color: #f8f9fa;
   }
 }
 
