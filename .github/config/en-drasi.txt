@@ -214,3 +214,8 @@ backticks
 unescaped
 JDBC
 labelMappings
+JQ
+jq
+haltOnError
+Dataverse's
+maxInterval

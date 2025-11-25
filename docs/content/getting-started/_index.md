@@ -59,7 +59,7 @@ To complete this tutorial, you need a Drasi environment and a PostgreSQL databas
 Complete one of the options described below before continuing to [Step 2](#step-2---create-the-postgresql-source):
 
 {{< tabpane >}}
-{{% tab header="GitHub Codespace" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 The Getting Started Tutorial codespace is hosted in the Drasi [learning](https://github.com/drasi-project/learning) repo. Click this button to create a codespace:
 
@@ -71,7 +71,8 @@ When you see the **Create a new codespace** screen, click the **Create codespace
   alt="Codespace configurations where defaults are fine" width="100%" >}}
 
 The codespace contains everything you need to complete this tutorial and will take a few minutes to complete the necessary startup and installation steps.
-**Wait for the setup scripts to complete like shown here:
+
+**Wait for the setup scripts to complete like shown here**:
 {{< figure src="Codespaces_02_Loading.png"
   alt="Codespace setup scripts running" width="100%" >}}
 
@@ -85,7 +86,7 @@ This folder contains files you will use later in the tutorial to create the Dras
 You can now proceed with the rest of the tutorial.
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 To use the Drasi Getting Started Dev Container, you will need to install:
 - [Visual Studio Code](https://code.visualstudio.com/) (or [Insiders Edition](https://code.visualstudio.com/insiders))
 - Visual Studio Code [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
@@ -93,7 +94,7 @@ To use the Drasi Getting Started Dev Container, you will need to install:
 
 
 Once you have these prerequisites installed:
-1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/0.1.1/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
+1. Download the [Drasi Getting Started Tutorial ZIP file](https://github.com/drasi-project/learning/releases/download/latest/quickstart-dev-container.zip), which contains the files you will need during the tutorial.
 2. Unzip the Drasi Getting Started Tutorial ZIP file to a suitable location on your computer
 3. Run VS Code and open the `tutorial/getting-started` folder from the Drasi Getting Started Tutorial files you just unzipped
 
@@ -133,9 +134,27 @@ To adjust these settings in Docker Desktop:
 If the Dev Container startup fails, it is usually due to a problem with Docker resources. The following link contains instructions for [cleaning out unused containers and images](https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_cleaning-out-unused-containers-and-images). If this doesn't resolve your problem, you can contact the Drasi Team.
 
 {{% /tab %}}
-{{% tab header="Install Drasi" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
-As an alternative to completing this tutorial using a GitHub Codespace or VS Code Dev Container you can install Drasi on one of the supported platforms [Drasi Installation Guides](/how-to-guides/installation/). The complexity and time this will take depends on the platform you choose.
+As an alternative to completing this tutorial using a GitHub Codespace or VS Code Dev Container you can install Drasi on one of the supported platforms [Drasi Installation Guides](/how-to-guides/installation/). The complexity and time this will take depends on the platform you choose. After the installation completes, you will also need to configure the ingress controller in order to access the Debug Reaction later in the tutorial. 
+
+- **AKS/EKS**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init
+```
+- **Kind**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init --local-cluster
+```
+- **k3d**: Run the following command to install the Contour ingress controller:
+```bash
+drasi ingress init --local-cluster --ingress-annotation "projectcontour.io/websocket-routes=/"
+```
+Or, if you are using Traefik as the ingress controller, run:
+```bash
+drasi ingress init --use-existing --ingress-class-name traefik --ingress-ip-address 127.0.0.1
+```
+
 
 You will also need a PostgreSQL database where you can load the dataset used in the tutorial. The [Getting Started Tutorial Dataset](/reference/sample-data/getting-started/) page describes a way to easily setup a PostgreSQL server on Kubernetes and to load the required data.
 
@@ -362,9 +381,9 @@ drasi list reaction
 You should expect to see the following response:
 
 ```
-         ID         | AVAILABLE | MESSAGES
---------------------+-----------+-----------
-  hello-world-debug |  true     |
+         ID         | AVAILABLE |                   INGRESS URL                      | MESSAGES  
+--------------------+-----------+----------------------------------------------------+-----------
+  hello-world-debug | true      | http://hello-world-debug.drasi.<ip-address>.nip.io |           
 ```
 
 If your Reaction is not yet available (AVAILABLE = false), you can use the `drasi wait` command to wait for it to complete its startup:
@@ -377,23 +396,68 @@ When `drasi wait` returns, your Debug Reaction is created and ready to use.
 
 Once the Debug Reaction is working (AVAILABLE = true), the Drasi Hello World solution is fully deployed and ready to test.
 
-Because the Debug Reaction is running in Kubernetes, in order to connect its Web UI you must forward the container port to a local port. In the Dev Container terminal, run the following command:
+Access the Debug Reaction Web UI as follows:
 
+{{< tabpane >}}
+{{% tab header="GitHub Codespaces" text=true %}}
+By default, the Debug Reaction is configured with ingress. The GitHub Codespace setup script has already port-forwarded the traefik ingress controller to port 8080. We now need to update the port visibility settings to make port 8080 public:
+
+1. Go to the PORTS tab in VS Code and **Right click on port 8080**
+2. Select Port Visibility
+3. Mark it as public
+4. Make sure that the port is marked as Public.
+
+{{< figure src="Codespaces_04_EnsurePublicPort.png"
+  alt="VS Code Ports tab showing how to make port 8080 public" width="100%" >}}
+
+The demo should now be accessible at **`https://<your-codespace-id>-8080.app.github.dev/`**. You can access the UI by clicking on the browser link shown in the PORTS tab for port 8080.
+
+{{% /tab %}}
+
+{{% tab header="VSCode DevContainer" text=true %}}
+By default, the Debug Reaction is configured with ingress and can be accessed directly using the URL from the `drasi list reaction` command output by appending `:8080` to the hostname. For example, if the ingress URL is `http://hello-world-debug.drasi.127.0.0.1.nip.io`, you would access the Debug Reaction at:
+```
+http://hello-world-debug.drasi.127.0.0.1.nip.io:8080
+```
+{{% /tab %}}
+
+{{% tab header="Local Setup" text=true %}}
+- **AKS/EKS:** You can access the Debug Reaction using the ingress URL from the `drasi list reaction` command output. 
+- **Kind/k3d:** Please refer to the [ingress setup instructions](/reference/ingress/#using-ingress-in-local-clusters) for your local cluster to access the Debug Reaction using the ingress.
+
+In addition to accessing the Debug Reaction via ingress, you can also port-forward the Debug Reaction service to your local machine. Run the following command in a terminal window:
 ```bash
 kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
 ```
-
 Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
-
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
+{{% /tab %}}
+
+{{% /tabpane %}}
 
 ## Step 5 - Test the Solution
-To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands. The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
+
+To test the Hello World solution, you will need to add/update/delete data in the `Message` table of the PostgreSQL database, so you will need a way to run SQL commands.
+
+{{< tabpane >}}
+{{% tab header="GitHub Codespaces" text=true %}}
+The GitHub Codespace is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
 
 ```bash
 psql
 ```
+{{% /tab %}}
 
+{{% tab header="VSCode DevContainer" text=true %}}
+The Dev Container is pre-configured with [psql](https://www.postgresql.org/docs/current/app-psql.html), the PostgreSQL CLI, which will connect to the pre-installed PostgreSQL database. If you run the following command from a Dev Container terminal, it will create an interactive terminal session with the database in which you can enter SQL commands and see the results:
+
+```bash
+psql
+```
+{{% /tab %}}
+
+{{% tab header="Local Setup" text=true %}}
+You can connect to the PostgreSQL database using tools like `psql`.
 If you prefer to use a GUI interface, you can install [pgAdmin](https://www.pgadmin.org/) on your local machine and use the following connections settings:
 
 |Setting|Value|
@@ -403,6 +467,11 @@ If you prefer to use a GUI interface, you can install [pgAdmin](https://www.pgad
 |Port|5432|
 |User Id|test|
 |Password|test|
+
+{{% /tab %}}
+
+{{% /tabpane %}}
+
 
 
 On the left hand side is a menu listing the three Continuous Queries created earlier. Select `hello-world-from` entry and the right hand pane will show the current results of the `hello-world-from` query. Initially, there is only one result, because only **Brian Kernighan** is associated with the "Hello World" message.
@@ -490,12 +559,12 @@ The [Connecting a Frontend to a Query](/tutorials/connecting-frontends/) tutoria
 Cleanup steps depend on how you ran the Getting Started Tutorial:
 
 {{< tabpane >}}
-{{% tab header="GitHub Codespace" text=true %}}
+{{% tab header="GitHub Codespaces" text=true %}}
 
 If you no longer need the Codespace and want to cleanup, you can go to [Your codespaces](https://github.com/codespaces) page on GitHub and delete the codespace.
 
 {{% /tab %}}
-{{% tab header="VS Code Dev Container" text=true %}}
+{{% tab header="VSCode DevContainer" text=true %}}
 
 If you no longer need the Dev Container and want to cleanup, you can:
 1. Click the `Dev Container connection status` box in the bottom left corner of VS Code
@@ -506,7 +575,7 @@ If you no longer need the Dev Container and want to cleanup, you can:
 
 {{% /tab %}}
 
-{{% tab header="Installed Drasi" text=true %}}
+{{% tab header="Local Setup" text=true %}}
 
 Use the [drasi delete](/reference/command-line-interface/#drasi-delete) to delete the Debug Reaction, Continuous Queries, and PostgreSQL Source with the following commands:
 
