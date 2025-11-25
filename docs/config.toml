@@ -84,3 +84,9 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
   sidebar_menu_truncate = 500
   ul_show = 1
   navbar_logo = true
+  # Show reading time on documentation pages
+  readingtime.enable = true
+
+# Enable git-based last modified date detection
+[frontmatter]
+  lastmod = [":git", "lastmod", "date", "publishDate"]
