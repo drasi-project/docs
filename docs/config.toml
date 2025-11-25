@@ -15,7 +15,9 @@ DefaultContentLanguage = "en"
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    style = 'monokailight'
+    # Use CSS classes instead of inline styles for dark mode support
+    noClasses = false
+    style = 'tango'
 
       
 # Top Nav Bar
@@ -80,3 +82,5 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
   sidebar_menu_truncate = 500
   ul_show = 1
   navbar_logo = true
+  # Enable dark mode toggle in navbar
+  showLightDarkModeMenu = true

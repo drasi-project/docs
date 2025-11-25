@@ -1,3 +1,5 @@
+// Import Docsy dark mode color adjustments for proper dark/light theme support
+@import 'td/code-dark';
 
 /* Disable the site name */
 .td-navbar .navbar-brand__name {
@@ -36,16 +38,17 @@
   // Extension card styles
   .extension-card {
     display: block; /* Make the whole card clickable */
-    border: 1px solid #ddd; // Light border around the card
+    border: 1px solid var(--bs-border-color); // Use Bootstrap variable for dark mode support
     border-radius: 8px; // Slight rounding on corners
     overflow: hidden; // Ensures the image and content stay within the card boundaries
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
     transition: transform 0.3s ease; // Animation on hover
-  
+    background-color: var(--bs-body-bg); // Use theme background color
+
     &:hover {
       transform: scale(1.05); // Slight zoom effect on hover
     }
-  
+
     // Ensure all cards are the same size
     height: 300px;
     display: flex;
@@ -86,7 +89,7 @@
   // Extension card summary
   .extension-card-summary {
     font-size: 0.9rem;
-    color: #666; // Slightly muted color for summary text
+    color: var(--bs-secondary-color); // Use Bootstrap variable for dark mode support
   }
   
   // Responsiveness
