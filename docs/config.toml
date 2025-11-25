@@ -87,6 +87,12 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
   # Show reading time on documentation pages
   readingtime.enable = true
 
+# Feedback widget - "Was this page helpful?"
+# Note: Response messages are customized in layouts/_partials/feedback.html
+# to support dynamic page titles and opening links in new tabs
+[params.ui.feedback]
+  enable = true
+
 # Enable git-based last modified date detection
 [frontmatter]
   lastmod = [":git", "lastmod", "date", "publishDate"]
