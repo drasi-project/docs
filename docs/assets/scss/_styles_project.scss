@@ -5,6 +5,91 @@
 .td-navbar .navbar-brand__name {
     display: none;
 }
+
+/* ========================================
+   Typography and Spacing Improvements
+   ======================================== */
+
+// Main content area typography
+.td-content {
+  // Improved heading styles with better spacing and visual hierarchy
+  h1 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  h4, h5, h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  // Better paragraph spacing
+  p {
+    margin-bottom: 1.25rem;
+  }
+
+  // List spacing improvements
+  ul, ol {
+    margin-bottom: 1.25rem;
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+  }
+
+  // Nested list spacing
+  ul ul, ul ol, ol ul, ol ol {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+}
+
+// Inline code styling - visually distinct but not distracting
+code:not([class*="language-"]) {
+  padding: 0.2em 0.4em;
+  font-size: 0.875em;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  color: #c7254e;
+}
+
+// Code block improvements
+pre {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+// Blockquote styling
+blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid $secondary;
+  background-color: rgba(0, 0, 0, 0.02);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
   
 /* Adjust the logo size */
 .td-navbar {
@@ -21,21 +106,202 @@
     }
 }
 
-// Grid container for the extension cards
-.extension-grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px; // Space between the cards
-    padding: 20px;
-    justify-content: center;
+// =============================================================================
+// UNIFIED CARD GRID SYSTEM
+// Used for extension cards (sources, installation) and landing page cards
+// =============================================================================
+
+// Override Docsy's max-width constraint for landing page intro text
+// This ensures the lead paragraph has the same width as the card grid
+.td-content > .lead {
+  max-width: 100%;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .extension-grid-container a {
-    text-decoration: none; /* Removes the underline */
-    color: inherit; /* Ensures the text color stays consistent */
+}
+
+@media (max-width: 576px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-grid a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// Unified card styles - used across all card types
+.unified-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--bs-body-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  min-height: 280px;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Card icon area (for landing page cards with icons)
+.unified-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($secondary, 0.05) 100%);
+  font-size: 3rem;
+  color: $primary;
+}
+
+// Card image area (for source/installation cards)
+.unified-card-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  padding: 16px;
+  background-color: var(--bs-tertiary-bg);
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+// Card content area
+.unified-card-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.unified-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--bs-heading-color);
+}
+
+.unified-card-summary {
+  font-size: 0.9rem;
+  color: var(--bs-secondary-color);
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+// Responsiveness for unified cards
+@media (max-width: 768px) {
+  .unified-card {
+    min-height: 240px;
   }
 
-  // Extension card styles
+  .unified-card-icon {
+    height: 100px;
+    font-size: 2.5rem;
+  }
+}
+
+// =============================================================================
+// LEGACY EXTENSION CARD STYLES (for backward compatibility)
+// =============================================================================
+
+.extension-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.extension-grid-container a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.extension-card {
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--bs-body-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  min-height: 280px;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.extension-card-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  padding: 16px;
+  background-color: var(--bs-tertiary-bg);
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    margin: 0;
+  }
+}
+
+.extension-card-content {
+  padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.extension-card-content a {
+  color: inherit;
+}
+
+.extension-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--bs-heading-color);
+}
+
+.extension-card-summary {
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .extension-grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
   .extension-card {
     display: block; /* Make the whole card clickable */
     border: 1px solid var(--bs-border-color); // Use Bootstrap variable for dark mode support
@@ -102,6 +368,7 @@
       height: 300px; // Adjust card height for smaller screens
     }
   }
+}
 // Footer style override to prevent overlap of elements
   .td-footer__right {
     position: relative;
@@ -111,4 +378,52 @@
     position: relative;
     z-index: 2;
   }
-  
+
+// Enhanced card styles for Docsy cards (cardpane shortcode)
+.td-card {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background-color: var(--bs-body-bg);
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--bs-border-color);
+    font-weight: 600;
+  }
+
+  .card-footer {
+    background-color: transparent;
+    border-top: 1px solid var(--bs-border-color);
+  }
+}
+
+// Cardpane container styling - ensure equal height cards
+.td-card-group.card-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  // Each card in the group
+  > .td-card.card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 250px;
+
+    .card-body {
+      flex: 1 1 auto;
+    }
+
+    .card-footer {
+      margin-top: auto;
+    }
+  }
+}
+

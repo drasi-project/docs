@@ -8,3 +8,19 @@ $headings-color: $primary;
 /* Dark mode configuration */
 /* Lighten primary color more in dark mode for better contrast */
 $lighten-amount-for-dark-color-variant: 30%;
+
+/* Typography improvements for better readability */
+
+// Slightly larger base font size for improved readability
+$font-size-base: 1.0625rem; // 17px instead of 16px
+
+// Improved line height for body text
+$line-height-base: 1.7;
+
+// Heading typography
+$headings-font-weight: 600;
+$headings-line-height: 1.3;
+
+// Inline code styling
+$code-color: #c7254e;
+$code-font-size: 0.9em;
