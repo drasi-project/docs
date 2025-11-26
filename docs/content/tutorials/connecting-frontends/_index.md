@@ -43,7 +43,7 @@ drasi wait reaction hello-world-signalr
 Forward the SignalR gateway to your local machine on port 8082 with the following command.
 
 ```shell
-kubectl port-forward services/hello-world-signalr-gateway 8082:8080 -n drasi-system
+drasi tunnel reaction hello-world-signalr 8082
 ```
 If you are using GitHub codespaces, when the dialog pops up, make sure to click `Make Public`.
 

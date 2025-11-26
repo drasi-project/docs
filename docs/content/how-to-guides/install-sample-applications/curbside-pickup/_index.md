@@ -113,10 +113,10 @@ From the `/apps/curbside-pickup/devops` folder, use the drasi CLI to deploy the 
 drasi apply -f signalr-reaction.yaml
 ```
 
-Create a port forward for the SignalR reaction to a port on your local machine. Currently we have to use `kubectl` to achieve this.
+Create a port forward for the SignalR reaction to a port on your local machine. Currently we have to use `drasi tunnel` to achieve this.
 
 ```bash
-kubectl port-forward services/signalr1-reaction-gateway 5001:8080 -n default
+drasi tunnel reaction signalr1-reaction 5001
 ```
 
 ## Configure and start the App backend

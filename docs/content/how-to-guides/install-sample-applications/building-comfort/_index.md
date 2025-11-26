@@ -166,7 +166,7 @@ The Gremlin Reaction is used to update the graph in Cosmos DB with the latest co
 To connect the React app to the SignalR Reaction, forward the gateway port for the SignalR reaction to a port on your local machine:
 
 ```bash
-kubectl port-forward services/signalr-building-gateway 5001:8080 -n default
+drasi tunnel reaction signalr-building 5001
 ```
 
 ### 3. Run the demo backend and frontend
@@ -205,7 +205,7 @@ From the `apps/building-comfort/app` folder, edit the `config.json` file to spec
 ```json
 {
   "crudApiUrl": "http://localhost:7071",     // LocalHttpPort of the backend Functions app
-  "signalRUrl": "http://localhost:5001/hub", // Kubectl port-forward of SignalR reaction
+  "signalRUrl": "http://localhost:5001/hub", // Tunnel of SignalR reaction
   ...
 }
 ```
