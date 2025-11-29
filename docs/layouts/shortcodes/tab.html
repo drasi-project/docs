@@ -1,0 +1,19 @@
+{{/*
+  Tab item for code-tabs shortcode
+  Usage:
+  {{< tab name="YAML" >}}
+  content here
+  {{< /tab >}}
+*/}}
+
+{{ $name := .Get "name" | default "Tab" }}
+{{ $content := .Inner }}
+
+{{ $tabs := .Parent.Scratch.Get "tabs" }}
+{{ if not $tabs }}
+  {{ $tabs = slice }}
+{{ end }}
+
+{{ $tab := dict "name" $name "content" $content }}
+{{ $tabs = $tabs | append $tab }}
+{{ .Parent.Scratch.Set "tabs" $tabs }}
