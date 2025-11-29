@@ -47,7 +47,8 @@ body:has(.hero-section) .td-breadcrumbs {
 }
 
 // Hide the page meta info (reading time) on homepage
-body:has(.hero-section) .td-page-meta {
+body:has(.hero-section) .td-page-meta,
+body:has(.hero-section) .article-meta {
   display: none;
 }
 
@@ -574,9 +575,9 @@ blockquote {
 // =============================================================================
 
 .hero-section {
-  padding: $spacer-xl 0;
+  padding: $spacer-md 0;
   background: $gradient-subtle;
-  margin-bottom: $spacer-lg;
+  margin-bottom: 0;
   position: relative;
   overflow: hidden;
 
@@ -614,6 +615,11 @@ blockquote {
   }
 }
 
+// Reduce top margin of the first heading after hero section
+.td-content .hero-section + h2 {
+  margin-top: $spacer-sm !important;
+}
+
 .hero-title {
   font-size: 2.25rem;
   font-weight: 700;
@@ -631,7 +637,7 @@ blockquote {
   color: $gray-600;
   max-width: 600px;
   line-height: 1.5;
-  margin-bottom: $spacer-md;
+  margin-bottom: $spacer-sm;
 }
 
 // =============================================================================
