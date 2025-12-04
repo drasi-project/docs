@@ -5,6 +5,10 @@ $secondary: #75de6f;
 /* Set the heading colors to Drasi's primary color */
 $headings-color: $primary;
 
+/* Dark mode configuration */
+/* Lighten primary color more in dark mode for better contrast */
+$lighten-amount-for-dark-color-variant: 30%;
+
 /* Typography improvements for better readability */
 
 // Slightly larger base font size for improved readability
