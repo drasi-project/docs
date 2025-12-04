@@ -6,6 +6,21 @@ weight: 50
 no_list: true
 description: >
     Learn how to configure a PostgreSQL Source to connect to a PostgreSQL database
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Setup PostgreSQL Replication"
+      url: "/how-to-guides/configure-sources/configure-postgresql-source/setup-postgresql-replication/"
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/reference/command-line-interface/"
 ---
 
 The PostgreSQL Source enables Drasi connectivity to PostgreSQL databases. It 

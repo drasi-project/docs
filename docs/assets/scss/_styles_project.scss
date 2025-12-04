@@ -2175,3 +2175,246 @@ pre:hover .copy-code-button {
     break-inside: avoid;
   }
 }
+
+// =============================================================================
+// RELATED CONTENT SIDEBAR COMPONENT
+// Cross-references content across Diataxis quadrants
+// =============================================================================
+
+.related-content-sidebar,
+.related-content {
+  margin-top: $spacer-lg;
+  background: var(--bs-body-bg);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($primary, 0.1);
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+}
+
+// Inline variant for use within content
+.related-content--inline {
+  margin: $spacer-xl 0;
+  max-width: 100%;
+}
+
+.related-content__header {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  padding: $spacer-md;
+  background: linear-gradient(135deg, rgba($accent-purple, 0.08) 0%, rgba($accent-cyan, 0.08) 100%);
+  border-bottom: 1px solid rgba($primary, 0.08);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $primary;
+  cursor: pointer;
+  user-select: none;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($accent-purple, 0.12) 0%, rgba($accent-cyan, 0.12) 100%);
+  }
+
+  i:first-child {
+    color: $accent-purple;
+    font-size: 1rem;
+  }
+
+  span {
+    flex-grow: 1;
+  }
+}
+
+.related-content__toggle {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  color: $gray-500;
+  cursor: pointer;
+  transition: transform $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: $primary;
+  }
+
+  .collapsed & {
+    i {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+// Collapsed state for header
+[aria-expanded="false"] {
+  .related-content__toggle i {
+    transform: rotate(180deg);
+  }
+}
+
+.related-content__body {
+  padding: $spacer-md;
+
+  &.collapse:not(.show) {
+    display: none;
+  }
+
+  &.collapsing {
+    height: 0;
+    overflow: hidden;
+    transition: height $transition-base;
+  }
+}
+
+.related-content__section {
+  margin-bottom: $spacer-md;
+  padding-left: $spacer-sm;
+  border-left: 3px solid transparent;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  // Diataxis-colored left borders
+  &--concepts {
+    border-left-color: $color-concepts;
+  }
+
+  &--tutorials {
+    border-left-color: $color-tutorials;
+  }
+
+  &--howto {
+    border-left-color: $color-howto;
+  }
+
+  &--reference {
+    border-left-color: $color-reference;
+  }
+}
+
+.related-content__section-title {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  margin: 0 0 $spacer-sm 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $gray-600;
+
+  i {
+    font-size: 0.7rem;
+  }
+
+  // Icon colors matching Diataxis
+  .related-content__section--concepts & i {
+    color: $color-concepts;
+  }
+
+  .related-content__section--tutorials & i {
+    color: $color-tutorials;
+  }
+
+  .related-content__section--howto & i {
+    color: $color-howto;
+  }
+
+  .related-content__section--reference & i {
+    color: $color-reference;
+  }
+}
+
+.related-content__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-bottom: $spacer-xs;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.related-content__link {
+  display: block;
+  padding: $spacer-xs $spacer-sm;
+  font-size: 0.85rem;
+  color: $gray-700;
+  text-decoration: none;
+  border-radius: $border-radius-sm;
+  transition: all $transition-fast;
+  line-height: 1.4;
+
+  &:hover {
+    background: rgba($primary, 0.04);
+    color: $primary;
+    text-decoration: none;
+  }
+
+  // Active state when on the linked page
+  &[aria-current="page"],
+  &.active {
+    background: rgba($secondary, 0.1);
+    color: $primary;
+    font-weight: 500;
+  }
+}
+
+// Mobile: collapsible by default
+@media (max-width: 1199.98px) {
+  .related-content-sidebar {
+    // On mobile, show as a collapsible panel at the bottom of content
+    position: relative;
+    margin: $spacer-xl 0;
+    border-radius: $border-radius-md;
+  }
+
+  .related-content__body {
+    // Start collapsed on mobile
+    &.show {
+      display: block;
+    }
+  }
+}
+
+// Desktop: always visible in sidebar
+@media (min-width: 1200px) {
+  .related-content-sidebar {
+    position: sticky;
+    top: 80px; // Account for fixed navbar
+  }
+
+  .related-content__toggle {
+    // Hide toggle button on desktop - always expanded
+    display: none;
+  }
+
+  .related-content__header {
+    cursor: default;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba($accent-purple, 0.08) 0%, rgba($accent-cyan, 0.08) 100%);
+    }
+  }
+
+  .related-content__body {
+    // Always show on desktop
+    display: block !important;
+    height: auto !important;
+  }
+}
+
+// Print: hide related content
+@media print {
+  .related-content-sidebar,
+  .related-content {
+    display: none;
+  }
+}

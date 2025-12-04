@@ -5,6 +5,18 @@ linkTitle: "Middleware"
 weight: 60
 description: >
     Preprocessing incoming changes with custom logic
+related:
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 Middleware serves as an intermediary layer that processes incoming changes from data sources before they are passed to the query engine.  Middleware components are modular and can be stacked or combined in a pipeline to process incoming changes sequentially.

@@ -5,6 +5,25 @@ linkTitle: "Building Comfort with Drasi"
 weight: 40
 description: >
     Learn how to use Drasi in a building management scenario
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Curbside Pickup Tutorial"
+      url: "/tutorials/curbside-pickup/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Solution Design"
+      url: "/concepts/solution-design/"
+  howto:
+    - title: "Configure Cosmos DB Gremlin Source"
+      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+    - title: "Configure SignalR Reaction"
+      url: "/how-to-guides/configure-reactions/configure-signalr-reaction/"
+  reference:
+    - title: "Building Comfort Sample Data"
+      url: "/reference/sample-data/building-comfort/"
 ---
 
 ## Scenario

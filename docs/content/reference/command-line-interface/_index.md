@@ -5,6 +5,23 @@ linkTitle: "Command Line Interface"
 weight: 10
 description: >
     Managing Drasi using the Drasi Command Line Interface (CLI)
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Install Drasi"
+      url: "/how-to-guides/installation/"
+  reference:
+    - title: "Management API"
+      url: "/reference/management-api/"
 ---
 
 The Drasi Command Line Interface (CLI) is a tool designed to streamline the installation of Drasi and the management of Drasi environments. This section provides comprehensive instructions on how to use the CLI to apply, delete, describe, and manage resources within your Drasi environment. Whether you are installing Drasi for the first time or managing existing resources, the CLI commands and flags detailed here will help you perform these tasks efficiently and effectively.

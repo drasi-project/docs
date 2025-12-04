@@ -1,0 +1,127 @@
+{{/*
+  Related Content Shortcode
+
+  Displays a "Related Content" panel that cross-references content across Diataxis quadrants.
+  This shortcode can be used inline within content or automatically displayed in the sidebar.
+
+  Usage (inline):
+  {{< related-content >}}
+    concepts:
+      - title: "Understanding Sources"
+        url: "/concepts/sources/"
+    tutorials:
+      - title: "Getting Started with Drasi"
+        url: "/getting-started/"
+    howto:
+      - title: "Configure a PostgreSQL Source"
+        url: "/how-to-guides/configure-sources/postgresql/"
+    reference:
+      - title: "Source API Reference"
+        url: "/reference/sources/"
+  {{< /related-content >}}
+
+  Or use frontmatter (preferred for sidebar display):
+  ---
+  related:
+    concepts:
+      - title: "Understanding Sources"
+        url: "/concepts/sources/"
+  ---
+*/}}
+
+{{ $related := .Page.Params.related }}
+
+{{/* If inner content is provided, parse it as YAML */}}
+{{ if .Inner }}
+  {{ $related = .Inner | transform.Unmarshal }}
+{{ end }}
+
+{{ if $related }}
+<div class="related-content{{ if eq (.Get "inline") "true" }} related-content--inline{{ end }}">
+  <div class="related-content__header">
+    <i class="fas fa-compass"></i>
+    <span>Related Content</span>
+    <button class="related-content__toggle d-xl-none" aria-label="Toggle related content">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+
+  <div class="related-content__body">
+    {{/* Learn More - Concepts */}}
+    {{ with $related.concepts }}
+    <div class="related-content__section related-content__section--concepts">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-lightbulb"></i>
+        Learn More
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Try It - Tutorials */}}
+    {{ with $related.tutorials }}
+    <div class="related-content__section related-content__section--tutorials">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-graduation-cap"></i>
+        Try It
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Do It - How-To Guides */}}
+    {{ with $related.howto }}
+    <div class="related-content__section related-content__section--howto">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-tasks"></i>
+        Do It
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Look It Up - Reference */}}
+    {{ with $related.reference }}
+    <div class="related-content__section related-content__section--reference">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-book"></i>
+        Look It Up
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}
