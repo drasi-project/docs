@@ -1,0 +1,70 @@
+{{/*
+  Term Shortcode
+
+  Renders a glossary term with tooltip functionality.
+
+  Usage:
+    {{< term "Source" >}}
+    {{< term "Source" "custom display text" >}}
+    {{< term term="Source" >}}
+    {{< term term="Source" display="custom text" >}}
+
+  Parameters:
+    - First positional or "term": The glossary term to look up (required)
+    - Second positional or "display": Custom display text (optional, defaults to term)
+*/}}
+
+{{/* Get the term - support both positional and named parameters */}}
+{{ $termName := "" }}
+{{ $displayText := "" }}
+
+{{ if .IsNamedParams }}
+  {{ $termName = .Get "term" }}
+  {{ $displayText = .Get "display" | default $termName }}
+{{ else }}
+  {{ $termName = .Get 0 }}
+  {{ $displayText = .Get 1 | default $termName }}
+{{ end }}
+
+{{/* Look up the term in glossary data */}}
+{{ $glossary := site.Data.glossary }}
+{{ $termData := false }}
+
+{{ if $glossary.terms }}
+  {{ $termLower := $termName | lower }}
+  {{ range $glossary.terms }}
+    {{/* Check main term */}}
+    {{ if eq (.term | lower) $termLower }}
+      {{ $termData = . }}
+    {{ end }}
+    {{/* Check aliases */}}
+    {{ if .aliases }}
+      {{ range .aliases }}
+        {{ if eq (. | lower) $termLower }}
+          {{ $termData = $ }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if $termData }}
+<span class="glossary-term"
+      data-term="{{ $termData.term }}"
+      data-definition="{{ $termData.short }}"
+      tabindex="0"
+      role="button"
+      aria-describedby="tooltip-{{ $termData.term | urlize }}">
+  {{- $displayText -}}
+  <span class="glossary-term-tooltip" id="tooltip-{{ $termData.term | urlize }}" role="tooltip">
+    <span class="glossary-term-tooltip-title">{{ $termData.term }}</span>
+    <span class="glossary-term-tooltip-text">{{ $termData.short }}</span>
+    <a href="{{ "/reference/glossary/" | relURL }}#term-{{ $termData.term | urlize }}" class="glossary-term-tooltip-link">
+      Learn more <i class="fas fa-arrow-right"></i>
+    </a>
+  </span>
+</span>
+{{ else }}
+{{/* Term not found - render as plain text with warning class for development */}}
+<span class="glossary-term-missing" title="Term '{{ $termName }}' not found in glossary">{{ $displayText }}</span>
+{{ end }}

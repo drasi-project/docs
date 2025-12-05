@@ -131,6 +131,17 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
       </div>
     </div>
   </a>
+  <a href="/reference/glossary/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fas fa-book"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Glossary</h3>
+        <p class="unified-card-summary">Definitions of key Drasi terms and concepts.</p>
+      </div>
+    </div>
+  </a>
 </div>
 
 ## Quick Lookup
