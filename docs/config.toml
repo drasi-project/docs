@@ -70,10 +70,10 @@ custom_js = ["js/sync-tabs.js", "js/navigation-enhancements.js"]
 googleAnalytics =  "G-MZQ63ZL6GZ"
 
 [params.ui]
-  sidebar_menu_compact = true
+  sidebar_menu_compact = false
   sidebar_search_disable = true
   sidebar_menu_foldable = true
-  sidebar_menu_truncate = 500
+  sidebar_menu_truncate = 100
   ul_show = 1
   navbar_logo = true
   # Show reading time on documentation pages
