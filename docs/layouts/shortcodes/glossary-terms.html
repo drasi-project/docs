@@ -1,0 +1,61 @@
+{{/*
+  Glossary Terms Shortcode
+
+  Renders all glossary terms from data/glossary.yaml as a searchable, filterable list.
+  Used on the glossary page to display the complete term list.
+*/}}
+
+{{ $glossary := site.Data.glossary }}
+
+{{ if $glossary.terms }}
+  {{ range $glossary.terms }}
+  <div class="glossary-entry"
+       data-term="{{ .term | lower }}"
+       data-category="{{ .category }}"
+       data-aliases="{{ if .aliases }}{{ delimit .aliases "," | lower }}{{ end }}"
+       id="term-{{ .term | urlize }}">
+    <div class="glossary-entry-header">
+      <h3 class="glossary-entry-term">{{ .term }}</h3>
+      <span class="glossary-entry-category glossary-entry-category--{{ .category }}">
+        {{ if eq .category "core" }}Core Concepts
+        {{ else if eq .category "query" }}Query Language
+        {{ else if eq .category "data" }}Data & Changes
+        {{ else if eq .category "infrastructure" }}Infrastructure
+        {{ else }}{{ .category }}
+        {{ end }}
+      </span>
+    </div>
+
+    {{ with .aliases }}
+    <div class="glossary-entry-aliases">
+      <span class="glossary-entry-aliases-label">Also known as:</span>
+      {{ range $i, $alias := . }}{{ if $i }}, {{ end }}<span class="glossary-alias">{{ $alias }}</span>{{ end }}
+    </div>
+    {{ end }}
+
+    <div class="glossary-entry-definition">
+      {{ .definition | markdownify }}
+    </div>
+
+    {{ with .related }}
+    <div class="glossary-entry-related">
+      <span class="glossary-entry-related-label">Learn more:</span>
+      <ul class="glossary-entry-links">
+        {{ range . }}
+        <li><a href="{{ .url | relURL }}">{{ .title }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{ with .see_also }}
+    <div class="glossary-entry-see-also">
+      <span class="glossary-entry-see-also-label">See also:</span>
+      {{ range $i, $term := . }}{{ if $i }}, {{ end }}<a href="#term-{{ $term | urlize }}" class="glossary-see-also-link">{{ $term }}</a>{{ end }}
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+{{ else }}
+  <p class="glossary-empty-state">No glossary terms defined. Add terms to <code>data/glossary.yaml</code>.</p>
+{{ end }}

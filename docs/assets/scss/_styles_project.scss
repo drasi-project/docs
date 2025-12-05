@@ -1,7 +1,80 @@
+// =============================================================================
+// DRASI DOCUMENTATION STYLES
+// A fresh, distinctive design that prioritizes usability and visual appeal
+// =============================================================================
+
+// CSS Custom Properties for dynamic theming
+:root {
+  --drasi-primary: #{$primary};
+  --drasi-secondary: #{$secondary};
+  --drasi-accent-lime: #{$accent-lime};
+  --drasi-accent-purple: #{$accent-purple};
+  --drasi-accent-coral: #{$accent-coral};
+  --drasi-accent-cyan: #{$accent-cyan};
+
+  // Diataxis section colors
+  --drasi-tutorials: #{$color-tutorials};
+  --drasi-howto: #{$color-howto};
+  --drasi-concepts: #{$color-concepts};
+  --drasi-reference: #{$color-reference};
+
+  // Transitions
+  --transition-fast: #{$transition-fast};
+  --transition-base: #{$transition-base};
+}
 
 /* Disable the site name */
 .td-navbar .navbar-brand__name {
     display: none;
+}
+
+// =============================================================================
+// HOMEPAGE CLEANUP
+// Hide redundant header elements when hero section is present
+// =============================================================================
+
+// Target homepage specifically - hide the default title, description, reading time
+.td-content:has(.hero-section) {
+  // Hide the default page title (we have hero-title instead)
+  > h1:first-of-type {
+    display: none;
+  }
+}
+
+// Hide breadcrumbs on homepage
+body:has(.hero-section) .td-breadcrumbs {
+  display: none;
+}
+
+// Hide the page meta info (reading time) on homepage
+body:has(.hero-section) .td-page-meta,
+body:has(.hero-section) .article-meta {
+  display: none;
+}
+
+// Hide the lead/description paragraph that Docsy adds
+body:has(.hero-section) .td-content > .lead:first-of-type {
+  display: none;
+}
+
+// Override Docsy's max-width constraint on homepage content
+// Allow hero section, flow diagram, and section text to use full width
+.td-content:has(.hero-section) {
+  > p,
+  > .section-intro {
+    max-width: 100%;
+  }
+}
+
+// =============================================================================
+// SECTION PAGE CLEANUP
+// Hide redundant lead description when custom section-header is present
+// =============================================================================
+
+// Hide the lead/description on pages with custom section headers
+// The section-header provides the visual intro, description is kept for SEO
+.td-content:has(.section-header) > .lead:first-of-type {
+  display: none;
 }
 
 /* ========================================
@@ -15,22 +88,40 @@
     margin-top: 0;
     margin-bottom: 1.5rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, $primary 0%, lighten($primary, 20%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   h2 {
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, $secondary, transparent) 1;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 60px;
+      height: 2px;
+      background: $secondary;
+      border-radius: 2px;
+    }
   }
 
   h3 {
     margin-top: 2rem;
     margin-bottom: 0.75rem;
     font-weight: 600;
+    color: darken($primary, 5%);
   }
 
   h4, h5, h6 {
@@ -62,27 +153,135 @@
 
 // Inline code styling - visually distinct but not distracting
 code:not([class*="language-"]) {
-  padding: 0.2em 0.4em;
-  font-size: 0.875em;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  color: #c7254e;
+  padding: 0.2em 0.5em;
+  font-size: $code-font-size;
+  font-family: $font-family-monospace;
+  background-color: rgba($primary, 0.06);
+  border-radius: $border-radius-sm;
+  color: $code-color;
+  border: 1px solid rgba($primary, 0.08);
 }
 
 // Code block improvements
 pre {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  border-radius: 6px;
+  padding: 1.25rem;
+  border-radius: $border-radius-md;
+  background-color: #1e1e2e !important; // Dark theme for code
+  border: 1px solid rgba($primary, 0.1);
+  box-shadow: $shadow-md;
+
+  code {
+    font-family: $font-family-monospace;
+    font-size: 0.9em;
+    line-height: 1.6;
+    color: #f8f8f2; // Default text color for dark background
+  }
 }
 
-// Blockquote styling
+// =============================================================================
+// CHROMA SYNTAX HIGHLIGHTING (Dark theme for code blocks)
+// Based on Dracula theme - high contrast for dark backgrounds
+// =============================================================================
+.highlight pre,
+pre.chroma,
+.chroma {
+  background-color: #1e1e2e !important;
+  color: #f8f8f2;
+}
+
+.chroma {
+  // Base text color
+  color: #f8f8f2;
+
+  // Background
+  .bg { background-color: #1e1e2e; }
+
+  // Keywords
+  .k, .kc, .kd, .kn, .kp, .kr, .kt { color: #ff79c6; }
+
+  // Names/Identifiers
+  .n { color: #f8f8f2; }
+  .na { color: #50fa7b; }  // Attribute names
+  .nb { color: #8be9fd; }  // Builtins
+  .nc { color: #8be9fd; }  // Class names
+  .no { color: #bd93f9; }  // Constants
+  .nd { color: #50fa7b; }  // Decorators
+  .ni { color: #f8f8f2; }
+  .ne { color: #ff5555; }  // Exceptions
+  .nf { color: #50fa7b; }  // Function names
+  .nl { color: #8be9fd; }  // Labels
+  .nn { color: #f8f8f2; }  // Namespace
+  .nx { color: #f8f8f2; }
+  .py { color: #f8f8f2; }
+  .nt { color: #ff79c6; }  // Tags
+  .nv { color: #f8f8f2; }  // Variables
+  .bp, .fm, .vc, .vg, .vi, .vm { color: #f8f8f2; }
+
+  // Strings
+  .s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss {
+    color: #f1fa8c;
+  }
+
+  // Numbers
+  .m, .mb, .mf, .mh, .mi, .il, .mo { color: #bd93f9; }
+
+  // Operators
+  .o, .ow { color: #ff79c6; }
+
+  // Punctuation
+  .p { color: #f8f8f2; }
+
+  // Comments
+  .c, .ch, .cm, .c1, .cs, .cp, .cpf {
+    color: #6272a4;
+    font-style: italic;
+  }
+
+  // Literals
+  .l, .ld { color: #f1fa8c; }
+
+  // Generic
+  .gd { color: #ff5555; }  // Deleted
+  .ge { font-style: italic; }
+  .gi { color: #50fa7b; }  // Inserted
+  .gs { font-weight: bold; }
+  .gu { color: #6272a4; }  // Subheading
+
+  // Line numbers
+  .ln, .lnt {
+    color: #6272a4;
+    margin-right: 0.4em;
+    padding: 0 0.4em;
+  }
+
+  // Line highlight
+  .hl { background-color: #44475a; }
+
+  // Error
+  .err { color: #ff5555; }
+}
+
+// Blockquote styling - more distinctive
 blockquote {
   margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 1.5rem;
   border-left: 4px solid $secondary;
-  background-color: rgba(0, 0, 0, 0.02);
+  background: linear-gradient(90deg, rgba($secondary, 0.08) 0%, transparent 100%);
+  border-radius: 0 $border-radius-md $border-radius-md 0;
+  position: relative;
+
+  &::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    font-size: 3rem;
+    color: rgba($secondary, 0.3);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
 
   p:last-child {
     margin-bottom: 0;
@@ -123,19 +322,33 @@ blockquote {
   width: 100%;
 }
 
+// Three-column grid variant for better tablet experience
+.card-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
 @media (max-width: 1200px) {
   .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 576px) {
-  .card-grid {
+  .card-grid,
+  .card-grid-3 {
     grid-template-columns: 1fr;
   }
 }
 
-.card-grid a {
+.card-grid a,
+.card-grid-3 a {
   text-decoration: none;
   color: inherit;
 }
@@ -144,18 +357,37 @@ blockquote {
 .unified-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--bs-border-color);
-  border-radius: 12px;
+  border: 1px solid rgba($primary, 0.1);
+  border-radius: $border-radius-lg;
   overflow: hidden;
   background-color: var(--bs-body-bg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: $shadow-md;
+  transition: transform $transition-base, box-shadow $transition-base, border-color $transition-base;
   height: 100%;
   min-height: 280px;
+  position: relative;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-6px);
+    box-shadow: $shadow-xl;
+    border-color: rgba($secondary, 0.3);
+  }
+
+  // Subtle top accent line
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: $gradient-secondary;
+    opacity: 0;
+    transition: opacity $transition-base;
+  }
+
+  &:hover::before {
+    opacity: 1;
   }
 }
 
@@ -165,9 +397,44 @@ blockquote {
   align-items: center;
   justify-content: center;
   height: 120px;
-  background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($secondary, 0.05) 100%);
+  background: linear-gradient(135deg, rgba($primary, 0.04) 0%, rgba($secondary, 0.06) 100%);
   font-size: 3rem;
   color: $primary;
+  position: relative;
+  overflow: hidden;
+
+  // Decorative circles
+  &::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba($secondary, 0.1) 0%, transparent 70%);
+    top: -50px;
+    right: -50px;
+    border-radius: 50%;
+  }
+}
+
+// Diataxis-specific card icon variants
+.unified-card--tutorials .unified-card-icon {
+  background: $gradient-tutorials;
+  color: $color-tutorials;
+}
+
+.unified-card--howto .unified-card-icon {
+  background: $gradient-howto;
+  color: $color-howto;
+}
+
+.unified-card--concepts .unified-card-icon {
+  background: $gradient-concepts;
+  color: $color-concepts;
+}
+
+.unified-card--reference .unified-card-icon {
+  background: $gradient-reference;
+  color: $color-reference;
 }
 
 // Card image area (for source/installation cards)
@@ -176,19 +443,25 @@ blockquote {
   align-items: center;
   justify-content: center;
   height: 150px;
-  padding: 16px;
+  padding: 20px;
   background-color: var(--bs-tertiary-bg);
+  background: linear-gradient(180deg, rgba($gray-100, 0.5) 0%, rgba($gray-200, 0.3) 100%);
 
   img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    transition: transform $transition-base;
   }
+}
+
+.unified-card:hover .unified-card-image img {
+  transform: scale(1.05);
 }
 
 // Card content area
 .unified-card-content {
-  padding: 20px;
+  padding: 24px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -197,15 +470,49 @@ blockquote {
 .unified-card-title {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: var(--bs-heading-color);
+  transition: color $transition-fast;
+}
+
+.unified-card:hover .unified-card-title {
+  color: $primary;
 }
 
 .unified-card-summary {
   font-size: 0.9rem;
   color: var(--bs-secondary-color);
-  line-height: 1.5;
+  line-height: 1.6;
   flex-grow: 1;
+}
+
+// "New" badge for cards
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: $border-radius-full;
+  z-index: 1;
+
+  &--new {
+    background: $gradient-secondary;
+    color: $primary;
+  }
+
+  &--updated {
+    background: rgba($accent-cyan, 0.15);
+    color: darken($accent-cyan, 15%);
+  }
+
+  &--featured {
+    background: rgba($accent-purple, 0.15);
+    color: darken($accent-purple, 20%);
+  }
 }
 
 // Responsiveness for unified cards
@@ -217,6 +524,10 @@ blockquote {
   .unified-card-icon {
     height: 100px;
     font-size: 2.5rem;
+  }
+
+  .unified-card-content {
+    padding: 16px;
   }
 }
 
@@ -362,3 +673,2614 @@ blockquote {
   }
 }
 
+// =============================================================================
+// HERO SECTION STYLES
+// For homepage and section landing pages
+// =============================================================================
+
+.hero-section {
+  padding: $spacer-md 0;
+  background: $gradient-subtle;
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+
+  // Decorative background elements
+  &::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba($secondary, 0.08) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba($accent-purple, 0.06) 0%, transparent 70%);
+    bottom: -100px;
+    left: -50px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // Ensure content is above decorative elements
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Reduce top margin of the first heading after hero section
+.td-content .hero-section + h2 {
+  margin-top: $spacer-sm !important;
+}
+
+.hero-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: $spacer-sm;
+  background: linear-gradient(135deg, $primary 0%, lighten($primary, 25%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: $gray-600;
+  max-width: 100%;
+  line-height: 1.5;
+  margin-bottom: $spacer-sm;
+}
+
+// =============================================================================
+// CTA BUTTON STYLES
+// Prominent call-to-action buttons
+// =============================================================================
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: $border-radius-lg;
+  transition: all $transition-base;
+
+  &--primary {
+    background: $gradient-secondary;
+    color: $primary;
+    box-shadow: $shadow-secondary;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba($secondary, 0.4);
+      color: $primary;
+      text-decoration: none;
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: $primary;
+    border: 2px solid rgba($primary, 0.2);
+
+    &:hover {
+      border-color: $primary;
+      background: rgba($primary, 0.05);
+      color: $primary;
+      text-decoration: none;
+    }
+  }
+}
+
+.cta-group {
+  display: flex;
+  gap: $spacer-md;
+  flex-wrap: wrap;
+}
+
+// =============================================================================
+// FLOW DIAGRAM STYLES
+// Visual representation of Source → Query → Reaction
+// =============================================================================
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacer-md;
+  padding: $spacer-xl 0;
+  flex-wrap: wrap;
+}
+
+.flow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: $spacer-lg;
+  background: var(--bs-body-bg);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  min-width: 140px;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+    margin-bottom: $spacer-sm;
+    color: $primary;
+  }
+
+  &__label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $primary;
+  }
+
+  &__description {
+    font-size: 0.8rem;
+    color: $gray-600;
+    margin-top: 4px;
+  }
+}
+
+.flow-arrow {
+  font-size: 1.5rem;
+  color: $secondary;
+
+  @media (max-width: 768px) {
+    transform: rotate(90deg);
+  }
+}
+
+// =============================================================================
+// NAVIGATION ENHANCEMENTS
+// Sidebar and breadcrumb improvements
+// =============================================================================
+
+// Sidebar active state enhancement
+.td-sidebar-nav {
+  .td-sidebar-link {
+    transition: all $transition-fast;
+    border-radius: $border-radius-sm;
+    margin: 2px 0;
+
+    &.active {
+      background: rgba($secondary, 0.1);
+      color: $primary;
+      font-weight: 600;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: $secondary;
+        border-radius: 0 2px 2px 0;
+      }
+    }
+
+    &:hover:not(.active) {
+      background: rgba($primary, 0.04);
+    }
+  }
+}
+
+// Breadcrumb enhancements
+.td-breadcrumbs {
+  padding: $spacer-sm 0;
+  margin-bottom: $spacer-md;
+
+  .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+
+    .breadcrumb-item {
+      font-size: 0.875rem;
+
+      a {
+        color: $gray-600;
+        text-decoration: none;
+        transition: color $transition-fast;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+
+      &.active {
+        color: $primary;
+        font-weight: 500;
+      }
+
+      + .breadcrumb-item::before {
+        color: $gray-400;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// TABLE OF CONTENTS IMPROVEMENTS
+// On-page navigation
+// =============================================================================
+
+.td-toc {
+  #TableOfContents {
+    a {
+      color: $gray-600;
+      text-decoration: none;
+      padding: 6px 0;
+      display: block;
+      border-left: 2px solid transparent;
+      padding-left: $spacer-sm;
+      transition: all $transition-fast;
+      font-size: 0.875rem;
+
+      &:hover {
+        color: $primary;
+        border-left-color: rgba($secondary, 0.5);
+      }
+
+      &.active {
+        color: $primary;
+        font-weight: 500;
+        border-left-color: $secondary;
+        background: rgba($secondary, 0.05);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// SECTION LANDING PAGE STYLES
+// Consistent styling for section entry points
+// =============================================================================
+
+.section-header {
+  padding: 0.5rem 0.5rem 0.25rem 1rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  border-radius: 0 $border-radius-md $border-radius-md 0;
+
+  &--tutorials {
+    background: linear-gradient(135deg, rgba($color-tutorials, 0.1) 0%, rgba($color-tutorials, 0.05) 100%);
+    border-left: 4px solid $color-tutorials;
+  }
+
+  &--howto {
+    background: linear-gradient(135deg, rgba($color-howto, 0.1) 0%, rgba($color-howto, 0.05) 100%);
+    border-left: 4px solid $color-howto;
+  }
+
+  &--concepts {
+    background: linear-gradient(135deg, rgba($color-concepts, 0.1) 0%, rgba($color-concepts, 0.05) 100%);
+    border-left: 4px solid $color-concepts;
+  }
+
+  &--reference {
+    background: linear-gradient(135deg, rgba($color-reference, 0.1) 0%, rgba($color-reference, 0.05) 100%);
+    border-left: 4px solid $color-reference;
+  }
+}
+
+.section-intro {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: $gray-700;
+  max-width: 100%;
+  margin-bottom: 0;
+}
+
+// =============================================================================
+// LEARNING PATH STYLES
+// Visual connections between related content
+// =============================================================================
+
+.learning-path {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  padding: $spacer-md $spacer-lg;
+  background: linear-gradient(90deg, rgba($color-tutorials, 0.08) 0%, transparent 100%);
+  border-radius: $border-radius-md;
+  margin-bottom: $spacer-lg;
+  border-left: 3px solid $color-tutorials;
+
+  &__icon {
+    font-size: 1.25rem;
+    color: $color-tutorials;
+  }
+
+  &__text {
+    font-size: 0.9rem;
+    color: $gray-700;
+
+    strong {
+      color: $primary;
+    }
+
+    a {
+      color: $color-tutorials;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// PAGE FOOTER NAVIGATION
+// Previous/Next navigation
+// =============================================================================
+
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: $spacer-lg;
+  margin-top: $spacer-3xl;
+  padding-top: $spacer-xl;
+  border-top: 1px solid $gray-200;
+}
+
+.page-nav__link {
+  display: flex;
+  flex-direction: column;
+  padding: $spacer-md $spacer-lg;
+  background: var(--bs-body-bg);
+  border: 1px solid $gray-200;
+  border-radius: $border-radius-md;
+  text-decoration: none;
+  transition: all $transition-base;
+  max-width: 45%;
+
+  &:hover {
+    border-color: $secondary;
+    box-shadow: $shadow-md;
+    text-decoration: none;
+  }
+
+  &--prev {
+    align-items: flex-start;
+  }
+
+  &--next {
+    align-items: flex-end;
+    text-align: right;
+    margin-left: auto;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $gray-500;
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    font-weight: 600;
+    color: $primary;
+    font-size: 1rem;
+  }
+}
+
+// =============================================================================
+// WHATS NEW / CHANGELOG STYLES
+// Highlighting new and updated content
+// =============================================================================
+
+.whats-new-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.whats-new-item {
+  display: flex;
+  gap: $spacer-md;
+  padding: $spacer-md 0;
+  border-bottom: 1px solid $gray-200;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__date {
+    font-size: 0.875rem;
+    color: $gray-500;
+    min-width: 100px;
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+
+  &__title {
+    font-weight: 600;
+    color: $primary;
+    margin-bottom: 4px;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        color: $secondary;
+      }
+    }
+  }
+
+  &__description {
+    font-size: 0.9rem;
+    color: $gray-600;
+  }
+
+  &__badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: $border-radius-full;
+    margin-left: 8px;
+
+    &--new {
+      background: rgba($secondary, 0.15);
+      color: darken($secondary, 20%);
+    }
+
+    &--updated {
+      background: rgba($accent-cyan, 0.15);
+      color: darken($accent-cyan, 15%);
+    }
+
+    &--breaking {
+      background: rgba($accent-coral, 0.15);
+      color: darken($accent-coral, 10%);
+    }
+  }
+}
+
+// =============================================================================
+// QUICK LINKS SECTION
+// Popular/Featured content links
+// =============================================================================
+
+.quick-links {
+  margin-top: $spacer-2xl;
+  padding: $spacer-xl;
+  background: $gradient-subtle;
+  border-radius: $border-radius-lg;
+}
+
+.quick-links__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: $spacer-lg;
+  color: $primary;
+}
+
+.quick-links__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacer-md;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  padding: $spacer-sm $spacer-md;
+  background: var(--bs-body-bg);
+  border-radius: $border-radius-md;
+  text-decoration: none;
+  color: $gray-700;
+  font-size: 0.9rem;
+  transition: all $transition-fast;
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: $secondary;
+    color: $primary;
+    text-decoration: none;
+  }
+
+  &__icon {
+    color: $gray-500;
+  }
+}
+
+// =============================================================================
+// RESPONSIVE ADJUSTMENTS
+// Ensure all new styles work on mobile
+// =============================================================================
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .page-nav {
+    flex-direction: column;
+  }
+
+  .page-nav__link {
+    max-width: 100%;
+
+    &--next {
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    padding: $spacer-xl 0;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .cta-group {
+    flex-direction: column;
+  }
+
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .flow-diagram {
+    flex-direction: column;
+  }
+
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+// =============================================================================
+// COPY CODE BUTTON STYLES
+// Enhanced copy button for code blocks
+// =============================================================================
+
+.copy-code-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: $border-radius-sm;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  &.copied {
+    background: rgba($secondary, 0.3);
+    border-color: $secondary;
+    color: $secondary;
+  }
+}
+
+pre:hover .copy-code-button {
+  opacity: 1;
+}
+
+// =============================================================================
+// READING PROGRESS BAR
+// Shows reading progress at the top of the page
+// =============================================================================
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba($gray-200, 0.5);
+  z-index: 9999;
+
+  &__bar {
+    height: 100%;
+    width: 0;
+    background: $gradient-secondary;
+    transition: width 100ms ease-out;
+  }
+}
+
+// =============================================================================
+// EXTERNAL LINK ICON STYLING
+// =============================================================================
+
+.external-link-icon {
+  font-size: 0.7em;
+  margin-left: 4px;
+  opacity: 0.6;
+  vertical-align: super;
+}
+
+// =============================================================================
+// CODE TABS STYLING
+// Tabbed code examples for multi-language/format content
+// =============================================================================
+
+.code-tabs {
+  margin: 1.5rem 0;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.1);
+  box-shadow: $shadow-sm;
+
+  .nav-tabs {
+    background: rgba($primary, 0.03);
+    border-bottom: 1px solid rgba($primary, 0.1);
+    padding: 0 1rem;
+    margin: 0;
+
+    .nav-item {
+      margin-bottom: 0;
+    }
+
+    .nav-link {
+      border: none;
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      padding: 0.75rem 1rem;
+      color: $gray-600;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background: transparent;
+      transition: all $transition-fast;
+
+      &:hover {
+        color: $primary;
+        border-bottom-color: rgba($secondary, 0.5);
+      }
+
+      &.active {
+        color: $primary;
+        background: transparent;
+        border-bottom-color: $secondary;
+      }
+    }
+  }
+
+  .tab-content {
+    .tab-pane {
+      pre {
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// CODE OUTPUT STYLING
+// Visual distinction between code input and output
+// =============================================================================
+
+.code-output {
+  margin-top: -1rem;
+  position: relative;
+
+  &::before {
+    content: 'Output';
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: $gray-700;
+    color: $gray-300;
+    border-radius: 0 0 $border-radius-sm $border-radius-sm;
+  }
+
+  pre {
+    background: lighten(#1e1e2e, 5%) !important;
+    border-top: 2px dashed rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+  }
+}
+
+// =============================================================================
+// CODE FILENAME/LANGUAGE BADGE
+// Shows filename or language above code blocks
+// =============================================================================
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: rgba($primary, 0.05);
+  border: 1px solid rgba($primary, 0.1);
+  border-bottom: none;
+  border-radius: $border-radius-md $border-radius-md 0 0;
+  font-size: 0.8rem;
+  color: $gray-600;
+
+  + pre {
+    border-radius: 0 0 $border-radius-md $border-radius-md;
+    margin-top: 0;
+  }
+}
+
+.code-filename {
+  font-family: $font-family-monospace;
+  font-weight: 500;
+}
+
+.code-language {
+  padding: 2px 8px;
+  background: rgba($primary, 0.08);
+  border-radius: $border-radius-sm;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// =============================================================================
+// LEARNING PATHS STYLES
+// Visual styling for learning path cards, steps, and badges
+// =============================================================================
+
+// Learning Paths Section Header
+.section-header--learning-paths {
+  background: linear-gradient(135deg, rgba($accent-purple, 0.1) 0%, rgba($accent-cyan, 0.1) 100%);
+  border-left: 4px solid $accent-purple;
+}
+
+// Learning Paths Grid
+.learning-paths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+// Learning Path Card
+.learning-path-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 1.5rem;
+  background: $white;
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba($gray-300, 0.5);
+  text-decoration: none;
+  color: inherit;
+  transition: all $transition-base;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .learning-path-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.25rem;
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    color: $white;
+    background: $primary;
+  }
+
+  .learning-path-content {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: $primary;
+    }
+  }
+
+  .learning-path-audience {
+    font-size: 0.8rem;
+    color: $gray-500;
+    margin: 0 0 0.5rem 0;
+
+    i {
+      margin-right: 0.35rem;
+    }
+  }
+
+  .learning-path-description {
+    font-size: 0.9rem;
+    color: $gray-700;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.5;
+  }
+
+  .learning-path-duration {
+    font-size: 0.8rem;
+    color: $gray-500;
+    margin: 0;
+
+    i {
+      margin-right: 0.35rem;
+    }
+  }
+
+  // Color variants
+  &--tutorials {
+    border-left: 4px solid $color-tutorials;
+
+    .learning-path-icon {
+      background: linear-gradient(135deg, $color-tutorials, darken($color-tutorials, 10%));
+    }
+  }
+
+  &--howto {
+    border-left: 4px solid $color-howto;
+
+    .learning-path-icon {
+      background: linear-gradient(135deg, $color-howto, darken($color-howto, 10%));
+    }
+  }
+
+  &--concepts {
+    border-left: 4px solid $color-concepts;
+
+    .learning-path-icon {
+      background: linear-gradient(135deg, $color-concepts, darken($color-concepts, 10%));
+    }
+  }
+
+  &--reference {
+    border-left: 4px solid $color-reference;
+
+    .learning-path-icon {
+      background: linear-gradient(135deg, $color-reference, darken($color-reference, 10%));
+    }
+  }
+}
+
+// Learning Path Detail Section
+.learning-path-detail {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: rgba($gray-100, 0.5);
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba($gray-200, 0.8);
+}
+
+.learning-path-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.path-badge {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &--tutorials {
+    background: rgba($color-tutorials, 0.15);
+    color: darken($color-tutorials, 15%);
+  }
+
+  &--howto {
+    background: rgba($color-howto, 0.15);
+    color: darken($color-howto, 15%);
+  }
+
+  &--concepts {
+    background: rgba($color-concepts, 0.15);
+    color: darken($color-concepts, 15%);
+  }
+
+  &--reference {
+    background: rgba($color-reference, 0.15);
+    color: darken($color-reference, 15%);
+  }
+}
+
+.path-duration {
+  font-size: 0.85rem;
+  color: $gray-600;
+
+  i {
+    margin-right: 0.35rem;
+  }
+}
+
+// Learning Path Steps
+.learning-path-steps {
+  margin-top: 1.5rem;
+}
+
+.path-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  // Connecting line between steps
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 50px;
+    width: 2px;
+    height: calc(100% - 10px);
+    background: linear-gradient(180deg, $gray-300, transparent);
+  }
+
+  .step-number {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $primary, lighten($primary, 15%));
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-right: 1.25rem;
+    position: relative;
+    z-index: 1;
+    box-shadow: $shadow-sm;
+  }
+
+  .step-content {
+    flex: 1;
+    padding: 0.5rem 0;
+
+    h4 {
+      margin: 0.25rem 0 0.35rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+
+      a {
+        color: $primary;
+        text-decoration: none;
+
+        &:hover {
+          color: $secondary;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    p {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+      color: $gray-600;
+    }
+  }
+
+  .step-duration {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: rgba($gray-400, 0.2);
+    border-radius: $border-radius-sm;
+    font-size: 0.75rem;
+    color: $gray-600;
+  }
+}
+
+// Step Type Badges
+.step-type {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: $border-radius-sm;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--tutorial {
+    background: rgba($color-tutorials, 0.15);
+    color: darken($color-tutorials, 15%);
+  }
+
+  &--howto {
+    background: rgba($color-howto, 0.15);
+    color: darken($color-howto, 15%);
+  }
+
+  &--concept {
+    background: rgba($color-concepts, 0.15);
+    color: darken($color-concepts, 15%);
+  }
+
+  &--reference {
+    background: rgba($color-reference, 0.15);
+    color: darken($color-reference, 15%);
+  }
+
+  &--pattern {
+    background: rgba($accent-purple, 0.15);
+    color: darken($accent-purple, 15%);
+  }
+}
+
+// Learning Path Badge for individual pages
+.learning-path-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, rgba($accent-purple, 0.1), rgba($accent-cyan, 0.1));
+  border: 1px solid rgba($accent-purple, 0.2);
+  border-radius: $border-radius-md;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+
+  i {
+    color: $accent-purple;
+  }
+
+  a {
+    color: $primary;
+    font-weight: 500;
+
+    &:hover {
+      color: $secondary;
+    }
+  }
+}
+
+// Learning Paths Preview (Homepage)
+.learning-paths-preview {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba($accent-purple, 0.08), rgba($accent-cyan, 0.08));
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba($accent-purple, 0.15);
+  text-align: center;
+
+  > p:first-child {
+    margin-bottom: 1.5rem;
+    color: $gray-700;
+    font-size: 1.05rem;
+  }
+}
+
+.learning-paths-mini-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.learning-path-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: $white;
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($gray-300, 0.5);
+  text-decoration: none;
+  color: $gray-700;
+  transition: all $transition-base;
+  min-width: 120px;
+
+  i {
+    font-size: 1.5rem;
+    color: $accent-purple;
+    transition: transform $transition-base;
+  }
+
+  span {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+    border-color: $accent-purple;
+    text-decoration: none;
+    color: $primary;
+
+    i {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.learning-paths-cta {
+  margin: 0;
+
+  a {
+    color: $accent-purple;
+    font-weight: 600;
+    text-decoration: none;
+
+    i {
+      margin-left: 0.35rem;
+      transition: transform $transition-base;
+    }
+
+    &:hover {
+      text-decoration: underline;
+
+      i {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .learning-paths-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-path-card {
+    flex-direction: column;
+
+    .learning-path-icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .path-step {
+    .step-number {
+      width: 36px;
+      height: 36px;
+      font-size: 0.9rem;
+    }
+
+    &:not(:last-child)::after {
+      left: 17px;
+    }
+  }
+
+  .learning-path-detail {
+    padding: 1.25rem;
+  }
+
+  .learning-path-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .learning-paths-mini-grid {
+    gap: 0.75rem;
+  }
+
+  .learning-path-mini {
+    padding: 0.75rem 1rem;
+    min-width: 100px;
+
+    i {
+      font-size: 1.25rem;
+    }
+
+    span {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// =============================================================================
+// COMPREHENSIVE MOBILE RESPONSIVENESS
+// Consolidated breakpoints for consistent mobile experience
+// =============================================================================
+
+// Tablet breakpoint (992px)
+@media (max-width: 992px) {
+  // Hero section adjustments
+  .hero-section {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  // Flow diagram horizontal scroll on tablet
+  .flow-diagram {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $gray-200;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $gray-400;
+      border-radius: 2px;
+    }
+  }
+
+  // Quick links grid
+  .quick-links__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Section headers
+  .section-header {
+    padding: 1.25rem;
+  }
+}
+
+// Mobile breakpoint (768px)
+@media (max-width: 768px) {
+  // Main content typography
+  .td-content {
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-top: 2rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+    }
+  }
+
+  // Hero section
+  .hero-section {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .cta-group {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .cta-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  // Flow diagram vertical layout
+  .flow-diagram {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .flow-step {
+    flex-direction: row;
+    width: 100%;
+    padding: 1rem;
+    gap: 1rem;
+
+    &__icon {
+      width: 50px;
+      height: 50px;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    &__label {
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    &__description {
+      text-align: left;
+    }
+  }
+
+  .flow-arrow {
+    display: none;
+  }
+
+  // Quick links
+  .quick-links {
+    padding: 1.25rem;
+  }
+
+  .quick-links__grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .quick-link {
+    padding: 0.75rem 1rem;
+  }
+
+  // Section intro
+  .section-intro {
+    font-size: 1rem;
+  }
+
+  // Code blocks
+  pre {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+
+    code {
+      font-size: 0.8rem;
+    }
+  }
+
+  // Code tabs
+  .code-tabs {
+    .nav-tabs {
+      flex-wrap: wrap;
+      gap: 0.25rem;
+
+      .nav-link {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+  }
+
+  // Tables
+  .td-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    th, td {
+      white-space: nowrap;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  // TOC hide on mobile
+  .td-toc {
+    display: none;
+  }
+
+  // Page footer navigation
+  .page-footer-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+// Small mobile breakpoint (576px)
+@media (max-width: 576px) {
+  // Hero further condensed
+  .hero-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  // Card adjustments
+  .unified-card {
+    min-height: 200px;
+  }
+
+  .unified-card-icon {
+    height: 80px;
+    font-size: 2rem;
+  }
+
+  .unified-card-content {
+    padding: 12px;
+  }
+
+  .unified-card-title {
+    font-size: 1rem;
+  }
+
+  .unified-card-summary {
+    font-size: 0.8rem;
+  }
+
+  // Quick links even smaller
+  .quick-links__title {
+    font-size: 1rem;
+  }
+
+  .quick-link {
+    font-size: 0.85rem;
+  }
+
+  // Section headers
+  .section-header {
+    padding: 1rem;
+
+    .section-intro {
+      font-size: 0.9rem;
+    }
+  }
+
+  // Pattern cards
+  .pattern-card {
+    padding: 1rem;
+  }
+
+  // Learning path steps
+  .path-step {
+    .step-number {
+      width: 32px;
+      height: 32px;
+      font-size: 0.85rem;
+      margin-right: 0.75rem;
+    }
+
+    &:not(:last-child)::after {
+      left: 15px;
+    }
+
+    .step-content h4 {
+      font-size: 0.9rem;
+    }
+
+    .step-content p {
+      font-size: 0.8rem;
+    }
+  }
+
+  // Learning path preview
+  .learning-paths-preview {
+    padding: 1.25rem;
+  }
+
+  .learning-path-mini {
+    padding: 0.6rem 0.8rem;
+    min-width: 80px;
+
+    i {
+      font-size: 1rem;
+    }
+
+    span {
+      font-size: 0.75rem;
+    }
+  }
+
+  // Inline code
+  code {
+    font-size: 0.8rem;
+    padding: 0.1rem 0.3rem;
+  }
+
+  // Buttons
+  .cta-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  // Breadcrumbs
+  .td-breadcrumbs .breadcrumb .breadcrumb-item {
+    font-size: 0.75rem;
+  }
+}
+
+// Touch-friendly improvements for all mobile
+@media (max-width: 992px) {
+  // Ensure touch targets are at least 44px
+  .quick-link,
+  .cta-button,
+  .learning-path-mini,
+  .nav-link,
+  .unified-card {
+    min-height: 44px;
+  }
+
+  // Add touch-action for better scroll behavior
+  .flow-diagram,
+  .code-tabs,
+  pre,
+  table {
+    touch-action: pan-x pan-y;
+  }
+
+  // Improve tap highlighting
+  a, button {
+    -webkit-tap-highlight-color: rgba($primary, 0.1);
+  }
+}
+
+// Print styles
+@media print {
+  .hero-section {
+    background: none !important;
+    color: $gray-900;
+  }
+
+  .flow-diagram,
+  .cta-group,
+  .quick-links,
+  .learning-paths-preview {
+    display: none;
+  }
+
+  .unified-card {
+    box-shadow: none;
+    border: 1px solid $gray-300;
+    break-inside: avoid;
+  }
+}
+
+// =============================================================================
+// RELATED CONTENT SIDEBAR COMPONENT
+// Cross-references content across Diataxis quadrants
+// =============================================================================
+
+.related-content-sidebar,
+.related-content {
+  margin-top: $spacer-lg;
+  background: var(--bs-body-bg);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($primary, 0.1);
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+}
+
+// Inline variant for use within content
+.related-content--inline {
+  margin: $spacer-xl 0;
+  max-width: 100%;
+}
+
+.related-content__header {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  padding: $spacer-md;
+  background: linear-gradient(135deg, rgba($accent-purple, 0.08) 0%, rgba($accent-cyan, 0.08) 100%);
+  border-bottom: 1px solid rgba($primary, 0.08);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: $primary;
+  cursor: pointer;
+  user-select: none;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: linear-gradient(135deg, rgba($accent-purple, 0.12) 0%, rgba($accent-cyan, 0.12) 100%);
+  }
+
+  i:first-child {
+    color: $accent-purple;
+    font-size: 1rem;
+  }
+
+  span {
+    flex-grow: 1;
+  }
+}
+
+.related-content__toggle {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  color: $gray-500;
+  cursor: pointer;
+  transition: transform $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: $primary;
+  }
+
+  .collapsed & {
+    i {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+// Collapsed state for header
+[aria-expanded="false"] {
+  .related-content__toggle i {
+    transform: rotate(180deg);
+  }
+}
+
+.related-content__body {
+  padding: $spacer-md;
+
+  &.collapse:not(.show) {
+    display: none;
+  }
+
+  &.collapsing {
+    height: 0;
+    overflow: hidden;
+    transition: height $transition-base;
+  }
+}
+
+.related-content__section {
+  margin-bottom: $spacer-md;
+  padding-left: $spacer-sm;
+  border-left: 3px solid transparent;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  // Diataxis-colored left borders
+  &--concepts {
+    border-left-color: $color-concepts;
+  }
+
+  &--tutorials {
+    border-left-color: $color-tutorials;
+  }
+
+  &--howto {
+    border-left-color: $color-howto;
+  }
+
+  &--reference {
+    border-left-color: $color-reference;
+  }
+}
+
+.related-content__section-title {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  margin: 0 0 $spacer-sm 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $gray-600;
+
+  i {
+    font-size: 0.7rem;
+  }
+
+  // Icon colors matching Diataxis
+  .related-content__section--concepts & i {
+    color: $color-concepts;
+  }
+
+  .related-content__section--tutorials & i {
+    color: $color-tutorials;
+  }
+
+  .related-content__section--howto & i {
+    color: $color-howto;
+  }
+
+  .related-content__section--reference & i {
+    color: $color-reference;
+  }
+}
+
+.related-content__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-bottom: $spacer-xs;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.related-content__link {
+  display: block;
+  padding: $spacer-xs $spacer-sm;
+  font-size: 0.85rem;
+  color: $gray-700;
+  text-decoration: none;
+  border-radius: $border-radius-sm;
+  transition: all $transition-fast;
+  line-height: 1.4;
+
+  &:hover {
+    background: rgba($primary, 0.04);
+    color: $primary;
+    text-decoration: none;
+  }
+
+  // Active state when on the linked page
+  &[aria-current="page"],
+  &.active {
+    background: rgba($secondary, 0.1);
+    color: $primary;
+    font-weight: 500;
+  }
+}
+
+// Mobile: collapsible by default
+@media (max-width: 1199.98px) {
+  .related-content-sidebar {
+    // On mobile, show as a collapsible panel at the bottom of content
+    position: relative;
+    margin: $spacer-xl 0;
+    border-radius: $border-radius-md;
+  }
+
+  .related-content__body {
+    // Start collapsed on mobile
+    &.show {
+      display: block;
+    }
+  }
+}
+
+// Desktop: always visible in sidebar
+@media (min-width: 1200px) {
+  .related-content-sidebar {
+    position: sticky;
+    top: 80px; // Account for fixed navbar
+  }
+
+  .related-content__toggle {
+    // Hide toggle button on desktop - always expanded
+    display: none;
+  }
+
+  .related-content__header {
+    cursor: default;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba($accent-purple, 0.08) 0%, rgba($accent-cyan, 0.08) 100%);
+    }
+  }
+
+  .related-content__body {
+    // Always show on desktop
+    display: block !important;
+    height: auto !important;
+  }
+}
+
+// Print: hide related content
+@media print {
+  .related-content-sidebar,
+  .related-content {
+    display: none;
+  }
+}
+
+// =============================================================================
+// GLOSSARY SYSTEM STYLES
+// Tooltips, modal, and glossary page
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Inline Glossary Terms with Tooltips
+// -----------------------------------------------------------------------------
+
+.glossary-term {
+  position: relative;
+  border-bottom: 1px dotted rgba($color-reference, 0.6);
+  cursor: help;
+  transition: border-color $transition-fast;
+
+  &:hover,
+  &:focus {
+    border-bottom-color: $color-reference;
+    outline: none;
+  }
+
+  &[aria-expanded="true"] {
+    border-bottom-style: solid;
+  }
+}
+
+.glossary-term-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 280px;
+  padding: $spacer-md;
+  background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.15);
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-lg;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity $transition-fast, visibility $transition-fast, transform $transition-fast;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+
+  // Arrow
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--bs-body-bg);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 9px solid transparent;
+    border-top-color: rgba($primary, 0.15);
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  // Position variants
+  &.position-bottom {
+    bottom: auto;
+    top: 100%;
+    margin-bottom: 0;
+    margin-top: 8px;
+
+    &::after {
+      top: auto;
+      bottom: 100%;
+      border-top-color: transparent;
+      border-bottom-color: var(--bs-body-bg);
+    }
+
+    &::before {
+      top: auto;
+      bottom: 100%;
+      border-top-color: transparent;
+      border-bottom-color: rgba($primary, 0.15);
+    }
+
+    &.visible {
+      transform: translateX(-50%) translateY(4px);
+    }
+  }
+}
+
+.glossary-term-tooltip-title {
+  display: block;
+  font-weight: 600;
+  color: $primary;
+  margin-bottom: $spacer-xs;
+  font-size: 0.9rem;
+}
+
+.glossary-term-tooltip-text {
+  display: block;
+  color: $gray-700;
+  margin-bottom: $spacer-sm;
+}
+
+.glossary-term-tooltip-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: $color-reference;
+  text-decoration: none;
+
+  &:hover {
+    color: darken($color-reference, 10%);
+    text-decoration: underline;
+  }
+
+  i {
+    font-size: 0.7rem;
+  }
+}
+
+// Missing term warning (development only)
+.glossary-term-missing {
+  border-bottom: 1px dashed $accent-coral;
+  cursor: help;
+}
+
+// -----------------------------------------------------------------------------
+// Glossary Modal (Quick Lookup)
+// -----------------------------------------------------------------------------
+
+.glossary-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $transition-base, visibility $transition-base;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.glossary-modal-open {
+  overflow: hidden;
+}
+
+.glossary-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba($primary, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.glossary-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 70vh;
+  margin: 0 $spacer-md;
+  background: var(--bs-body-bg);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(-20px);
+  transition: transform $transition-base;
+
+  .glossary-modal.visible & {
+    transform: translateY(0);
+  }
+}
+
+.glossary-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacer-md $spacer-lg;
+  border-bottom: 1px solid rgba($primary, 0.1);
+  background: linear-gradient(135deg, rgba($color-reference, 0.08) 0%, rgba($accent-purple, 0.08) 100%);
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: $spacer-sm;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $primary;
+
+    i {
+      color: $color-reference;
+    }
+  }
+}
+
+.glossary-modal-close {
+  background: transparent;
+  border: none;
+  padding: $spacer-sm;
+  color: $gray-500;
+  cursor: pointer;
+  border-radius: $border-radius-sm;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba($primary, 0.08);
+    color: $primary;
+  }
+}
+
+.glossary-modal-search {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  padding: $spacer-md $spacer-lg;
+  border-bottom: 1px solid rgba($primary, 0.08);
+  background: rgba($gray-100, 0.5);
+
+  i {
+    color: $gray-400;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: $primary;
+    outline: none;
+
+    &::placeholder {
+      color: $gray-400;
+    }
+  }
+
+  kbd {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    background: rgba($primary, 0.08);
+    border-radius: $border-radius-sm;
+    color: $gray-500;
+    font-family: $font-family-monospace;
+  }
+}
+
+.glossary-modal-results {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacer-md;
+}
+
+.glossary-modal-hint,
+.glossary-modal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacer-xl;
+  text-align: center;
+  color: $gray-500;
+
+  i {
+    font-size: 2rem;
+    margin-bottom: $spacer-md;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: $color-reference;
+    margin-top: $spacer-sm;
+  }
+}
+
+.glossary-modal-result {
+  display: block;
+  padding: $spacer-md;
+  margin-bottom: $spacer-sm;
+  background: rgba($gray-100, 0.5);
+  border: 1px solid transparent;
+  border-radius: $border-radius-md;
+  text-decoration: none;
+  color: inherit;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba($color-reference, 0.08);
+    border-color: rgba($color-reference, 0.2);
+    text-decoration: none;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.glossary-modal-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacer-sm;
+  margin-bottom: $spacer-xs;
+}
+
+.glossary-modal-result-term {
+  font-weight: 600;
+  color: $primary;
+}
+
+.glossary-modal-result-category {
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: $border-radius-full;
+
+  &--core {
+    background: rgba($secondary, 0.15);
+    color: darken($secondary, 25%);
+  }
+
+  &--query {
+    background: rgba($color-reference, 0.15);
+    color: darken($color-reference, 15%);
+  }
+
+  &--data {
+    background: rgba($color-concepts, 0.15);
+    color: darken($color-concepts, 15%);
+  }
+
+  &--infrastructure {
+    background: rgba($accent-cyan, 0.15);
+    color: darken($accent-cyan, 15%);
+  }
+}
+
+.glossary-modal-result-description {
+  font-size: 0.875rem;
+  color: $gray-600;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.glossary-modal-more {
+  text-align: center;
+  padding: $spacer-md;
+  border-top: 1px solid rgba($primary, 0.08);
+
+  a {
+    color: $color-reference;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    i {
+      margin-left: 4px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.glossary-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacer-sm $spacer-lg;
+  border-top: 1px solid rgba($primary, 0.1);
+  background: rgba($gray-100, 0.3);
+  font-size: 0.8rem;
+}
+
+.glossary-modal-shortcut {
+  color: $gray-500;
+
+  kbd {
+    padding: 2px 6px;
+    margin-right: 4px;
+    font-size: 0.7rem;
+    background: rgba($primary, 0.08);
+    border-radius: $border-radius-sm;
+    font-family: $font-family-monospace;
+  }
+}
+
+.glossary-modal-link {
+  color: $color-reference;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  i {
+    margin-left: 4px;
+    font-size: 0.7rem;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Glossary Page Styles
+// -----------------------------------------------------------------------------
+
+.glossary-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-md;
+  margin-bottom: $spacer-xl;
+  padding: $spacer-lg;
+  background: rgba($gray-100, 0.5);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($primary, 0.08);
+}
+
+.glossary-search {
+  display: flex;
+  align-items: center;
+  gap: $spacer-sm;
+  flex: 1;
+  min-width: 200px;
+  padding: $spacer-sm $spacer-md;
+  background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.15);
+  border-radius: $border-radius-md;
+  transition: border-color $transition-fast;
+
+  &:focus-within {
+    border-color: $color-reference;
+  }
+
+  i {
+    color: $gray-400;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    outline: none;
+
+    &::placeholder {
+      color: $gray-400;
+    }
+  }
+}
+
+.glossary-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-xs;
+}
+
+.glossary-filter {
+  padding: $spacer-xs $spacer-md;
+  border: 1px solid rgba($primary, 0.15);
+  border-radius: $border-radius-full;
+  background: var(--bs-body-bg);
+  color: $gray-600;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $color-reference;
+    color: $color-reference;
+  }
+
+  &.active {
+    background: $color-reference;
+    border-color: $color-reference;
+    color: $white;
+  }
+}
+
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-lg;
+}
+
+.glossary-entry {
+  padding: $spacer-lg;
+  background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.1);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  transition: all $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+
+  &--highlighted {
+    animation: glossary-highlight 2s ease-out;
+  }
+}
+
+@keyframes glossary-highlight {
+  0% {
+    background: rgba($color-reference, 0.15);
+    border-color: $color-reference;
+  }
+  100% {
+    background: var(--bs-body-bg);
+    border-color: rgba($primary, 0.1);
+  }
+}
+
+.glossary-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacer-md;
+  margin-bottom: $spacer-sm;
+  flex-wrap: wrap;
+}
+
+.glossary-entry-term {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $primary;
+}
+
+.glossary-entry-category {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: $border-radius-full;
+
+  &--core {
+    background: rgba($secondary, 0.15);
+    color: darken($secondary, 25%);
+  }
+
+  &--query {
+    background: rgba($color-reference, 0.15);
+    color: darken($color-reference, 15%);
+  }
+
+  &--data {
+    background: rgba($color-concepts, 0.15);
+    color: darken($color-concepts, 15%);
+  }
+
+  &--infrastructure {
+    background: rgba($accent-cyan, 0.15);
+    color: darken($accent-cyan, 15%);
+  }
+}
+
+.glossary-entry-aliases {
+  margin-bottom: $spacer-md;
+  font-size: 0.85rem;
+  color: $gray-500;
+}
+
+.glossary-entry-aliases-label {
+  font-weight: 500;
+  margin-right: $spacer-xs;
+}
+
+.glossary-alias {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-right: 4px;
+  background: rgba($primary, 0.05);
+  border-radius: $border-radius-sm;
+  font-family: $font-family-monospace;
+  font-size: 0.8rem;
+}
+
+.glossary-entry-definition {
+  margin-bottom: $spacer-md;
+  color: $gray-700;
+  line-height: 1.7;
+
+  p {
+    margin-bottom: $spacer-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.glossary-entry-related,
+.glossary-entry-see-also {
+  font-size: 0.9rem;
+  margin-top: $spacer-md;
+  padding-top: $spacer-md;
+  border-top: 1px solid rgba($primary, 0.08);
+}
+
+.glossary-entry-related-label,
+.glossary-entry-see-also-label {
+  font-weight: 600;
+  color: $gray-600;
+  margin-right: $spacer-sm;
+}
+
+.glossary-entry-links {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline;
+
+    &::after {
+      content: ', ';
+    }
+
+    &:last-child::after {
+      content: '';
+    }
+  }
+
+  a {
+    color: $color-reference;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.glossary-see-also-link {
+  color: $color-reference;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.glossary-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacer-3xl;
+  text-align: center;
+  color: $gray-500;
+
+  i {
+    font-size: 3rem;
+    margin-bottom: $spacer-md;
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+// Mobile adjustments for glossary
+@media (max-width: 768px) {
+  .glossary-controls {
+    flex-direction: column;
+    padding: $spacer-md;
+  }
+
+  .glossary-search {
+    width: 100%;
+  }
+
+  .glossary-filters {
+    justify-content: center;
+  }
+
+  .glossary-entry {
+    padding: $spacer-md;
+  }
+
+  .glossary-entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .glossary-modal-content {
+    max-height: 85vh;
+    margin: 0;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    transform: translateY(100%);
+
+    .glossary-modal.visible & {
+      transform: translateY(0);
+    }
+  }
+
+  .glossary-term-tooltip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+    margin: 0;
+    transform: translateX(0) translateY(100%);
+
+    &.visible {
+      transform: translateX(0) translateY(0);
+    }
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}

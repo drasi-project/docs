@@ -5,6 +5,29 @@ linkTitle: "Continuous Queries"
 weight: 30
 description: >
     What are Continuous Queries and how to use them?
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Writing Single-Source Queries"
+      url: "/tutorials/write-single-source-continuous-queries/"
+    - title: "Writing Multi-Source Queries"
+      url: "/tutorials/write-multi-source-continuous-queries/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Query Container"
+      url: "/concepts/query-container/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
 ---
 
 Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/concepts/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/concepts/reactions).

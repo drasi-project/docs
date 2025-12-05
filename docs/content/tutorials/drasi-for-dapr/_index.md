@@ -5,6 +5,20 @@ linkTitle: "Drasi for Dapr"
 weight: 40
 description: >
     Learn how Drasi can supercharge your Dapr applications with real-time data change processing across distributed microservices
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure Dapr State Store Reaction"
+      url: "/how-to-guides/configure-reactions/configure-sync-dapr-statestore-reaction/"
+    - title: "Configure Pub/Sub Reaction"
+      url: "/how-to-guides/configure-reactions/configure-post-pubsub-reaction/"
 ---
 
 

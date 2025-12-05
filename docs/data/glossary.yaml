@@ -1,0 +1,427 @@
+# Drasi Glossary
+# This file contains structured term definitions used for tooltips and the glossary page.
+# Each term has:
+#   - term: The canonical term name (used for lookup)
+#   - aliases: Alternative names/spellings that should also trigger this definition
+#   - short: A brief definition for tooltips (max ~100 chars)
+#   - definition: Full definition for the glossary page
+#   - category: Grouping for the glossary page (core, query, data, infrastructure)
+#   - related: Links to related documentation
+#   - see_also: Related glossary terms
+
+terms:
+  # =============================================================================
+  # Core Concepts
+  # =============================================================================
+  - term: Source
+    aliases:
+      - Sources
+      - Data Source
+    short: A connection to an external system that Drasi monitors for data changes.
+    definition: |
+      Sources provide connectivity to systems that Drasi observes for changes. They process
+      change logs from databases and other systems, translate data into a consistent property
+      graph model, and push changes to subscribed Continuous Queries. Sources handle both
+      real-time change streaming and initial data loading for query bootstrapping.
+    category: core
+    related:
+      - title: Sources Concept
+        url: /concepts/sources/
+      - title: Configure Sources
+        url: /how-to-guides/configure-sources/
+    see_also:
+      - Change Data Capture
+      - Continuous Query
+
+  - term: Continuous Query
+    aliases:
+      - Continuous Queries
+      - ContinuousQuery
+    short: A query that runs continuously, maintaining an always-current result set as data changes.
+    definition: |
+      Continuous Queries are queries that run perpetually, maintaining an accurate result set
+      that updates automatically as source data changes. Unlike traditional queries that return
+      a point-in-time snapshot, Continuous Queries detect exactly which results have been added,
+      updated, or deleted and distribute these changes to subscribed Reactions. They are written
+      in Cypher or GQL and can span data from multiple Sources.
+    category: core
+    related:
+      - title: Continuous Queries Concept
+        url: /concepts/continuous-queries/
+      - title: Query Language Reference
+        url: /reference/query-language/
+    see_also:
+      - Instantaneous Query
+      - Result Set
+      - Query Container
+
+  - term: Reaction
+    aliases:
+      - Reactions
+    short: A component that receives query result changes and takes action on them.
+    definition: |
+      Reactions process the stream of query result changes output by Continuous Queries and
+      take action. Actions depend on the Reaction type and can include forwarding changes to
+      Azure Event Grid, SignalR, or AWS EventBridge; executing stored procedures; updating
+      databases; or triggering custom application logic. Multiple Reactions can subscribe to
+      the same Continuous Query.
+    category: core
+    related:
+      - title: Reactions Concept
+        url: /concepts/reactions/
+      - title: Configure Reactions
+        url: /how-to-guides/configure-reactions/
+    see_also:
+      - Continuous Query
+      - Result Set
+
+  - term: Query Container
+    aliases:
+      - Query Containers
+      - QueryContainer
+    short: The execution environment that hosts and evaluates Continuous Queries.
+    definition: |
+      Query Containers are the runtime environments that host Continuous Queries. They manage
+      query execution, maintain query state, and handle the processing of source changes.
+      A single Query Container can host multiple queries and can be scaled independently.
+      Each container provides storage profiles for configuring how query indexes are stored.
+    category: core
+    related:
+      - title: Query Container Concept
+        url: /concepts/query-container/
+    see_also:
+      - Continuous Query
+      - Storage Profile
+
+  # =============================================================================
+  # Data & Change Concepts
+  # =============================================================================
+  - term: Change Data Capture
+    aliases:
+      - CDC
+    short: Technology that detects and captures changes made to database data.
+    definition: |
+      Change Data Capture (CDC) is a set of technologies and patterns for identifying and
+      capturing changes made to data in a database. Drasi leverages CDC to monitor source
+      systems for inserts, updates, and deletes. Drasi's source input schema is modeled on
+      Debezium, an open-source CDC platform, enabling integration with many existing
+      Debezium sources.
+    category: data
+    related:
+      - title: Sources Concept
+        url: /concepts/sources/
+    see_also:
+      - Source
+      - Debezium
+
+  - term: Result Set
+    aliases:
+      - Query Result
+      - Query Results
+    short: The current output of a Continuous Query, updated automatically as data changes.
+    definition: |
+      The result set is the collection of records that currently satisfy a Continuous Query's
+      criteria. Unlike traditional query results that are static snapshots, Drasi result sets
+      are dynamic—they update automatically as source data changes. Changes to the result set
+      are expressed as added, updated, and deleted records, which are distributed to Reactions.
+    category: data
+    related:
+      - title: Continuous Queries
+        url: /concepts/continuous-queries/
+    see_also:
+      - Continuous Query
+      - Reaction
+
+  - term: Bootstrap
+    aliases:
+      - Bootstrapping
+      - Query Bootstrap
+    short: The process of loading initial data when a Continuous Query starts.
+    definition: |
+      Bootstrap is the initialization process when a Continuous Query starts. During bootstrap,
+      the query loads its initial state by querying the source systems for current data. This
+      ensures the query result is accurate from the start, before processing the ongoing stream
+      of changes. Storage profiles can affect bootstrap performance for queries with large
+      initial result sets.
+    category: data
+    related:
+      - title: Continuous Queries
+        url: /concepts/continuous-queries/
+    see_also:
+      - Continuous Query
+      - Storage Profile
+
+  - term: Instantaneous Query
+    aliases:
+      - Traditional Query
+      - Point-in-time Query
+    short: A conventional query that returns a static snapshot of data at a moment in time.
+    definition: |
+      An instantaneous query is a traditional database query that executes once and returns
+      results representing the data at that specific point in time. After execution, the results
+      are static and do not reflect subsequent changes. To detect changes, you must re-run the
+      query and compare results. Drasi's Continuous Queries solve this limitation by maintaining
+      a perpetually current result set.
+    category: data
+    see_also:
+      - Continuous Query
+
+  # =============================================================================
+  # Query Language
+  # =============================================================================
+  - term: Cypher
+    aliases:
+      - Cypher Query Language
+    short: A declarative graph query language used to write Drasi Continuous Queries.
+    definition: |
+      Cypher is a declarative graph query language originally developed for Neo4j. In Drasi,
+      Cypher is the primary language for writing Continuous Queries. Its pattern-matching
+      syntax makes it easy to describe complex relationships between data elements and specify
+      which changes to detect. Cypher queries use MATCH, WHERE, and RETURN clauses to define
+      patterns, filters, and output schemas.
+    category: query
+    related:
+      - title: Query Language Reference
+        url: /reference/query-language/
+      - title: Cypher Functions
+        url: /reference/query-language/cypher-functions/
+    see_also:
+      - GQL
+      - Continuous Query
+
+  - term: GQL
+    aliases:
+      - Graph Query Language
+    short: An ISO-standard graph query language supported by Drasi for Continuous Queries.
+    definition: |
+      GQL (Graph Query Language) is an ISO-standard query language for property graphs. Drasi
+      supports GQL as an alternative to Cypher for writing Continuous Queries. GQL provides
+      similar pattern-matching capabilities with standardized syntax. You can specify the
+      query language in the Continuous Query configuration using the queryLanguage property.
+    category: query
+    related:
+      - title: Query Language Reference
+        url: /reference/query-language/
+    see_also:
+      - Cypher
+      - Continuous Query
+
+  - term: Node
+    aliases:
+      - Nodes
+      - Graph Node
+    short: A data entity in the property graph model, representing a discrete object or concept.
+    definition: |
+      In Drasi's property graph model, a node represents a discrete entity such as a person,
+      product, location, or event. Nodes have labels (types) and properties (key-value pairs).
+      Sources transform data from various formats into nodes that Continuous Queries can
+      process. In Cypher queries, nodes are represented in parentheses: (n:Label).
+    category: query
+    related:
+      - title: Query Language Reference
+        url: /reference/query-language/
+    see_also:
+      - Relationship
+      - Property Graph
+
+  - term: Relationship
+    aliases:
+      - Relationships
+      - Relation
+      - Relations
+      - Edge
+    short: A connection between two nodes in the property graph, representing how entities relate.
+    definition: |
+      Relationships (also called relations or edges) connect nodes in Drasi's property graph
+      model. They have a type, direction, and can contain properties. Relationships enable
+      Continuous Queries to traverse connections between data elements. In Cypher, relationships
+      are written with square brackets: -[:RELATES_TO]->. Sources can define relationships
+      explicitly or they can be created synthetically via joins.
+    category: query
+    related:
+      - title: Query Language Reference
+        url: /reference/query-language/
+    see_also:
+      - Node
+      - Property Graph
+      - Join
+
+  - term: Property Graph
+    aliases:
+      - Property Graph Model
+    short: A data model where entities (nodes) and their connections (relationships) have properties.
+    definition: |
+      The property graph model is the data representation used internally by Drasi. In this
+      model, data consists of nodes (entities) connected by relationships, where both can have
+      properties (key-value pairs). Sources translate data from various formats (relational,
+      document, etc.) into this unified model, enabling consistent querying across different
+      source types.
+    category: query
+    see_also:
+      - Node
+      - Relationship
+      - Source
+
+  # =============================================================================
+  # Infrastructure & Configuration
+  # =============================================================================
+  - term: Drasi CLI
+    aliases:
+      - CLI
+      - drasi command
+    short: The command-line interface for managing Drasi resources and deployments.
+    definition: |
+      The Drasi CLI is the primary tool for interacting with Drasi. It provides commands for
+      installing Drasi (drasi init), managing resources (drasi apply, drasi delete, drasi list),
+      viewing logs (drasi logs), and debugging queries (drasi describe). The CLI works with
+      YAML resource definitions stored in your solution repository.
+    category: infrastructure
+    related:
+      - title: CLI Reference
+        url: /reference/command-line-interface/
+    see_also:
+      - Resource Definition
+
+  - term: Resource Definition
+    aliases:
+      - Resource Definitions
+      - YAML Definition
+    short: A YAML file that declares a Drasi resource like a Source, Query, or Reaction.
+    definition: |
+      Resource definitions are YAML files that declare Drasi resources. Each definition
+      includes an apiVersion, kind (Source, ContinuousQuery, or Reaction), name, and spec
+      containing configuration details. Definitions can be version-controlled alongside
+      application code and applied using the drasi apply command.
+    category: infrastructure
+    related:
+      - title: Resource Schemas
+        url: /reference/schema/
+    see_also:
+      - Drasi CLI
+      - Source
+      - Continuous Query
+      - Reaction
+
+  - term: Storage Profile
+    aliases:
+      - Storage Profiles
+    short: Configuration that controls how query indexes and state are persisted.
+    definition: |
+      Storage profiles define how Drasi stores Continuous Query element and solution indexes.
+      The default Query Container provides 'memory' and 'redis' profiles. Memory-based storage
+      is suitable for testing and queries without significant bootstrap requirements. Redis
+      provides persistent storage for production workloads. The profile is specified in the
+      Continuous Query's storageProfile property.
+    category: infrastructure
+    related:
+      - title: Query Container Concept
+        url: /concepts/query-container/
+    see_also:
+      - Query Container
+      - Bootstrap
+
+  - term: Middleware
+    aliases:
+      - Query Middleware
+    short: Custom processing logic applied to source changes before query evaluation.
+    definition: |
+      Middleware enables custom logic to be executed on incoming source changes before they
+      are processed by a Continuous Query. Middleware configurations are defined in the query
+      spec and can be chained in a pipeline for each source subscription. This allows
+      transformation, filtering, or enrichment of change data.
+    category: infrastructure
+    related:
+      - title: Middleware Concept
+        url: /concepts/middleware/
+    see_also:
+      - Continuous Query
+      - Source
+
+  - term: Join
+    aliases:
+      - Joins
+      - Source Join
+    short: A mapping that connects data from multiple Sources based on matching properties.
+    definition: |
+      Joins in Drasi create mappings between nodes from different Sources based on property
+      values. This enables Continuous Queries to traverse relationships across source
+      boundaries as if querying a unified graph. Joins are defined in the query's
+      spec.sources.joins section by specifying label and property pairs that should match.
+    category: infrastructure
+    related:
+      - title: Continuous Queries
+        url: /concepts/continuous-queries/
+    see_also:
+      - Continuous Query
+      - Source
+      - Relationship
+
+  - term: Debezium
+    short: An open-source CDC platform whose data format Drasi uses for source integration.
+    definition: |
+      Debezium is an open-source distributed platform for Change Data Capture. Drasi's source
+      input schema is modeled on Debezium's format, enabling compatibility with Debezium's
+      ecosystem of database connectors. This design choice allows Drasi to integrate with
+      many existing data sources through the well-established Debezium standard.
+    category: infrastructure
+    related:
+      - title: Sources Concept
+        url: /concepts/sources/
+    see_also:
+      - Change Data Capture
+      - Source
+
+  # =============================================================================
+  # Drasi Functions
+  # =============================================================================
+  - term: drasi.changeDateTime
+    aliases:
+      - changeDateTime
+    short: A Drasi function that returns the timestamp when a change occurred.
+    definition: |
+      drasi.changeDateTime() is a built-in Drasi function used in Continuous Queries to
+      access the timestamp of when a data change occurred in the source system. This enables
+      time-based logic and auditing within queries.
+    category: query
+    related:
+      - title: Drasi Custom Functions
+        url: /reference/query-language/drasi-custom-functions/
+    see_also:
+      - Continuous Query
+      - Cypher
+
+  - term: drasi.trueDuring
+    aliases:
+      - trueDuring
+    short: A Drasi function for evaluating temporal conditions over time periods.
+    definition: |
+      drasi.trueDuring() is a temporal function in Drasi that evaluates whether a condition
+      holds true during a specified time period. It enables Continuous Queries to implement
+      time-window logic and detect patterns that occur over durations rather than at
+      single points in time.
+    category: query
+    related:
+      - title: Drasi Custom Functions
+        url: /reference/query-language/drasi-custom-functions/
+      - title: Time Windows
+        url: /reference/query-language/time-functions/
+    see_also:
+      - Continuous Query
+      - Cypher
+
+  - term: drasi.linearInterpolate
+    aliases:
+      - linearInterpolate
+    short: A Drasi function that interpolates values between known data points.
+    definition: |
+      drasi.linearInterpolate() is a function that calculates intermediate values between
+      known data points using linear interpolation. This is useful in Continuous Queries
+      that need to estimate values at specific times when only periodic samples are available,
+      common in IoT and sensor data scenarios.
+    category: query
+    related:
+      - title: Drasi Custom Functions
+        url: /reference/query-language/drasi-custom-functions/
+    see_also:
+      - Continuous Query
+      - Cypher

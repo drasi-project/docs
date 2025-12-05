@@ -5,6 +5,21 @@ linkTitle: "Visual Studio Code Extension"
 weight: 25
 description: >
    Learn how to test Continuous Queries and manage Drasi instances with the VS Code extension
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
+    - title: "CLI Reference"
+      url: "/reference/command-line-interface/"
 ---
 
 ## Manage a Drasi environment and test Continuous Queries

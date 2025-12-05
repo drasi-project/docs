@@ -5,6 +5,24 @@ linkTitle: "Curbside Pickup with Drasi"
 weight: 40
 description: >
     Learn how to use Drasi to power reactive dashboards over multiple data sources
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Building Comfort Tutorial"
+      url: "/tutorials/building-comfort/"
+    - title: "Writing Multi-Source Queries"
+      url: "/tutorials/write-multi-source-continuous-queries/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Solution Design"
+      url: "/concepts/solution-design/"
+  howto:
+    - title: "Configure PostgreSQL Source"
+      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+    - title: "Configure Cosmos DB Gremlin Source"
+      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
 ---
 
 ## Scenario

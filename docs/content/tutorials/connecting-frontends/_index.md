@@ -5,6 +5,21 @@ linkTitle: "Connecting a Frontend to a Query"
 weight: 10
 description: >
     Learn how to connect a front end application to a continuous query
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure SignalR Reaction"
+      url: "/how-to-guides/configure-reactions/configure-signalr-reaction/"
+  reference:
+    - title: "Result Change Event Schema"
+      url: "/reference/schema/result-change-event/"
 ---
 
 ## Prerequisites

@@ -6,6 +6,29 @@ weight: 50
 toc_hide: true
 description: >
     Write and debug Continuous Queries
+related:
+  tutorials:
+    - title: "Writing Single-Source Queries"
+      url: "/tutorials/write-single-source-continuous-queries/"
+    - title: "Writing Multi-Source Queries"
+      url: "/tutorials/write-multi-source-continuous-queries/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Middleware"
+      url: "/concepts/middleware/"
+  howto:
+    - title: "Configure Sources"
+      url: "/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/how-to-guides/configure-reactions/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "VS Code Extension"
+      url: "/reference/vscode-extension/"
 ---
 
 The VS Code extension enables you to rapidly test the validity of your continuous queries by providing a one click `Run` button that will bootstrap, execute and display the results/errors of queries within your VS Code workspace.

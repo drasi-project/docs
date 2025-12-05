@@ -5,6 +5,21 @@ linkTitle: "Drasi Custom Functions"
 weight: 40
 description: >
     Extended functions for continuous query processing
+related:
+  tutorials:
+    - title: "Absence of Change Tutorial"
+      url: "/tutorials/absence-of-change/"
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 Drasi is not simply running graph queries across data, it is using the Cypher Query Language as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language in order to meet its needs for detecting and reacting to change (or an absence of change).

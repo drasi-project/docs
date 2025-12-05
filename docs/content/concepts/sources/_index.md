@@ -5,6 +5,27 @@ linkTitle: "Sources"
 weight: 20
 description: >
     What are Sources and how to use them?
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure PostgreSQL Source"
+      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+    - title: "Configure Cosmos DB Gremlin Source"
+      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+    - title: "Configure Kubernetes Source"
+      url: "/how-to-guides/configure-sources/configure-kubernetes-source/"
+  reference:
+    - title: "CLI Reference"
+      url: "/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
 Sources provide connectivity to the systems that Drasi can observe as sources of change. Sources perform three important functions within Drasi:
