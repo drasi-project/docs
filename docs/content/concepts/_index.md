@@ -3,6 +3,8 @@ type: "docs"
 title: "Concepts"
 linkTitle: "Concepts"
 weight: 40
+hide_readingtime: true
+no_list: true
 description: >
     Understand the architecture and ideas behind Drasi
 ---

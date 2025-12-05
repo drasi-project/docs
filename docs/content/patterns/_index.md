@@ -3,6 +3,8 @@ type: "docs"
 title: "Patterns & Best Practices"
 linkTitle: "Patterns"
 weight: 35
+hide_readingtime: true
+no_list: true
 description: >
     Design patterns, best practices, and proven approaches for building effective Drasi solutions
 ---

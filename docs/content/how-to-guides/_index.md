@@ -3,6 +3,8 @@ type: "docs"
 title: "How-To Guides"
 linkTitle: "How-To Guides"
 weight: 30
+hide_readingtime: true
+no_list: true
 description: >
     Step-by-step instructions for accomplishing specific tasks with Drasi
 ---

@@ -3,11 +3,10 @@ type: "docs"
 title: "What's New"
 linkTitle: "What's New"
 weight: 5
+hide_readingtime: true
 description: >
-    Recent updates, new features, and documentation changes
+    Stay up to date with the latest Drasi developments. This page tracks new features, documentation updates, and important changes.
 ---
-
-Stay up to date with the latest Drasi developments. This page tracks new features, documentation updates, and important changes.
 
 ## Recent Updates
 

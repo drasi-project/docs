@@ -66,6 +66,17 @@ body:has(.hero-section) .td-content > .lead:first-of-type {
   }
 }
 
+// =============================================================================
+// SECTION PAGE CLEANUP
+// Hide redundant lead description when custom section-header is present
+// =============================================================================
+
+// Hide the lead/description on pages with custom section headers
+// The section-header provides the visual intro, description is kept for SEO
+.td-content:has(.section-header) > .lead:first-of-type {
+  display: none;
+}
+
 /* ========================================
    Typography and Spacing Improvements
    ======================================== */

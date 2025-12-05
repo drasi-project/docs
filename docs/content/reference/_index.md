@@ -3,6 +3,8 @@ type: "docs"
 title: "Reference"
 linkTitle: "Reference"
 weight: 50
+hide_readingtime: true
+no_list: true
 description: >
     Detailed specifications, API documentation, and technical reference material
 ---

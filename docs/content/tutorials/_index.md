@@ -3,6 +3,8 @@ type: "docs"
 title: "Tutorials"
 linkTitle: "Tutorials"
 weight: 20
+hide_readingtime: true
+no_list: true
 description: >
     Learn Drasi through hands-on, step-by-step tutorials
 ---
