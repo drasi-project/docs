@@ -296,7 +296,7 @@ drasi describe reaction mcp-reaction
 This will return the full definition used to create the Reaction along with more detailed status information.
 
 ## Modifying the Reaction
-To modify the reaction, you can simply use the `drasi apply` command again with the same reaction name that you used before.
+To modify the Reaction, you can simply use the `drasi apply` command again with the same Reaction name that you used before.
 
 ## Deleting the Reaction
 To delete a Reaction you use the `drasi delete` command. There are two ways to do this.
