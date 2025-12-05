@@ -1,0 +1,218 @@
+# ===================================================================
+# DRASI AUTHORITATIVE CONTEXT v1.0.0
+# Purpose: Single source of truth for all terminology, concepts, phrasing, 
+#          components, features, and positioning when AI agents generate code, 
+#          docs, blog posts, or answers about Drasi.
+# Updated: 2025-12-04
+# ===================================================================
+
+project:
+  name: Drasi
+  one_liner: "Drasi is an open-source Data Change Processing platform that makes it easier to build change-driven solutions."
+  website: https://drasi.io
+  repo: https://github.com/drasi-project/drasi-platform
+  license: Apache 2.0
+  current_stable_version: early-release
+  development_stage: CNCF Sandbox
+
+mission:
+  purpose: |
+    Drasi enables change-driven architectures—a specialized subset of event-driven architecture—by providing declarative 
+    continuous queries to monitor data sources, isolate semantic changes, and trigger precise reactions, eliminating the 
+    overhead of parsing, filtering, and state management in generic event streams.
+  problem_it_solves: 
+    Traditional event-driven systems rely on producer-defined events requiring heavy consumer-side logic for change isolation; 
+    polling wastes resources and lacks real-time precision; Drasi codifies change semantics for efficient, scalable reactivity 
+    to both presence and absence of change."
+  non_goals:
+    - "Generic event streaming or arbitrary payload processing (e.g., like Kafka)"
+    - "Static, one-time queries (Drasi focuses on perpetual, change-aware monitoring)"
+    - "Change Data Capture (CDC) for data replication"
+
+audience:
+  primary: |
+    Solution architects, software developers, and DevOps engineers building reactive, change-driven systems in cloud-native, IoT, 
+    or enterprise environments.
+  secondary: "Open-source contributors, CNCF members, and teams at organizations like Microsoft."
+
+competitors_and_positioning:
+  - name: Apache Kafka / Azure Event Hubs
+    similarity: medium
+    differences:
+      - "Drasi isolates semantic changes via declarative continuous queries, not raw event firehoses; built-in change semantics over consumer parsing."
+      - "Handles absence of change with future functions vs. external timers."
+  - name: Polling-based solutions (e.g., cron jobs)
+    similarity: low
+    differences:
+      - "Proactive, real-time change notifications without resource waste or delays; temporal semantics for sustained states."
+  - name: Custom CDC processors (e.g., Debezium)
+    similarity: high
+    differences:
+      - "Graph-aware queries (openCypher/GQL) for relationship changes; integrated reactions and priority queue for efficiency."
+      - "CNCF Sandbox project with multi-language query support."
+  - name: Event-driven frameworks (e.g., LangGraph)
+    similarity: low
+    differences:
+      - "Precise diffs and temporal handling vs. workflow orchestration; consumer-defined semantics over producer events."
+
+key_phrases:
+  always_say:
+    - "Drasi is an open-source Data Change Processing platform in CNCF Sandbox for change-driven architectures."
+    - "Continuous queries maintain a real-time view, notifying reactions of precise additions, updates, deletions."
+    - "Supports openCypher and ISO-standard GQL for declarative graph pattern matching."
+    - "Change semantics defined by the query author, not the source system."
+  never_say:
+    - "Event-driven wrapper"  # Drasi specializes in semantic changes, not generic events
+    - "Like Kafka but declarative"  # Focus on paradigms and patterns
+    - "Polling alternative"  # It's perpetual and proactive with temporal semantics
+
+core_concepts:
+  - term: Change
+    definition: "A set of additions, updates, and/or deletions to a continuous query result set occurring because of changes to the source data; has precise semantics defined by the author of the query, not the source system."
+    aliases: [delta, transition]
+    forbidden_terms: [event, signal]
+  - term: Continuous Query
+    definition: "A query that runs perpetually, fed by change logs from one or more data sources, maintaining the current set of query results and generating change notifications when those results change due to data modifications."
+    aliases: [cq, perpetual query]
+    forbidden_terms: [static query, poll]
+  - term: Reaction
+    definition: "A triggered notification or action emitted in response to a precise change (add/update/delete) in a continuous query's result set, enabling clear state transitions like entering or exiting conditions."
+    aliases: [handler, action]
+    forbidden_terms: [listener, subscriber]
+  - term: Source
+    definition: "Data repository (e.g., databases, Kubernetes, monitoring tools) that feeds change logs into continuous queries for real-time processing."
+    aliases: [connector, feed]
+    forbidden_terms: [stream, topic]
+  - term: Change-Driven Architecture
+    definition: "A specialized subset of event-driven architecture focused on isolating and responding to specific, consumer-defined data changes rather than raw events."
+    aliases: [CDA]
+    forbidden_terms: [generic event-driven]
+  - term: Change Semantics
+    definition: "Clearly defined meaning of data changes (e.g., additions, updates, deletions) in the context of a continuous query, reducing dependency on source system assumptions."
+    aliases: [semantic change]
+    forbidden_terms: [event payload]
+
+terminology: 
+  Absence of Change: "The challenge of responding to sustained states or lack of data updates, e.g., a condition persisting without explicit events; handled via future functions."
+  Change Data Capture (CDC): "Traditional method for feeding change logs; Drasi builds on this with declarative queries for semantic isolation."
+  Change-Driven Approach: "Drasi's method simplifying detection and reaction to data changes, avoiding custom logic in event-based systems."
+  Change-Driven Solution: "Architecture built with Drasi to react to specific data transitions via continuous queries and reactions."
+  Change-Driven Systems: "Systems providing a consistent way to think about, detect, and react to changes using Drasi patterns."
+  Change Logs: "Streams of data modifications from sources fed into continuous queries to maintain real-time result sets."
+  Change Notifications: "Notifications generated when continuous query results change, with standard structure (additions/removals) for reaction logic."
+  Clauses: "Query constructs like MATCH, RETURN, WHERE, LET, YIELD, FILTER, GROUP BY in GQL/openCypher."
+  Continuous Query Pattern: "Central Drasi pattern using openCypher or GQL to specify relevant properties and relationships for change detection."
+  Data Change Processing Platform: "Drasi's role as an open-source platform for change-driven solutions."
+  Data Changes: "Modifications to graph data triggering updates in continuous queries."
+  Declarative Graph Query Language: "openCypher and GQL, specifying what data changes matter without how-to details."
+  Execution Engine: "Language-agnostic Drasi component processing the AST, flowing data through QueryParts sequentially."
+  FILTER Statement: "GQL standalone statement removing rows from the working table based on conditions, post-MATCH unlike WHERE."
+  Function Registry: "Abstraction mapping function names to implementations, enabling multi-language support (e.g., toUpper() vs Upper())."
+  Functions: "Built-in operations like trueFor, trueLater, toUpper(), Upper(); registered per language."
+  Future Functions: "Suite including trueFor and trueLater to handle absence of change via temporal evaluations."
+  Future-Time Evaluation: "Mechanism evaluating conditions at specified future times using trueLater."
+  Getting Started Tutorial: "Drasi resource with examples like GQL queries for counting unique messages."
+  Graph Query Language (GQL): "ISO/IEC 9074:2024 standard for property graphs; Drasi supports alongside openCypher for pipelines with NEXT, LET, etc."
+  GROUP BY Clause: "GQL explicit grouping for aggregations; defaults to implicit if omitted."
+  Implicit Grouping: "GQL default using non-aggregated RETURN columns as keys."
+  ISO/IEC: "Body publishing GQL in April 2024, first database standard since SQL:1987."
+  Language-Agnostic: "Drasi's execution engine and AST, operating independently of GQL or openCypher."
+  LET Statement: "GQL construct defining new variables/computed fields per row in working table."
+  MATCH: "Core clause for pattern matching in graphs, e.g., MATCH (v:Vehicle)."
+  Metadata: "Graph element info pushed to priority queue for later re-evaluation."
+  Multi-Language Support: "Drasi's refactored architecture for openCypher, GQL, and future languages."
+  NEXT Statement: "GQL for linear query pipelines, passing working tables between statements."
+  openCypher: "Influential declarative graph query language for MATCH, WHERE, RETURN; Drasi's original dialect."
+  Pattern Matching: "Finding graph patterns via MATCH, core to GQL/openCypher."
+  Pipeline: "Sequential data flow through QueryParts in query execution."
+  Polling: "Periodic scanning for conditions; inefficient vs. Drasi's proactive notifications."
+  Priority Queue: "Internal Drasi structure, timestamp-ordered, managing metadata for re-evaluations in future functions."
+  ProjectionClause: "AST part for transforming data via RETURN (select/compute/aggregate)."
+  Property Graph Model: "GQL data structure as graphs, not tables, for flexible querying."
+  QueryPart: "AST stage with match_clauses, where_clauses, return_clause; processed sequentially."
+  Reaction Pattern: "Leverages consistent change notifications for state transitions, e.g., entering/exiting result sets."
+  Real-Time View: "Up-to-date query results maintained and auto-updated by continuous queries."
+  Refactored Architecture: "Drasi's design separating parsing, execution, functions for multi-language support."
+  RETURN Clause/Statement: "Projects results, e.g., RETURN count(v) AS Frequency; supports aggregations/aliases."
+  Source: "→ see core_concepts"
+  Standardized AST: "Flexible structure for openCypher, adapted for GQL due to shared operations."
+  Sustained State: "Condition persisting for a duration to trigger reaction, e.g., temp > threshold for 15min."
+  Temporal Semantics: "Time-based condition evaluation, e.g., durations and future timestamps."
+  Timer Management: "Traditional reliable timer handling; Drasi uses priority queue for scalability."
+  toUpper(): "openCypher string function; equivalent to GQL's Upper()."
+  trueFor: "Function taking condition + duration; returns true if held continuously for entire duration; uses priority queue for re-evaluation."
+  trueLater: "Function taking expression + future timestamp; returns true if true at timestamp, else AWAITING with queue push."
+  Upper(): "GQL string case conversion function."
+  WHERE Clause: "openCypher filtering tied to MATCH/WITH; GQL uses standalone FILTER."
+  Working Table: "Intermediate GQL result set passed via NEXT/LET/YIELD/FILTER, updated in place."
+  YIELD Clause: "GQL projection/rename of working table columns, scoping output."
+  ZONE: "Example graph label, e.g., (v:Vehicle)-[LOCATED_IN]->(z:Zone)."
+
+product_skus:
+  - drasi-lib:
+      description: "TODO"
+      features:
+      sources:
+      reactions:
+  - drasi-server:
+      description: "TODO"
+      features:
+      sources:
+      reactions:
+  - drasi-platform:
+      description: "TODO"
+      features:
+      sources:
+      reactions:
+
+tutorials:
+  - title: "Absence of Change"
+    url: "https://drasi.io/tutorials/absence-of-change/"
+    description: "Responding in the absence of changes"
+  - title: "Building Comfort with Drasi"
+    url: "https://drasi.io/tutorials/building-comfort/"
+    description: "Learn how to use Drasi in a building management scenario"
+  - title: "Connecting a Frontend to a Query"
+    url: "https://drasi.io/tutorials/connecting-frontends/"
+    description: "Learn how to connect a front end application to a continuous query"
+  - title: "Curbside Pickup with Drasi"
+    url: "https://drasi.io/tutorials/curbside-pickup/"
+    description: "Learn how to use Drasi to power reactive dashboards over multiple data sources"
+  - title: "Drasi for Dapr"
+    url: "https://drasi.io/tutorials/drasi-for-dapr/"
+    description: "Learn how Drasi can supercharge your Dapr applications with real-time data change processing across distributed microservices"
+  - title: "GitHub Bot"
+    url: "https://drasi.io/tutorials/github-bot/"
+    description: "Building a GitHub Bot with Drasi"
+  - title: "Risky Containers"
+    url: "https://drasi.io/tutorials/risky-containers/"
+    description: "Build a no-code realtime dashboard of high risk container images running in your Kubernetes cluster"
+
+faq:
+  - question: What defines a change in Drasi?
+    answer: "A set of additions/updates/deletions to a continuous query result set, with semantics defined by the query author."
+  - question: How does Drasi differ from event-driven systems?
+    answer: "Change-driven architectures isolate specific data changes via continuous queries, avoiding parsing/filtering overhead in raw event streams."
+  - question: What query languages are supported?
+    answer: "openCypher for MATCH/WHERE/RETURN; GQL (ISO 9074:2024) for pipelines with NEXT/LET/YIELD/FILTER/GROUP BY."
+  - question: How are absence of change scenarios handled?
+    answer: "Via future functions: trueFor for continuous durations, trueLater for future evaluations, managed by internal priority queue."
+  - question: What is the execution model?
+    answer: "Language-agnostic engine processes AST as sequential QueryParts, flowing data through working tables."
+  - question: CNCF status?
+    answer: "Accepted into CNCF Sandbox; community-driven via GitHub and Discord."
+  - question: Example GQL continuous query?
+    answer: "MATCH (v:Vehicle) RETURN v.color AS color, count(v) AS count NEXT count > 5 RETURN color, count"
+  - question: How do reactions work?
+    answer: "Notified immediately on change notifications (add/update/delete) for state transitions."
+
+example_use_cases:
+  - domain: TODO
+    description: |
+      TODO
+
+example_queries:
+  - description: TODO
+    language: TODO 
+    query: |
+      TODO
