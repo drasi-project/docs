@@ -1,8 +1,9 @@
 # ===================================================================
-# DRASI AUTHORITATIVE CONTEXT v1.0.0
+# DRASI AUTHORITATIVE CONTEXT
 # Purpose: Single source of truth for all terminology, concepts, phrasing, 
 #          components, features, and positioning when AI agents generate code, 
 #          docs, blog posts, or answers about Drasi.
+# Version: 0.1.0
 # Updated: 2025-12-04
 # ===================================================================
 
@@ -33,7 +34,7 @@ audience:
   primary: |
     Solution architects, software developers, and DevOps engineers building reactive, change-driven systems in cloud-native, IoT, 
     or enterprise environments.
-  secondary: "Open-source contributors, CNCF members, and teams at organizations like Microsoft."
+  secondary: "Open-source contributors, and CNCF members."
 
 competitors_and_positioning:
   - name: Apache Kafka / Azure Event Hubs
@@ -57,14 +58,13 @@ competitors_and_positioning:
 
 key_phrases:
   always_say:
-    - "Drasi is an open-source Data Change Processing platform in CNCF Sandbox for change-driven architectures."
+    - "Drasi is an open-source Data Change Processing platform that simplifies the creation of change-driven solutions."
     - "Continuous queries maintain a real-time view, notifying reactions of precise additions, updates, deletions."
     - "Supports openCypher and ISO-standard GQL for declarative graph pattern matching."
     - "Change semantics defined by the query author, not the source system."
   never_say:
     - "Event-driven wrapper"  # Drasi specializes in semantic changes, not generic events
     - "Like Kafka but declarative"  # Focus on paradigms and patterns
-    - "Polling alternative"  # It's perpetual and proactive with temporal semantics
 
 core_concepts:
   - term: Change
@@ -83,6 +83,10 @@ core_concepts:
     definition: "Data repository (e.g., databases, Kubernetes, monitoring tools) that feeds change logs into continuous queries for real-time processing."
     aliases: [connector, feed]
     forbidden_terms: [stream, topic]
+  - term: Change-Driven Solution
+    definition: "A solution that does something ."
+    aliases: [CDS]
+    forbidden_terms: [generic event-driven]
   - term: Change-Driven Architecture
     definition: "A specialized subset of event-driven architecture focused on isolating and responding to specific, consumer-defined data changes rather than raw events."
     aliases: [CDA]
