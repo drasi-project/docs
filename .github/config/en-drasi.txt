@@ -219,3 +219,7 @@ jq
 haltOnError
 Dataverse's
 maxInterval
+MCP
+mcp
+RPC
+Streamable
