@@ -18,7 +18,7 @@ description: >
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-play-circle"></i>
-      How It Works
+      Why Drasi?
     </a>
   </div>
 </div>

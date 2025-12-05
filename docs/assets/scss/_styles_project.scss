@@ -57,6 +57,15 @@ body:has(.hero-section) .td-content > .lead:first-of-type {
   display: none;
 }
 
+// Override Docsy's max-width constraint on homepage content
+// Allow hero section, flow diagram, and section text to use full width
+.td-content:has(.hero-section) {
+  > p,
+  > .section-intro {
+    max-width: 100%;
+  }
+}
+
 /* ========================================
    Typography and Spacing Improvements
    ======================================== */
@@ -719,7 +728,7 @@ blockquote {
 .hero-subtitle {
   font-size: 1.1rem;
   color: $gray-600;
-  max-width: 600px;
+  max-width: 100%;
   line-height: 1.5;
   margin-bottom: $spacer-sm;
 }
@@ -966,7 +975,7 @@ blockquote {
   font-size: 1.125rem;
   line-height: 1.7;
   color: $gray-700;
-  max-width: 800px;
+  max-width: 100%;
   margin-bottom: $spacer-xl;
 }
 
