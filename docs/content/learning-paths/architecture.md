@@ -3,6 +3,7 @@ type: "docs"
 title: "Architecture Path"
 linkTitle: "Architecture"
 weight: 4
+hide_readingtime: true
 description: >
     Design enterprise solutions with Drasi
 ---

@@ -3,6 +3,7 @@ type: "docs"
 title: "Integration Path"
 linkTitle: "Integration"
 weight: 5
+hide_readingtime: true
 description: >
     Connect Drasi to your existing ecosystem
 ---

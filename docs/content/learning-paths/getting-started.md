@@ -2,6 +2,7 @@
 type: "docs"
 title: "Getting Started Path"
 linkTitle: "Getting Started"
+hide_readingtime: true
 weight: 1
 description: >
     Your first steps with Drasi - from installation to your first working solution

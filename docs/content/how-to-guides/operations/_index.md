@@ -3,6 +3,8 @@ type: "docs"
 title: "Manage Drasi"
 linkTitle: "Manage Drasi"
 weight: 70
+no_list: true
+hide_readingtime: true
 description: >
     Learn how to manage a Drasi environment
 ---

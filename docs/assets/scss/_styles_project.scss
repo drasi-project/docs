@@ -961,24 +961,29 @@ blockquote {
 // =============================================================================
 
 .section-header {
-  padding: $spacer-2xl 0;
-  margin-bottom: $spacer-xl;
+  padding: 0.5rem 0.5rem 0.25rem 1rem;
+  margin-bottom: 1.25rem;
   position: relative;
+  border-radius: 0 $border-radius-md $border-radius-md 0;
 
   &--tutorials {
-    background: $gradient-tutorials;
+    background: linear-gradient(135deg, rgba($color-tutorials, 0.1) 0%, rgba($color-tutorials, 0.05) 100%);
+    border-left: 4px solid $color-tutorials;
   }
 
   &--howto {
-    background: $gradient-howto;
+    background: linear-gradient(135deg, rgba($color-howto, 0.1) 0%, rgba($color-howto, 0.05) 100%);
+    border-left: 4px solid $color-howto;
   }
 
   &--concepts {
-    background: $gradient-concepts;
+    background: linear-gradient(135deg, rgba($color-concepts, 0.1) 0%, rgba($color-concepts, 0.05) 100%);
+    border-left: 4px solid $color-concepts;
   }
 
   &--reference {
-    background: $gradient-reference;
+    background: linear-gradient(135deg, rgba($color-reference, 0.1) 0%, rgba($color-reference, 0.05) 100%);
+    border-left: 4px solid $color-reference;
   }
 }
 
@@ -987,7 +992,7 @@ blockquote {
   line-height: 1.7;
   color: $gray-700;
   max-width: 100%;
-  margin-bottom: $spacer-xl;
+  margin-bottom: 0;
 }
 
 // =============================================================================
@@ -1469,9 +1474,6 @@ pre:hover .copy-code-button {
 .section-header--learning-paths {
   background: linear-gradient(135deg, rgba($accent-purple, 0.1) 0%, rgba($accent-cyan, 0.1) 100%);
   border-left: 4px solid $accent-purple;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 0 $border-radius-md $border-radius-md 0;
 }
 
 // Learning Paths Grid

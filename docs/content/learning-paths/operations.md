@@ -3,6 +3,7 @@ type: "docs"
 title: "Operations Path"
 linkTitle: "Operations"
 weight: 3
+hide_readingtime: true
 description: >
     Deploy, monitor, and maintain Drasi in production
 ---

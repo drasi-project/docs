@@ -3,6 +3,7 @@ type: "docs"
 title: "Real-World Developer Path"
 linkTitle: "Real-World Developer"
 weight: 2
+hide_readingtime: true
 description: >
     Build practical, production-ready solutions with Drasi
 ---
