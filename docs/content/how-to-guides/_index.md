@@ -13,18 +13,7 @@ description: >
   <p class="section-intro">How-to guides are task-oriented recipes that help you accomplish specific goals. Unlike tutorials, they assume you have some familiarity with Drasi and focus on getting a particular job done.</p>
 </div>
 
-## How to Use These Guides
-
-Each guide answers a specific "How do I...?" question:
-
-- **Goal-focused**: Start with the end result in mind
-- **Practical**: Skip theory, get to the solution
-- **Adaptable**: Apply the pattern to your specific situation
-- **Complete**: Cover all necessary steps
-
-## Installation
-
-Get Drasi running on your infrastructure:
+## Choose a Guide
 
 <div class="card-grid">
   <a href="/how-to-guides/installation/">
@@ -38,13 +27,6 @@ Get Drasi running on your infrastructure:
       </div>
     </div>
   </a>
-</div>
-
-## Configure Sources
-
-Connect Drasi to your data:
-
-<div class="card-grid">
   <a href="/how-to-guides/configure-sources/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon">
@@ -56,13 +38,6 @@ Connect Drasi to your data:
       </div>
     </div>
   </a>
-</div>
-
-## Configure Reactions
-
-Take action on data changes:
-
-<div class="card-grid">
   <a href="/how-to-guides/configure-reactions/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon">
@@ -74,13 +49,6 @@ Take action on data changes:
       </div>
     </div>
   </a>
-</div>
-
-## Write Queries
-
-Define what data changes matter:
-
-<div class="card-grid">
   <a href="/how-to-guides/write-continuous-queries/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon">
@@ -103,13 +71,6 @@ Define what data changes matter:
       </div>
     </div>
   </a>
-</div>
-
-## Operations
-
-Run Drasi in production:
-
-<div class="card-grid">
   <a href="/how-to-guides/operations/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon">
@@ -132,13 +93,6 @@ Run Drasi in production:
       </div>
     </div>
   </a>
-</div>
-
-## Extend Drasi
-
-Build custom components:
-
-<div class="card-grid">
   <a href="/how-to-guides/extend-drasi/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon">
@@ -151,16 +105,6 @@ Build custom components:
     </div>
   </a>
 </div>
-
-## Quick Reference
-
-| Task | Guide |
-|------|-------|
-| Install on Kubernetes | [Installation](/how-to-guides/installation/) |
-| Connect to PostgreSQL | [Configure Sources > PostgreSQL](/how-to-guides/configure-sources/postgresql/) |
-| Set up real-time UI | [Configure Reactions > SignalR](/how-to-guides/configure-reactions/signalr/) |
-| Monitor deployment | [Operations > Observability](/how-to-guides/operations/observability/) |
-| Debug queries | [Testing > Quick Test](/how-to-guides/testing/quick-test/) |
 
 ## Related Resources
 

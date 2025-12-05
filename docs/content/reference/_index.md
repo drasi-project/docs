@@ -13,16 +13,7 @@ description: >
   <p class="section-intro">Reference documentation provides detailed, accurate information about Drasi's APIs, configuration options, and technical specifications. Use it to look up specific details when you need them.</p>
 </div>
 
-## How to Use Reference Docs
-
-Reference documentation is designed for **lookup**, not reading cover-to-cover:
-
-- **Comprehensive**: All options and parameters documented
-- **Accurate**: Reflects actual system behavior
-- **Structured**: Easy to find specific information
-- **Technical**: Assumes familiarity with concepts
-
-## Command Line Interface
+## Browse Reference
 
 <div class="card-grid">
   <a href="/reference/command-line-interface/">
@@ -36,11 +27,6 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
       </div>
     </div>
   </a>
-</div>
-
-## Query Language
-
-<div class="card-grid">
   <a href="/reference/query-language/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -52,11 +38,6 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
       </div>
     </div>
   </a>
-</div>
-
-## APIs and Configuration
-
-<div class="card-grid">
   <a href="/reference/management-api/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -90,11 +71,6 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
       </div>
     </div>
   </a>
-</div>
-
-## Developer Tools
-
-<div class="card-grid">
   <a href="/reference/developer-tools/vscode-extension/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -106,11 +82,6 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
       </div>
     </div>
   </a>
-</div>
-
-## Troubleshooting and Data
-
-<div class="card-grid">
   <a href="/reference/troubleshooting/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -145,36 +116,6 @@ Reference documentation is designed for **lookup**, not reading cover-to-cover:
     </div>
   </a>
 </div>
-
-## Quick Lookup
-
-### CLI Commands
-
-| Command | Description |
-|---------|-------------|
-| `drasi init` | Initialize Drasi in a cluster |
-| `drasi apply` | Apply resource configuration |
-| `drasi delete` | Delete resources |
-| `drasi list` | List resources |
-| `drasi describe` | Show resource details |
-| `drasi logs` | View component logs |
-
-### Query Functions
-
-| Function | Description |
-|----------|-------------|
-| `drasi.changeDateTime()` | Timestamp of the change |
-| `drasi.trueDuring()` | Temporal condition evaluation |
-| `drasi.linearInterpolate()` | Interpolate between values |
-
-### Resource Types
-
-| Type | Description |
-|------|-------------|
-| `Source` | Database connection |
-| `ContinuousQuery` | Query definition |
-| `Reaction` | Action handler |
-| `QueryContainer` | Query execution environment |
 
 ## Related Resources
 

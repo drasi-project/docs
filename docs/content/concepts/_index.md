@@ -13,18 +13,7 @@ description: >
   <p class="section-intro">Concepts help you understand how Drasi works. This section explains the architecture, design decisions, and mental models that will help you use Drasi effectively.</p>
 </div>
 
-## Why Read Concepts?
-
-Unlike tutorials (which teach you to *do*) or reference docs (which tell you *what*), concepts explain *why* and *how*:
-
-- **Build mental models** of how Drasi processes data changes
-- **Understand trade-offs** behind different design choices
-- **Make better decisions** when designing your solutions
-- **Debug more effectively** by understanding system behavior
-
-## Core Concepts
-
-Start here to understand Drasi's fundamental architecture:
+## Explore Concepts
 
 <div class="card-grid">
   <a href="/concepts/overview/">
@@ -71,13 +60,6 @@ Start here to understand Drasi's fundamental architecture:
       </div>
     </div>
   </a>
-</div>
-
-## Architecture Deep Dives
-
-Explore specific aspects of Drasi's architecture:
-
-<div class="card-grid">
   <a href="/concepts/query-container/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
@@ -112,45 +94,6 @@ Explore specific aspects of Drasi's architecture:
     </div>
   </a>
 </div>
-
-## Recommended Reading Order
-
-For newcomers to Drasi:
-
-1. **[Overview](/concepts/overview/)** - Start here for the big picture
-2. **[Sources](/concepts/sources/)** - Understand data ingestion
-3. **[Continuous Queries](/concepts/continuous-queries/)** - Learn about query evaluation
-4. **[Reactions](/concepts/reactions/)** - See how actions are triggered
-5. **[Query Container](/concepts/query-container/)** - Dive deeper into internals
-
-## Key Mental Models
-
-### The Change Pipeline
-
-```
-Database Change → Source Capture → Query Evaluation → Reaction Trigger
-```
-
-Think of Drasi as a pipeline that transforms database changes into actions:
-
-1. **Change Detection**: Sources monitor databases for changes
-2. **Change Processing**: Queries evaluate changes against your criteria
-3. **Action Execution**: Reactions take action when criteria are met
-
-### Continuous vs. Traditional Queries
-
-| Traditional Query | Continuous Query |
-|-------------------|------------------|
-| Runs once | Runs continuously |
-| Returns point-in-time snapshot | Returns change stream |
-| You poll for changes | Changes push to you |
-| Result is static | Result updates automatically |
-
-### The Three C's
-
-- **Connect** (Sources) - Link to your data
-- **Compute** (Queries) - Define what matters
-- **Communicate** (Reactions) - Take action
 
 ## Related Resources
 
