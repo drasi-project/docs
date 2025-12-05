@@ -15,8 +15,9 @@ DefaultContentLanguage = "en"
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    style = 'monokailight'
-
+    noClasses = false
+    codeFences = true
+    guessSyntax = true
       
 # Top Nav Bar
 [[menu.main]]
@@ -64,15 +65,6 @@ indexName = "drasi"
   github_repo = "https://github.com/drasi-project/docs"
   github_branch = "main"
   github_subdir = "docs"
-  prism_syntax_highlighting = true
-  [params.prism]
-    languages = [
-      "markup",
-      "css",
-      "clike",
-      "javascript",
-      "json"
-    ]
 custom_js = ["js/sync-tabs.js", "js/navigation-enhancements.js"]
 # Google Analytics
 googleAnalytics =  "G-MZQ63ZL6GZ"

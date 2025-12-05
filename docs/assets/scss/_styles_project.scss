@@ -156,7 +156,91 @@ pre {
     font-family: $font-family-monospace;
     font-size: 0.9em;
     line-height: 1.6;
+    color: #f8f8f2; // Default text color for dark background
   }
+}
+
+// =============================================================================
+// CHROMA SYNTAX HIGHLIGHTING (Dark theme for code blocks)
+// Based on Dracula theme - high contrast for dark backgrounds
+// =============================================================================
+.highlight pre,
+pre.chroma,
+.chroma {
+  background-color: #1e1e2e !important;
+  color: #f8f8f2;
+}
+
+.chroma {
+  // Base text color
+  color: #f8f8f2;
+
+  // Background
+  .bg { background-color: #1e1e2e; }
+
+  // Keywords
+  .k, .kc, .kd, .kn, .kp, .kr, .kt { color: #ff79c6; }
+
+  // Names/Identifiers
+  .n { color: #f8f8f2; }
+  .na { color: #50fa7b; }  // Attribute names
+  .nb { color: #8be9fd; }  // Builtins
+  .nc { color: #8be9fd; }  // Class names
+  .no { color: #bd93f9; }  // Constants
+  .nd { color: #50fa7b; }  // Decorators
+  .ni { color: #f8f8f2; }
+  .ne { color: #ff5555; }  // Exceptions
+  .nf { color: #50fa7b; }  // Function names
+  .nl { color: #8be9fd; }  // Labels
+  .nn { color: #f8f8f2; }  // Namespace
+  .nx { color: #f8f8f2; }
+  .py { color: #f8f8f2; }
+  .nt { color: #ff79c6; }  // Tags
+  .nv { color: #f8f8f2; }  // Variables
+  .bp, .fm, .vc, .vg, .vi, .vm { color: #f8f8f2; }
+
+  // Strings
+  .s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss {
+    color: #f1fa8c;
+  }
+
+  // Numbers
+  .m, .mb, .mf, .mh, .mi, .il, .mo { color: #bd93f9; }
+
+  // Operators
+  .o, .ow { color: #ff79c6; }
+
+  // Punctuation
+  .p { color: #f8f8f2; }
+
+  // Comments
+  .c, .ch, .cm, .c1, .cs, .cp, .cpf {
+    color: #6272a4;
+    font-style: italic;
+  }
+
+  // Literals
+  .l, .ld { color: #f1fa8c; }
+
+  // Generic
+  .gd { color: #ff5555; }  // Deleted
+  .ge { font-style: italic; }
+  .gi { color: #50fa7b; }  // Inserted
+  .gs { font-weight: bold; }
+  .gu { color: #6272a4; }  // Subheading
+
+  // Line numbers
+  .ln, .lnt {
+    color: #6272a4;
+    margin-right: 0.4em;
+    padding: 0 0.4em;
+  }
+
+  // Line highlight
+  .hl { background-color: #44475a; }
+
+  // Error
+  .err { color: #ff5555; }
 }
 
 // Blockquote styling - more distinctive
