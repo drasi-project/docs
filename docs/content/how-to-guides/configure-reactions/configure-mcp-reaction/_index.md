@@ -317,5 +317,4 @@ This is a convenience, especially if a single YAML file contains multiple Reacti
 
 ## Related Resources
 - [Model Context Protocol Specification](https://modelcontextprotocol.io/specification/2025-03-26/server/resources)
-- [MCP Resources Documentation](https://modelcontextprotocol.io/specification/2025-03-26/server/resources)
 - [MCP Subscriptions Documentation](https://modelcontextprotocol.io/specification/2025-03-26/server/resources#subscriptions)
