@@ -7,8 +7,17 @@ theme = "docsy"
 author = "Copyright © contributors to Drasi, established as Drasi a Series of LF Projects, LLC"
 copyright ="""Copyright&nbsp;©&nbsp;Drasi&nbsp;a&nbsp;Series&nbsp;of&nbsp;LF&nbsp;Projects,&nbsp;LLC. For&nbsp;website&nbsp;terms&nbsp;of&nbsp;use,&nbsp;trademark&nbsp;policy&nbsp;and&nbsp;other&nbsp;project&nbsp;policies&nbsp;please&nbsp;see&nbsp;<a href="https://lfprojects.org/policies/">lfprojects.org/policies/</a>."""
 # Language Configuration
-languageCode = "en"
-DefaultContentLanguage = "en"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 1
+#  [languages.es]
+#    languageName = "Español"
+#    contentDir = "content/es"
+#    weight = 2
 
 [markup]
   [markup.goldmark]
