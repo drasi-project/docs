@@ -113,7 +113,7 @@ Note that the Drasi installation also installs a number of dependencies, includi
 If `drasi init` completes without error, the Drasi environment is ready for use, and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
 {{% alert tip %}}
-To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
+To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/how-to-guides/testing/quick-test-environment).
 {{% /alert %}}
 
 ## Troubleshooting Installation Problems
