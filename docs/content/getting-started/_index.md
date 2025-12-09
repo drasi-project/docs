@@ -427,7 +427,7 @@ http://hello-world-debug.drasi.127.0.0.1.nip.io:8080
 
 In addition to accessing the Debug Reaction via ingress, you can also port-forward the Debug Reaction service to your local machine. Run the following command in a terminal window:
 ```bash
-kubectl port-forward services/hello-world-debug-gateway 8080:8080 -n drasi-system
+drasi tunnel reaction hello-world-debug 8080
 ```
 Now open your browser and navigate to [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}

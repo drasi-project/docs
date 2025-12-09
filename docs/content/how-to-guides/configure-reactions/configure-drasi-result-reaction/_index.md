@@ -91,13 +91,12 @@ This will return the full definition used to create the Reaction along with more
 ## Using the Result Reaction
 
 ### Port-forwarding the Result Reaction
+
 The only way to retrieve the result set from the Result Reaction is through sending HTTP GET requests to the endpoints. For development and testing purposes, since the Result Reaction lives in a Kubernetes pod, it needs to be exposed using Kubernetes port-forwarding. This allows you to send HTTP GET requests to the Result Reaction endpoint from your local machine or from another application. Use the following command to set up port-forwarding for the Result Reaction deployed in the previous steps:
 
 ```bash
-kubectl port-forward -n <drasi-namespace> services/quick-result-reaction-gateway 8080:8080
+drasi tunnel reaction quick-result-reaction 8080
 ```
-
-This command forwards port `8080` from your local machine to port `8080` on the Result Reaction service in the Kubernetes cluster. Replace `<drasi-namespace>` with the Kubernetes namespace where the Result Reaction was deployed. The name used to reference the Reaction has the structure `services/<reaction_name>-gateway`. 
 
 You can now access the service locally at `http://localhost:8080` and you can send GET requests to retrieve the result set of a particular query.
 
