@@ -35,7 +35,7 @@ spec:
     baseUrl: "https://api.example.com"
     token: "your-bearer-token"
   queries:
-    <query-id>:
+    <query-id>: >
       added:
         url: "/webhook/{{after.id}}"
         method: "POST"
@@ -135,7 +135,7 @@ spec:
     baseUrl: "https://api.github.com"
     token: "ghp_your_github_token_here"
   queries:
-    issue-comments:
+    issue-comments: >
       added:
         url: "/repos/{{after.repo}}/issues/{{after.issue_number}}/comments"
         method: "POST"

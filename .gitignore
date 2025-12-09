@@ -1,6 +1,6 @@
 docs/public
 docs/.hugo_build.lock
-tests/node_modules
+node_modules
 .DS_Store
 dictionary.dic
 **/.claude

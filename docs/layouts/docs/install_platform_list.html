@@ -3,13 +3,17 @@
     <div class="extension-grid-container">
       {{ $filteredPages := where .Pages "Params.hide_summary" "ne" true }}
       {{ range $filteredPages }}
-        <a href="{{ .Permalink }}" class="card">
+        <a href="{{ .Permalink }}">
             <div class="extension-card">
             <div class="extension-card-image">
                 {{ $image := .Resources.GetMatch "grid-image.{png,jpg,jpeg,svg}" }}
                 {{ if $image }}
-                    {{ $image := $image.Fit "300x150" }}
-                    <img src="{{ $image.Permalink }}" alt="{{ .Description }}">
+                    {{ if eq $image.MediaType.SubType "svg" }}
+                        <img src="{{ $image.Permalink }}" alt="{{ .Description }}">
+                    {{ else }}
+                        {{ $image := $image.Fit "300x150" }}
+                        <img src="{{ $image.Permalink }}" alt="{{ .Description }}">
+                    {{ end }}
                 {{ else }}
                     <img src="/images/defaults/default-platform.jpeg" alt="{{ .Description }}">
                 {{ end }}
