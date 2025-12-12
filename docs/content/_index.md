@@ -23,6 +23,27 @@ description: >
   </div>
 </div>
 
+## Deploy Drasi Your Way
+
+Drasi adapts to your environment with three flexible deployment modes:
+
+<div class="deployment-modes-preview">
+  <div class="deployment-mode">
+    <i class="fas fa-book"></i>
+    <strong>Library</strong> - Embed in Rust apps
+  </div>
+  <div class="deployment-mode">
+    <i class="fas fa-server"></i>
+    <strong>Server</strong> - Standalone process
+  </div>
+  <div class="deployment-mode">
+    <i class="fas fa-cloud"></i>
+    <strong>Platform</strong> - Kubernetes at scale
+  </div>
+</div>
+
+<p class="deployment-modes-cta"><a href="/concepts/deployment-modes/">Learn about deployment modes <i class="fas fa-arrow-right"></i></a></p>
+
 ## How Drasi Works
 
 <div class="flow-diagram">

@@ -27,6 +27,17 @@ description: >
       </div>
     </div>
   </a>
+  <a href="/concepts/deployment-modes/">
+    <div class="unified-card unified-card--concepts">
+      <div class="unified-card-icon">
+        <i class="fas fa-layer-group"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Deployment Modes</h3>
+        <p class="unified-card-summary">Explore the different ways to deploy and run Drasi.</p>
+      </div>
+    </div>
+  </a>
   <a href="/concepts/sources/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
