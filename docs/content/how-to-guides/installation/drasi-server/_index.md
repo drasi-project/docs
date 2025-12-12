@@ -134,7 +134,7 @@ Example configuration structure:
 # Example configuration (actual format TBD)
 server:
   port: 8080
-  host: 0.0.0.0
+  host: 127.0.0.1  # Use 0.0.0.0 to allow external connections (consider firewall rules)
 
 storage:
   type: sqlite
