@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - feature-lib
 
 permissions:
   id-token: write # Required for requesting the JWT
