@@ -120,7 +120,7 @@ Installation will typically involve adding the crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-drasi-lib = "0.1.0"  # Version TBD
+drasi-lib = "*"  # Actual version will be specified when released
 ```
 
 ## Prerequisites

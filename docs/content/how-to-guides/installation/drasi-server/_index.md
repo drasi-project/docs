@@ -82,8 +82,9 @@ Installation options will likely include:
 ### Binary Installation
 
 ```bash
-# Download the binary (example)
-curl -L https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server -o drasi-server
+# Example - actual download URL will be provided when released
+# Download the binary
+curl -L https://github.com/drasi-project/drasi/releases/latest/download/drasi-server -o drasi-server
 chmod +x drasi-server
 
 # Run the server
@@ -93,7 +94,8 @@ chmod +x drasi-server
 ### Docker Installation
 
 ```bash
-# Run as a container (example)
+# Example - actual image location will be provided when released
+# Run as a container
 docker run -d \
   --name drasi-server \
   -p 8080:8080 \
