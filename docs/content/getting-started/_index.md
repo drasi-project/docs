@@ -12,6 +12,8 @@ related:
     - title: "Writing Single-Source Queries"
       url: "/tutorials/write-single-source-continuous-queries/"
   concepts:
+    - title: "Deployment Modes"
+      url: "/concepts/deployment-modes/"
     - title: "Why Drasi?"
       url: "/concepts/overview/"
     - title: "Sources"
@@ -31,6 +33,10 @@ related:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
 ---
+
+{{% alert color="info" %}}
+This tutorial focuses on getting started with **Drasi Platform on Kubernetes**. If you're interested in other deployment modes, see [Deployment Modes](/concepts/deployment-modes/) for information about Drasi Server and drasi-lib.
+{{% /alert %}}
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
 

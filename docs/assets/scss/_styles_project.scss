@@ -1868,6 +1868,78 @@ pre:hover .copy-code-button {
   }
 }
 
+// =============================================================================
+// DEPLOYMENT MODES PREVIEW
+// Preview section for showing different deployment modes on home page
+// =============================================================================
+
+.deployment-modes-preview {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 2rem 0 1rem 0;
+}
+
+.deployment-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: $white;
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($gray-300, 0.5);
+  min-width: 140px;
+  transition: all $transition-base;
+
+  i {
+    font-size: 1.75rem;
+    color: $primary;
+    transition: transform $transition-base;
+  }
+
+  strong {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $gray-800;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-md;
+    border-color: $primary;
+
+    i {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.deployment-modes-cta {
+  margin: 1rem 0 0 0;
+  text-align: center;
+
+  a {
+    color: $primary;
+    font-weight: 600;
+    text-decoration: none;
+
+    i {
+      margin-left: 0.35rem;
+      transition: transform $transition-base;
+    }
+
+    &:hover {
+      text-decoration: underline;
+
+      i {
+        transform: translateX(3px);
+      }
+    }
+  }
+}
+
 // Responsive adjustments
 @media (max-width: 768px) {
   .learning-paths-grid {
@@ -1918,6 +1990,23 @@ pre:hover .copy-code-button {
 
     span {
       font-size: 0.8rem;
+    }
+  }
+
+  .deployment-modes-preview {
+    gap: 1rem;
+  }
+
+  .deployment-mode {
+    padding: 0.75rem 1rem;
+    min-width: 110px;
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    strong {
+      font-size: 0.85rem;
     }
   }
 }

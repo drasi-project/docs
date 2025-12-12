@@ -10,6 +10,8 @@ related:
     - title: "Getting Started with Drasi"
       url: "/getting-started/"
   concepts:
+    - title: "Deployment Modes"
+      url: "/concepts/deployment-modes/"
     - title: "Sources"
       url: "/concepts/sources/"
     - title: "Continuous Queries"
@@ -29,6 +31,16 @@ Here are some examples of scenarios where Drasi's functionality can be applied t
 - Risk management through early awareness of company employees, facilities, and assets that are at risk due to emerging incidents occurring in their current location.
 - Optimizing the delivery of orders to customers when they arrive in a curbside pickup zone. 
 - Improving infrastructure threat detection by raising alerts when a container with known security threats is deployed to a Kubernetes Cluster.
+
+## Flexible Deployment
+
+Drasi offers three deployment modes to fit your needs:
+
+- **[Drasi Library (drasi-lib)](/how-to-guides/installation/drasi-lib/)**: Embed Drasi directly in your Rust applications
+- **[Drasi Server](/how-to-guides/installation/drasi-server/)**: Run as a standalone server process
+- **[Drasi Platform](/how-to-guides/installation/)**: Deploy on Kubernetes for production scale
+
+Learn more about choosing the right deployment mode in [Deployment Modes](/concepts/deployment-modes/).
 
 ## Components
 Drasi is built around three simple components: {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}. In the simplest scenario, data flows through these components from left to right as shown in the diagram below. But, a single Drasi environment can host many Sources, Continuous Queries, and Reactions, allowing you to connect them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
