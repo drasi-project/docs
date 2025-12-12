@@ -7,16 +7,26 @@ theme = "docsy"
 author = "Copyright © contributors to Drasi, established as Drasi a Series of LF Projects, LLC"
 copyright ="""Copyright&nbsp;©&nbsp;Drasi&nbsp;a&nbsp;Series&nbsp;of&nbsp;LF&nbsp;Projects,&nbsp;LLC. For&nbsp;website&nbsp;terms&nbsp;of&nbsp;use,&nbsp;trademark&nbsp;policy&nbsp;and&nbsp;other&nbsp;project&nbsp;policies&nbsp;please&nbsp;see&nbsp;<a href="https://lfprojects.org/policies/">lfprojects.org/policies/</a>."""
 # Language Configuration
-languageCode = "en"
-DefaultContentLanguage = "en"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 1
+#  [languages.es]
+#    languageName = "Español"
+#    contentDir = "content/es"
+#    weight = 2
 
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    style = 'monokailight'
-
+    noClasses = false
+    codeFences = true
+    guessSyntax = true
       
 # Top Nav Bar
 [[menu.main]]
@@ -64,16 +74,7 @@ indexName = "drasi"
   github_repo = "https://github.com/drasi-project/docs"
   github_branch = "main"
   github_subdir = "docs"
-  prism_syntax_highlighting = true
-  [params.prism]
-    languages = [
-      "markup",
-      "css",
-      "clike",
-      "javascript",
-      "json"
-    ]
-custom_js = ["js/sync-tabs.js"]
+custom_js = ["js/sync-tabs.js", "js/navigation-enhancements.js"]
 # Google Analytics
 googleAnalytics =  "G-MZQ63ZL6GZ"
 

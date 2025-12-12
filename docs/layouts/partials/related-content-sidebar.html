@@ -1,0 +1,104 @@
+{{/*
+  Related Content Sidebar Partial
+
+  Renders the related content panel in the right sidebar.
+  Reads from page frontmatter's "related" field.
+  Displays on any page with related content defined, except:
+  - Homepage (kind = home)
+  - Pages explicitly marked as landing pages
+*/}}
+
+{{ $related := .Params.related }}
+{{ $isHomePage := eq .Kind "home" }}
+{{ $isExplicitLandingPage := .Params.is_landing_page }}
+
+{{/* Show related content if it's defined and page isn't the homepage or explicit landing page */}}
+{{ if and $related (not $isHomePage) (not $isExplicitLandingPage) }}
+<div class="related-content-sidebar">
+  <div class="related-content__header" data-bs-toggle="collapse" data-bs-target="#related-content-body" aria-expanded="true">
+    <i class="fas fa-compass"></i>
+    <span>Related Content</span>
+    <button class="related-content__toggle" aria-label="Toggle related content">
+      <i class="fas fa-chevron-up"></i>
+    </button>
+  </div>
+
+  <div class="related-content__body collapse show" id="related-content-body">
+    {{/* Learn More - Concepts */}}
+    {{ with $related.concepts }}
+    <div class="related-content__section related-content__section--concepts">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-lightbulb"></i>
+        Learn More
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Try It - Tutorials */}}
+    {{ with $related.tutorials }}
+    <div class="related-content__section related-content__section--tutorials">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-graduation-cap"></i>
+        Try It
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Do It - How-To Guides */}}
+    {{ with $related.howto }}
+    <div class="related-content__section related-content__section--howto">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-tasks"></i>
+        Do It
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+    {{/* Look It Up - Reference */}}
+    {{ with $related.reference }}
+    <div class="related-content__section related-content__section--reference">
+      <h4 class="related-content__section-title">
+        <i class="fas fa-book"></i>
+        Look It Up
+      </h4>
+      <ul class="related-content__list">
+        {{ range . }}
+        <li>
+          <a href="{{ .url | relURL }}" class="related-content__link">
+            {{ .title }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

@@ -5,6 +5,24 @@ linkTitle: "Solution Design"
 weight: 60
 description: >
     How to Design Solutions with Drasi
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Curbside Pickup Tutorial"
+      url: "/tutorials/curbside-pickup/"
+    - title: "Building Comfort Tutorial"
+      url: "/tutorials/building-comfort/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
 ---
 
 Drasi provides capabilities that exceed most existing change notification solutions. As a Solution Developer, there are multiple approaches you can take to use Drasi depending on what you need to achieve and how you choose to model the data and services in your solution. When starting to learn how to adopt Drasi, it can be useful to think in terms of the following 3 increasingly sophisticated approaches:

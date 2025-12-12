@@ -5,6 +5,31 @@ linkTitle: "Getting Started"
 weight: 10
 description: >
     Detect and react to your first database change using Drasi
+related:
+  tutorials:
+    - title: "Connecting Frontends to Queries"
+      url: "/tutorials/connecting-frontends/"
+    - title: "Writing Single-Source Queries"
+      url: "/tutorials/write-single-source-continuous-queries/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Install Drasi"
+      url: "/how-to-guides/installation/"
+    - title: "Configure PostgreSQL Source"
+      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+  reference:
+    - title: "CLI Reference"
+      url: "/reference/command-line-interface/"
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.

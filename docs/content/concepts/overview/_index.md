@@ -4,7 +4,21 @@ title: "Why Drasi?"
 linkTitle: "Why Drasi?"
 weight: 10
 description: >
-    Why use Drasi? 
+    Why use Drasi?
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Install Drasi"
+      url: "/how-to-guides/installation/"
 ---
 
 ## Introduction
@@ -17,7 +31,7 @@ Here are some examples of scenarios where Drasi's functionality can be applied t
 - Improving infrastructure threat detection by raising alerts when a container with known security threats is deployed to a Kubernetes Cluster.
 
 ## Components
-Drasi is built around three simple components: **Sources**, **Continuous Queries**, and **Reactions**. In the simplest scenario, data flows through these components from left to right as shown in the diagram below. But, a single Drasi environment can host many Sources, Continuous Queries, and Reactions, allowing you to connect them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
+Drasi is built around three simple components: {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}. In the simplest scenario, data flows through these components from left to right as shown in the diagram below. But, a single Drasi environment can host many Sources, Continuous Queries, and Reactions, allowing you to connect them together to build scalable Data Change Processing capabilities to power dynamic business solutions. Each of these concepts is discussed in more detail below.
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
@@ -26,7 +40,7 @@ Sources provide connectivity to the systems that Drasi can observe as sources of
 
 {{< figure src="sources-component.png" alt="Sources Component" width="60%" >}}
 
-Drasi’s Source input schema is modeled on Debezium (https://debezium.io), an open-source Change Data Capture platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will more easily integrate with the many existing Debezium sources. 
+Drasi's Source input schema is modeled on {{< term "Debezium" >}} (https://debezium.io), an open-source {{< term "Change Data Capture" >}} platform that has adapters for many common data sources. By embracing the open data standard defined by Debezium, Drasi will more easily integrate with the many existing Debezium sources. 
 
 More detail about Sources is available on the [Sources](/concepts/sources/) overview page. 
 
@@ -42,7 +56,7 @@ When you execute an **instantaneous query**, you are running the query against t
 
 {{< figure src="continuous-query.png" alt="Continuous Query" width="65%" >}}
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/reference/query-language/). The use of a declarative graph query language means you can:
+Continuous Queries are implemented as graph queries written in the {{< term "Cypher" "Cypher Query Language" >}} ([reference](/reference/query-language/)). The use of a declarative graph query language means you can:
 - describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
 - express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
 - create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.

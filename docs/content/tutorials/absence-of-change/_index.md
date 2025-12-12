@@ -5,6 +5,21 @@ linkTitle: "Absence of Change"
 weight: 50
 description: >
     Responding in the absence of changes
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure PostgreSQL Source"
+      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+  reference:
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 ## Scenario

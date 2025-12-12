@@ -5,6 +5,21 @@ linkTitle: "Continuous Query Syntax"
 weight: 20
 description: >
     Writing Continuous Queries
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Writing Single-Source Queries"
+      url: "/tutorials/write-single-source-continuous-queries/"
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
 ---
 
 Continuous Queries are written using a subset of the [Cypher Query Language](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf) or [Graph Query Language (GQL)](https://www.iso.org/standard/76120.html). These query languages allow you to describe patterns in graph data and specify transformations to detect changes of interest.

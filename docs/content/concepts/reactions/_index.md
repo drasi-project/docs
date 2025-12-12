@@ -5,6 +5,29 @@ linkTitle: "Reactions"
 weight: 40
 description: >
     What are Reactions and how to use them?
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/getting-started/"
+    - title: "Connecting Frontends to Queries"
+      url: "/tutorials/connecting-frontends/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure Debug Reaction"
+      url: "/how-to-guides/configure-reactions/configure-drasi-debug-reaction/"
+    - title: "Configure SignalR Reaction"
+      url: "/how-to-guides/configure-reactions/configure-signalr-reaction/"
+    - title: "Configure Event Grid Reaction"
+      url: "/how-to-guides/configure-reactions/configure-azure-eventgrid-reaction/"
+  reference:
+    - title: "CLI Reference"
+      url: "/reference/command-line-interface/"
+    - title: "Reaction Provider Schema"
+      url: "/reference/schema/reaction-provider/"
 ---
 
 Reactions process the stream of query result changes output by one or more Continuous Queries and act on them. The action taken depends on the Reaction being used. 
