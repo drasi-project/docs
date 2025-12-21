@@ -8,13 +8,13 @@ description: >
 ---
 
 <div class="hero-section">
-  <h1 class="hero-title">React to Data Changes in Real-Time</h1>
-  <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy to detect complex changes across your databases and react to them instantly.</p>
+  <h1 class="hero-title">React Instantly and Intelligently to Data Changes</h1>
+  <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
 
   <div class="cta-group">
-    <a href="/getting-started/" class="cta-button cta-button--primary">
+    <a href="/drasi-server/getting-started/" class="cta-button cta-button--primary">
       <i class="fas fa-rocket"></i>
-      Get Started in 20 Minutes
+      Get Started in 10 Minutes
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-play-circle"></i>
@@ -25,13 +25,15 @@ description: >
 
 ## How Drasi Works
 
+<p class="section-intro">Drasi watches your data sources for changes, evaluates them against your queries in real-time, and triggers reactions when conditions are met. No polling, no complex event processing infrastructure needed.</p>
+
 <div class="flow-diagram">
   <div class="flow-step">
     <div class="flow-step__icon">
       <i class="fas fa-database"></i>
     </div>
     <div class="flow-step__label">Sources</div>
-    <div class="flow-step__description">Connect to your databases</div>
+    <div class="flow-step__description">Connect to your data sources</div>
   </div>
 
   <div class="flow-arrow">
@@ -59,33 +61,45 @@ description: >
   </div>
 </div>
 
-<p class="section-intro">Drasi watches your data sources for changes, evaluates them against your queries in real-time, and triggers reactions when conditions are met. No polling, no complex event processing infrastructure needed.</p>
+## Explore Drasi
+
+<p class="section-intro">Drasi is available in three forms to match your deployment needs and use case.</p>
+
+<div class="product-grid">
+  <a href="/drasi-lib/" class="product-card product-card--lib">
+    <div class="product-card__icon">
+      <i class="fab fa-rust"></i>
+    </div>
+    <div class="product-card__content">
+      <h3 class="product-card__title">drasi-lib</h3>
+      <p class="product-card__tagline">In-process change detection for Rust applications</p>
+    </div>
+  </a>
+
+  <a href="/drasi-server/" class="product-card product-card--server">
+    <div class="product-card__icon">
+      <i class="fab fa-docker"></i>
+    </div>
+    <div class="product-card__content">
+      <h3 class="product-card__title">Drasi Server</h3>
+      <p class="product-card__tagline">Run Drasi as a standalone process or in a container</p>
+    </div>
+  </a>
+
+  <a href="/drasi-kubernetes/" class="product-card product-card--kubernetes">
+    <div class="product-card__icon">
+      <i class="fas fa-dharmachakra"></i>
+    </div>
+    <div class="product-card__content">
+      <h3 class="product-card__title">Drasi for Kubernetes</h3>
+      <p class="product-card__tagline">Run Drasi at scale on a Kubernetes cluster</p>
+    </div>
+  </a>
+</div>
 
 ## Explore the Documentation
 
-<div class="card-grid">
-  <a href="/tutorials/">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Tutorials</h3>
-        <p class="unified-card-summary">Learn Drasi through hands-on tutorials that guide you step-by-step through real-world scenarios. Build practical skills by completing guided projects.</p>
-      </div>
-    </div>
-  </a>
-  <a href="/how-to-guides/">
-    <div class="unified-card unified-card--howto">
-      <div class="unified-card-icon">
-        <i class="fas fa-book"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">How-to Guides</h3>
-        <p class="unified-card-summary">Step-by-step instructions for specific tasks. Configure sources, set up reactions, and accomplish your goals with practical guidance.</p>
-      </div>
-    </div>
-  </a>
+<div class="card-grid card-grid--3">
   <a href="/concepts/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
@@ -97,6 +111,17 @@ description: >
       </div>
     </div>
   </a>
+  <a href="/learning-paths/">
+    <div class="unified-card unified-card--tutorials">
+      <div class="unified-card-icon">
+        <i class="fas fa-route"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Learning Paths</h3>
+        <p class="unified-card-summary">Structured learning paths for different roles: developers, DevOps/SRE, and architects.</p>
+      </div>
+    </div>
+  </a>
   <a href="/reference/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -104,61 +129,36 @@ description: >
       </div>
       <div class="unified-card-content">
         <h3 class="unified-card-title">Reference</h3>
-        <p class="unified-card-summary">Detailed specifications for APIs, query language, CLI commands, and configuration options. Your go-to resource for technical details.</p>
+        <p class="unified-card-summary">Query language, schemas, glossary, patterns, and sample data.</p>
       </div>
     </div>
   </a>
 </div>
 
-## Follow a Learning Path
-
-<div class="learning-paths-preview">
-  <p>Not sure where to start? Follow a structured learning path based on your role:</p>
-  <div class="learning-paths-mini-grid">
-    <a href="/learning-paths/#getting-started-path" class="learning-path-mini">
-      <i class="fas fa-rocket"></i>
-      <span>New to Drasi</span>
-    </a>
-    <a href="/learning-paths/#real-world-developer-path" class="learning-path-mini">
-      <i class="fas fa-code"></i>
-      <span>Developers</span>
-    </a>
-    <a href="/learning-paths/#operations-path" class="learning-path-mini">
-      <i class="fas fa-server"></i>
-      <span>DevOps/SRE</span>
-    </a>
-    <a href="/learning-paths/#architecture-path" class="learning-path-mini">
-      <i class="fas fa-sitemap"></i>
-      <span>Architects</span>
-    </a>
-  </div>
-  <p class="learning-paths-cta"><a href="/learning-paths/">View all learning paths <i class="fas fa-arrow-right"></i></a></p>
-</div>
-
 <div class="quick-links">
-  <h3 class="quick-links__title">Popular Starting Points</h3>
+  <h3 class="quick-links__title">Quick Links by Product</h3>
   <div class="quick-links__grid">
-    <a href="/how-to-guides/installation/" class="quick-link">
-      <i class="fas fa-download quick-link__icon"></i>
-      Install Drasi
+    <a href="/drasi-lib/getting-started/" class="quick-link">
+      <i class="fab fa-rust quick-link__icon"></i>
+      drasi-lib Quick Start
     </a>
-    <a href="/how-to-guides/configure-sources/" class="quick-link">
-      <i class="fas fa-plug quick-link__icon"></i>
-      Configure Sources
+    <a href="/drasi-server/getting-started/" class="quick-link">
+      <i class="fab fa-docker quick-link__icon"></i>
+      Drasi Server Quick Start
     </a>
-    <a href="/how-to-guides/configure-reactions/" class="quick-link">
-      <i class="fas fa-bolt quick-link__icon"></i>
-      Set Up Reactions
+    <a href="/drasi-kubernetes/getting-started/" class="quick-link">
+      <i class="fas fa-dharmachakra quick-link__icon"></i>
+      Kubernetes Quick Start
     </a>
     <a href="/reference/query-language/" class="quick-link">
       <i class="fas fa-code quick-link__icon"></i>
       Query Language
     </a>
-    <a href="/tutorials/building-comfort/" class="quick-link">
+    <a href="/drasi-kubernetes/tutorials/building-comfort/" class="quick-link">
       <i class="fas fa-building quick-link__icon"></i>
       Building Comfort Tutorial
     </a>
-    <a href="/tutorials/curbside-pickup/" class="quick-link">
+    <a href="/drasi-kubernetes/tutorials/curbside-pickup/" class="quick-link">
       <i class="fas fa-car quick-link__icon"></i>
       Curbside Pickup Tutorial
     </a>

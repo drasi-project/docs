@@ -28,7 +28,7 @@ defaultContentLanguageInSubdir = false
     codeFences = true
     guessSyntax = true
       
-# Top Nav Bar
+# Social Links
 [[menu.main]]
     name = "GitHub"
     weight = 10
