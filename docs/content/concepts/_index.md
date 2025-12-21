@@ -97,7 +97,7 @@ description: >
 
 ## Related Resources
 
-- **[Tutorials](/tutorials/)** - Apply these concepts hands-on
-- **[How-to Guides](/how-to-guides/)** - Accomplish specific tasks
+- **[Tutorials](/drasi-kubernetes/tutorials/)** - Apply these concepts hands-on
+- **[How-to Guides](/drasi-kubernetes/how-to-guides/)** - Accomplish specific tasks
 - **[Reference](/reference/)** - Detailed specifications
 - **[Patterns](/patterns/)** - Best practices for common scenarios

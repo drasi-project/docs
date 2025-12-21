@@ -8,11 +8,11 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
     - title: "Writing Single-Source Queries"
-      url: "/tutorials/write-single-source-continuous-queries/"
+      url: "/drasi-kubernetes/tutorials/write-single-source-continuous-queries/"
     - title: "Writing Multi-Source Queries"
-      url: "/tutorials/write-multi-source-continuous-queries/"
+      url: "/drasi-kubernetes/tutorials/write-multi-source-continuous-queries/"
   concepts:
     - title: "Sources"
       url: "/concepts/sources/"
@@ -22,7 +22,7 @@ related:
       url: "/concepts/query-container/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"

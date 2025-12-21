@@ -13,7 +13,7 @@ related:
       url: "/concepts/sources/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"

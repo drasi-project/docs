@@ -8,7 +8,7 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
@@ -16,14 +16,14 @@ related:
       url: "/concepts/reactions/"
   howto:
     - title: "Configure PostgreSQL Source"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
     - title: "Configure Cosmos DB Gremlin Source"
-      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
     - title: "Configure Kubernetes Source"
-      url: "/how-to-guides/configure-sources/configure-kubernetes-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-kubernetes-source/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
     - title: "Source Provider Schema"
       url: "/reference/schema/source-provider/"
 ---
@@ -110,16 +110,16 @@ For example, if the Source ID is `human-resources`, you would run,
 drasi delete source human-resources
 ```
 
-**Note**: Drasi does not currently enforce dependency integrity between Sources and Continuous Queries. If you delete a Source that is used by one or more Continuous Queries, they will stop getting change events and stop producing results.
+**Note**: Drasi does not currently enforce dependency integrity between Sources and Continuous Queries. If you delete a Source that is used by one or more Continuous Queries, they will stop receiving changes and stop producing results.
 
 
 ## Available Sources
 Drasi currently provides Sources for the following source systems:
 
-- [Azure Cosmos DB Gremlin API](/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/)
-- [MySQL](/how-to-guides/configure-sources/configure-mysql-source/)
-- [PostgreSQL](/how-to-guides/configure-sources/configure-postgresql-source/)
-- [Event Hubs](/how-to-guides/configure-sources/configure-azure-eventhub-source/)
-- [Microsoft SQL Server](/how-to-guides/configure-sources/configure-mssql-source/)
-- [Kubernetes](/how-to-guides/configure-sources/configure-kubernetes-source/)
-- [Microsoft Dataverse](/how-to-guides/configure-sources/configure-dataverse-source/)
+- [Azure Cosmos DB Gremlin API](/drasi-kubernetes/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/)
+- [MySQL](/drasi-kubernetes/how-to-guides/configure-sources/configure-mysql-source/)
+- [PostgreSQL](/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/)
+- [Event Hubs](/drasi-kubernetes/how-to-guides/configure-sources/configure-azure-eventhub-source/)
+- [Microsoft SQL Server](/drasi-kubernetes/how-to-guides/configure-sources/configure-mssql-source/)
+- [Kubernetes](/drasi-kubernetes/how-to-guides/configure-sources/configure-kubernetes-source/)
+- [Microsoft Dataverse](/drasi-kubernetes/how-to-guides/configure-sources/configure-dataverse-source/)

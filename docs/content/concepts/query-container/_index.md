@@ -13,8 +13,8 @@ related:
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Configure Query Containers"
-      url: "/how-to-guides/configure-query-containers/"
+      url: "/drasi-kubernetes/how-to-guides/configure-query-containers/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
