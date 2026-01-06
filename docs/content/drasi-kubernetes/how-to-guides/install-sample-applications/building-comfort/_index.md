@@ -14,7 +14,7 @@ description: >
 - An Azure Subscription with permissions to create resources.
 - [Azure CLI 2.40](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or higher.
 - [Azure Functions Core Tools 4.0](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Cmacos%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools) or higher.
-- A Kubernetes cluster with [Drasi deployed]({{< ref installation >}}).
+- A Kubernetes cluster with [Drasi deployed]({{< ref "/drasi-kubernetes/how-to-guides/installation" >}}).
 - A clone of the [Drasi Git repository](https://dev.azure.com/azure-octo/Incubations/_git/ReactiveGraph?path=%2F&version=GBdevelop&_a=contents) on your local machine.
 
 ## Overview of the app

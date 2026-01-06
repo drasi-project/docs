@@ -6,27 +6,18 @@ weight: 50
 hide_readingtime: true
 no_list: true
 description: >
-    Detailed specifications, API documentation, and technical reference material
+    Shared reference documentation for query language, schemas, glossary, and sample data
 ---
 
 <div class="section-header section-header--reference">
-  <p class="section-intro">Reference documentation provides detailed, accurate information about Drasi's APIs, configuration options, and technical specifications. Use it to look up specific details when you need them.</p>
+  <p class="section-intro">This section contains reference documentation that applies to all Drasi products. For product-specific reference documentation, see the individual product sections.</p>
 </div>
 
-## Browse Reference
+## Shared Reference
+
+These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
 
 <div class="card-grid">
-  <a href="/reference/command-line-interface/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fas fa-terminal"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">CLI Reference</h3>
-        <p class="unified-card-summary">Complete reference for the drasi command-line interface including all commands and options.</p>
-      </div>
-    </div>
-  </a>
   <a href="/reference/query-language/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -38,58 +29,14 @@ description: >
       </div>
     </div>
   </a>
-  <a href="/reference/management-api/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fas fa-cog"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Management API</h3>
-        <p class="unified-card-summary">REST API for managing Drasi resources programmatically.</p>
-      </div>
-    </div>
-  </a>
   <a href="/reference/schema/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
         <i class="fas fa-file-code"></i>
       </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Resource Schemas</h3>
-        <p class="unified-card-summary">YAML schema definitions for Sources, Queries, and Reactions.</p>
-      </div>
-    </div>
-  </a>
-  <a href="/reference/ingress/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fas fa-network-wired"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Ingress Configuration</h3>
-        <p class="unified-card-summary">Configure network access to Drasi components.</p>
-      </div>
-    </div>
-  </a>
-  <a href="/reference/developer-tools/vscode-extension/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fas fa-puzzle-piece"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">VS Code Extension</h3>
-        <p class="unified-card-summary">Visual Studio Code extension for Drasi development.</p>
-      </div>
-    </div>
-  </a>
-  <a href="/reference/troubleshooting/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fas fa-exclamation-triangle"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Troubleshooting</h3>
-        <p class="unified-card-summary">Known issues and their solutions.</p>
+        <h3 class="unified-card-title">Event Schemas</h3>
+        <p class="unified-card-summary">Schema definitions for result change events and source change events.</p>
       </div>
     </div>
   </a>
@@ -117,8 +64,47 @@ description: >
   </a>
 </div>
 
+## Product-Specific Reference
+
+For CLI, APIs, and configuration specific to each product:
+
+<div class="card-grid-3">
+  <a href="/drasi-lib/reference/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fab fa-rust"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">drasi-lib Reference</h3>
+        <p class="unified-card-summary">Rust API documentation and configuration options.</p>
+      </div>
+    </div>
+  </a>
+  <a href="/drasi-server/reference/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fab fa-docker"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Drasi Server Reference</h3>
+        <p class="unified-card-summary">REST API and configuration for standalone deployment.</p>
+      </div>
+    </div>
+  </a>
+  <a href="/drasi-kubernetes/reference/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fas fa-dharmachakra"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Kubernetes Reference</h3>
+        <p class="unified-card-summary">CLI, Management API, Ingress, and VS Code extension.</p>
+      </div>
+    </div>
+  </a>
+</div>
+
 ## Related Resources
 
 - **[Concepts](/concepts/)** - Understand the theory behind these specifications
-- **[How-to Guides](/how-to-guides/)** - Apply this reference in practice
 - **[Patterns](/patterns/)** - Best practices for using these capabilities

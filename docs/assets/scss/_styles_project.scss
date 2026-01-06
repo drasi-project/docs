@@ -320,6 +320,11 @@ blockquote {
   gap: 24px;
   margin-top: 1.5rem;
   width: 100%;
+
+  // Three-column variant
+  &--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 // Three-column grid variant for better tablet experience
@@ -334,6 +339,10 @@ blockquote {
 @media (max-width: 1200px) {
   .card-grid {
     grid-template-columns: repeat(2, 1fr);
+
+    &--3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   .card-grid-3 {
     grid-template-columns: repeat(2, 1fr);
@@ -342,12 +351,14 @@ blockquote {
 
 @media (max-width: 576px) {
   .card-grid,
+  .card-grid--3,
   .card-grid-3 {
     grid-template-columns: 1fr;
   }
 }
 
 .card-grid a,
+.card-grid--3 a,
 .card-grid-3 a {
   text-decoration: none;
   color: inherit;
@@ -361,19 +372,19 @@ blockquote {
   border-radius: $border-radius-lg;
   overflow: hidden;
   background-color: var(--bs-body-bg);
-  box-shadow: $shadow-md;
+  box-shadow: $shadow-sm;
   transition: transform $transition-base, box-shadow $transition-base, border-color $transition-base;
   height: 100%;
   min-height: 280px;
   position: relative;
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: $shadow-xl;
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
     border-color: rgba($secondary, 0.3);
   }
 
-  // Subtle top accent line
+  // Subtle top accent line - visible by default, intensifies on hover
   &::before {
     content: '';
     position: absolute;
@@ -382,7 +393,7 @@ blockquote {
     right: 0;
     height: 3px;
     background: $gradient-secondary;
-    opacity: 0;
+    opacity: 0.6;
     transition: opacity $transition-base;
   }
 
@@ -396,45 +407,52 @@ blockquote {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 120px;
+  height: 100px;
   background: linear-gradient(135deg, rgba($primary, 0.04) 0%, rgba($secondary, 0.06) 100%);
-  font-size: 3rem;
+  font-size: 2.25rem;
   color: $primary;
-  position: relative;
-  overflow: hidden;
+  transition: background $transition-base;
+}
 
-  // Decorative circles
+// Diataxis-specific card variants - subtle tinted backgrounds and colored accents
+.unified-card--tutorials {
   &::before {
-    content: '';
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba($secondary, 0.1) 0%, transparent 70%);
-    top: -50px;
-    right: -50px;
-    border-radius: 50%;
+    background: linear-gradient(90deg, $color-tutorials, lighten($color-tutorials, 15%));
+  }
+  .unified-card-icon {
+    background: linear-gradient(135deg, rgba($color-tutorials, 0.12) 0%, rgba($color-tutorials, 0.04) 100%);
+    color: $color-tutorials;
   }
 }
 
-// Diataxis-specific card icon variants
-.unified-card--tutorials .unified-card-icon {
-  background: $gradient-tutorials;
-  color: $color-tutorials;
+.unified-card--howto {
+  &::before {
+    background: linear-gradient(90deg, $color-howto, lighten($color-howto, 15%));
+  }
+  .unified-card-icon {
+    background: linear-gradient(135deg, rgba($color-howto, 0.12) 0%, rgba($color-howto, 0.04) 100%);
+    color: $color-howto;
+  }
 }
 
-.unified-card--howto .unified-card-icon {
-  background: $gradient-howto;
-  color: $color-howto;
+.unified-card--concepts {
+  &::before {
+    background: linear-gradient(90deg, $color-concepts, lighten($color-concepts, 15%));
+  }
+  .unified-card-icon {
+    background: linear-gradient(135deg, rgba($color-concepts, 0.12) 0%, rgba($color-concepts, 0.04) 100%);
+    color: $color-concepts;
+  }
 }
 
-.unified-card--concepts .unified-card-icon {
-  background: $gradient-concepts;
-  color: $color-concepts;
-}
-
-.unified-card--reference .unified-card-icon {
-  background: $gradient-reference;
-  color: $color-reference;
+.unified-card--reference {
+  &::before {
+    background: linear-gradient(90deg, $color-reference, lighten($color-reference, 15%));
+  }
+  .unified-card-icon {
+    background: linear-gradient(135deg, rgba($color-reference, 0.12) 0%, rgba($color-reference, 0.04) 100%);
+    color: $color-reference;
+  }
 }
 
 // Card image area (for source/installation cards)
@@ -518,12 +536,12 @@ blockquote {
 // Responsiveness for unified cards
 @media (max-width: 768px) {
   .unified-card {
-    min-height: 240px;
+    min-height: 220px;
   }
 
   .unified-card-icon {
-    height: 100px;
-    font-size: 2.5rem;
+    height: 80px;
+    font-size: 2rem;
   }
 
   .unified-card-content {
@@ -802,8 +820,8 @@ blockquote {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacer-md;
-  padding: $spacer-xl 0;
+  gap: $spacer-lg;
+  padding: $spacer-lg 0;
   flex-wrap: wrap;
 }
 
@@ -812,43 +830,273 @@ blockquote {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: $spacer-lg;
+  padding: $spacer-md $spacer-lg;
   background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.1);
   border-radius: $border-radius-lg;
-  box-shadow: $shadow-md;
   min-width: 140px;
+  box-shadow: $shadow-sm;
   transition: transform $transition-base, box-shadow $transition-base;
+  position: relative;
+  overflow: hidden;
+
+  // Top accent bar - matches unified-card pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $secondary, lighten($secondary, 15%));
+    opacity: 0.6;
+    transition: opacity $transition-base;
+  }
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: $shadow-lg;
   }
 
+  &:hover::before {
+    opacity: 1;
+  }
+
   &__icon {
-    font-size: 2.5rem;
-    margin-bottom: $spacer-sm;
-    color: $primary;
+    font-size: 2.25rem;
+    margin-bottom: $spacer-xs;
+    color: $secondary;
   }
 
   &__label {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: $primary;
   }
 
   &__description {
     font-size: 0.8rem;
     color: $gray-600;
-    margin-top: 4px;
+    margin-top: 2px;
   }
 }
 
 .flow-arrow {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: $secondary;
 
   @media (max-width: 768px) {
     transform: rotate(90deg);
+  }
+}
+
+// =============================================================================
+// PRODUCT SELECTOR STYLES
+// Three-product grid for drasi-lib, Drasi Server, and Drasi for Kubernetes
+// =============================================================================
+
+// Product color palette
+$color-drasi-lib: #dea584;       // Rust orange
+$color-drasi-server: #0db7ed;    // Docker blue
+$color-drasi-kubernetes: #326ce5; // Kubernetes blue
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacer-md;
+  margin: $spacer-md 0 $spacer-lg;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: $spacer-sm;
+  }
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bs-body-bg);
+  border: 1px solid rgba($primary, 0.1);
+  border-radius: $border-radius-lg;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+  transition: all $transition-base;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  // Top accent bar - visible by default, intensifies on hover
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    opacity: 0.6;
+    transition: opacity $transition-base;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  // drasi-lib variant (Rust orange)
+  &--lib {
+    &::before {
+      background: linear-gradient(90deg, $color-drasi-lib, lighten($color-drasi-lib, 15%));
+    }
+
+    &:hover {
+      border-color: rgba($color-drasi-lib, 0.4);
+    }
+
+    .product-card__icon {
+      background: linear-gradient(135deg, rgba($color-drasi-lib, 0.12) 0%, rgba($color-drasi-lib, 0.05) 100%);
+      color: $color-drasi-lib;
+    }
+  }
+
+  // Drasi Server variant (Docker blue)
+  &--server {
+    &::before {
+      background: linear-gradient(90deg, $color-drasi-server, lighten($color-drasi-server, 15%));
+    }
+
+    &:hover {
+      border-color: rgba($color-drasi-server, 0.4);
+    }
+
+    .product-card__icon {
+      background: linear-gradient(135deg, rgba($color-drasi-server, 0.12) 0%, rgba($color-drasi-server, 0.05) 100%);
+      color: $color-drasi-server;
+    }
+  }
+
+  // Drasi for Kubernetes variant (Kubernetes blue)
+  &--kubernetes {
+    &::before {
+      background: linear-gradient(90deg, $color-drasi-kubernetes, lighten($color-drasi-kubernetes, 15%));
+    }
+
+    &:hover {
+      border-color: rgba($color-drasi-kubernetes, 0.4);
+    }
+
+    .product-card__icon {
+      background: linear-gradient(135deg, rgba($color-drasi-kubernetes, 0.12) 0%, rgba($color-drasi-kubernetes, 0.05) 100%);
+      color: $color-drasi-kubernetes;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacer-lg $spacer-md;
+    font-size: 2.25rem;
+    transition: transform $transition-base;
+
+    i {
+      transition: transform $transition-base;
+    }
+  }
+
+  &:hover &__icon i {
+    transform: scale(1.05);
+  }
+
+  &__content {
+    padding: 0 $spacer-md $spacer-md;
+    flex-grow: 1;
+  }
+
+  &__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 $spacer-xs;
+    color: $primary;
+  }
+
+  &__tagline {
+    font-size: 0.875rem;
+    color: $gray-600;
+    margin: 0;
+  }
+
+  &__features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: $spacer-sm;
+      font-size: 0.875rem;
+      color: $gray-700;
+      padding: $spacer-xs 0;
+
+      &::before {
+        content: '\f00c'; // Font Awesome check
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 0.7rem;
+        color: $secondary;
+      }
+    }
+  }
+}
+
+// Responsive adjustments for product grid
+@media (max-width: 992px) {
+  .product-card {
+    flex-direction: row;
+    padding: 0;
+
+    &__icon {
+      width: 100px;
+      min-height: 120px;
+      padding: $spacer-md;
+      font-size: 2.5rem;
+    }
+
+    &__content {
+      padding: $spacer-md $spacer-lg $spacer-md 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &__features {
+      display: none; // Hide on mobile for cleaner look
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    &__icon {
+      width: 80px;
+      font-size: 2rem;
+    }
+
+    &__title {
+      font-size: 1.15rem;
+    }
+
+    &__tagline {
+      font-size: 0.85rem;
+      margin-bottom: $spacer-xs;
+    }
   }
 }
 

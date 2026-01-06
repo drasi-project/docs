@@ -2,7 +2,7 @@
 type: "docs"
 title: "Concepts"
 linkTitle: "Concepts"
-weight: 40
+weight: 10
 hide_readingtime: true
 no_list: true
 description: >

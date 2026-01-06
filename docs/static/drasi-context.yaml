@@ -3,18 +3,57 @@
 # Purpose: This document is the single source of truth for all terminology, concepts, phrasing,
 #          components, features, and positioning when AI agents generate code, docs, blog posts,
 #          or answers about Drasi.
-# Version: 0.2.0
-# Updated: 2025-12-08
+# Version: 0.3.0
+# Updated: 2025-12-21
 # ===================================================================
 
 project:
   name: Drasi
   one_liner: "Drasi is an open-source Data Change Processing platform that simplifies the creation and operation of change-driven solutions."
   website: https://drasi.io
-  repo: https://github.com/drasi-project/drasi-platform
+  repos:
+    platform: https://github.com/drasi-project/drasi-platform
+    lib: https://github.com/drasi-project/drasi-lib
   license: Apache 2.0
   current_stable_version: early-release
   development_stage: CNCF Sandbox
+  deployment_options:
+    - drasi-lib (Rust crate)
+    - Drasi Server (standalone/Docker)
+    - Drasi for Kubernetes (production K8s)
+
+products:
+  - name: drasi-lib
+    type: library
+    description: "A Rust crate that embeds Drasi's continuous query engine directly into Rust applications for in-process change detection."
+    use_when:
+      - "Embedding change detection in Rust applications without external dependencies"
+      - "Building lightweight, self-contained reactive data applications"
+      - "Edge computing or embedded systems"
+      - "Creating custom data processing pipelines with fine-grained control"
+    repo: https://github.com/drasi-project/drasi-lib
+    docs: https://drasi.io/drasi-lib/
+
+  - name: Drasi Server
+    type: standalone
+    description: "A standalone Drasi deployment that runs as a single process or Docker container, providing full Drasi functionality without Kubernetes."
+    use_when:
+      - "Local development and testing"
+      - "Docker or Docker Compose deployments"
+      - "Simpler production deployments without Kubernetes overhead"
+      - "Non-Kubernetes container environments"
+    docs: https://drasi.io/drasi-server/
+
+  - name: Drasi for Kubernetes
+    type: platform
+    description: "Production-ready Drasi deployment on Kubernetes with enterprise-grade scalability, observability, and management."
+    use_when:
+      - "Production workloads requiring enterprise reliability"
+      - "Horizontal scaling across multiple nodes"
+      - "Managed Kubernetes services (AKS, EKS, GKE)"
+      - "Cloud-native infrastructure with service mesh integration"
+    repo: https://github.com/drasi-project/drasi-platform
+    docs: https://drasi.io/drasi-kubernetes/
 
 audience:
   primary: |
@@ -52,6 +91,7 @@ key_phrases:
     - "Drasi works with existing databases and software systems."
     - "Continuous queries can span data from multiple sources in a single query."
     - "Change semantics are defined by your query, not the source system."
+    - "Drasi is available as a Rust crate, standalone server, or Kubernetes deployment."
   never_say:
     - "Drasi is an event-driven platform"  # Focus on change-driven, not generic events
     - "Drasi is used to build event-driven architectures or solutions"  # Focus on change-driven architectures
@@ -73,6 +113,8 @@ key_differentiators:
     description: "Supports historical result set retrieval for audits, debugging, and point-in-time analysis."
   - title: "Low-Code Query-Based Approach"
     description: "Write rich graph queries to express sophisticated rules describing the types of changes you want to detect and the data you want to distribute about those changes."
+  - title: "Flexible Deployment Options"
+    description: "Deploy as an embedded Rust library, standalone Docker container, or production-grade Kubernetes platform based on your needs."
 
 core_concepts:
   - term: Change
@@ -135,47 +177,69 @@ supported_integrations:
   sources:
     - name: "PostgreSQL"
       type: database
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
     - name: "Azure Cosmos DB Gremlin API"
       type: database
+      products: [Drasi for Kubernetes]
     - name: "Kubernetes"
       type: platform
+      products: [Drasi for Kubernetes]
     - name: "Debezium-compatible sources"
       type: ecosystem
       note: "Drasi's Source input schema is modeled on Debezium, enabling integration with the broader CDC ecosystem."
+      products: [Drasi for Kubernetes]
   reactions:
     - name: "Azure Event Grid"
       description: "Forward changes for integration with Power Platform, applications, services, and functions."
+      products: [Drasi Server, Drasi for Kubernetes]
     - name: "SignalR"
       description: "Real-time web application integration for driving reactive UIs."
-    - name: "Stored Procedures"
+      products: [Drasi Server, Drasi for Kubernetes]
+    - name: "Stored Procedures for PostgreSQL"
       description: "Automatically execute database stored procedures in response to changes."
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+    - name: "Stored Procedures for MySQL"
+      description: "Automatically execute database stored procedures in response to changes."
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+    - name: "Stored Procedures for MS SQL Server"
+      description: "Automatically execute database stored procedures in response to changes."
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
     - name: "Gremlin Commands"
       description: "Execute Gremlin commands against graph databases."
+      products: [Drasi for Kubernetes]
     - name: "Custom Reactions"
       description: "Build custom reactions to process continuous query output."
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
 
 tutorials:
   - title: "Absence of Change"
-    url: "https://drasi.io/tutorials/absence-of-change/"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/absence-of-change/"
     description: "Responding in the absence of changes"
+    products: [Drasi for Kubernetes]
   - title: "Building Comfort with Drasi"
-    url: "https://drasi.io/tutorials/building-comfort/"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/building-comfort/"
     description: "Learn how to use Drasi in a building management scenario"
+    products: [Drasi for Kubernetes]
   - title: "Connecting a Frontend to a Query"
-    url: "https://drasi.io/tutorials/connecting-frontends/"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/connecting-frontends/"
     description: "Learn how to connect a front end application to a continuous query"
+    products: [Drasi for Kubernetes]
   - title: "Curbside Pickup with Drasi"
-    url: "https://drasi.io/tutorials/curbside-pickup/"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/curbside-pickup/"
     description: "Learn how to use Drasi to power reactive dashboards over multiple data sources"
+    products: [Drasi for Kubernetes]
   - title: "Drasi for Dapr"
-    url: "https://drasi.io/tutorials/drasi-for-dapr/"
-    description: "Learn how Drasi can supercharge your Dapr applications with real-time data change processing across distributed microservices"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/drasi-for-dapr/"
+    description: "Learn how Drasi can supercharge your Dapr applications with real-time data change processing"
+    products: [Drasi for Kubernetes]
   - title: "GitHub Bot"
-    url: "https://drasi.io/tutorials/github-bot/"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/github-bot/"
     description: "Building a GitHub Bot with Drasi"
+    products: [Drasi for Kubernetes]
   - title: "Risky Containers"
-    url: "https://drasi.io/tutorials/risky-containers/"
-    description: "Build a no-code realtime dashboard of high risk container images running in your Kubernetes cluster"
+    url: "https://drasi.io/drasi-kubernetes/tutorials/risky-containers/"
+    description: "Build a no-code realtime dashboard of high risk container images"
+    products: [Drasi for Kubernetes]
 
 faq:
   - question: What defines a change in Drasi?
@@ -196,3 +260,9 @@ faq:
     answer: "Yes, Drasi works with existing databases and software systems, not only new systems built using Drasi."
   - question: Can a query use data from multiple sources?
     answer: "Yes, a single continuous query can span data from multiple Sources, even when there is no natural connection between the data."
+  - question: Which Drasi product should I use?
+    answer: "Use drasi-lib for embedding in Rust apps, Drasi Server for Docker/standalone deployments, and Drasi for Kubernetes for production workloads requiring scale and observability."
+  - question: Can I migrate between Drasi products?
+    answer: "Yes, all products use the same query language and concepts. Your continuous queries work across all deployment options."
+  - question: Does drasi-lib require external infrastructure?
+    answer: "No, drasi-lib runs entirely in-process within your Rust application with no external dependencies."
