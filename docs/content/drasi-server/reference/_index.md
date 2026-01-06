@@ -3,28 +3,42 @@ type: "docs"
 title: "Reference"
 linkTitle: "Reference"
 weight: 40
-description: "Drasi Server API reference and specifications"
+description: "Drasi Server API, CLI, and configuration reference"
 ---
 
 # Drasi Server Reference
 
-{{< alert title="Coming Soon" color="info" >}}
-Reference documentation is under development. Check back soon for complete API documentation.
-{{< /alert >}}
-
-## Overview
-
 Technical reference documentation for Drasi Server.
 
-## REST API
-
-Drasi Server exposes a REST API for management and configuration.
-
-<!-- TODO: Document REST API endpoints -->
-
-## Configuration Reference
-
-<!-- TODO: Document configuration options -->
+<div class="card-grid">
+  <a href="rest-api/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-plug"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">REST API</h3>
+        <p class="unified-card-summary">HTTP endpoints for managing sources, queries, and reactions</p>
+      </div>
+    </div>
+  </a>
+  <a href="cli/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-terminal"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">CLI Reference</h3>
+        <p class="unified-card-summary">Command-line options and subcommands</p>
+      </div>
+    </div>
+  </a>
+  <a href="configuration/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-cog"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Configuration</h3>
+        <p class="unified-card-summary">Complete YAML configuration schema</p>
+      </div>
+    </div>
+  </a>
+</div>
 
 ## Shared Reference
 
@@ -59,3 +73,17 @@ These reference materials apply to all Drasi products:
     </div>
   </a>
 </div>
+
+## Quick Links
+
+| Resource | Description |
+|----------|-------------|
+| [Health Endpoint](/drasi-server/reference/rest-api/#health) | Check server status |
+| [Sources API](/drasi-server/reference/rest-api/#sources) | Manage data sources |
+| [Queries API](/drasi-server/reference/rest-api/#queries) | Manage continuous queries |
+| [Reactions API](/drasi-server/reference/rest-api/#reactions) | Manage reactions |
+| [CLI Commands](/drasi-server/reference/cli/) | Command-line usage |
+| [Server Config](/drasi-server/reference/configuration/#server) | Server settings |
+| [Source Config](/drasi-server/reference/configuration/#sources) | Source configuration |
+| [Query Config](/drasi-server/reference/configuration/#queries) | Query configuration |
+| [Reaction Config](/drasi-server/reference/configuration/#reactions) | Reaction configuration |
