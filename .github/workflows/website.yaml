@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - feature-lib
 
 permissions:
   id-token: write # Required for requesting the JWT
@@ -56,7 +57,7 @@ jobs:
   deploy:
     name: Deploy Hugo Website to App Service
     needs: ['build']
-    if: github.event_name == 'push'  # only triggers this job when it's a push to preview
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # only triggers this job when it's a push to main
     runs-on: ubuntu-latest
     environment:
       url: 'https://drasi-docs.azurewebsites.net/'
