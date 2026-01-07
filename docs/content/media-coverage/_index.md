@@ -11,6 +11,9 @@ description: >
 
 | Title | Source | Date |
 |-------|--------|------|
+| [Beyond the Chat Window: How Change-Driven Architecture Enables Ambient AI Agents](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/beyond-the-chat-window-how-change-driven-architecture-enables-ambient-ai-agents/4475026)| Microsoft Linux and Open Source Blog | Dec 3, 2025 |
+| [Marking Drasi’s first anniversary: introducing GQL support for Continuous Queries](https://opensource.microsoft.com/blog/2025/10/09/marking-drasis-first-anniversary-introducing-gql-support-for-continuous-queries) | Microsoft Open Source Blog | Oct 9, 2025 |
+| [Drasi is Fluent in GQL: Integrating the New Graph Query Standard](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/drasi-is-fluent-in-gql-integrating-the-new-graph-query-standard/4458888) | Microsoft Open Source Blog | Oct 9, 2025 |
 |[Responding to the Absence of Change in Change-Driven Systems](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/responding-to-the-absence-of-change-in-change-driven-systems/4434618) | Microsoft Linux and Open Source Blog | Jul 22, 2025 |
 |[Drasi accepted into CNCF sandbox for change-driven solutions](https://opensource.microsoft.com/blog/2025/06/10/drasi-accepted-into-cncf-sandbox-for-change-driven-solutions/) | Microsoft Open Source Blog | Jun 10, 2025 |
 |[Optimizing Change-Driven Architectures with Drasi](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/optimizing-change-driven-architectures-with-drasi/4404675) | Microsoft Linux and Open Source Blog | Apr 17, 2025 |
@@ -25,3 +28,5 @@ description: >
 | [Microsoft Launches Drasi, An Event-Driven Platform For Data Processing](https://www.forbes.com/sites/janakirammsv/2024/10/11/microsoft-launches-drasi-an-event-driven-platform-for-data-processing/) | Forbes | Oct 11, 2024 |
 | [Microsoft’s Drasi: A lightweight approach to event-driven programming](https://www.infoworld.com/article/3555078/microsofts-drasi-a-lightweight-approach-to-event-driven-programming.html) | InfoWorld | Oct 10, 2024 |
 | [Microsoft just dropped Drasi, and it could change how we handle big data](https://venturebeat.com/ai/microsoft-just-dropped-drasi-and-it-could-change-how-we-handle-big-data/) | VentureBeat | Oct 3, 2024 |
+
+
