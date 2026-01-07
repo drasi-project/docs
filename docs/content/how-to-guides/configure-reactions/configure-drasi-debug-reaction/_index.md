@@ -85,15 +85,13 @@ drasi describe reaction hello-world-debug
 This will return the full definition used to create the Reaction along with more detailed status information.
 
 ## Viewing the Debug Reaction UI
-Because the Drasi Debug Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can view its Web UI. The easiest way to do this is to setup a port forward using `kubectl` and the following command:
+Because the Drasi Debug Reaction is running inside a Kubernetes cluster, you need to enable access to the port through which you can view its Web UI. The easiest way to do this is to setup a tunnel using the CLI:
 
-```kubectl
-kubectl port-forward -n drasi-namespace services/hello-world-debug-gateway 8080:8080
+```sh
+drasi tunnel reaction hello-world-debug 8080
 ```
 
-The `-n` flag specifies the Kubernetes namespace containing the Drasi environment where you installed the Reaction. The name used to reference the Reaction has the structure`services/<reaction_name>-gateway`.
-
-This will make the Drasi Debug Reaction UI available through port 8080 on the computer where you ran the port forward command. Assuming this is your local computer, you can open the Drasi Debug UI by browsing to the address [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
+This will make the Drasi Debug Reaction UI available through port 8080 on the computer where you ran the tunnel command. Assuming this is your local computer, you can open the Drasi Debug UI by browsing to the address [http://localhost:8080](http://localhost:8080), where you will see the Debug Reaction UI shown here:
 
 {{< figure src="debug-reaction-ui.png" alt="Debug Reaction UI" width="70%" >}}
 

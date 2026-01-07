@@ -189,12 +189,12 @@ spec:
 
 ### Local dev/test
 
-For dev/test purposes, you can simply use a `kubectl port-forward` to expose the endpoint via a port on your local machine.
+For dev/test purposes, you can simply use a `drasi tunnel` to expose the endpoint via a port on your local machine.
 
 The following command will open port 8080 on your local machine, which will point to the SignalR endpoint. 
 
-```
-kubectl port-forward services/<reaction name>-gateway 8080:gateway -n drasi-system
+```sh
+drasi tunnel reaction <reaction name> 8080
 ```
 
 Now, you could access the SignalR endpoint via `http://localhost:8080`.
