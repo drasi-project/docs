@@ -1150,6 +1150,38 @@ MATCH (p:Product)
 RETURN max(p.price) AS highest_price
 ```
 
+#### Collect()
+The `collect` function aggregates values into a list. Null values are excluded.
+
+##### Syntax
+```gql
+collect(expression)
+```
+
+##### Arguments
+The `collect` function accepts one argument:
+
+| Name | Type | Description |
+|------|------|-------------|
+| expression | ANY | An expression whose non-null values will be collected into a list |
+
+##### Returns
+The `collect` function returns a LIST containing all non-null values. Duplicate values are preserved. The order of elements is not guaranteed.
+
+```gql
+MATCH (p:Product)<-[:REVIEWS]-(r:Review)
+RETURN p.name AS product, collect(r.rating) AS all_ratings
+```
+
+> **Performance Note:** Unlike scalar aggregations (`count()`, `sum()`, `avg()`, `min()`, `max()`) which maintain constant-size state regardless of collection size, `collect()` stores every value in the collection. This means memory usage and update overhead scale linearly with the number of items.
+>
+> **Practical guidelines:**
+> - **Up to ~100 items per group**: Generally appropriate with minimal performance impact
+> - **100-500 items**: Use with caution; only when collections are not frequently updated
+> - **500+ items**: Not recommended due to significant memory and performance impact
+>
+> If you only need derived values (count, sum, average, min, max), prefer the dedicated aggregation functions which are optimized for incremental updates.
+
 ### Temporal Functions
 
 Temporal functions work with date, time, and duration values.
