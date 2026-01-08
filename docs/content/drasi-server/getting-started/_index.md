@@ -3,7 +3,7 @@ type: "docs"
 title: "Getting Started with Drasi Server"
 linkTitle: "Getting Started"
 weight: 10
-description: "Get Drasi Server running in minutes with Docker or from source"
+description: "Get Drasi Server running in minutes"
 related:
   concepts:
     - title: "Drasi Overview"
@@ -24,126 +24,103 @@ related:
       url: "/drasi-server/reference/configuration/"
 ---
 
-This guide walks you through getting Drasi Server running and creating your first continuous query. By the end, you'll have a working Drasi Server instance monitoring data changes.
+This guide walks you through getting Drasi Server running and creating your first continuous query. By the end, you'll have a working Drasi Server instance monitoring data changes and reacting to them.
 
-## Prerequisites
+## Get Drasi Server
 
-Before you begin, ensure you have one of the following:
+Choose one of the following options to get Drasi Server:
 
-**For Docker deployment (recommended):**
-- [Docker](https://docs.docker.com/get-docker/) 20.10 or later
+{{< tabpane persistence="true" >}}
+{{< tab header="Download Binary" lang="bash" >}}
+# macOS (Apple Silicon)
+curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-darwin-arm64.tar.gz | tar xz
+chmod +x drasi-server
 
-**For building from source:**
-- [Rust](https://www.rust-lang.org/tools/install) 1.70 or later
-- Git with submodule support
+# macOS (Intel)
+curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-darwin-amd64.tar.gz | tar xz
+chmod +x drasi-server
 
-## Quick Start with Docker
+# Linux (x64)
+curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-linux-amd64.tar.gz | tar xz
+chmod +x drasi-server
 
-The fastest way to get started is using the pre-built Docker image.
+# Linux (ARM64)
+curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-linux-arm64.tar.gz | tar xz
+chmod +x drasi-server
+{{< /tab >}}
+{{< tab header="Docker" lang="bash" >}}
+docker pull ghcr.io/drasi-project/drasi-server:latest
+{{< /tab >}}
+{{< /tabpane >}}
 
-### 1. Run Drasi Server
+{{% alert title="Building from Source" color="info" %}}
+If you prefer to build Drasi Server from source, see the [Build from Source](/drasi-server/how-to-guides/installation/build-from-source/) guide.
+{{% /alert %}}
 
-```bash
-docker run -d \
-  --name drasi-server \
-  -p 8080:8080 \
-  -v drasi-config:/config \
-  -v drasi-data:/data \
-  ghcr.io/drasi-project/drasi-server:latest
-```
+## Create a Configuration File
 
-This command:
-- Starts Drasi Server in detached mode
-- Maps port 8080 for the REST API
-- Creates persistent volumes for configuration and data
+Drasi Server uses a YAML configuration file to define **sources** (where data comes from), **queries** (what changes to detect), and **reactions** (what to do when changes occur).
 
-### 2. Verify Installation
+Create a new file named `config.yaml` and add each section below.
 
-Check that Drasi Server is running:
+### Add Server Settings
 
-```bash
-curl http://localhost:8080/health
-```
-
-You should see a response indicating the server is healthy:
-
-```json
-{"status":"healthy"}
-```
-
-### 3. Explore the API Documentation
-
-Open the interactive API documentation in your browser:
-
-```
-http://localhost:8080/api/v1/docs/
-```
-
-This Swagger UI lets you explore and test all API endpoints.
-
-## Quick Start from Source
-
-If you prefer to build from source or need to modify the server:
-
-### 1. Clone the Repository
-
-```bash
-git clone --recurse-submodules https://github.com/drasi-project/drasi-server.git
-cd drasi-server
-```
-
-{{< alert title="Important" color="warning" >}}
-The `--recurse-submodules` flag is required. Drasi Server depends on the DrasiLib library as a submodule.
-{{< /alert >}}
-
-### 2. Build the Server
-
-```bash
-cargo build --release
-```
-
-The compiled binary will be at `target/release/drasi-server`.
-
-### 3. Create a Configuration File
-
-Use the interactive configuration wizard:
-
-```bash
-cargo run --release -- init --output config/server.yaml
-```
-
-Or create a minimal configuration file manually:
+Start with basic server settings:
 
 ```yaml
-# config/server.yaml
 host: 0.0.0.0
 port: 8080
 log_level: info
-
-sources: []
-queries: []
-reactions: []
 ```
 
-### 4. Start the Server
+### Add a Source
 
-```bash
-cargo run --release -- --config config/server.yaml
+Sources connect Drasi Server to your data. For this guide, we'll use a **mock source** that generates sample sensor data:
+
+```yaml
+sources:
+  - kind: mock
+    id: demo-source
+    auto_start: true
+    data_type: sensor
+    interval_ms: 2000
 ```
 
-Or using the compiled binary:
+This creates a source that generates sensor readings (temperature, humidity) every 2 seconds.
 
-```bash
-./target/release/drasi-server --config config/server.yaml
+### Add a Query
+
+Queries define what data changes you want to monitor. Add a continuous query that watches all sensor data:
+
+```yaml
+queries:
+  - id: all-sensors
+    query: |
+      MATCH (s:Sensor)
+      RETURN s.id, s.temperature, s.humidity, s.timestamp
+    sources:
+      - source_id: demo-source
+    auto_start: true
 ```
 
-## Your First Continuous Query
+This query uses [Cypher](/concepts/continuous-queries/) to match all `Sensor` nodes and return their properties.
 
-Let's create a simple setup with a mock data source to see Drasi Server in action.
+### Add a Reaction
 
-### 1. Create a Configuration File
+Reactions define what happens when query results change. Add a log reaction to output changes to the console:
 
-Create a file named `config/quickstart.yaml`:
+```yaml
+reactions:
+  - kind: log
+    id: console-output
+    queries:
+      - all-sensors
+    auto_start: true
+```
+
+### Complete Configuration
+
+Your complete `config.yaml` file should look like this:
 
 ```yaml
 host: 0.0.0.0
@@ -152,119 +129,117 @@ log_level: info
 
 sources:
   - kind: mock
-    id: test-source
+    id: demo-source
     auto_start: true
     data_type: sensor
-    interval_ms: 3000
+    interval_ms: 2000
 
 queries:
   - id: all-sensors
-    query: "MATCH (n:Sensor) RETURN n.id, n.value, n.timestamp"
+    query: |
+      MATCH (s:Sensor)
+      RETURN s.id, s.temperature, s.humidity, s.timestamp
     sources:
-      - source_id: test-source
+      - source_id: demo-source
     auto_start: true
 
 reactions:
   - kind: log
-    id: log-output
-    queries: [all-sensors]
+    id: console-output
+    queries:
+      - all-sensors
     auto_start: true
 ```
 
-This configuration:
-- Creates a **mock source** that generates sensor data every 3 seconds
-- Defines a **continuous query** that monitors all sensor nodes
-- Adds a **log reaction** that outputs query results to the console
+## Run Drasi Server
 
-### 2. Start the Server
+Start Drasi Server with your configuration file:
 
-```bash
-# With Docker
-docker run -d \
-  --name drasi-quickstart \
+{{< tabpane persistence="true" >}}
+{{< tab header="Binary" lang="bash" >}}
+./drasi-server --config config.yaml
+{{< /tab >}}
+{{< tab header="Docker" lang="bash" >}}
+docker run --rm -it \
+  --name drasi-server \
   -p 8080:8080 \
-  -v $(pwd)/config:/config \
+  -v $(pwd)/config.yaml:/config/config.yaml \
   ghcr.io/drasi-project/drasi-server:latest \
-  --config /config/quickstart.yaml
+  --config /config/config.yaml
+{{< /tab >}}
+{{< /tabpane >}}
 
-# Or from source
-./target/release/drasi-server --config config/quickstart.yaml
-```
-
-### 3. View the Results
-
-Watch the server logs to see query results as data changes:
-
-```bash
-# Docker
-docker logs -f drasi-quickstart
-
-# Or check the console output if running directly
-```
-
-You'll see output like:
+You should see output like this:
 
 ```
+[INFO] Drasi Server starting on 0.0.0.0:8080
+[INFO] Source 'demo-source' started
+[INFO] Query 'all-sensors' started
+[INFO] Reaction 'console-output' started
 [INFO] Query 'all-sensors' result changed: Added 1 items
-[INFO] Added: {"id": "sensor-1", "value": 72.5, "timestamp": "2024-01-15T10:30:00Z"}
+[INFO] Added: {"id": "sensor-1", "temperature": 72.5, "humidity": 45.2, "timestamp": "2024-01-15T10:30:00Z"}
 ```
 
-### 4. Query Current Results via API
+Every 2 seconds, the mock source generates new sensor data, the query detects the change, and the log reaction outputs the result.
 
-You can also retrieve the current query results via the REST API:
+## Interact with Drasi Server
+
+While Drasi Server is running, you can interact with it through the REST API.
+
+### Query Current Results
+
+Open a new terminal and retrieve the current query results:
 
 ```bash
 curl http://localhost:8080/api/v1/queries/all-sensors/results
 ```
 
-## Understanding the Configuration
+### Check Server Health
 
-Drasi Server uses YAML configuration files with three main sections:
-
-| Section | Purpose |
-|---------|---------|
-| **sources** | Define where data comes from (databases, APIs, streams) |
-| **queries** | Define what changes to detect using Cypher queries |
-| **reactions** | Define what happens when query results change |
-
-### Environment Variables
-
-Configuration values support environment variable interpolation:
-
-```yaml
-sources:
-  - kind: postgres
-    id: production-db
-    host: ${DB_HOST:-localhost}
-    password: ${DB_PASSWORD}  # Required - fails if not set
-```
-
-Syntax:
-- `${VAR}` - Required variable, server fails to start if not set
-- `${VAR:-default}` - Optional variable with default value
-
-## Validate Your Configuration
-
-Before starting the server, you can validate your configuration:
+Verify the server is healthy:
 
 ```bash
-# From source
-./target/release/drasi-server validate --config config/server.yaml
-
-# Show resolved values (with environment variables expanded)
-./target/release/drasi-server validate --config config/server.yaml --show-resolved
+curl http://localhost:8080/health
 ```
 
-## Check System Dependencies
+### Explore the API
 
-Run the doctor command to verify your system is ready:
+Open the interactive API documentation in your browser:
+
+```
+http://localhost:8080/api/v1/docs/
+```
+
+This Swagger UI lets you explore and test all available API endpoints.
+
+### View Source and Query Status
+
+Check the status of your sources and queries:
 
 ```bash
-./target/release/drasi-server doctor
+# List all sources
+curl http://localhost:8080/api/v1/sources
 
-# Include optional dependencies
-./target/release/drasi-server doctor --all
+# List all queries
+curl http://localhost:8080/api/v1/queries
+
+# Get details for a specific query
+curl http://localhost:8080/api/v1/queries/all-sensors
 ```
+
+## Stop Drasi Server
+
+To stop the server:
+
+{{< tabpane persistence="true" >}}
+{{< tab header="Binary" lang="bash" >}}
+# Press Ctrl+C in the terminal where the server is running
+{{< /tab >}}
+{{< tab header="Docker" lang="bash" >}}
+# Press Ctrl+C, or in another terminal:
+docker stop drasi-server
+{{< /tab >}}
+{{< /tabpane >}}
 
 ## Next Steps
 
