@@ -26,6 +26,8 @@ Drasi is not simply running graph queries across data, it is using the Cypher Qu
 | [drasi.trueLater](#drasitruelater) | Evaluates a BOOLEAN expression at a specified later time |
 | [drasi.trueUntil](#drasitrueuntil) | Evaluates if a BOOLEAN expression remains TRUE until a specified later time |
 | [drasi.trueFor](#drasitruefor) | Evaluates if a BOOLEAN expression remains TRUE for a specified duration |
+| **[WINDOWING FUNCTIONS](#drasi-windowing-functions)** ||
+| [drasi.slidingWindow](#drasislidingwindow) | Applies an aggregation function over a sliding time window |
 | **[STATISTICAL FUNCTIONS](#drasi-statistical-functions)** ||
 | [drasi.linearGradient](#drasilinearGradient) | Fits a straight line to a set of X and Y coordinates and returns the slope of that line |
 
@@ -312,6 +314,49 @@ More formally:
 | expression_true_time + duration =< change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 | expression_true_time + duration > change_time AND expression == TRUE | n/a | drasi.awaiting |
 | expression_true_time + duration > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
+
+## Drasi WINDOWING Functions
+Drasi WINDOWING functions enable time-based windowing operations over data streams, allowing you to perform calculations over sliding time windows.
+
+### drasi.slidingWindow()
+The `drasi.slidingWindow` function makes it possible to write Continuous Queries that apply aggregation functions over a sliding time window. This enables calculations like moving averages, rolling maximums, or other time-based aggregations that update as data changes over time.
+
+#### Syntax
+```cypher
+drasi.slidingWindow(duration, aggregation_expression)
+```
+
+#### Arguments
+The `drasi.slidingWindow` function accepts two arguments:
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| duration | DURATION | The size of the time window to consider.|
+| aggregation_expression | AGGREGATION expression | An aggregation expression (such as `max()`, `avg()`, `min()`, `sum()`, etc.) to apply over the time window. |
+
+#### Returns
+The `drasi.slidingWindow` function returns the result of the aggregation expression computed over all values within the specified time window from the current time.
+
+#### Example
+
+The following example calculates a 10-second sliding maximum, a 20-second sliding maximum, and a 10-second sliding average of price values:
+
+```cypher
+MATCH 
+  (p:Price)
+RETURN
+  p.Group AS group,
+  drasi.slidingWindow(duration({ seconds: 10 }), max(p.Value)) AS slidingMax10,
+  drasi.slidingWindow(duration({ seconds: 20 }), max(p.Value)) AS slidingMax20,
+  drasi.slidingWindow(duration({ seconds: 10 }), avg(p.Value)) AS slidingAvg10
+```
+
+In this example:
+- `slidingMax10` returns the maximum price value within the last 10 seconds
+- `slidingMax20` returns the maximum price value within the last 20 seconds  
+- `slidingAvg10` returns the average price value within the last 10 seconds
+
+As new price values arrive or old values age out of the time window, the sliding window calculations automatically update to reflect the current window of data.
 
 ## Drasi STATISTICAL Functions
 
