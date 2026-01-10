@@ -223,3 +223,4 @@ MCP
 mcp
 RPC
 Streamable
+slidingWindow

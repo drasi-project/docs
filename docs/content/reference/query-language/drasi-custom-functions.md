@@ -26,6 +26,8 @@ Drasi is not simply running graph queries across data, it is using the Cypher Qu
 | [drasi.trueLater](#drasitruelater) | Evaluates a BOOLEAN expression at a specified later time |
 | [drasi.trueUntil](#drasitrueuntil) | Evaluates if a BOOLEAN expression remains TRUE until a specified later time |
 | [drasi.trueFor](#drasitruefor) | Evaluates if a BOOLEAN expression remains TRUE for a specified duration |
+| **[WINDOWING FUNCTIONS](#drasi-windowing-functions)** ||
+| [drasi.slidingWindow](#drasislidingwindow) | Applies an aggregation function over a sliding time window |
 | **[STATISTICAL FUNCTIONS](#drasi-statistical-functions)** ||
 | [drasi.linearGradient](#drasilinearGradient) | Fits a straight line to a set of X and Y coordinates and returns the slope of that line |
 
@@ -312,6 +314,90 @@ More formally:
 | expression_true_time + duration =< change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
 | expression_true_time + duration > change_time AND expression == TRUE | n/a | drasi.awaiting |
 | expression_true_time + duration > change_time AND expression == FALSE | remove queued re-evaluation (if any) | FALSE |
+
+## Drasi WINDOWING Functions
+Drasi WINDOWING functions enable time-based windowing operations over data streams, allowing you to perform calculations over sliding time windows.
+
+### drasi.slidingWindow()
+The `drasi.slidingWindow` function makes it possible to write Continuous Queries that apply aggregation functions over a sliding time window. This enables calculations like moving averages, rolling maximums, or other time-based aggregations that update as data changes over time.
+
+#### Syntax
+```cypher
+drasi.slidingWindow(duration, aggregation_expression)
+```
+
+#### Arguments
+The `drasi.slidingWindow` function accepts two arguments:
+
+| Name | Type | Description |
+|-------------------------|-----------------------|----------------|
+| duration | DURATION | The size of the time window to consider.|
+| aggregation_expression | AGGREGATION expression | An aggregation expression (such as `max()`, `avg()`, `min()`, `sum()`, etc.) to apply over the time window. |
+
+#### Returns
+The `drasi.slidingWindow` function returns the result of the aggregation expression computed over all values within the specified time window from the current time.
+
+#### Example
+
+The following example calculates a 10-second sliding maximum, a 20-second sliding maximum, and a 10-second sliding average of price values:
+
+```cypher
+MATCH 
+  (p:Price)
+RETURN
+  p.Group AS group,
+  drasi.slidingWindow(duration({ seconds: 10 }), max(p.Value)) AS slidingMax10,
+  drasi.slidingWindow(duration({ seconds: 20 }), max(p.Value)) AS slidingMax20,
+  drasi.slidingWindow(duration({ seconds: 10 }), avg(p.Value)) AS slidingAvg10
+```
+
+In this example:
+- `slidingMax10` returns the maximum price value within the last 10 seconds
+- `slidingMax20` returns the maximum price value within the last 20 seconds  
+- `slidingAvg10` returns the average price value within the last 10 seconds
+
+As new price values arrive or old values age out of the time window, the sliding window calculations automatically update to reflect the current window of data.
+
+#### Behavior with Insert, Update, and Delete Operations
+
+Unlike traditional event streams, Drasi's sliding window function operates on uniquely identified graph elements, which means it handles insert, update, and delete operations in a specific way. The window tracks the **identity** of anchor graph elements rather than treating each change as an independent event.
+
+**Key Behavior**: When an element in the window is updated, its value is modified in place rather than creating a duplicate entry. This means the element moves to the front of the window with its new value, maintaining a count of 1 for that element.
+
+**Example**
+
+Consider the following query that projects four different windows over the same data:
+
+```cypher
+MATCH  
+  (p:Price) 
+RETURN 
+  drasi.slidingWindow(duration({ seconds: 10 }), avg(p.Value)) AS avg10, 
+  drasi.slidingWindow(duration({ seconds: 10 }), count(p)) AS count10, 
+  drasi.slidingWindow(duration({ seconds: 10 }), max(p.Value)) AS max10, 
+  drasi.slidingWindow(duration({ seconds: 20 }), max(p.Value)) AS max20
+```
+
+The following table illustrates the results of inserting elements A, B, C, and D, followed by updating D:
+
+| Op (ID, Value) | Time (sec) | avg10 | count10 | max10 | max20 |
+|----------------|------------|-------|---------|-------|-------|
+| INSERT (A, 100) | 0 | 100 | 1 | 100 | 100 |
+| INSERT (B, 120) | 1 | 110 | 2 | 120 | 120 |
+| INSERT (C, 80) | 2 | 100 | 3 | 120 | 120 |
+| (window aging) | 10 | 100 | 2 | 120 | 120 |
+| (window aging) | 11 | 80 | 1 | 80 | 120 |
+| (window aging) | 12 | 0 | 0 | - | 120 |
+| (window aging) | 21 | 0 | 0 | - | 80 |
+| (window aging) | 22 | 0 | 0 | - | - |
+| INSERT (D, 100) | 25 | 100 | 1 | 100 | 100 |
+| UPDATE (D, 80) | 30 | 80 | 1 | 80 | 80 |
+| (window aging) | 40 | 0 | 0 | 0 | 80 |
+| (window aging) | 50 | 0 | 0 | - | - |
+
+**Important Note**: When element D is updated at t=30 from value 100 to 80, the average and max values drop to 80 even though the previous value of 100 is still within the time window. This occurs because Drasi tracks the identity of the anchor graph element tied to the original change. When the element's value is updated, it is not duplicated in the window but rather moved to the front with the new value.
+
+This behavior is particularly intuitive for `sum()` and `count()` aggregations, where you would expect the count to remain at 1 through an update rather than becoming 2. It ensures that each unique graph element contributes only once to the window calculation, regardless of how many times it has been updated.
 
 ## Drasi STATISTICAL Functions
 
