@@ -358,6 +358,47 @@ In this example:
 
 As new price values arrive or old values age out of the time window, the sliding window calculations automatically update to reflect the current window of data.
 
+#### Behavior with Insert, Update, and Delete Operations
+
+Unlike traditional event streams, Drasi's sliding window function operates on uniquely identified graph elements, which means it handles insert, update, and delete operations in a specific way. The window tracks the **identity** of anchor graph elements rather than treating each change as an independent event.
+
+**Key Behavior**: When an element in the window is updated, its value is modified in place rather than creating a duplicate entry. This means the element moves to the front of the window with its new value, maintaining a count of 1 for that element.
+
+**Example**
+
+Consider the following query that projects four different windows over the same data:
+
+```cypher
+MATCH  
+  (p:Price) 
+RETURN 
+  drasi.slidingWindow(duration({ seconds: 10 }), avg(p.Value)) AS avg10, 
+  drasi.slidingWindow(duration({ seconds: 10 }), count(p)) AS count10, 
+  drasi.slidingWindow(duration({ seconds: 10 }), max(p.Value)) AS max10, 
+  drasi.slidingWindow(duration({ seconds: 20 }), max(p.Value)) AS max20
+```
+
+The following table illustrates the results of inserting elements A, B, C, and D, followed by updating D:
+
+| Op (ID, Value) | Time (sec) | avg10 | count10 | max10 | max20 |
+|----------------|------------|-------|---------|-------|-------|
+| INSERT (A, 100) | 0 | 100 | 1 | 100 | 100 |
+| INSERT (B, 120) | 1 | 110 | 2 | 120 | 120 |
+| INSERT (C, 80) | 2 | 100 | 3 | 120 | 120 |
+| (window aging) | 10 | 100 | 2 | 120 | 120 |
+| (window aging) | 11 | 80 | 1 | 80 | 120 |
+| (window aging) | 12 | 0 | 0 | - | 120 |
+| (window aging) | 21 | 0 | 0 | - | 80 |
+| (window aging) | 22 | 0 | 0 | - | - |
+| INSERT (D, 100) | 25 | 100 | 1 | 100 | 100 |
+| UPDATE (D, 80) | 30 | 80 | 1 | 80 | 80 |
+| (window aging) | 40 | 0 | 0 | 0 | 80 |
+| (window aging) | 50 | 0 | 0 | - | - |
+
+**Important Note**: When element D is updated at t=30 from value 100 to 80, the average and max values drop to 80 even though the previous value of 100 is still within the time window. This occurs because Drasi tracks the identity of the anchor graph element tied to the original change. When the element's value is updated, it is not duplicated in the window but rather moved to the front with the new value.
+
+This behavior is particularly intuitive for `sum()` and `count()` aggregations, where you would expect the count to remain at 1 through an update rather than becoming 2. It ensures that each unique graph element contributes only once to the window calculation, regardless of how many times it has been updated.
+
 ## Drasi STATISTICAL Functions
 
 ### drasi.linearGradient()
