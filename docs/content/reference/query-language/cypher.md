@@ -45,7 +45,7 @@ Drasi currently supports the following subset of the Cypher Query Language:
     - elementId, head, last, timestamp
     - char_length, character_length, size
     - toInteger, toIntegerOrNull, toFloat, toFloatOrNull, toBoolean, toBooleanOrNull
-  - Aggregating: count, sum, avg, min, max in both WITH and RETURN clauses
+  - Aggregating: count, sum, avg, min, max, collect in both WITH and RETURN clauses
   - List: reduce, tail, range 
   - Numeric: abs, ceil, floor, rand, round, sign
   - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull, toUpper, trim
