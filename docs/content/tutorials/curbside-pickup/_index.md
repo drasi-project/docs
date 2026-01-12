@@ -1011,14 +1011,12 @@ Following should be the output with nothing in the 'Messages' column:
 
 Now you have a websocket server up & running inside the Drasi Cluster.
 Since our frontend dashboard will be running on localhost, we need to create a tunnel.
-Use the following command to create a tunnel:
+Use the following long-running command to create a tunnel. **Note:** Keep this running, as long as you want the dashboard to be live.
 
 ```sh
 drasi tunnel reaction signalr 8080
 ```
 <br/>
-
-**Note:** Keep this running, as long as you want the dashboard to be live.
 {{% /tab %}}
 
 {{% /tabpane %}}
