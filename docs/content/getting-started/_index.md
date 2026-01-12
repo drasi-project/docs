@@ -526,7 +526,7 @@ Finally, if you return to the `message-count` Continuous Query and delete both "
 DELETE FROM public."Message" WHERE "Message" = 'Hello World';
 ```
 
-The Debug Reaction updates to show that there are no messages with the text "Hello World":
+The Debug Reaction updates the UI to show a zero count for messages with the text "Hello World":
 
 {{< figure src="message-count-debug-deleted.png" alt="Message Count" width="70%" >}}
 
