@@ -2,7 +2,7 @@
 type: "docs"
 title: "Getting Started"
 linkTitle: "Getting Started"
-weight: 10
+weight: 5
 description: >
     Detect and react to your first database change using Drasi
 related:

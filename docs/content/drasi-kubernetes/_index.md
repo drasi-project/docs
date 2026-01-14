@@ -92,6 +92,15 @@ description: "Change-driven Solutions on Kubernetes"
 ## Explore Drasi for Kubernetes
 
 <div class="card-grid">
+  <a href="learning-paths/">
+    <div class="unified-card unified-card--concepts">
+      <div class="unified-card-icon"><i class="fas fa-route"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Learning Paths</h3>
+        <p class="unified-card-summary">Structured guides for your role and goals</p>
+      </div>
+    </div>
+  </a>
   <a href="tutorials/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fas fa-graduation-cap"></i></div>

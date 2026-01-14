@@ -2,15 +2,23 @@
 type: "docs"
 title: "Tutorials"
 linkTitle: "Tutorials"
-weight: 30
-description: "Learn Drasi Server through hands-on examples"
+weight: 20
+hide_readingtime: true
+no_list: true
+notoc: true
+description: "Learn Drasi Server by building real applications. These tutorials guide you through complete, working examples."
 ---
 
-# Drasi Server Tutorials
-
-Learn Drasi Server by building real applications. These tutorials guide you through complete, working examples.
-
 <div class="card-grid">
+  <a href="local-development/">
+    <div class="unified-card unified-card--tutorials">
+      <div class="unified-card-icon"><i class="fas fa-laptop-code"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Local Development Environment</h3>
+        <p class="unified-card-summary">Set up a complete development environment with Docker</p>
+      </div>
+    </div>
+  </a>
   <a href="postgresql-change-detection/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fas fa-database"></i></div>
@@ -29,37 +37,4 @@ Learn Drasi Server by building real applications. These tutorials guide you thro
       </div>
     </div>
   </a>
-  <a href="local-development/">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon"><i class="fas fa-laptop-code"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Local Development Environment</h3>
-        <p class="unified-card-summary">Set up a complete development environment with Docker</p>
-      </div>
-    </div>
-  </a>
 </div>
-
-## What You'll Learn
-
-Each tutorial is designed to teach specific skills:
-
-| Tutorial | Skills | Duration |
-|----------|--------|----------|
-| [PostgreSQL Change Detection](postgresql-change-detection/) | CDC setup, queries, log reactions | Beginner |
-| [Real-time SSE Dashboard](realtime-sse-dashboard/) | SSE reactions, frontend integration | Intermediate |
-| [Local Development](local-development/) | Docker setup, debugging, testing | Beginner |
-
-## Prerequisites
-
-Before starting these tutorials:
-
-1. **Docker** - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-2. **curl** - For API testing (usually pre-installed)
-3. **Text editor** - For editing configuration files
-
-## Getting Help
-
-- [Getting Started](/drasi-server/getting-started/) - Quick introduction
-- [How-to Guides](/drasi-server/how-to-guides/) - Task-focused guides
-- [Reference](/drasi-server/reference/) - API and configuration details

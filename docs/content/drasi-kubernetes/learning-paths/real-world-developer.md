@@ -5,7 +5,7 @@ linkTitle: "Real-World Developer"
 weight: 2
 hide_readingtime: true
 description: >
-    Build practical, production-ready solutions with Drasi
+    Build practical, production-ready solutions with Drasi for Kubernetes
 ---
 
 <div class="learning-path-detail">
@@ -19,8 +19,8 @@ description: >
 <div class="step-number">1</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/getting-started/">Complete Getting Started</a></h4>
-<p>Ensure Drasi is running</p>
+<h4><a href="/drasi-kubernetes/getting-started/">Complete Getting Started</a></h4>
+<p>Ensure Drasi is running on your cluster</p>
 <span class="step-duration">10 min</span>
 </div>
 </div>
@@ -28,7 +28,7 @@ description: >
 <div class="step-number">2</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/tutorials/building-comfort/">Building Comfort Tutorial</a></h4>
+<h4><a href="/drasi-kubernetes/tutorials/building-comfort/">Building Comfort Tutorial</a></h4>
 <p>Build a real-time HVAC monitoring system</p>
 <span class="step-duration">60 min</span>
 </div>
@@ -37,7 +37,7 @@ description: >
 <div class="step-number">3</div>
 <div class="step-content">
 <span class="step-type step-type--howto">How-to</span>
-<h4><a href="/how-to-guides/configure-sources/configure-postgresql-source/">Configure PostgreSQL Source</a></h4>
+<h4><a href="/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/">Configure PostgreSQL Source</a></h4>
 <p>Connect to production PostgreSQL</p>
 <span class="step-duration">20 min</span>
 </div>
@@ -46,7 +46,7 @@ description: >
 <div class="step-number">4</div>
 <div class="step-content">
 <span class="step-type step-type--howto">How-to</span>
-<h4><a href="/how-to-guides/configure-reactions/configure-signalr-reaction/">Configure SignalR Reaction</a></h4>
+<h4><a href="/drasi-kubernetes/how-to-guides/configure-reactions/configure-signalr-reaction/">Configure SignalR Reaction</a></h4>
 <p>Build real-time UI updates</p>
 <span class="step-duration">20 min</span>
 </div>
@@ -55,7 +55,7 @@ description: >
 <div class="step-number">5</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/tutorials/connecting-frontends/">Connect Frontend Apps</a></h4>
+<h4><a href="/drasi-kubernetes/tutorials/connecting-frontends/">Connect Frontend Apps</a></h4>
 <p>Integrate with React or Vue</p>
 <span class="step-duration">45 min</span>
 </div>

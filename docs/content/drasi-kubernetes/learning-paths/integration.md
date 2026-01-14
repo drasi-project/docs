@@ -5,7 +5,7 @@ linkTitle: "Integration"
 weight: 5
 hide_readingtime: true
 description: >
-    Connect Drasi to your existing ecosystem
+    Connect Drasi for Kubernetes to your existing ecosystem
 ---
 
 <div class="learning-path-detail">
@@ -13,7 +13,7 @@ description: >
 <span class="path-badge path-badge--howto">Developers</span>
 <span class="path-duration"><i class="fas fa-clock"></i> 2-3 hours total</span>
 </div>
-<p>Learn how to integrate Drasi with your existing systems and build custom extensions.</p>
+<p>Learn how to integrate Drasi for Kubernetes with your existing systems and build custom extensions.</p>
 <div class="learning-path-steps">
 <div class="path-step">
 <div class="step-number">1</div>
@@ -37,7 +37,7 @@ description: >
 <div class="step-number">3</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/tutorials/drasi-for-dapr/">Dapr Integration</a></h4>
+<h4><a href="/drasi-kubernetes/tutorials/drasi-for-dapr/">Dapr Integration</a></h4>
 <p>Use Drasi with Dapr</p>
 <span class="step-duration">45 min</span>
 </div>
@@ -46,7 +46,7 @@ description: >
 <div class="step-number">4</div>
 <div class="step-content">
 <span class="step-type step-type--howto">How-to</span>
-<h4><a href="/how-to-guides/configure-reactions/configure-azure-eventgrid-reaction/">Event-Driven Reactions</a></h4>
+<h4><a href="/drasi-kubernetes/how-to-guides/configure-reactions/configure-azure-eventgrid-reaction/">Event-Driven Reactions</a></h4>
 <p>Send events to Azure Event Grid</p>
 <span class="step-duration">20 min</span>
 </div>
@@ -55,7 +55,7 @@ description: >
 <div class="step-number">5</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/tutorials/integrating-with-downstream-systems/">Downstream Integration</a></h4>
+<h4><a href="/drasi-kubernetes/tutorials/integrating-with-downstream-systems/">Downstream Integration</a></h4>
 <p>Connect to external systems</p>
 <span class="step-duration">30 min</span>
 </div>
@@ -64,7 +64,7 @@ description: >
 <div class="step-number">6</div>
 <div class="step-content">
 <span class="step-type step-type--howto">How-to</span>
-<h4><a href="/how-to-guides/extend-drasi/">Extending Drasi</a></h4>
+<h4><a href="/drasi-kubernetes/how-to-guides/extend-drasi/">Extending Drasi</a></h4>
 <p>Build custom sources and reactions</p>
 <span class="step-duration">30 min</span>
 </div>

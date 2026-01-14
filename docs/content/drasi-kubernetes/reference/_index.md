@@ -3,12 +3,11 @@ type: "docs"
 title: "Reference"
 linkTitle: "Reference"
 weight: 40
+hide_readingtime: true
+no_list: true
+notoc: true
 description: "Drasi for Kubernetes reference documentation"
 ---
-
-# Drasi for Kubernetes Reference
-
-Technical reference documentation specific to Drasi for Kubernetes deployments.
 
 <div class="card-grid">
   <a href="command-line-interface/">
@@ -17,15 +16,6 @@ Technical reference documentation specific to Drasi for Kubernetes deployments.
       <div class="unified-card-content">
         <h3 class="unified-card-title">CLI Reference</h3>
         <p class="unified-card-summary">Drasi CLI commands and options</p>
-      </div>
-    </div>
-  </a>
-  <a href="management-api/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon"><i class="fas fa-cogs"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Management API</h3>
-        <p class="unified-card-summary">REST API for Drasi management</p>
       </div>
     </div>
   </a>
@@ -38,21 +28,12 @@ Technical reference documentation specific to Drasi for Kubernetes deployments.
       </div>
     </div>
   </a>
-  <a href="context/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon"><i class="fas fa-layer-group"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Context</h3>
-        <p class="unified-card-summary">Drasi context configuration</p>
-      </div>
-    </div>
-  </a>
-  <a href="developer-tools/">
+  <a href="vscode-extension/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon"><i class="fas fa-tools"></i></div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Developer Tools</h3>
-        <p class="unified-card-summary">VS Code extension and development utilities</p>
+        <h3 class="unified-card-title">VS Code extension</h3>
+        <p class="unified-card-summary">Manage Drasi for Kubernetes from VS Code</p>
       </div>
     </div>
   </a>
@@ -74,28 +55,54 @@ These reference materials apply to all Drasi products:
 <div class="card-grid">
   <a href="/reference/query-language/">
     <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon"><i class="fas fa-code"></i></div>
+      <div class="unified-card-icon">
+        <i class="fas fa-code"></i>
+      </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Query Language</h3>
-        <p class="unified-card-summary">Cypher and Drasi query functions</p>
+        <h3 class="unified-card-title">Continuous Query Syntax</h3>
+        <p class="unified-card-summary">Cypher, GQL, and Drasi-specific functions for writing continuous queries.</p>
+      </div>
+    </div>
+  </a>
+  <a href="/reference/middleware/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fas fa-filter"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Middleware</h3>
+        <p class="unified-card-summary">Transform and enrich incoming data changes with Unwind, JQ, Promote, and more.</p>
+      </div>
+    </div>
+  </a>
+  <a href="/reference/sample-data/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Sample Data</h3>
+        <p class="unified-card-summary">Sample datasets for testing and experimentation.</p>
       </div>
     </div>
   </a>
   <a href="/reference/glossary/">
     <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon"><i class="fas fa-book-open"></i></div>
+      <div class="unified-card-icon">
+        <i class="fas fa-book"></i>
+      </div>
       <div class="unified-card-content">
         <h3 class="unified-card-title">Glossary</h3>
-        <p class="unified-card-summary">Drasi terminology and definitions</p>
+        <p class="unified-card-summary">Definitions of key Drasi terms and concepts.</p>
       </div>
     </div>
   </a>
-  <a href="/reference/schema/">
+  <a href="/reference/context/">
     <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon"><i class="fas fa-sitemap"></i></div>
+      <div class="unified-card-icon"><i class="fas fa-layer-group"></i></div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Schema</h3>
-        <p class="unified-card-summary">Event and data schemas</p>
+        <h3 class="unified-card-title">AI Agent Context</h3>
+        <p class="unified-card-summary">The single source of truth for Agents working with Drasi</p>
       </div>
     </div>
   </a>

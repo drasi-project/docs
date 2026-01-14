@@ -2,7 +2,7 @@
 type: "docs"
 title: "Getting Started"
 linkTitle: "Getting Started"
-weight: 10
+weight: 5
 description: "Get Drasi Server running in minutes"
 related:
   concepts:

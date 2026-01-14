@@ -2,7 +2,7 @@
 type: "docs"
 title: "How-to Guides"
 linkTitle: "How-to Guides"
-weight: 20
+weight: 30
 no_list: true
 description: "Step-by-step instructions for working with Drasi Server"
 ---

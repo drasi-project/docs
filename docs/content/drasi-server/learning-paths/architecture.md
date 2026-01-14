@@ -5,7 +5,7 @@ linkTitle: "Architecture"
 weight: 4
 hide_readingtime: true
 description: >
-    Design enterprise solutions with Drasi
+    Design solutions with Drasi Server
 ---
 
 <div class="learning-path-detail">
@@ -13,7 +13,7 @@ description: >
 <span class="path-badge path-badge--concepts">Architects</span>
 <span class="path-duration"><i class="fas fa-clock"></i> 2-3 hours total</span>
 </div>
-<p>Deep understanding of Drasi architecture and design patterns for enterprise solutions.</p>
+<p>Deep understanding of Drasi architecture and design patterns for Drasi Server solutions.</p>
 <div class="learning-path-steps">
 <div class="path-step">
 <div class="step-number">1</div>
@@ -79,7 +79,7 @@ By completing this path, you will:
 - Understand Drasi's architecture and how components interact
 - Apply solution design principles for reactive systems
 - Know how continuous queries execute and maintain state
-- Use reference architectures for common enterprise scenarios
+- Use reference architectures for common scenarios
 - Apply performance optimization strategies
 - Implement security best practices
 
@@ -87,12 +87,11 @@ By completing this path, you will:
 
 - Experience with distributed systems architecture
 - Understanding of event-driven and reactive patterns
-- Familiarity with enterprise integration challenges
 - About 2-3 hours of dedicated time
 
 ## Next Steps
 
 After completing this path, consider:
 
-- [Operations Path](../operations/) - Deploy and maintain your architecture in production
-- [Real-World Developer Path](../real-world-developer/) - Build hands-on experience with implementations
+- [Operations Path](../operations/) - Deploy and maintain your architecture
+- [Developer Path](../developer/) - Build hands-on experience
