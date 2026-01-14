@@ -10,8 +10,9 @@ description: >
     Understand how Drasi detects and reacts to meaningful data changes
 ---
 
-<div class="section-header section-header--concepts">
-  <p class="section-intro">Drasi is an open-source Data Change Processing platform that simplifies building change-driven solutions. These concepts explain how Drasi uses Sources, Continuous Queries, and Reactions to detect meaningful changes in your data and automatically trigger actions in response.</p>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Concepts</h1>
+  <p class="hero-subtitle">Drasi is an open-source Data Change Processing platform that simplifies building change-driven solutions. These concepts explain how Drasi uses Sources, Continuous Queries, and Reactions to detect meaningful changes in your data and automatically trigger actions in response.</p>
 </div>
 
 ## Explore Concepts

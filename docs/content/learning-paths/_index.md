@@ -9,8 +9,9 @@ description: >
     Learning paths guide you through Drasi documentation in a structured way. Choose a path based on your role or what you want to accomplish, and follow the steps in order for the best learning experience.
 ---
 
-<div class="section-header section-header--learning-paths">
-<p class="section-intro">Learning paths guide you through Drasi documentation in a structured way. Choose a path based on your role or what you want to accomplish, and follow the steps in order for the best learning experience.</p>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Learning Paths</h1>
+  <p class="hero-subtitle">Learning paths guide you through Drasi documentation in a structured way. Choose a path based on your role or what you want to accomplish, and follow the steps in order for the best learning experience.</p>
 </div>
 
 ## Choose Your Path
