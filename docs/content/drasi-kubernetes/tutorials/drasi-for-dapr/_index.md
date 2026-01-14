@@ -8,7 +8,7 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Reactions"
       url: "/concepts/reactions/"
@@ -16,9 +16,9 @@ related:
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Configure Dapr State Store Reaction"
-      url: "/how-to-guides/configure-reactions/configure-sync-dapr-statestore-reaction/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-sync-dapr-statestore-reaction/"
     - title: "Configure Pub/Sub Reaction"
-      url: "/how-to-guides/configure-reactions/configure-post-pubsub-reaction/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-post-pubsub-reaction/"
 ---
 
 

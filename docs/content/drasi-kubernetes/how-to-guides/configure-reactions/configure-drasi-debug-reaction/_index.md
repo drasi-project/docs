@@ -8,21 +8,21 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
     - title: "Quick Test Environment"
-      url: "/how-to-guides/testing/quick-test-environment/"
+      url: "/drasi-kubernetes/how-to-guides/testing/quick-test-environment/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Drasi Debug Reaction provides a simple Web-based UI that lets you see the current result of a Continuous Query as a table, and to see the Continuous Query results updating dynamically when changes to the Source data cause the Continuous Query result to change. The Drasi Debug Reaction is intended for use as a development and testing tool for people writing and testing Continuous Queries, not as a way to integrate with Continuous Queries in a production environment.
+The Drasi Debug {{< term "Reaction" >}} provides a simple Web-based UI that lets you see the current result of a {{< term "Continuous Query" >}} as a table, and to see the Continuous Query results updating dynamically when changes to the {{< term "Source" >}} data cause the Continuous Query result to change. The Drasi Debug Reaction is intended for use as a development and testing tool for people writing and testing {{< term "Continuous Query" "Continuous Queries" >}}, not as a way to integrate with Continuous Queries in a production environment.
 
 ## Requirements
 On the computer from where you will create the Drasi Debug Reaction, you need to install the following software:

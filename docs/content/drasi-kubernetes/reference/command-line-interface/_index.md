@@ -7,8 +7,8 @@ description: >
     Managing Drasi using the Drasi Command Line Interface (CLI)
 related:
   tutorials:
-    - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+    - title: "Getting Started with Drasi for Kubernetes"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Sources"
       url: "/concepts/sources/"
@@ -17,14 +17,14 @@ related:
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
-    - title: "Install Drasi"
-      url: "/how-to-guides/installation/"
+    - title: "Install Drasi on Kubernetes"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
   reference:
-    - title: "Management API"
-      url: "/reference/management-api/"
+    - title: "VS Code Extension"
+      url: "/drasi-kubernetes/reference/vscode-extension/"
 ---
 
-The Drasi Command Line Interface (CLI) is a tool designed to streamline the installation of Drasi and the management of Drasi environments. This section provides comprehensive instructions on how to use the CLI to apply, delete, describe, and manage resources within your Drasi environment. Whether you are installing Drasi for the first time or managing existing resources, the CLI commands and flags detailed here will help you perform these tasks efficiently and effectively.
+The {{< term "Drasi CLI" >}} is a tool designed to streamline the installation of Drasi and the management of Drasi environments. This section provides comprehensive instructions on how to use the CLI to apply, delete, describe, and manage resources within your Drasi environment. Whether you are installing Drasi for the first time or managing existing resources, the CLI commands and flags detailed here will help you perform these tasks efficiently and effectively.
 
 > The Drasi CLI is a convenient command line interface that wraps the [Drasi Management API](/reference/management-api/). Anything you can do through the **Drasi** CLI you can do programmatically through the Management API.
 
@@ -138,7 +138,7 @@ kubectl config use-context <drasi_cluster_name>
 
 Drasi can be installed in the namespace of your choice on a Kubernetes cluster and can also be installed multiple times in different namespaces on the same cluster. The Drasi CLI provides the `drasi namespace` command to configure the current default namespace and each command supports the `-n` or `--namespace` flag to enable you to specify which Kubernetes namespace you want to target with any command you run.
 
-For example, the following command will get a list of Sources from the Drasi environment running in the current default namespace:
+For example, the following command will get a list of {{< term "Source" "Sources" >}} from the Drasi environment running in the current default namespace:
 
 ```
 drasi list source
@@ -178,10 +178,10 @@ Apply operation successful
 
 Otherwise, the output will contain error message describing what went wrong.
 
-> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a successful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly. See the [drasi wait](#drasi-wait) command for a way to wait for resources to become fully functional.
+> **Note**: The output of the `apply` command only relates to the registration of the new resource in the Drasi configuration. It will fail for reasons like the definition being invalid. But a successful `apply` does not mean the resource is functioning correctly. If the resource fails during its startup process, for example if a **Source** cannot connect to its database, this will not be visible to the `apply` command. You will need to look at the status of a resource using the `drasi list` command (see below) to know if it is functioning correctly. See the [drasi wait](#drasi-wait) command for a way to wait for resources to {{< term "Bootstrap" "become fully functional" >}}.
 
 **Known Issues**: 
-- Drasi does not currently enforce dependency relationships between resources. If you create multiple resources from a single YAML file or issue multiple commands rapidly, and those resources depend upon each other (i.e. a Continuous Query that uses a Source), Drasi does not guarantee that the Source is successfully created and working before the Continuous Query that uses it is created, meaning the Continuous Query could fail.
+- Drasi does not currently enforce dependency relationships between resources. If you create multiple resources from a single YAML file or issue multiple commands rapidly, and those resources depend upon each other (i.e. a {{< term "Continuous Query" >}} that uses a Source), Drasi does not guarantee that the Source is successfully created and working before the Continuous Query that uses it is created, meaning the Continuous Query could fail.
 
 ### drasi completion
 **Purpose**: The `completion` command generates autocompletion scripts to enable command-line autocomplete functionality for the Drasi CLI for various command shells. This is functionality automatically provided by the [Cobra library](https://github.com/spf13/cobra) used in the development of the Drasi CLI. 
@@ -232,7 +232,7 @@ Delete operation successful
 Otherwise, the output will contain error message describing what went wrong.
 
 **Known Issues**: 
-- Drasi does not currently enforce dependency checks between existing resources. If you delete a **Source** that is used by one or more **Continuous Queries** or a **Continuous Query** that is used by a **Reaction**, you will break the dependent resource.
+- Drasi does not currently enforce dependency checks between existing resources. If you delete a **Source** that is used by one or more **Continuous Queries** or a **Continuous Query** that is used by a {{< term "Reaction" >}}, you will break the dependent resource.
 - Drasi does not currently implement resource-level security. If you have permissions to manage resources on a Kubernetes namespace, you can delete any resource.
 - The Drasi CLI does not ask for confirmation before deleting a resource; once you hit enter, the resource is deleted. The only way to get it back is to recreate it with the `apply` command.
 
@@ -744,7 +744,7 @@ The following command will also wait on **all** the resources defined in the `dr
 drasi wait -f drasi-resources.yaml -t 20
 ```
 ### drasi watch
-**Purpose**: The `watch` command allows users to continuously monitor the result set of a specified query in real-time.
+**Purpose**: The `watch` command allows users to continuously monitor the {{< term "Result Set" "result set" >}} of a specified query in real-time.
 
 **Arguments and Flags**:
 - `query name` : This argument specifies the name of the query to watch.

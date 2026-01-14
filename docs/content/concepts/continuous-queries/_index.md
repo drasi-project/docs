@@ -3,318 +3,192 @@ type: "docs"
 title: "Continuous Queries"
 linkTitle: "Continuous Queries"
 weight: 30
-description: >
-    What are Continuous Queries and how to use them?
 related:
-  tutorials:
-    - title: "Getting Started with Drasi"
-      url: "/getting-started/"
-    - title: "Writing Single-Source Queries"
-      url: "/tutorials/write-single-source-continuous-queries/"
-    - title: "Writing Multi-Source Queries"
-      url: "/tutorials/write-multi-source-continuous-queries/"
   concepts:
     - title: "Sources"
       url: "/concepts/sources/"
     - title: "Reactions"
       url: "/concepts/reactions/"
-    - title: "Query Container"
-      url: "/concepts/query-container/"
+    - title: "Middleware"
+      url: "/concepts/middleware/"
+    - title: "Change-Driven Solutions"
+      url: "/concepts/solution-design/"
   howto:
-    - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+    - title: "Write Continuous Queries (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
-    - title: "Drasi Custom Functions"
-      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "Result Change Event Schema"
+      url: "/reference/schema/result-change-event/"
 ---
 
-Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/concepts/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/concepts/reactions).
+{{< term "Continuous Query" "Continuous Queries" >}} are the heart of Drasi. They define which changes matter to your solution and what data to distribute when those changes occur. Unlike traditional queries that run once and return static results, Continuous Queries run perpetually, maintaining an up-to-date {{< term "Result Set" "result set" >}} and notifying you precisely when that result set changes.
 
-{{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
+{{< term "Source" "Sources" >}} feed {{< term "Source Change Event" "Source Change Events" >}} to Continuous Queries, which process them and notify {{< term "Reaction" "Reactions" >}} of any additions, updates, or deletions to the query result caused by the Source Change Event.
 
-Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
+{{< figure src="simple-end-to-end.png" alt="End to End" width="90%" >}}
 
-When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
+## How Continuous Queries Work
 
-{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="60%" >}}
+To understand what makes Continuous Queries unique, contrast them with the {{< term "Instantaneous Query" "instantaneous queries" >}} developers typically run against databases.
 
-**Continuous Queries**, once started, continue to run until they are stopped. While running, Continuous Queries maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only do Continuous Queries allow you to request the query result as it was at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to the Continuous Query. 
+When you execute an **instantaneous query**, you run the query against the database at a point in time. The database calculates the results and returns them. While you work with those results, you have a static snapshot--you are unaware of any changes that happen after you ran the query. If you run the same query periodically, the results might differ each time due to changes made by other processes. But to understand what changed, you would need to compare the most recent result with the previous result.
 
-{{< figure src="continuous-query.png" alt="Continuous Query" width="60%" >}}
+{{< figure src="instantaneous-query.png" alt="Instantaneous Query" width="90%" >}}
 
-Continuous Queries are implemented as graph queries written in the [Cypher Query Language](/reference/query-language/). The use of a declarative graph query language means you can:
-- describe in a single query expression which changes you are interested in detecting and what data you want notifications of those changes to contain.
-- express rich query logic that takes into consideration both the properties of the data you are querying and the relationships between data. 
-- create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the Source systems, including queries that incorporate both relational and graph sources.
+**Continuous Queries**, once started, continue to run until stopped. While running, they maintain a perpetually accurate query result, incorporating any changes made to the source database as they occur. Not only can you request the query result at any point in time, but as changes occur, the Continuous Query determines exactly which result elements have been added, updated, and deleted, and distributes a precise description of the changes to all Reactions that have subscribed to it.
+
+{{< figure src="continuous-query.png" alt="Continuous Query" width="90%" >}}
+
+## Query Languages
+
+Continuous Queries are written using either {{< term "openCypher" >}} or {{< term "GQL" "Graph Query Language" >}} (GQL). Both are declarative graph query languages that allow you to:
+
+- Describe in a single query expression which changes you want to detect and what data notifications should contain
+- Express rich query logic that considers both property values and relationships between data
+- Create queries that span data across multiple Sources without complex join syntax, even when there is no natural connection between data in the source systems
+
+### Choosing a Query Language
+
+| Language | Best For | Key Features |
+|----------|----------|--------------|
+| **openCypher** | Neo4j users, ASCII-art graph patterns | Widely adopted, extensive documentation, familiar syntax |
+| **GQL** | ISO standard compliance, modern graph queries | ISO standardized |
+
+Both languages share similar pattern-matching syntax using round brackets for nodes and arrows for relationships. For complete syntax reference, see [Query Language Reference](/reference/query-language/).
 
 ## Example: Incident Alerts
-Imagine an Incident Alerting Service which notifies managers if any of the employees in their team are at risk due to dangerous incidents happening in their location (e.g. fires, storms, protests, etc). For this example, assume the source data is a property graph of nodes (rectangles) and relations (lines) shown in the following diagram:
 
-![Incident Alerting](incident-alerting-graph.png)
+Imagine an Incident Alerting Service that notifies managers when employees in their team are at risk due to dangerous incidents in their location (fires, storms, civil unrest, etc.). Assume the source data is a property graph of nodes (rectangles) and relations (lines) as shown:
 
-Using Drasi, the following Cypher query could be used to to identify each employee at risk:
+{{< figure src="incident-alerting-graph.png" alt="Incident Alerts" width="90%" >}}
 
-```
+Using Drasi, you can write a query to identify each employee at risk.
+
+**openCypher:**
+```opencypher
 MATCH
   (e:Employee)-[:ASSIGNED_TO]->(t:Team),
   (m:Employee)-[:MANAGES]->(t:Team),
   (e:Employee)-[:LOCATED_IN]->(:Building)-[:LOCATED_IN]->(r:Region),
-  (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region) 
+  (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region)
 WHERE
-  elementId(e) <> elementId(m) AND i.severity IN [‘critical’, ‘extreme’] AND i.endTimeMs IS NULL
-RETURN 
-  m.name AS ManagerName, m.email AS ManagerEmail, 
+  elementId(e) <> elementId(m) AND i.severity IN ['critical', 'extreme'] AND i.endTimeMs IS NULL
+RETURN
+  m.name AS ManagerName, m.email AS ManagerEmail,
   e.name AS EmployeeName, e.email AS EmployeeEmail,
-  r.name AS RegionName, 
+  r.name AS RegionName,
   elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
 ```
 
-The `MATCH` and `WHERE` clauses of the query describe a pattern that identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' that have a **severity** level of ‘critical’ or ‘extreme’. This means that any combination of correctly connected nodes with the required property values should be included in the query result.
-
-The `RETURN` clause of the query generates output containing the name and email address of the at risk employee and their manager, as well as details about the incident and the region in which it is located. This defines the schema for results generated by the Continuous Query.
-
-When the above Continuous Query is first run, there are no results that satisfy the query, because there are no Incidents in the data. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added to the database, as follows:
-
-![Incident Added](incident-alerting-graph-with-incident.png)
-
-The query would generate the following output showing that two records (for employees **Bob** and **Claire**) now meet the query criteria and have been **added** to the query result:
-
+**GQL:**
+```gql
+MATCH
+  (e:Employee)-[:ASSIGNED_TO]->(t:Team),
+  (m:Employee)-[:MANAGES]->(t:Team),
+  (e:Employee)-[:LOCATED_IN]->(:Building)-[:LOCATED_IN]->(r:Region),
+  (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region)
+WHERE
+  element_id(e) <> element_id(m) AND i.severity IN ['critical', 'extreme'] AND i.endTimeMs IS NULL
+RETURN
+  m.name AS ManagerName, m.email AS ManagerEmail,
+  e.name AS EmployeeName, e.email AS EmployeeEmail,
+  r.name AS RegionName,
+  element_id(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
 ```
+
+The `MATCH` and `WHERE` clauses describe a pattern that identifies all **Employees** located in **Buildings** within **Regions** where there are active **Incidents** of **type** 'environmental' with **severity** level 'critical' or 'extreme'. Any combination of correctly connected nodes with the required property values is included in the query result.
+
+The `RETURN` clause generates output containing the name and email address of the at-risk employee and their manager, plus incident and region details. This defines the schema for results generated by the Continuous Query.
+
+## How Results Change Over Time
+
+When the above Continuous Query first runs, there are no results because there are no Incidents in the data. But as soon as an extreme severity Forest Fire **Incident** in Southern California is added:
+
+{{< figure src="incident-alerting-graph-with-incident.png" alt="Incident Added" width="90%" >}}
+
+The query generates output showing that two records (for employees **Bob** and **Claire**) now meet the query criteria and have been **added** to the result:
+
+```json
 {
- “added”: [
-  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
-  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Claire”, “EmployeeEmail”: “claire@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
+ "added": [
+  { "ManagerName": "Allen", "ManagerEmail": "allen@contoso.com", "EmployeeName": "Bob", "EmployeeEmail": "bob@contoso.com", "RegionName": "Southern California", "IncidentId": "in1000", "IncidentSeverity": "extreme", "IncidentDescription": "Forest Fire" },
+  { "ManagerName": "Allen", "ManagerEmail": "allen@contoso.com", "EmployeeName": "Claire", "EmployeeEmail": "claire@contoso.com", "RegionName": "Southern California", "IncidentId": "in1000", "IncidentSeverity": "extreme", "IncidentDescription": "Forest Fire" }
  ],
- “updated”: [],
- “deleted”: []
+ "updated": [],
+ "deleted": []
 }
 ```
 
-If **Bob** subsequently changed location, removing him from the Southern Californian Region while the Forest Fire was still active, the Continuous Query would generate the following output, showing that Bob’s record had been **deleted** from the query result:
+If **Bob** subsequently changes location, removing him from Southern California while the Forest Fire is still active, the Continuous Query generates output showing Bob's record has been **deleted** from the result:
 
-```
+```json
 {
- “added”: [],
- “updated”: [],
- “deleted”: [
-  { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” }
+ "added": [],
+ "updated": [],
+ "deleted": [
+  { "ManagerName": "Allen", "ManagerEmail": "allen@contoso.com", "EmployeeName": "Bob", "EmployeeEmail": "bob@contoso.com", "RegionName": "Southern California", "IncidentId": "in1000", "IncidentSeverity": "extreme", "IncidentDescription": "Forest Fire" }
  ]
 }
 ```
 
-If the **severity** of the Forest Fire then changed from 'extreme' to 'critical', the Continuous Query would spontaneously generate the following output showing a that the result for Claire had been **updated**. The update includes what the result was both **before** and **after** the change:
+If the Forest Fire **severity** changes from 'extreme' to 'critical', the Continuous Query generates output showing Claire's result has been **updated**, including both **before** and **after** versions:
 
-```
+```json
 {
- “added”: [],
- “updated”: [
-  { 
-   “before”: { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “extreme”, “IncidentDescription”: “Forest Fire” },
-   “after”: { “ManagerName”: “Allen”, “ManagerEmail”: “allen@contoso.com”, “EmployeeName”: “Bob”, “EmployeeEmail”: “bob@contoso.com”, “RegionName”: “Southern California”, “IncidentId”: “in1000”, “IncidentSeverity”: “critical”, “IncidentDescription”: “Forest Fire” }
+ "added": [],
+ "updated": [
+  {
+   "before": { "ManagerName": "Allen", "ManagerEmail": "allen@contoso.com", "EmployeeName": "Claire", "EmployeeEmail": "claire@contoso.com", "RegionName": "Southern California", "IncidentId": "in1000", "IncidentSeverity": "extreme", "IncidentDescription": "Forest Fire" },
+   "after": { "ManagerName": "Allen", "ManagerEmail": "allen@contoso.com", "EmployeeName": "Claire", "EmployeeEmail": "claire@contoso.com", "RegionName": "Southern California", "IncidentId": "in1000", "IncidentSeverity": "critical", "IncidentDescription": "Forest Fire" }
+  }
  ],
- “deleted”: []
+ "deleted": []
 }
 ```
 
-In some instances, a single source change can result in multiple changes to the query result e.g. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes. This enables subscribed Reactions to treat the related changes atomically given they all arose from a single source change.
+In some instances, a single source change can result in multiple changes to the query result i.e. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes, enabling subscribed Reactions to treat related changes atomically.
 
-## Creation
-Continuous Queries can be created and managed using the [Drasi CLI](/reference/command-line-interface/). 
+## Key Configuration Concepts
 
-The easiest way to create a Continuous Query, and the way you will often create one as part of a broader software solution, is to:
+Continuous Query configuration varies by Drasi product, but all products support these core concepts:
 
-1. Create a YAML file containing the Continuous Query definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
-1. Run [drasi apply](/reference/command-line-interface/#drasi-apply) to apply the YAML file, creating the Continuous Query
+### Source Subscriptions
 
-When a new Continuous Query is created it:
-1. Subscribes to its Sources, describing the types of change it wants to receive.
-1. Queries its Sources to load the initial data for its query result.
-1. Begins processing the stream of SourceChangeEvents from its Sources that represent the sequence of low-level database changes that have occurred (inserts, updated, deletes) and translates them into changes to its query result.  
+Queries subscribe to one or more Sources to receive data via {{< term "Source Subscription" "source subscriptions" >}}. Within each subscription, you can:
 
-Here is a simple example of the definition for the Incident Alerting Continuous Query used in the example above:
+- Specify which {{< term "Node" "node" >}} and {{< term "Relationship" "relation" >}} labels the query expects from that Source
+- Define {{< term "Middleware" "middleware" >}} pipelines to transform incoming changes (see below)
 
-```
-apiVersion: v1
-kind: ContinuousQuery
-name: manager-incident-alert
-spec:
-  sources:    
-    subscriptions:
-      - id: human-resources
-  query: > 
-    MATCH
-      (e:Employee)-[:ASSIGNED_TO]->(t:Team),
-      (m:Employee)-[:MANAGES]->(t:Team),
-      (e:Employee)-[:LOCATED_IN]->(:Building)-[:LOCATED_IN]->(r:Region),
-      (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region) 
-    WHERE
-      elementId(e) <> elementId(m) AND i.severity IN [‘critical’, ‘extreme’] AND i.endTimeMs IS NULL
-    RETURN 
-      m.name AS ManagerName, m.email AS ManagerEmail, 
-      e.name AS EmployeeName, e.email AS EmployeeEmail,
-      r.name AS RegionName, 
-      elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
-```
+### Joins
 
-In this example, the `spec.sources.subscriptions` property identifies the Source with the id `human-resources` as the source of data for the Continuous Query. The `spec.query` property contains the text of the Cypher query. Full details of the Continuous Query configuration options are described in the [Configuration](#configuration) section.
+When a query uses multiple Sources, {{< term "Join" "joins" >}} define how elements from different Sources connect. This allows you to write unified graph queries that span multiple databases without complex join syntax complicating the query. These connections create {{< term "Synthetic Join" "synthetic joins" >}} between nodes from different sources.
 
-If this Continuous Query resource definition was contained in a file called `query.yaml`, to create this query on a Drasi environment that was the current Kubectl context, you would run the command:
+### Middleware
 
-```
-drasi apply -f query.yaml
-```
+Middleware transforms and enriches incoming data changes before they reach the query. Common uses include unwinding arrays, transforming data shapes, and remapping labels. See [Middleware](/concepts/middleware/) for a conceptual overview and [Middleware Reference](/reference/middleware/) for detailed specifications.
 
-You can then use additional `drasi` commands to query the existence and status of the Continuous Query resource. For example, to see a list of the active Continuous Queries, run the following command:
+## Query Lifecycle
 
-```
-drasi list query
-```
+When a new Continuous Query is started, it:
 
-## Deletion
-To delete an active Continuous Query, run the following command:
+1. Subscribes to its Sources, describing the types of changes it wants to receive
+2. Queries its Sources to load initial data for its query result (the {{< term "Bootstrap" "bootstrap" >}} process)
+3. Processes the stream of Source Change Events from its Sources, translating them into {{< term "Result Change Event" "changes to its query result" >}}
 
-```
-drasi delete query <query-id>
-```
+The Continuous Query continues running until explicitly stopped or deleted, at which point any Reactions that depend on it stop receiving query result changes. 
 
-For example, if the Continuous Query id from the `name` property of the resource definition is `manager-incident-alert`, you would run,
+{{< alert title="Dependency Impact" color="warning" >}}
+Drasi for Kubernetes does not currently enforce dependency integrity between Continuous Queries and Reactions, so plan your Continuous Query lifecycle carefully.
+{{< /alert >}}
 
-```
-drasi delete query manager-incident-alert
-```
+## Configuring Continuous Queries
 
-**Note**: Drasi does not currently enforce dependency integrity between Continuous Queries and Reactions. If you delete a Continuous Query that is used by one or more Reactions, they will stop getting query result changes.
+Query configuration varies by Drasi product. Each product provides its own approach for defining queries with source subscriptions, joins, and middleware.
 
+To configure Continuous Queries for your deployment, see the product-specific guide:
 
-## Configuration
-The definition for a Continuous Query has the following basic structure:
+- **[{{< term "Drasi for Kubernetes" >}} Queries](/drasi-kubernetes/how-to-guides/write-continuous-queries/)** - Configure queries using Kubernetes resource manifests
 
-```
-apiVersion: v1
-kind: ContinuousQuery
-name: <continuous_query_id>
-spec:
-  mode: <QUERY | filter>
-  container: <query_container_id>
-  storageProfile: <storage_profile_id>
-  queryLanguage: <Cypher | GQL>
-  sources:    
-    subscriptions:
-      - id: <source_1_id>
-        nodes:
-          - sourceLabel: <source_1_node_1_source_label>, 
-            queryLabel: <source_1_node_1_query_label>,
-            suppressIndex: <true | FALSE>
-          - ...
-        relations:
-          - sourceLabel: <source_1_rel_1_source_label>, 
-            queryLabel: <source_1_rel_1_query_label>,
-            suppressIndex: <true | FALSE>
-          - ...
-        pipeline:
-          - middleware_1
-          - middleware_2
-          - ...
-      - id: <source_2_id>
-        nodes: ...
-        relations: ...
-    joins:
-      - id: <join_1_id>
-        keys:
-          - label: <key_1_label_name>
-            property: <key_1_property_name>
-          - label: <key_2_label_name>
-            property: <key_2_property_name>
-      - id: <join_2_id>
-        keys: ...
-    middleware:
-      - name: middleware_1
-        kind: <middleware_type>
-        ...
-      - name: middleware_2
-        kind: <middleware_type>
-        ...
-  view:
-    enabled: <true | false>
-    retentionPolicy:
-      <latest: | all: | expire: afterSeconds: <TTL>>
-  params:
-    <param_1_key>: <param_1_value>
-    <param_2_key>: <param_2_value>
-    ...
-  query: MATCH ... WHERE ... RETURN ...
-```
-
-In the Continuous Query resource definition:
-- **apiVersion** must be **v1**
-- **kind** must be **ContinuousQuery**
-- **name** is the **id** of the Continuous Query and must be unique. Is used to identify the Continuous Query through the CLI/API and in Reactions to identify the Continuous Queries they should subscribe to..
-
-The following table provides a summary of the other configuration settings from the **spec** section of the resource definition:
-
-|Name|Description|
-|-|-|
-|mode|Can have the value **query** (default) or **filter**. If a Continuous Query is running in **filter** mode, it does not maintain a query result and as such does not generate detailed change notifications in response to Source changes. Instead, any Source change that adds or updates a query result will be output as an **added** result item. Any change that causes results to be removed from the query result will not generate output.|
-|container|The logical Query Container that hosts the query. If none is specified **default** will be used, which is the default container created when Drasi is installed. Query Containers host a number of queries and can be scaled up or down. Each Query Container also defines a set storage profiles that hold the configuration of the backing data store for indexes. |
-|storageProfile|The name of the storage profile on the query container to use. This settings controls how Drasi caches the Continuous Query element and solution indexes. These profiles are defined on the query container. The `default` query container has **memory** and **redis** configured by default and **redis** is the default profile if none is specified. Using memory-based indexes is good for testing and is also OK for Continuous Queries that do not require significant bootstrapping when they start.|
-|queryLanguage|(Optional). Specifies which query language and function set to use for the continuous query. Supported values are **Cypher** (default) and **GQL**.|
-|sources|Contains **subscriptions**, **joins** and **middleware** sections. The **subscriptions** section describes the Sources the Continuous Query will subscribe to for data and optionally maps the Source Labels to the Label names used in the Cypher Query. The **joins** section describes the way the Continuous Query connects elements from multiple sources to enable you to write graph queries that span sources. The **middleware** section describes named middleware configurations that can be applied to incoming source changes. Each middleware type has it's own configuration schema, middleware enables custom logic to be executed on incoming source changes, before they are processed by the query. These sections are described in more detail in the [Sources](#sources) section.|
-|params|Parameter values that are used by the Cypher query, enabling the repeated use of the same query that can be customized using parameter values.|
-|view|(Optional). Defines the behavior of the results view.  **enabled** controls if the results of the query are cached in the results view. **retentionPolicy** determines how long the results will be stored for.  **latest** (default) only holds the most recent version, **all** holds all previous versions and allows querying at a time point in the past, **expire** holds the non current results for a limited time.|
-|query|The Cypher query that defines the change the Continuous Query is detecting and the output it generates. Explained in [Continuous Query Syntax](/reference/query-language/).|
-
-### Sources
-
-#### Subscriptions
-
-The configuration settings in the **spec.sources.subscriptions** section of the Continuous Query resource definition do the following:
-- Define the Sources the Continuous Query will subscribe to for its change data.
-- Within each Source, define the Labels of the Nodes and Relations that the the Continuous Query expects from that Source. If you do not map a Node/Relation Label used in the query to a specific Source, it is assumed to come from the first Source configured. 
-- For each Node and Relation, create a mapping between the Label name used in the Source data and the Label name used in the Query. This allows you to write queries independent of the Label/Type names used in the source data, easily use the same Query against multiple sources, and deal with the name collisions across Sources.
-- For each Node and Relation, you also have the ability to disable element level caching. This can be useful when processing append only logs where the main element being processed (i.e. the log record) will never change once created, and will not be referenced in query future query results. 
-- Define a chain of middleware that will process all incoming changes for a given source. The middlewares will be executed in the order they are listed in the `pipeline`. The detailed configuration for each middleware is located in **spec.sources.middleware**. The pipeline of middleware for a specific source is located at **spec.sources.subscriptions.pipeline**, which references the middlewares defined for the overall query.
-
-#### Joins
-
-The configuration settings in the **spec.sources.joins** section of the Continuous Query resource definition create a mapping between a Label and Property name pair from one source, with a Label and Property Name pair in another source.
-This allows the Continuous Query to be written as a single unified query without consideration from which Source data is originating from. Drasi will use the mapping to create synthetic relations between Nodes as required.
-
-Here is an example of a Continuous Query from the [Curbside Pickup](https://github.com/drasi-project/learning/tree/main/apps/curbside-pickup) demo app that defines two Sources: **phys-ops** and **retail-ops**:
-
-```
-apiVersion: v1
-kind: ContinuousQuery
-name: curbside-pickup
-spec:
-  mode: query
-  sources:    
-    subscriptions:
-      - id: phys-ops
-        nodes:
-          - sourceLabel: Vehicle
-          - sourceLabel: Zone
-        relations:
-          - sourceLabel: LOCATED_IN
-      - id: retail-ops
-        nodes:
-          - sourceLabel: Driver
-          - sourceLabel: Order
-          - sourceLabel: OrderPickup
-        relations:
-          - sourceLabel: PICKUP_DRIVER
-          - sourceLabel: PICKUP_ORDER
-    joins:
-      - id: VEHICLE_TO_DRIVER
-        keys:
-          - label: Vehicle
-            property: plate
-          - label: Driver
-            property: plate
-  query: ...
-```
-
-#### Middleware
-
-The configuration settings in the **spec.sources.middleware** section of the Continuous Query resource definition hold the individual middleware configurations that can be used in a pipeline for a given source. Each middleware definition requires a **name**, which is referenced in by **spec.sources.subscriptions.pipeline**, a **kind**, which defines which middleware implementation to use and and properties required by that specific implementation.  For more details, see the [Middleware](../middleware) documentation.
+For **{{< term "drasi-lib" >}}**, queries are configured programmatically via the Rust API. See the [drasi-lib documentation](/drasi-lib/) for details.

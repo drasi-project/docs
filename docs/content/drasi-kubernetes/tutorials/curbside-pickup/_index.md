@@ -8,21 +8,28 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
     - title: "Building Comfort Tutorial"
-      url: "/tutorials/building-comfort/"
-    - title: "Writing Multi-Source Queries"
-      url: "/tutorials/write-multi-source-continuous-queries/"
+      url: "/drasi-kubernetes/tutorials/building-comfort/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
-    - title: "Solution Design"
-      url: "/concepts/solution-design/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
   howto:
     - title: "Configure PostgreSQL Source"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
-    - title: "Configure Cosmos DB Gremlin Source"
-      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
+    - title: "Configure MySQL Source"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-mysql-source/"
+    - title: "Configure SignalR Reaction"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-signalr-reaction/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
 ---
 
 ## Scenario
@@ -256,9 +263,8 @@ The output to the `delayed_orders` Kafka topic can then be used by the backend
   keep the dashboards up to date by sending updates over websockets.
 
 ### Enter Drasi
-Drasi offers us a unique ability to declaratively write continuously running
-  queries across a virtual knowledge graph that can span across multiple
-  heterogeneous data sources. Drasi can also take action when the result sets of
+Drasi offers us a unique ability to declaratively write {{< term "Continuous Query" "continuously running queries" >}} across a virtual knowledge graph that can span across multiple
+  heterogeneous data {{< term "Source" "sources" >}}. Drasi can also take action when the {{< term "Result Set" "result sets" >}} of
   the queries change.
 
 This means that we can simply add both the data sources in Drasi and write
@@ -578,7 +584,7 @@ This is because the extension automatically lists all the Drasi YAMLs found in y
 
 ### Add Drasi Sources
 
-Sources in Drasi provide connectivity to the data sources and monitor them for
+{{< term "Source" "Sources" >}} in Drasi provide connectivity to the data sources and monitor them for
   change. Learn {{< relurl "concepts/sources" "more about Sources here" >}}.
 
 The retail team uses a PostgreSQL database which can be added as a Drasi source.
@@ -685,7 +691,7 @@ You should see:
 {{% /tabpane %}}
 
 ### Write Drasi Queries
-Continuous Queries are the mechanism by which you tell Drasi what changes to
+{{< term "Continuous Query" "Continuous Queries" >}} are the mechanism by which you tell Drasi what changes to
   detect in source systems as well as the data you want distributed when changes
   are detected. You can read
   {{< relurl "concepts/continuous-queries" "more about them here" >}}.
@@ -693,8 +699,8 @@ Continuous Queries are the mechanism by which you tell Drasi what changes to
 #### Query for matched orders
 
 When writing queries, Drasi allows us to model all of our data coming
-    from disparate heterogeneous systems as a single virtual graph of
-    nodes and relationships. On this graph, we can then write declarative
+    from disparate heterogeneous systems as a single virtual {{< term "Property Graph" "graph" >}} of
+    {{< term "Node" "nodes" >}} and {{< term "Relationship" "relationships" >}}. On this graph, we can then write declarative
     queries.
 
 For example, to match `Orders` that are `Ready` with their pickup `Vehicles`
@@ -748,9 +754,9 @@ The above does a `max` as we want to report when a match happened, which occurs
   `Ready`. Therefore, we need the greater of the change timestamp among both.
 
 #### Synthetic Relationships
-Note that in our Cypher query we want to relate the orders with their
+Note that in our {{< term "openCypher" "openCypher" >}} query we want to relate the orders with their
   respective vehicles, even though the entities live in different databases.
-This is achieved by modeling the relationship as a synthetic relationship
+This is achieved by modeling the relationship as a {{< term "Synthetic Join" "synthetic join" >}}
   called `PICKUP_BY` which is defined in the `joins` section of the YAML below.
 
 This `joins` section tells Drasi how to stitch together a graph
@@ -929,7 +935,7 @@ The `STATUS` should be `Running`, and there should be nothing in the column
 
 ### Drasi SignalR Reaction
 
-Reactions process the stream of query result changes output by one or more
+{{< term "Reaction" "Reactions" >}} process the stream of query {{< term "Result Change Event" "result changes" >}} output by one or more
   Drasi Queries and act on them. You can read
   {{< relurl "concepts/reactions" "more about Reactions here" >}}.
 
@@ -1246,7 +1252,7 @@ When writing the queries for our scenario, we did not have to worry about the
 
 [Synthetic Relationships](#synthetic-relationships) in Continuous Queries
   helped Drasi in understanding how data across sources is connected so it can
-  be modeled as a single virtual graph against which Cypher-style queries can
+  be modeled as a single virtual graph against which {{< term "openCypher" "Cypher-style" >}} queries can
   be written.
 
 ### No Code

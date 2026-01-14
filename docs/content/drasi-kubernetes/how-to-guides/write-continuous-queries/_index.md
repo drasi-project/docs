@@ -7,11 +7,6 @@ toc_hide: true
 description: >
     Write and debug Continuous Queries
 related:
-  tutorials:
-    - title: "Writing Single-Source Queries"
-      url: "/tutorials/write-single-source-continuous-queries/"
-    - title: "Writing Multi-Source Queries"
-      url: "/tutorials/write-multi-source-continuous-queries/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
@@ -19,9 +14,9 @@ related:
       url: "/concepts/middleware/"
   howto:
     - title: "Configure Sources"
-      url: "/how-to-guides/configure-sources/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
     - title: "Configure Reactions"
-      url: "/how-to-guides/configure-reactions/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
@@ -31,7 +26,7 @@ related:
       url: "/reference/vscode-extension/"
 ---
 
-The VS Code extension enables you to rapidly test the validity of your continuous queries by providing a one click `Run` button that will bootstrap, execute and display the results/errors of queries within your VS Code workspace.
+The VS Code extension enables you to rapidly test the validity of your {{< term "Continuous Query" "continuous queries" >}} by providing a one click `Run` button that will {{< term "Bootstrap" "bootstrap" >}}, execute and display the results/errors of queries within your VS Code workspace.
 
 ## Installing
 
@@ -40,6 +35,6 @@ Open the VS Code command palette and run the `Extensions: Install from VSIX` com
 
 ## Usage
 
-Once the extension is installed, the `Drasi Explorer` view should be visible in the Activity Bar.  This will scan your workspace for YAML files that contain continuous queries and enable you to execute them once off against your Drasi instance.  You will need to manually deploy any source(s) the your queries depend upon.
+Once the extension is installed, the `Drasi Explorer` view should be visible in the Activity Bar.  This will scan your workspace for YAML files that contain continuous queries and enable you to execute them once off against your Drasi instance.  You will need to manually deploy any {{< term "Source" "source(s)" >}} that your queries depend upon.
 
 ![Drasi Explorer](drasi-explorer.png)

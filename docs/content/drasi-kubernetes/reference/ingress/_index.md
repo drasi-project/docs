@@ -5,11 +5,28 @@ linkTitle: "Ingress"
 weight: 60
 description: >
     Deploy and manage Kubernetes ingress resources for your Drasi resources.
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Getting Started with Drasi for Kubernetes"
+      url: "/drasi-kubernetes/getting-started/"
+  howto:
+    - title: "Install Drasi on AKS"
+      url: "/drasi-kubernetes/how-to-guides/installation/install-on-aks/"
+    - title: "Install Drasi on EKS"
+      url: "/drasi-kubernetes/how-to-guides/installation/install-on-eks/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-Drasi allows you to deploy and manage Kubernetes ingress resources for your applications easily in your Drasi YAML file, without using `kubectl`. You can use the Drasi CLI to install [Contour](https://projectcontour.io/) as your ingress controller, or use an existing ingress controller that is already deployed in your Kubernetes cluster.
+Drasi allows you to deploy and manage Kubernetes ingress resources for your applications easily in your Drasi YAML file, without using `kubectl`. You can use the {{< term "Drasi CLI" >}} to install [Contour](https://projectcontour.io/) as your ingress controller, or use an existing ingress controller that is already deployed in your Kubernetes cluster.
 
-Currently, Drasi only supports deploying ingress resources for Drasi Sources and Reactions.
+Currently, Drasi only supports deploying ingress resources for Drasi {{< term "Source" "Sources" >}} and {{< term "Reaction" "Reactions" >}}.
 
 
 ### Ingress Initialization

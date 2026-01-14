@@ -6,12 +6,22 @@ weight: 20
 toc_hide: true
 description: >
     Learn how to configure PostgreSQL to work as a Drasi Source
+related:
+  howto:
+    - title: "Connect to PostgreSQL"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-This page describes how to configure your PostgreSQL database so it will work with the PostgreSQL Source.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#setting-up-postgresql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+This page describes how to configure your PostgreSQL database so it will work with the PostgreSQL {{< term "Source" >}}.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/postgresql.html#setting-up-postgresql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Overview
-The PostgreSQL Source is built upon the Debezium PostgreSQL connector, which relies on the replication functionality of PostgreSQL to achieve change data capture.
+The PostgreSQL Source is built upon the Debezium PostgreSQL connector, which relies on the replication functionality of PostgreSQL to achieve {{< term "Change Data Capture" "change data capture" >}}.
 
 ## PostgreSQL in the Cloud
 ### PostgreSQL on Amazon RDS

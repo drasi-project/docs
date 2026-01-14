@@ -5,6 +5,21 @@ linkTitle: "Install using Kubernetes Manifests"
 weight: 50
 description: >
     Learn how to install Drasi using generated Kubernetes manifests for offline or controlled deployments
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 The Drasi CLI provides the ability to generate Kubernetes manifests instead of performing a direct installation. This approach is useful for environments where you need to review manifests before deployment, have restricted network access, or prefer to apply manifests manually through your CI/CD pipeline.

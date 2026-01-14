@@ -5,9 +5,22 @@ linkTitle: "Configure a Post Dapr Pub/Sub Reaction"
 weight: 40
 description: >
     Learn how to configure a Reaction to forward Drasi Continuous Query results to Dapr Pub/Sub topics.
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The `PostDaprPubSub` Reaction forwards change events and control signals from Drasi Continuous Queries to specified [Dapr publish/subscribe topics](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/). This enables Dapr-enabled microservices to react to sophisticated, real-time data changes detected by Drasi in various backend systems.
+The `PostDaprPubSub` {{< term "Reaction" >}} forwards change events and control signals from Drasi {{< term "Continuous Query" "Continuous Queries" >}} to specified [Dapr publish/subscribe topics](https://docs.dapr.io/developing-applications/building-blocks/pubsub/pubsub-overview/). This enables Dapr-enabled microservices to react to sophisticated, real-time data changes detected by Drasi in various backend systems.
 
 Messages are published as [CloudEvents](https://cloudevents.io/), with the Drasi event (either in "packed" or "unpacked" format) contained within the `data` field of the CloudEvent.
 

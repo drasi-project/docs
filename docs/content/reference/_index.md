@@ -9,8 +9,9 @@ description: >
     Shared reference documentation for query language, schemas, glossary, and sample data
 ---
 
-<div class="section-header section-header--reference">
-  <p class="section-intro">This section contains reference documentation that applies to all Drasi products. For product-specific reference documentation, see the individual product sections.</p>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Reference</h1>
+  <p class="hero-subtitle">This section contains reference documentation that applies to all Drasi products. For product-specific reference documentation, see the individual product sections.</p>
 </div>
 
 ## Shared Reference
@@ -24,19 +25,19 @@ These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
         <i class="fas fa-code"></i>
       </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Query Language</h3>
+        <h3 class="unified-card-title">Continuous Query Syntax</h3>
         <p class="unified-card-summary">Cypher, GQL, and Drasi-specific functions for writing continuous queries.</p>
       </div>
     </div>
   </a>
-  <a href="/reference/schema/">
+  <a href="/reference/middleware/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
-        <i class="fas fa-file-code"></i>
+        <i class="fas fa-filter"></i>
       </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Event Schemas</h3>
-        <p class="unified-card-summary">Schema definitions for result change events and source change events.</p>
+        <h3 class="unified-card-title">Middleware</h3>
+        <p class="unified-card-summary">Transform and enrich incoming data changes with Unwind, JQ, Promote, and more.</p>
       </div>
     </div>
   </a>
@@ -62,6 +63,15 @@ These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
       </div>
     </div>
   </a>
+  <a href="/reference/context/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-layer-group"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">AI Agent Context</h3>
+        <p class="unified-card-summary">The single source of truth for Agents working with Drasi</p>
+      </div>
+    </div>
+  </a>
 </div>
 
 ## Product-Specific Reference
@@ -69,17 +79,6 @@ These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
 For CLI, APIs, and configuration specific to each product:
 
 <div class="card-grid-3">
-  <a href="/drasi-lib/reference/">
-    <div class="unified-card unified-card--reference">
-      <div class="unified-card-icon">
-        <i class="fab fa-rust"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">drasi-lib Reference</h3>
-        <p class="unified-card-summary">Rust API documentation and configuration options.</p>
-      </div>
-    </div>
-  </a>
   <a href="/drasi-server/reference/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -103,8 +102,3 @@ For CLI, APIs, and configuration specific to each product:
     </div>
   </a>
 </div>
-
-## Related Resources
-
-- **[Concepts](/concepts/)** - Understand the theory behind these specifications
-- **[Patterns](/patterns/)** - Best practices for using these capabilities

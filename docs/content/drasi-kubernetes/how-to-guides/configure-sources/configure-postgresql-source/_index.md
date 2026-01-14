@@ -9,35 +9,39 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Sources"
       url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
   howto:
     - title: "Setup PostgreSQL Replication"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/setup-postgresql-replication/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/setup-postgresql-replication/"
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The PostgreSQL Source enables Drasi connectivity to PostgreSQL databases. It 
-calls the PostgreSQL server to retrieve data required to bootstrap Continuous Queries when they are created, and uses the PostgreSQL replication log as the source of database change events to keep the Continuous Queries that subscribe to it perpetually accurate.
+The PostgreSQL {{< term "Source" >}} enables Drasi connectivity to PostgreSQL databases. It
+calls the PostgreSQL server to retrieve data required to {{< term "Bootstrap" "bootstrap" >}} {{< term "Continuous Query" "Continuous Queries" >}} when they are created, and uses the PostgreSQL replication log as the source of database change events to keep the Continuous Queries that subscribe to it perpetually accurate.
 
 {{< figure src="postgresql-source.png" alt="PostgreSQL Source" width="65%" >}}
 
 ## Data Model
-PostgreSQL is a relational database. The PostgreSQL Source translates the relational data from change events to more closely resemble property graph data change events so that they can be processed by subscribed Continuous Queries. To achieve this, the PostgreSQL Source treats each table row as a graph node, as follows:
+PostgreSQL is a relational database. The PostgreSQL Source translates the relational data from change events to more closely resemble {{< term "Property Graph" "property graph" >}} data change events so that they can be processed by subscribed Continuous Queries. To achieve this, the PostgreSQL Source treats each table row as a graph {{< term "Node" "node" >}}, as follows:
 - Each change to a table row gets represented as a change to a node with the table columns represented as properties of the node.
 - Each node is assigned a unique **id** the is a composite of the **table name** and the row's **primary key**. This **id** is part of the node's metadata, not a property of the node.
 - The node is assigned a **label** name the same as the **name of the table** that the row is contained in.
 
-The PostgreSQL Source **does not** interpret foreign keys or joins from the PostgreSQL database as graph relations or edges. Continuous Queries instead rely on their Source Join feature to mimic graph-style relations between nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries/) page for details. 
+The PostgreSQL Source **does not** interpret foreign keys or joins from the PostgreSQL database as graph {{< term "Relationship" "relations" >}} or edges. Continuous Queries instead rely on their {{< term "Join" "Source Join" >}} feature to mimic graph-style relations between nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries/) page for details. 
 
 ## Requirements
-To create and manage Sources using the steps described in this guide, you need the [Drasi CLI](/reference/command-line-interface/) installed on your computer.
+To create and manage Sources using the steps described in this guide, you need the {{< term "Drasi CLI" >}} installed on your computer.
 
 The PostgreSQL database you connect to must be running at least PostgreSQL v10 and have `LOGICAL` replication enabled. See the page [Setup PostgreSQL Replication](setup-postgresql-replication) for assistance.
 

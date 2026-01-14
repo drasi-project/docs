@@ -6,13 +6,23 @@ weight: 30
 toc_hide: true
 description: >
     Setup and Configure MySQL for Drasi
+related:
+  howto:
+    - title: "Connect to MySQL"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-mysql-source/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-This page describes how to configure your MySQL database to work with the Drasi MySQL source. This is a summary of the Debezium v2.7 documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation//reference/2.7/connectors/mysql.html#setting-up-mysql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+This page describes how to configure your MySQL database to work with the Drasi MySQL {{< term "Source" "source" >}}. This is a summary of the Debezium v2.7 documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation//reference/2.7/connectors/mysql.html#setting-up-mysql). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Overview
 
-The MySQL source is built upon the Debezium MySQL connector, which uses MySQL's binary log (binlog) to capture changes. The binlog records transaction updates in a way that enables replicas to propagate those changes. For the connector to function properly, you need to enable binary logging and configure several other MySQL settings.
+The MySQL source is built upon the Debezium MySQL connector, which uses MySQL's binary log (binlog) to capture changes. The binlog records transaction updates in a way that enables replicas to propagate those changes. For the connector to function properly, you need to enable binary logging and configure several other MySQL settings. This is a form of {{< term "Change Data Capture" >}}.
 
 ## Creating a User
 

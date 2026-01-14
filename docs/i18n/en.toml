@@ -1,0 +1,5 @@
+# Override Docsy theme i18n strings
+# Only include strings you want to change from the theme defaults
+
+[post_create_issue]
+other = "Create doc issue"

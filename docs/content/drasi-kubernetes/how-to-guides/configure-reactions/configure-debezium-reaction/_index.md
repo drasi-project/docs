@@ -5,9 +5,22 @@ linkTitle: "Configure a Debezium Reaction"
 weight: 40
 description: >
     Learn how to configure a Debezium Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Drasi Debezium Reaction connector generates a Debezium-compatible data change event for each Added, Updated, or Removed in a Drasi result for a given Continuous Query. The events produced by this Reaction should be analogous to the data change events produced by similar Debezium Connectors, which can be used as a reference model and more detailed commentary. 
+The Drasi {{< term "Debezium" >}} {{< term "Reaction" >}} connector generates a Debezium-compatible data change event for each Added, Updated, or Removed in a Drasi result for a given {{< term "Continuous Query" >}}. The events produced by this Reaction should be analogous to the data change events produced by similar Debezium Connectors, which can be used as a reference model and more detailed commentary. 
 
 
 ## Requirements

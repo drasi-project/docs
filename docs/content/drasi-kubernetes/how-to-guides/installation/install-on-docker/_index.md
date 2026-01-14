@@ -5,6 +5,21 @@ linkTitle: "Install on Docker"
 weight: 40
 description: >
     Learn how to install Drasi to a Docker container for local development and testing
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 Installing Drasi into a Docker container is the fastest way to get started.  It will also allow you to connect to databases running on your local machine, by using the `host.docker.internal` host name.
@@ -73,7 +88,7 @@ Installing Drasi with version 0.2.0 from registry ghcr.io
   ✓ Apply: ReactionProvider/StoredProc: complete
 ```
 
-If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 
 ## Deleting the Drasi container

@@ -5,9 +5,22 @@ linkTitle: "Configure an Azure Event Grid Reaction"
 weight: 10
 description: >
     Learn how to configure an Azure Event Grid Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Azure Event Grid Reaction generates [CloudEvents](https://cloudevents.io/) and publishes them to an Azure Event Grid Topic. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
+The Azure Event Grid {{< term "Reaction" >}} generates [CloudEvents](https://cloudevents.io/) and publishes them to an Azure Event Grid Topic. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
 
 
 NOTE: The Azure Event Grid Reaction is only compatible with Event Grid Topics that use `CloudEventSchemaV1_0` as the input schema.

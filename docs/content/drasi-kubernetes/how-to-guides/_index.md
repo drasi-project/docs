@@ -5,13 +5,10 @@ linkTitle: "How-To Guides"
 weight: 30
 hide_readingtime: true
 no_list: true
+notoc: true
 description: >
-    Step-by-step instructions for accomplishing specific tasks with Drasi
+    How-to guides are task-oriented recipes that help you accomplish specific goals. Unlike tutorials, they assume you have some familiarity with Drasi and focus on getting a particular job done.
 ---
-
-<div class="section-header section-header--howto">
-  <p class="section-intro">How-to guides are task-oriented recipes that help you accomplish specific goals. Unlike tutorials, they assume you have some familiarity with Drasi and focus on getting a particular job done.</p>
-</div>
 
 ## Choose a Guide
 
@@ -105,10 +102,3 @@ description: >
     </div>
   </a>
 </div>
-
-## Related Resources
-
-- **[Tutorials](/tutorials/)** - If you're still learning Drasi
-- **[Concepts](/concepts/)** - Understand the theory behind these tasks
-- **[Reference](/reference/)** - Detailed specifications and options
-- **[Patterns](/patterns/)** - Best practices and design patterns

@@ -5,9 +5,28 @@ linkTitle: "Connect to Azure EventHub"
 weight: 70
 description: >
     Learn how to configure an Azure EventHub Source to connect to an Azure EventHub
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Middleware"
+      url: "/concepts/middleware/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The Event Hubs source enables messages streaming through Azure Event Hubs to be mapped into graph nodes that can be referenced by a continuous query.
+The Event Hubs {{< term "Source" "source" >}} enables messages streaming through Azure Event Hubs to be mapped into graph {{< term "Node" "nodes" >}} that can be referenced by a {{< term "Continuous Query" "continuous query" >}}.
 It can observe multiple Event Hubs within the same Event Hubs namespace.
 
 ## Data Model
@@ -43,7 +62,7 @@ RETURN v.vehicleId, v.speed, v.location.lat, v.timestamp
 
 ### Using Middleware for Schema Transformation
 
-While the default mapping creates nodes with the Event Hub name as the label, you can use [middleware](/concepts/middleware/) to transform the incoming data into a different graph schema. This is particularly useful when:
+While the default mapping creates nodes with the Event Hub name as the label, you can use {{< term "Middleware" "middleware" >}} to transform the incoming data into a different graph schema. This is particularly useful when:
 
 - You want to normalize data from multiple Event Hubs into a common schema
 - You need to extract nested properties to top-level nodes
@@ -78,7 +97,7 @@ RETURN v.id, v.currentSpeed, v.lastUpdate
 
 ## Requirements
 On the computer from where you will create the Source, you need the following software:
-- [Drasi CLI](/reference/command-line-interface/) 
+- {{< term "Drasi CLI" >}}
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
 
 
@@ -121,7 +140,7 @@ The following table describes the EventHub specific properties:
 |connectionString|Connection string for the Event Hubs endpoint. This is only required if not using Managed Identities.|
 |host|Fully qualified EventHub namespace, eg. `my-hubs.servicebus.windows.net`. This is only required when using Managed Identities.|
 |eventHubs|A list of Event Hubs within the Event Hubs namespace to observe|
-|bootstrapWindow|When a query bootstraps, it can also fetch all the messages for the previous (n) minutes.  This value defines how many minutes of backfill data to bootstrap the query with.|
+|bootstrapWindow|When a query {{< term "Bootstrap" "bootstraps" >}}, it can also fetch all the messages for the previous (n) minutes.  This value defines how many minutes of backfill data to bootstrap the query with.|
 
 ### Secret Configuration
 

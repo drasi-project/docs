@@ -3,6 +3,7 @@ type: "docs"
 title: "Media Coverage"
 linkTitle: "Media Coverage"
 weight: 90
+hide_readingtime: true
 description: >
     Learn about Drasi through press articles, blog posts, presentation and other coverage
 ---

@@ -5,15 +5,32 @@ linkTitle: "Connect to Azure Cosmos Gremlin API"
 weight: 10
 description: >
     Learn how to configure a Cosmos Gremlin Source to connect to an Azure Cosmos Gremlin API database
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The Cosmos Gremlin Source enables Drasi connectivity to Azure Cosmos DB Gremlin API databases. It 
-calls the Azure Cosmos Gremlin API to retrieve data required to bootstrap Continuous Queries when they are created, and uses the Cosmos DB Change Feed as the source of database change events to keep the Continuous Queries that subscribe to it perpetually accurate.
+The Cosmos Gremlin {{< term "Source" >}} enables Drasi connectivity to Azure Cosmos DB Gremlin API databases. It
+calls the Azure Cosmos Gremlin API to retrieve data required to {{< term "Bootstrap" "bootstrap" >}} {{< term "Continuous Query" "Continuous Queries" >}} when they are created, and uses the Cosmos DB Change Feed as the source of database change events to keep the Continuous Queries that subscribe to it perpetually accurate.
 
 {{< figure src="cosmos-gremlin-source.png" alt="Cosmos Gremlin Source" width="65%" >}}
 
 ## Data Model
-Azure Cosmos DB Gremlin API uses a property graph data model similar to the graph data model used by the openCypher-based query language used to write Continuous Queries. This makes it easier to configure Continuous Queries that use a Cosmos Gremlin Source than those that depend on relational Sources. The only thing to note is the terminology differences between Gremlin and Drasi summarized in this table:
+Azure Cosmos DB Gremlin API uses a {{< term "Property Graph" "property graph" >}} data model similar to the graph data model used by the {{< term "openCypher" >}}-based query language used to write Continuous Queries. This makes it easier to configure Continuous Queries that use a Cosmos Gremlin Source than those that depend on relational Sources. The only thing to note is the terminology differences between Gremlin and Drasi summarized in this table:
 
 |Gremlin Name|Drasi Name|
 |-|-|
@@ -21,7 +38,7 @@ Azure Cosmos DB Gremlin API uses a property graph data model similar to the grap
 |Edge|Relation|
 
 ## Requirements
-To create and manage Sources using the steps described in this guide, you need the [Drasi CLI](/reference/command-line-interface/) installed on your computer.
+To create and manage Sources using the steps described in this guide, you need the {{< term "Drasi CLI" >}} installed on your computer.
 
 For the Cosmos Gremlin Source to function, your Cosmos Change Feed must be configured to use [all versions and deletes mode](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-modes?tabs=latest-version#all-versions-and-deletes-change-feed-mode-preview), which is in preview at the time of writing (9/23/2024). To enable this mode you must [enroll in the preview](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/change-feed-modes?tabs=all-versions-and-deletes#get-started) on the [preview features page](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/preview-features?tabs=azure-portal) of your Azure subscription.
 

@@ -9,16 +9,16 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Why Drasi?"
       url: "/concepts/overview/"
   howto:
     - title: "Configure Sources"
-      url: "/how-to-guides/configure-sources/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
     - title: "Configure Reactions"
-      url: "/how-to-guides/configure-reactions/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---

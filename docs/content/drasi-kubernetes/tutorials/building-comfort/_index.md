@@ -8,22 +8,24 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
     - title: "Curbside Pickup Tutorial"
-      url: "/tutorials/curbside-pickup/"
+      url: "/drasi-kubernetes/tutorials/curbside-pickup/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
-    - title: "Solution Design"
-      url: "/concepts/solution-design/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
   howto:
-    - title: "Configure Cosmos DB Gremlin Source"
-      url: "/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+    - title: "Configure PostgreSQL Source"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
     - title: "Configure SignalR Reaction"
-      url: "/how-to-guides/configure-reactions/configure-signalr-reaction/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-signalr-reaction/"
   reference:
-    - title: "Building Comfort Sample Data"
-      url: "/reference/sample-data/building-comfort/"
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 ## Scenario
@@ -219,14 +221,14 @@ What if we had a platform where we could make our existing systems reactive -
 {{< figure src="building-comfort-architecture-with-drasi.png"
   alt="Architecture diagram showing Drasi solution with source, queries, and SignalR reaction" width="80%" >}}
 
-With Drasi, we can detect changes in our existing data source, write
-  complicated alerting logic declaratively and get a reaction pushing those
+With Drasi, we can detect changes in our existing data {{< term "Source" "source" >}}, write
+  complicated alerting logic declaratively and get a {{< term "Reaction" "reaction" >}} pushing those
   changes to our UI without writing any code.
 
 Following is all we need to do to get a SignalR hub up and running:
 - YAML file describing existing data source.
 - YAML file(s) containing any alerts or computation logic (written in a
-    declarative `Cypher` query).
+    declarative {{< term "openCypher" "openCypher" >}} query).
 - YAML file describing the reaction we want - in this case a SignalR hub which
     will push updates to our UI.
 
@@ -573,7 +575,7 @@ This is because the extension automatically lists all the Drasi YAMLs found in y
 
 ### Drasi Source
 
-Sources in Drasi provide connectivity to the systems that are sources of
+{{< term "Source" "Sources" >}} in Drasi provide connectivity to the systems that are sources of
   change. You can learn {{< relurl "concepts/sources" "more about Drasi Sources here" >}}.
 
 Navigate to the `drasi` directory within your workspace (`tutorial/building-comfort/drasi`):
@@ -661,7 +663,7 @@ The source should be listed with AVAILABLE set to `true`:
 
 ### Continuous Queries
 
-Continuous Queries are the mechanism by which you tell Drasi what changes to
+{{< term "Continuous Query" "Continuous Queries" >}} are the mechanism by which you tell Drasi what changes to
   detect in source systems as well as the data you want distributed when changes
   are detected. You can read
   {{< relurl "concepts/continuous-queries" "more about them here" >}}.
@@ -695,12 +697,12 @@ Let's write a query that provides all buildings, floors and rooms to the UI to
 ```
 #### Synthetic Relationships
 Note that in our Cypher query we want to relate the rooms to the floor and the
-  building they are part of. This relation is expressed intuitively in the
+  building they are part of. This {{< term "Relationship" "relation" >}} is expressed intuitively in the
   MATCH phrase of the Cypher query.
 
 However, our existing datastore for sensor metrics may or may not have existing
   relationships. That is not a problem for Drasi because we can model
-  "Synthetic Relationships" for use in our query.
+  {{< term "Synthetic Join" "Synthetic Join" >}} for use in our query.
 
 We have the query for our UI defined in the file `query-ui.yaml` that provides all buildings, floors and rooms to the UI.
 This query:
@@ -839,11 +841,11 @@ You should see 6 queries total, and all of them in the running state:
 
 ### SignalR Reaction
 
-Reactions process the stream of query result changes output by one or more
+{{< term "Reaction" "Reactions" >}} process the stream of query {{< term "Result Change Event" "result changes" >}} output by one or more
   Drasi Queries and act on them. You can read
   {{< relurl "concepts/reactions" "more about Drasi Reactions here" >}}.
 
-For our scenario, we will use the **SignalR reaction**, which provides access to the result set maintained by Drasi queries through a web socket server. It comes with React & Vue components that make it easy to develop reactive dashboards.
+For our scenario, we will use the **SignalR reaction**, which provides access to the {{< term "Result Set" "result set" >}} maintained by Drasi queries through a web socket server. It comes with React & Vue components that make it easy to develop reactive dashboards.
 
 {{< tabpane >}}
 
@@ -1085,7 +1087,7 @@ Congratulations! You were able to build a reactive dashboard UI for the
 
 We did not need to make any changes to the existing system we had setup with
   sensors and the data store (Postgres). We were able to add the existing
-  Postgres instance as a `Source` in Drasi which opened the system to queries.
+  Postgres instance as a Source in Drasi which opened the system to queries.
   This source was created using a YAML file which simply describes the
   connection parameters of the datastore.
 
@@ -1100,7 +1102,7 @@ Adding the source in Drasi opened up the world of Continuous Queries. We were
   could intuitively express the business logic of the changes we wanted to
   monitor.
 
-Drasi can represent one or more existing data sources as Graphs which can be
+Drasi can represent one or more existing data sources as {{< term "Property Graph" "Graphs" >}} which can be
   linked together using [Synthetic Relationships](#synthetic-relationships).
 
 ### Reactiveness

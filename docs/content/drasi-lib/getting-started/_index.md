@@ -1,43 +1,58 @@
 ---
 type: "docs"
-title: "Getting Started with drasi-lib"
+title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 10
+hide_readingtime: true
 description: "Add drasi-lib to your Rust project and run your first continuous query"
+related:
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
+  external:
+    - title: "crates.io"
+      url: "https://crates.io/crates/drasi-lib"
+    - title: "docs.rs"
+      url: "https://docs.rs/drasi-lib"
 ---
 
-# Getting Started with drasi-lib
-
-{{< alert title="Coming Soon" color="info" >}}
-This documentation is under development. Check back soon for complete instructions on getting started with drasi-lib.
-{{< /alert >}}
-
-## Overview
-
-drasi-lib is a Rust crate that brings Drasi's change detection capabilities directly into your Rust applications. This guide will walk you through adding drasi-lib to your project and running your first continuous query.
-
-## Prerequisites
-
-- Rust 1.70 or later
-- Cargo package manager
-
-## Installation
-
-Add drasi-lib to your `Cargo.toml`:
+drasi-lib is a Rust crate that brings Drasi's change detection capabilities directly into your Rust applications. Add drasi-lib to your `Cargo.toml` to get started:
 
 ```toml
 [dependencies]
 drasi-lib = "0.1"
 ```
 
-## Quick Example
+## Documentation Resources
 
-```rust
-// TODO: Add example code
-```
+For complete documentation, examples, and API reference, visit the official Rust documentation sites:
 
-## Next Steps
-
-- [Configure Sources](/drasi-lib/how-to-guides/configure-sources/) - Connect to your data
-- [Write Queries](/reference/query-language/) - Learn the query language
-- [Explore Concepts](/concepts/) - Understand how Drasi works
+<div class="card-grid card-grid--2">
+  <a href="https://crates.io/crates/drasi-lib" target="_blank" rel="noopener">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-box"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">crates.io</h3>
+        <p class="unified-card-summary">Package information, version history, dependencies, and installation instructions</p>
+      </div>
+    </div>
+  </a>
+  <a href="https://docs.rs/drasi-lib" target="_blank" rel="noopener">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-book"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">docs.rs</h3>
+        <p class="unified-card-summary">Complete API documentation with examples, type definitions, and usage guides</p>
+      </div>
+    </div>
+  </a>
+</div>

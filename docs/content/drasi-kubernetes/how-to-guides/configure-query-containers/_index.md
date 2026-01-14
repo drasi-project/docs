@@ -1,4 +1,3 @@
-
 ---
 type: "docs"
 title: "Configure Query Containers"
@@ -8,9 +7,23 @@ toc_hide: true
 hide_summary: true
 description: >
     Configuring Query Containers
+related:
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Scaling"
+      url: "/drasi-kubernetes/how-to-guides/operations/scaling/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-When you create a continuous query, you can specify which query container should host that query.  This enables you to isolate groups of queries to use a specific set of resources.  A new installation of Drasi will include a `default` query container but you can also create your own.
+When you create a {{< term "Continuous Query" "continuous query" >}}, you can specify which query container should host that query.  This enables you to isolate groups of queries to use a specific set of resources.  A new installation of Drasi will include a `default` query container but you can also create your own.
 
 ## Query Container Configuration
 

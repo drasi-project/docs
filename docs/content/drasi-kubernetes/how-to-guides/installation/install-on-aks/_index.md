@@ -7,6 +7,23 @@ toc_hide: false
 hide_summary: false
 description: >
     Learn how to install Drasi on an Azure Kubernetes Service (AKS) cluster
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
+    - title: "Quickly Test a Drasi Environment"
+      url: "/drasi-kubernetes/how-to-guides/testing/quick-test-environment/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 [Azure Kubernetes Service (AKS)](https://learn.microsoft.com/en-us/azure/aks/) is a managed Kubernetes environment hosted in Microsoft's Azure cloud. It is a secure and scalable Kubernetes environment suitable for both the development/testing and production hosting of Drasi and Drasi-based solutions. This guide explains how to install Drasi on AKS.
@@ -110,7 +127,7 @@ Note that the Drasi installation also installs a number of dependencies, includi
 - [Redis](https://redis.io/)
 - [Mongo DB](https://www.mongodb.com/).
 
-If `drasi init` completes without error, the Drasi environment is ready for use, and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use, and you can start to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 {{% alert tip %}}
 To test that Drasi has been successfully installed on your AKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/how-to-guides/testing/quick-test-environment).

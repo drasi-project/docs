@@ -3,9 +3,22 @@ type: "docs"
 title: "Glossary"
 linkTitle: "Glossary"
 weight: 100
+notoc: true
+hide_readingtime: true
 description: >
     Definitions of key Drasi terms and concepts
 ---
+
+Throughout the documentation, you'll see terms with a <span class="glossary-term-example">dotted underline</span>. Hover over these terms to see a quick definition, or click to navigate to the full glossary entry.
+
+Press **G** on any  page to open a quick glossary lookup.
+
+| Keyboard Shortcut | Action |
+|-------------------|--------|
+| **G** | Open glossary modal |
+| **Escape** | Close glossary modal |
+| **/** | Focus search (when modal is open) |
+
 
 <div class="glossary-controls">
   <div class="glossary-search">
@@ -29,34 +42,6 @@ description: >
   <i class="fas fa-search"></i>
   <p>No terms match your search.</p>
 </div>
-
-## Quick Navigation
-
-Use **G** on any documentation page to open a quick glossary lookup.
-
-| Keyboard Shortcut | Action |
-|-------------------|--------|
-| **G** | Open glossary modal |
-| **Escape** | Close glossary modal |
-| **/** | Focus search (when modal is open) |
-
-## Using Glossary Terms
-
-Throughout the documentation, you'll see terms with a <span class="glossary-term-example">dotted underline</span>. Hover over these terms to see a quick definition, or click to navigate to the full glossary entry.
-
-## Categories
-
-### Core Concepts
-The fundamental building blocks of Drasi: Sources, Continuous Queries, Reactions, and Query Containers.
-
-### Query Language
-Terms related to Cypher, GQL, and graph query concepts like nodes, relationships, and pattern matching.
-
-### Data & Changes
-Concepts around change detection, result sets, and how Drasi processes data modifications.
-
-### Infrastructure
-Configuration, deployment, and operational terms for running Drasi.
 
 <style>
 .glossary-term-example {

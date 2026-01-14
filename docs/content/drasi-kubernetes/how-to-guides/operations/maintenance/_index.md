@@ -5,6 +5,17 @@ linkTitle: "Maintenance"
 weight: 50
 description: >
     Best practices for upgrades, backups, and ongoing maintenance
+related:
+  howto:
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Monitoring"
+      url: "/drasi-kubernetes/how-to-guides/operations/monitoring/"
+    - title: "Scaling"
+      url: "/drasi-kubernetes/how-to-guides/operations/scaling/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 Regular maintenance keeps your Drasi deployment healthy and secure. This guide covers upgrade procedures, backup strategies, and routine maintenance tasks.

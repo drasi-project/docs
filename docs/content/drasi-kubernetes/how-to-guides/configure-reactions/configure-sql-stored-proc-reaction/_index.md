@@ -5,9 +5,22 @@ linkTitle: "Configure a Stored Procedure Reaction"
 weight: 90
 description: >
     Learn how to configure a Stored Procedure Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Drasi Stored Procedure (StoredProc) Reaction allows you invoke pre-created Stored Procedures in your SQL databases based on the results from the Continuous Query. You can designate a specific Stored Procedure for each type of query result (Added, Updated, or Deleted) and use the values from these results as parameters for the Stored Procedure being called.
+The Drasi Stored Procedure (StoredProc) {{< term "Reaction" >}} allows you invoke pre-created Stored Procedures in your SQL databases based on the results from the {{< term "Continuous Query" >}}. You can designate a specific Stored Procedure for each type of query result (Added, Updated, or Deleted) and use the values from these results as parameters for the Stored Procedure being called.
 
 
 

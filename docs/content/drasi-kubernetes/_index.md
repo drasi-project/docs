@@ -4,11 +4,11 @@ linkTitle: "Drasi for Kubernetes"
 weight: 30
 type: "docs"
 no_list: true
-description: "Production-grade Drasi deployment on Kubernetes"
+description: "Change-driven Solutions on Kubernetes"
 ---
 
-<div class="hero-section">
-  <h1 class="hero-title">Production-Grade Change Detection on Kubernetes</h1>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Change-driven Solutions on Kubernetes</h1>
   <p class="hero-subtitle">Drasi for Kubernetes provides enterprise-grade scalability, observability, and management for reactive data applications. Deploy to any Kubernetes cluster with native tooling.</p>
 
   <div class="cta-group">
@@ -18,7 +18,7 @@ description: "Production-grade Drasi deployment on Kubernetes"
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-lightbulb"></i>
-      Learn Concepts
+      Why Drasi?
     </a>
   </div>
 </div>
@@ -66,21 +66,21 @@ description: "Production-grade Drasi deployment on Kubernetes"
 <p class="section-intro">Choose Drasi for Kubernetes for production workloads requiring enterprise reliability and scale.</p>
 
 <div class="card-grid card-grid--3">
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-industry"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Production Workloads</h3>
       <p class="unified-card-summary">Enterprise-grade reliability with horizontal scaling and high availability.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-cloud"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Managed Kubernetes</h3>
       <p class="unified-card-summary">Run on AKS, EKS, GKE, or any Kubernetes distribution.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-tachometer-alt"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Observability</h3>
@@ -92,6 +92,15 @@ description: "Production-grade Drasi deployment on Kubernetes"
 ## Explore Drasi for Kubernetes
 
 <div class="card-grid">
+  <a href="learning-paths/">
+    <div class="unified-card unified-card--concepts">
+      <div class="unified-card-icon"><i class="fas fa-route"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Learning Paths</h3>
+        <p class="unified-card-summary">Structured guides for your role and goals</p>
+      </div>
+    </div>
+  </a>
   <a href="tutorials/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fas fa-graduation-cap"></i></div>
@@ -107,15 +116,6 @@ description: "Production-grade Drasi deployment on Kubernetes"
       <div class="unified-card-content">
         <h3 class="unified-card-title">How-to Guides</h3>
         <p class="unified-card-summary">Installation, configuration, and operations</p>
-      </div>
-    </div>
-  </a>
-  <a href="/patterns/">
-    <div class="unified-card unified-card--concepts">
-      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Patterns</h3>
-        <p class="unified-card-summary">Best practices for building change-driven applications</p>
       </div>
     </div>
   </a>

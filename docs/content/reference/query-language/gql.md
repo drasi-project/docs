@@ -5,14 +5,31 @@ linkTitle: "GQL"
 weight: 30
 description: >
     Graph Query Language support in Drasi
+related:
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  tutorials:
+    - title: "Getting Started (Kubernetes)"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Getting Started (Server)"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Write Continuous Queries (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "Cypher Reference"
+      url: "/reference/query-language/cypher/"
 ---
 ## GQL Support
-Drasi supports a subset of the [Graph Query Language (GQL)](https://www.iso.org/standard/76120.html) ISO standard for querying graph databases. This subset includes the core statements and functions needed for continuous query processing.
+Drasi supports a subset of the {{< term "GQL" "Graph Query Language" >}} (GQL) ISO standard for querying graph databases. This subset includes the core statements and functions needed for {{< term "Continuous Query" "continuous query" >}} processing.
 
 ### MATCH
 
 `MATCH` expands the current working table with matches from a graph pattern.
-It describes what is being searched for using ASCII art syntax where round brackets represent nodes and arrows represent relationships.
+It describes what is being searched for using ASCII art syntax where round brackets represent {{< term "Node" "nodes" >}} and arrows represent {{< term "Relationship" "relationships" >}}.
 When executed, `MATCH` finds all instances of the specified pattern in the graph and adds them to the working table.
 
 **Supported Path Patterns:**

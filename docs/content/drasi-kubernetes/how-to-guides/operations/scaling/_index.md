@@ -5,6 +5,21 @@ linkTitle: "Scaling"
 weight: 30
 description: >
     Learn how to scale Drasi components to handle increased workloads
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure Query Containers"
+      url: "/drasi-kubernetes/how-to-guides/configure-query-containers/"
+    - title: "Monitoring"
+      url: "/drasi-kubernetes/how-to-guides/operations/monitoring/"
+    - title: "Maintenance"
+      url: "/drasi-kubernetes/how-to-guides/operations/maintenance/"
 ---
 
 As your workload grows, you may need to scale your Drasi deployment. This guide covers strategies for scaling different components.
@@ -13,9 +28,9 @@ As your workload grows, you may need to scale your Drasi deployment. This guide 
 
 Before scaling, understand how components interact:
 
-1. **Sources** connect to databases and capture changes
-2. **Query Containers** evaluate continuous queries against changes
-3. **Reactions** execute actions based on query results
+1. {{< term "Source" "Sources" >}} connect to databases and capture changes
+2. **Query Containers** evaluate {{< term "Continuous Query" "continuous queries" >}} against changes
+3. {{< term "Reaction" "Reactions" >}} execute actions based on query results
 
 Each component can be scaled independently based on its specific bottleneck.
 

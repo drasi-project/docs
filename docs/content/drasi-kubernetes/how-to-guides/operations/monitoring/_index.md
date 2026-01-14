@@ -5,6 +5,17 @@ linkTitle: "Monitoring"
 weight: 20
 description: >
     Set up health checks, alerting, and dashboards for your Drasi deployment
+related:
+  howto:
+    - title: "Configure Observability"
+      url: "/drasi-kubernetes/how-to-guides/operations/observability/"
+    - title: "Scaling"
+      url: "/drasi-kubernetes/how-to-guides/operations/scaling/"
+    - title: "Troubleshooting"
+      url: "/drasi-kubernetes/how-to-guides/operations/troubleshooting/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 Effective monitoring helps you identify issues before they impact your users. This guide covers how to set up health checks, configure alerting, and create useful dashboards.
