@@ -1565,6 +1565,8 @@ sse
 SSE
 RESTful
 Datacenter
+datacenter
+datacenters
 maxmemory
 JSONL
 noop

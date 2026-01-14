@@ -223,4 +223,5 @@ SensorLog
 bootstrapBufferSize
 DrasiLib
 drasi-lib
-
+PostDaprPubSub
+SyncDaprStateStore
