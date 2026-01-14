@@ -1,8 +1,9 @@
 ---
 type: "docs"
 title: "Configure Bootstrap Providers"
-linkTitle: "Bootstrap Providers"
-weight: 35
+linkTitle: "Configure Bootstrap Providers"
+weight: 30
+no_list: true
 description: "Load initial data before streaming begins"
 ---
 

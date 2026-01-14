@@ -3,10 +3,9 @@ type: "docs"
 title: "Configure Sources"
 linkTitle: "Configure Sources"
 weight: 20
+no_list: true
 description: "Connect Drasi Server to databases, APIs, and data streams"
 ---
-
-# Configure Sources
 
 Sources connect Drasi Server to your data systems and stream changes to queries. Drasi Server supports several source types for different data systems and use cases.
 

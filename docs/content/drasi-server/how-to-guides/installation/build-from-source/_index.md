@@ -2,7 +2,7 @@
 type: "docs"
 title: "Build from Source"
 linkTitle: "Build from Source"
-weight: 30
+weight: 40
 description: "Compile Drasi Server from source code"
 ---
 
@@ -10,7 +10,7 @@ Building Drasi Server from source gives you full control over the build process 
 
 ## Prerequisites
 
-- [Rust](https://www.rust-lang.org/tools/install) 1.70 or later
+- [Rust](https://www.rust-lang.org/tools/install) 1.88 or later
 - Git with submodule support
 - C compiler (for native dependencies)
 
@@ -68,16 +68,6 @@ cargo build --release
 ```
 
 The binary will be at `target/release/drasi-server`.
-
-### Build with Specific Features
-
-```bash
-# Build with all features
-cargo build --release --all-features
-
-# Build with specific features
-cargo build --release --features "feature-name"
-```
 
 ## Run the Server
 

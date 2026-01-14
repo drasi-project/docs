@@ -1,6 +1,6 @@
 ---
 type: "docs"
-title: "Getting Started with Drasi Server"
+title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 10
 description: "Get Drasi Server running in minutes"
@@ -59,7 +59,7 @@ If you prefer to build Drasi Server from source, see the [Build from Source](/dr
 
 ## Create a Configuration File
 
-Drasi Server uses a YAML configuration file to define **sources** (where data comes from), **queries** (what changes to detect), and **reactions** (what to do when changes occur).
+Drasi Server uses a YAML configuration file to define {{< term "Source" "Sources" >}} (where data comes from), {{< term "Continuous Query" "Continuous Queries" >}} (what changes to detect), and {{< term "Reaction" "Reactions" >}} (what to do when changes occur).
 
 Create a new file named `config.yaml` and add each section below.
 
@@ -71,26 +71,27 @@ Start with basic server settings:
 host: 0.0.0.0
 port: 8080
 log_level: info
+auto_start: true
 ```
 
 ### Add a Source
 
-Sources connect Drasi Server to your data. For this guide, we'll use a **mock source** that generates sample sensor data:
+Sources connect Drasi Server to your data. For this tutorial, we'll use a **mock source** that generates sample sensor data:
 
 ```yaml
 sources:
   - kind: mock
     id: demo-source
     auto_start: true
-    data_type: sensor
+    data_type: sensor_live
     interval_ms: 2000
 ```
 
 This creates a source that generates sensor readings (temperature, humidity) every 2 seconds.
 
-### Add a Query
+### Add a Continuous Query
 
-Queries define what data changes you want to monitor. Add a continuous query that watches all sensor data:
+Continuous Queries define what data changes you want to monitor. Add a Continuous Query that watches all sensor data:
 
 ```yaml
 queries:
@@ -103,11 +104,11 @@ queries:
     auto_start: true
 ```
 
-This query uses [Cypher](/concepts/continuous-queries/) to match all `Sensor` nodes and return their properties.
+This Continuous Query uses [openCypher](/concepts/continuous-queries/) to match all `Sensor` nodes and return their properties.
 
 ### Add a Reaction
 
-Reactions define what happens when query results change. Add a log reaction to output changes to the console:
+Reactions define what happens when a Continuous Query's results change. Add a Log Reaction to output changes to the console:
 
 ```yaml
 reactions:
@@ -126,6 +127,7 @@ Your complete `config.yaml` file should look like this:
 host: 0.0.0.0
 port: 8080
 log_level: info
+auto_start: true
 
 sources:
   - kind: mock
@@ -172,15 +174,38 @@ docker run --rm -it \
 You should see output like this:
 
 ```
-[INFO] Drasi Server starting on 0.0.0.0:8080
-[INFO] Source 'demo-source' started
-[INFO] Query 'all-sensors' started
-[INFO] Reaction 'console-output' started
-[INFO] Query 'all-sensors' result changed: Added 1 items
-[INFO] Added: {"id": "sensor-1", "temperature": 72.5, "humidity": 45.2, "timestamp": "2024-01-15T10:30:00Z"}
+[2026-01-12T22:20:28Z INFO  drasi_server] Starting Drasi Server
+[2026-01-12T22:20:28Z INFO  drasi_server] Config file: /config/config.yaml
+[2026-01-12T22:20:28Z INFO  drasi_server] Port: 8080
+...
+[2026-01-12T22:20:28Z INFO  drasi_server::server] Starting web API on 0.0.0.0:8080
+[2026-01-12T22:20:28Z INFO  drasi_server::server] API v1 available at http://0.0.0.0:8080/api/v1/
+[2026-01-12T22:20:28Z INFO  drasi_server::server] Swagger UI available at http://0.0.0.0:8080/api/v1/docs/
+[2026-01-12T22:20:28Z INFO  drasi_server::server] Drasi Server started successfully with API on port 8080
 ```
 
-Every 2 seconds, the mock source generates new sensor data, the query detects the change, and the log reaction outputs the result.
+Every 2 seconds, the mock source generates new sensor data, the query detects the change, and the log reaction outputs the result like this:
+
+```
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [ADD] {"humidity":"49.597562498637316","sensor_id":"sensor_2","temperature":"20.904670200458263","timestamp":"2026-01-13T02:03:49.880559+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [ADD] {"humidity":"52.12288411730867","sensor_id":"sensor_1","temperature":"21.993493026464385","timestamp":"2026-01-13T02:03:51.882287+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"52.12288411730867","sensor_id":"sensor_1","temperature":"21.993493026464385","timestamp":"2026-01-13T02:03:51.882287+00:00"} -> {"humidity":"55.46429973696152","sensor_id":"sensor_1","temperature":"20.64979756129898","timestamp":"2026-01-13T02:03:53.882430+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"40.44525294610261","sensor_id":"sensor_4","temperature":"24.062226270290086","timestamp":"2026-01-13T02:03:47.881694+00:00"} -> {"humidity":"48.72444652395867","sensor_id":"sensor_4","temperature":"22.79714222963862","timestamp":"2026-01-13T02:03:55.881525+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"48.72444652395867","sensor_id":"sensor_4","temperature":"22.79714222963862","timestamp":"2026-01-13T02:03:55.881525+00:00"} -> {"humidity":"49.48011637466249","sensor_id":"sensor_4","temperature":"27.065236611653194","timestamp":"2026-01-13T02:03:57.882055+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [ADD] {"humidity":"51.33780369006803","sensor_id":"sensor_3","temperature":"26.786339702814317","timestamp":"2026-01-13T02:03:59.882022+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"49.597562498637316","sensor_id":"sensor_2","temperature":"20.904670200458263","timestamp":"2026-01-13T02:03:49.880559+00:00"} -> {"humidity":"47.39639661702978","sensor_id":"sensor_2","temperature":"27.119829345535607","timestamp":"2026-01-13T02:04:01.881317+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"49.48011637466249","sensor_id":"sensor_4","temperature":"27.065236611653194","timestamp":"2026-01-13T02:03:57.882055+00:00"} -> {"humidity":"46.11804098462849","sensor_id":"sensor_4","temperature":"26.902895834274503","timestamp":"2026-01-13T02:04:03.881792+00:00"}
+[console-output] Query 'all-sensors' (1 items):
+[console-output]   [UPDATE] {"humidity":"47.39639661702978","sensor_id":"sensor_2","temperature":"27.119829345535607","timestamp":"2026-01-13T02:04:01.881317+00:00"} -> {"humidity":"57.09494971225041","sensor_id":"sensor_2","temperature":"29.94252332023011","timestamp":"2026-01-13T02:04:05.881658+00:00"}
+```
 
 ## Interact with Drasi Server
 
@@ -192,6 +217,12 @@ Open a new terminal and retrieve the current query results:
 
 ```bash
 curl http://localhost:8080/api/v1/queries/all-sensors/results
+```
+
+This returns the current results of the `all-sensors` query in JSON format, like this:
+
+```
+{"success":true,"data":[{"humidity":"46.11804098462849","sensor_id":"sensor_4","temperature":"26.902895834274503","timestamp":"2026-01-13T02:04:03.881792+00:00"},{"humidity":"47.39639661702978","sensor_id":"sensor_2","temperature":"27.119829345535607","timestamp":"2026-01-13T02:04:01.881317+00:00"},{"humidity":"55.46429973696152","sensor_id":"sensor_1","temperature":"20.64979756129898","timestamp":"2026-01-13T02:03:53.882430+00:00"},{"humidity":"51.33780369006803","sensor_id":"sensor_3","temperature":"26.786339702814317","timestamp":"2026-01-13T02:03:59.882022+00:00"}],"error":null}
 ```
 
 ### Check Server Health

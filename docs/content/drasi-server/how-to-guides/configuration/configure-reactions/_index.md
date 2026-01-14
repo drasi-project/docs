@@ -2,7 +2,8 @@
 type: "docs"
 title: "Configure Reactions"
 linkTitle: "Configure Reactions"
-weight: 30
+weight: 40
+no_list: true
 description: "Set up actions triggered by data changes"
 ---
 

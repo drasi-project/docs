@@ -2,7 +2,7 @@
 type: "docs"
 title: "Install with Docker"
 linkTitle: "Docker"
-weight: 10
+weight: 20
 description: "Run Drasi Server as a Docker container"
 ---
 

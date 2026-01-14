@@ -2,7 +2,7 @@
 type: "docs"
 title: "Install with Docker Compose"
 linkTitle: "Docker Compose"
-weight: 20
+weight: 30
 description: "Deploy Drasi Server with Docker Compose for multi-service environments"
 ---
 

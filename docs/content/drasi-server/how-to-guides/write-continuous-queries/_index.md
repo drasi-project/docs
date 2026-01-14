@@ -6,8 +6,6 @@ weight: 40
 description: "Define queries that react to data changes"
 ---
 
-# Write Continuous Queries
-
 This guide covers how to write and manage continuous queries in Drasi Server. Queries define what data changes to detect and how to transform them.
 
 ## Prerequisites

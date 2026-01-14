@@ -1,8 +1,8 @@
 ---
 type: "docs"
-title: "Configuration File"
-linkTitle: "Configuration File"
-weight: 40
+title: "Configure Drasi Server"
+linkTitle: "Configure Drasi Server"
+weight: 10
 description: "Understanding the Drasi Server YAML configuration file structure"
 ---
 

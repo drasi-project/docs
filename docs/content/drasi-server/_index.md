@@ -25,7 +25,7 @@ description: "Standalone Drasi server for process or container deployment"
 
 ## How Drasi Server Works
 
-<p class="section-intro">Define your data pipeline in a configuration file, run Drasi Server as a process or container, and start reacting to changes.</p>
+<p class="section-intro">Define your Sources, Continuous Queries, and Reactions in a configuration file, run Drasi Server as a process or container, and start reacting to changes. Manage Drasi Server at Runtime through its Rest API.</p>
 
 <div class="flow-diagram">
   <div class="flow-step">
@@ -63,7 +63,7 @@ description: "Standalone Drasi server for process or container deployment"
 
 ## When to Use Drasi Server
 
-<p class="section-intro">Choose Drasi Server for development, testing, and small-scale production deployments.</p>
+<p class="section-intro">Choose Drasi Server for development, testing, and small-scale production deployments of Drasi-powered change-driven solutions.</p>
 
 <div class="card-grid card-grid--3">
   <div class="unified-card unified-card--concepts">
@@ -84,7 +84,7 @@ description: "Standalone Drasi server for process or container deployment"
     <div class="unified-card-icon"><i class="fas fa-feather-alt"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Small-Scale Deployments</h3>
-      <p class="unified-card-summary">Full Drasi functionality without Kubernetes infrastructure overhead.</p>
+      <p class="unified-card-summary">Full Drasi functionality using a single-process deployment.</p>
     </div>
   </div>
 </div>
