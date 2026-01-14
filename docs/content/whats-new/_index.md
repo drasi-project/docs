@@ -65,6 +65,6 @@ description: >
 
 ## Subscribe to Updates
 
-- Star the [documentation repository](https://github.com/drasi-project/docs) on GitHub
-- Follow [@drasi_project](https://x.com/drasi_project) on X
-- Join the [Discord community](https://aka.ms/drasidiscord)
+  - Star the <a href="https://github.com/drasi-project/docs" target="_blank" rel="noopener noreferrer">documentation repository</a> on GitHub
+  - Follow <a href="https://x.com/drasi_project" target="_blank" rel="noopener noreferrer">@drasi_project</a> on X
+  - Join the <a href="https://aka.ms/drasidiscord" target="_blank" rel="noopener noreferrer">Discord community</a>
