@@ -18,7 +18,7 @@ description: "Standalone Drasi server for process or container deployment"
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-lightbulb"></i>
-      Learn Concepts
+      Why Drasi?
     </a>
   </div>
 </div>

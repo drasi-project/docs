@@ -19,7 +19,7 @@ description: "Build Change-driven Rust solutions"
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-lightbulb"></i>
-      Learn Concepts
+      Why Drasi?
     </a>
   </div>
 </div>
