@@ -228,7 +228,7 @@ With Drasi, we can detect changes in our existing data {{< term "Source" "source
 Following is all we need to do to get a SignalR hub up and running:
 - YAML file describing existing data source.
 - YAML file(s) containing any alerts or computation logic (written in a
-    declarative {{< term "openCypher" "Cypher" >}} query).
+    declarative {{< term "openCypher" "openCypher" >}} query).
 - YAML file describing the reaction we want - in this case a SignalR hub which
     will push updates to our UI.
 
@@ -702,7 +702,7 @@ Note that in our Cypher query we want to relate the rooms to the floor and the
 
 However, our existing datastore for sensor metrics may or may not have existing
   relationships. That is not a problem for Drasi because we can model
-  {{< term "Synthetic Relationship" "Synthetic Relationships" >}} for use in our query.
+  {{< term "Synthetic Join" "Synthetic Join" >}} for use in our query.
 
 We have the query for our UI defined in the file `query-ui.yaml` that provides all buildings, floors and rooms to the UI.
 This query:

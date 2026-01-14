@@ -754,9 +754,9 @@ The above does a `max` as we want to report when a match happened, which occurs
   `Ready`. Therefore, we need the greater of the change timestamp among both.
 
 #### Synthetic Relationships
-Note that in our {{< term "openCypher" "Cypher" >}} query we want to relate the orders with their
+Note that in our {{< term "openCypher" "openCypher" >}} query we want to relate the orders with their
   respective vehicles, even though the entities live in different databases.
-This is achieved by modeling the relationship as a {{< term "Synthetic Relationship" "synthetic relationship" >}}
+This is achieved by modeling the relationship as a {{< term "Synthetic Join" "synthetic join" >}}
   called `PICKUP_BY` which is defined in the `joins` section of the YAML below.
 
 This `joins` section tells Drasi how to stitch together a graph
