@@ -3,8 +3,6 @@ type: "docs"
 title: "Why Drasi?"
 linkTitle: "Why Drasi?"
 weight: 10
-description: >
-    Why use Drasi?
 related:
   tutorials:
     - title: "Getting Started with Drasi"
@@ -21,10 +19,9 @@ related:
       url: "/drasi-kubernetes/how-to-guides/installation/"
 ---
 
-## Introduction
 Drasi is an open-source Data Change Processing platform that simplifies the creation and operation of change-driven solutions. It enables you to detect and react to meaningful data changes that occur in **existing** databases and software systems—not only new systems built using Drasi.
 
-### The Problem Drasi Solves
+## The Problem Drasi Solves
 Detecting specific meaningful changes in data is complex. Traditional approaches require:
 - **Polling**: Retrieving current data and comparing it with previous results is inefficient and requires complex logic to isolate what has changed.
 - **Processing change feeds**: Database change logs and message-based notifications generate high volumes of mostly uninteresting changes, requiring significant infrastructure to filter to relevant changes.
@@ -33,7 +30,7 @@ Detecting specific meaningful changes in data is complex. Traditional approaches
 
 These approaches make solutions brittle and costly to maintain / update as requirements change.
 
-### How Drasi Helps
+## How Drasi Helps
 Drasi's low-code query-based approach enables you to write declarative graph queries that define the changes you want to detect and the data you want to distribute when those changes occur. Change semantics are defined by your query, not the source system. This eliminates the overhead of polling, parsing, filtering, and state management.
 
 When changes do occur - TODO: talk about reactions as opposed to custom code / integration with downstream systems.
