@@ -500,6 +500,25 @@ blockquote {
   }
 }
 
+// Static cards - non-interactive, no hover effects
+.unified-card--static {
+  cursor: default;
+
+  &:hover {
+    transform: none;
+    box-shadow: $shadow-sm;
+    border-color: rgba($primary, 0.1);
+  }
+
+  &:hover::before {
+    opacity: 0.6;
+  }
+
+  &:hover .unified-card-title {
+    color: var(--bs-heading-color);
+  }
+}
+
 // Card image area (for source/installation cards)
 .unified-card-image {
   display: flex;
@@ -881,7 +900,6 @@ blockquote {
   border-radius: $border-radius-lg;
   min-width: 140px;
   box-shadow: $shadow-sm;
-  transition: transform $transition-base, box-shadow $transition-base;
   position: relative;
   overflow: hidden;
 
@@ -895,16 +913,6 @@ blockquote {
     height: 3px;
     background: linear-gradient(90deg, $secondary, lighten($secondary, 15%));
     opacity: 0.6;
-    transition: opacity $transition-base;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow-lg;
-  }
-
-  &:hover::before {
-    opacity: 1;
   }
 
   &__icon {
