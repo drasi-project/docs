@@ -4,12 +4,12 @@ title: "Configure Sources"
 linkTitle: "Configure Sources"
 weight: 20
 no_list: true
+notoc: true
+hide_readingtime: true
 description: "Connect Drasi Server to databases, APIs, and data streams"
 ---
 
 Sources connect Drasi Server to your data systems and stream changes to queries. Drasi Server supports several source types for different data systems and use cases.
-
-## Available Source Types
 
 <div class="card-grid">
   <a href="configure-postgresql-source/">
@@ -58,134 +58,3 @@ Sources connect Drasi Server to your data systems and stream changes to queries.
     </div>
   </a>
 </div>
-
-## Choosing a Source Type
-
-| Source Type | Best For | Data Flow |
-|-------------|----------|-----------|
-| **PostgreSQL** | Database change detection | Pull (WAL replication) |
-| **HTTP** | Webhooks, external events | Push (HTTP POST) |
-| **gRPC** | High-performance streaming | Push (gRPC stream) |
-| **Mock** | Development, testing | Generated data |
-| **Platform** | Drasi Platform integration | Pull (Redis Streams) |
-
-## Common Source Configuration
-
-All sources share these common fields:
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `kind` | string | Required | Source type: `postgres`, `http`, `grpc`, `mock`, `platform` |
-| `id` | string | Required | Unique source identifier |
-| `auto_start` | boolean | `true` | Start source automatically on server startup |
-| `bootstrap_provider` | object | None | Bootstrap provider configuration |
-
-### Basic Example
-
-```yaml
-sources:
-  - kind: postgres
-    id: my-database
-    auto_start: true
-    # ... source-specific configuration
-    bootstrap_provider:
-      type: postgres
-```
-
-## Source Lifecycle
-
-### Auto-Start Behavior
-
-When `auto_start: true` (default), sources start automatically when the server starts.
-
-When `auto_start: false`, you must start sources manually via the API:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/sources/my-source/start
-```
-
-### Checking Source Status
-
-List all sources:
-
-```bash
-curl http://localhost:8080/api/v1/sources
-```
-
-Get specific source details:
-
-```bash
-curl http://localhost:8080/api/v1/sources/my-source
-```
-
-### Stopping a Source
-
-```bash
-curl -X POST http://localhost:8080/api/v1/sources/my-source/stop
-```
-
-### Deleting a Source
-
-```bash
-curl -X DELETE http://localhost:8080/api/v1/sources/my-source
-```
-
-## Creating Sources via API
-
-In addition to configuration files, you can create sources dynamically via the REST API:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/sources \
-  -H "Content-Type: application/json" \
-  -d '{
-    "kind": "mock",
-    "id": "dynamic-source",
-    "auto_start": true,
-    "data_type": "sensor",
-    "interval_ms": 5000
-  }'
-```
-
-## Bootstrap Providers
-
-Bootstrap providers load initial data before streaming begins. See [Configure Bootstrap Providers](/drasi-server/how-to-guides/configure-bootstrap-providers/) for details.
-
-Available bootstrap providers:
-
-| Provider | Description |
-|----------|-------------|
-| `postgres` | Load initial data from PostgreSQL using COPY |
-| `scriptfile` | Load from JSONL files |
-| `platform` | Load from remote Drasi Query API |
-| `noop` | No initial data |
-
-Example:
-
-```yaml
-sources:
-  - kind: postgres
-    id: orders-db
-    # ... connection config
-    bootstrap_provider:
-      type: postgres
-```
-
-## Environment Variables
-
-All source configuration values support environment variable interpolation:
-
-```yaml
-sources:
-  - kind: postgres
-    id: production-db
-    host: ${DB_HOST}
-    password: ${DB_PASSWORD}
-```
-
-See [Configuration File](/drasi-server/how-to-guides/installation/configuration-file/) for details.
-
-## Next Steps
-
-- Choose a source type from the guides above
-- [Configure Bootstrap Providers](/drasi-server/how-to-guides/configure-bootstrap-providers/) - Load initial data
-- [Write Continuous Queries](/drasi-server/how-to-guides/write-continuous-queries/) - Query your sources

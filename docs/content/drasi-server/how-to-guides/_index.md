@@ -26,13 +26,4 @@ description: "Step-by-step instructions for working with Drasi Server"
       </div>
     </div>
   </a>
-  <a href="write-continuous-queries/">
-    <div class="unified-card unified-card--howto">
-      <div class="unified-card-icon"><i class="fas fa-search"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Write Continuous Queries</h3>
-        <p class="unified-card-summary">Define Cypher queries with joins, filters, and aggregations</p>
-      </div>
-    </div>
-  </a>
 </div>
