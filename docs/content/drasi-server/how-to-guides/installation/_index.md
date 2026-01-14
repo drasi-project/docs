@@ -4,6 +4,8 @@ title: "Installation"
 linkTitle: "Installation"
 weight: 10
 no_list: true
+notoc: true
+hide_readingtime: true
 description: "Deploy Drasi Server with Docker, Docker Compose, or build from source"
 ---
 

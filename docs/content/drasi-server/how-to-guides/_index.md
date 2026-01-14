@@ -4,6 +4,8 @@ title: "How-to Guides"
 linkTitle: "How-to Guides"
 weight: 30
 no_list: true
+notoc: true
+hide_readingtime: true
 description: "Step-by-step instructions for working with Drasi Server"
 ---
 

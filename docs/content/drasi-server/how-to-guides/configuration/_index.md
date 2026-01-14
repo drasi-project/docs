@@ -4,6 +4,8 @@ title: "Configuration"
 linkTitle: "Configuration"
 weight: 20
 no_list: true
+notoc: true
+hide_readingtime: true
 description: "Step-by-step instructions for configuring Drasi Server"
 ---
 
