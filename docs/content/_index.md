@@ -14,7 +14,7 @@ description: >
   <div class="cta-group">
     <a href="/drasi-server/getting-started/" class="cta-button cta-button--primary">
       <i class="fas fa-rocket"></i>
-      Get Started in 10 Minutes
+      Get Started
     </a>
     <a href="/concepts/overview/" class="cta-button cta-button--secondary">
       <i class="fas fa-play-circle"></i>
