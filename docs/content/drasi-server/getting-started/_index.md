@@ -30,7 +30,7 @@ This guide walks you through getting Drasi Server running and creating your firs
 
 Choose one of the following options to get Drasi Server:
 
-{{< tabpane persistence="true" >}}
+{{< tabpane persist="header" >}}
 {{< tab header="Download Binary" lang="bash" >}}
 # macOS (Apple Silicon)
 curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-darwin-arm64.tar.gz | tar xz
@@ -157,7 +157,7 @@ reactions:
 
 Start Drasi Server with your configuration file:
 
-{{< tabpane persistence="true" >}}
+{{< tabpane persist="header" >}}
 {{< tab header="Binary" lang="bash" >}}
 ./drasi-server --config config.yaml
 {{< /tab >}}
@@ -262,7 +262,7 @@ curl http://localhost:8080/api/v1/queries/all-sensors
 
 To stop the server:
 
-{{< tabpane persistence="true" >}}
+{{< tabpane persist="header" >}}
 {{< tab header="Binary" lang="bash" >}}
 # Press Ctrl+C in the terminal where the server is running
 {{< /tab >}}
