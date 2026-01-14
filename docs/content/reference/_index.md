@@ -29,6 +29,17 @@ These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
       </div>
     </div>
   </a>
+  <a href="/reference/middleware/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon">
+        <i class="fas fa-filter"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Middleware</h3>
+        <p class="unified-card-summary">Transform and enrich incoming data changes with Unwind, JQ, Promote, and more.</p>
+      </div>
+    </div>
+  </a>
   <a href="/reference/schema/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
