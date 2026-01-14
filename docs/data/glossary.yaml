@@ -169,21 +169,21 @@ terms:
   # =============================================================================
   # Query Language
   # =============================================================================
-  - term: Cypher
+  - term: openCypher
     aliases:
-      - Cypher Query Language
+      - openCypher Query Language
     short: A declarative graph query language used to write Drasi Continuous Queries.
     definition: |
-      Cypher is a declarative graph query language originally developed for Neo4j. In Drasi,
-      Cypher is the primary language for writing Continuous Queries. Its pattern-matching
+      openCypher is a declarative graph query language originally developed for Neo4j. In Drasi,
+      openCypher is one option for writing Continuous Queries. Its pattern-matching
       syntax makes it easy to describe complex relationships between data elements and specify
-      which changes to detect. Cypher queries use MATCH, WHERE, and RETURN clauses to define
+      which changes to detect. openCypher queries use MATCH, WHERE, and RETURN clauses to define
       patterns, filters, and output schemas.
     category: query
     related:
       - title: Query Language Reference
         url: /reference/query-language/
-      - title: Cypher Functions
+      - title: openCypher Functions
         url: /reference/query-language/cypher-functions/
     see_also:
       - GQL
@@ -195,7 +195,7 @@ terms:
     short: An ISO-standard graph query language supported by Drasi for Continuous Queries.
     definition: |
       GQL (Graph Query Language) is an ISO-standard query language for property graphs. Drasi
-      supports GQL as an alternative to Cypher for writing Continuous Queries. GQL provides
+      supports GQL as an alternative to openCypher for writing Continuous Queries. GQL provides
       similar pattern-matching capabilities with standardized syntax. You can specify the
       query language in the Continuous Query configuration using the queryLanguage property.
     category: query
