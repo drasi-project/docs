@@ -4,6 +4,7 @@ title: "Glossary"
 linkTitle: "Glossary"
 weight: 100
 notoc: true
+hide_readingtime: true
 description: >
     Definitions of key Drasi terms and concepts
 ---

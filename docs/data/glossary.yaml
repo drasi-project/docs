@@ -425,3 +425,160 @@ terms:
     see_also:
       - Continuous Query
       - Cypher
+
+  # =============================================================================
+  # Products & Platforms
+  # =============================================================================
+  - term: Drasi Server
+    aliases:
+      - Drasi Standalone Server
+    short: A standalone Data Change Processing server running as a process or Docker container.
+    definition: |
+      Drasi Server is one of three deployment options for Drasi. It runs as a standalone
+      server process or Docker container, suitable for development, testing, or simpler
+      production deployments.
+    category: infrastructure
+    related:
+      - title: Drasi Server Getting Started
+        url: /drasi-server/getting-started/
+    see_also:
+      - Drasi for Kubernetes
+      - drasi-lib
+
+  - term: Drasi for Kubernetes
+    aliases:
+      - Drasi Kubernetes
+      - Drasi on Kubernetes
+    short: A scalable Data Change Processing platform running on Kubernetes clusters.
+    definition: |
+      Drasi for Kubernetes is the deployment option for Drasi, running
+      on Kubernetes clusters. It provides horizontal scaling, high availability, and
+      integration with Kubernetes-native tooling. Drasi for Kubernetes is ideal for
+      enterprise deployments requiring robust operational capabilities.
+    category: infrastructure
+    related:
+      - title: Drasi Kubernetes Getting Started
+        url: /drasi-kubernetes/getting-started/
+    see_also:
+      - Drasi Server
+      - drasi-lib
+
+  - term: drasi-lib
+    aliases:
+      - Drasi Library
+      - Drasi Rust Crate
+    short: A Rust crate for building change-driven solutions with embedded Drasi capabilities.
+    definition: |
+      drasi-lib is a Rust crate that enables developers to embed Drasi's Data Change
+      Processing capabilities directly into Rust applications. It provides the same
+      Continuous Query functionality without requiring a separate Drasi server,
+      making it ideal for embedded systems or applications where minimal dependencies
+      are preferred.
+    category: infrastructure
+    related:
+      - title: drasi-lib Documentation
+        url: /drasi-lib/
+    see_also:
+      - Drasi Server
+      - Drasi for Kubernetes
+
+  # =============================================================================
+  # Additional Core Concepts
+  # =============================================================================
+  - term: Data Change Processing
+    aliases:
+      - Change Processing
+      - DCP
+    short: The continuous detection and processing of meaningful data changes across systems.
+    definition: |
+      Data Change Processing is the core capability that Drasi provides. It involves
+      continuously monitoring data sources for changes, evaluating those changes against
+      Continuous Queries to identify meaningful patterns, and distributing detected
+      changes to downstream systems through Reactions. Unlike traditional batch processing,
+      Data Change Processing operates in real-time as changes occur.
+    category: core
+    related:
+      - title: Why Drasi?
+        url: /concepts/overview/
+    see_also:
+      - Continuous Query
+      - Change Data Capture
+
+  - term: Source Change Event
+    aliases:
+      - Source Change
+      - Change Event
+    short: A notification from a Source describing a data change (insert, update, or delete).
+    definition: |
+      A Source Change Event is the internal representation of a data change detected
+      by a Source. It contains the type of change (insert, update, or delete), the
+      affected data in property graph format, and metadata such as timestamps. Sources
+      emit these events when underlying data changes, which are then processed by
+      subscribed Continuous Queries.
+    category: data
+    related:
+      - title: Sources Concept
+        url: /concepts/sources/
+    see_also:
+      - Source
+      - Result Change Event
+      - Change Data Capture
+
+  - term: Result Change Event
+    aliases:
+      - Result Change
+      - Query Result Change
+    short: A notification from a Continuous Query describing changes to its result set.
+    definition: |
+      A Result Change Event is emitted by a Continuous Query when its result set changes.
+      It describes which results have been added, updated, or deleted as a consequence
+      of Source data changes. Reactions subscribe to these events to take action when
+      query results change. The event includes the query ID, sequence number, and the
+      specific result changes.
+    category: data
+    related:
+      - title: Reactions Concept
+        url: /concepts/reactions/
+    see_also:
+      - Continuous Query
+      - Result Set
+      - Reaction
+
+  - term: Source Subscription
+    aliases: []
+    short: A configuration that connects a Continuous Query to one or more Sources.
+    definition: |
+      A Source Subscription defines which Sources a Continuous Query receives Source Change
+      Events from. Subscriptions are configured in the query's spec.sources section
+      and can include middleware pipelines for transforming or filtering incoming
+      changes. A single query can subscribe to multiple Sources, enabling cross-source
+      queries.
+    category: query
+    related:
+      - title: Continuous Queries Concept
+        url: /concepts/continuous-queries/
+    see_also:
+      - Source
+      - Source CHange Event
+      - Continuous Query
+      - Middleware
+
+  - term: Synthetic Join
+    aliases:
+      - Source Join
+      - Synthetic Relationship
+    short: A relationship between nodes created by query joins rather than source data.
+    definition: |
+      A Source Join is a connection between nodes that is defined by join
+      conditions in a Continuous Query rather than existing explicitly in source data.
+      This enables queries to traverse relationships across different Sources or create
+      logical connections based on matching property values. Synthetic relationships
+      are configured in the query's spec.sources.joins section.
+    category: query
+    related:
+      - title: Continuous Queries Concept
+        url: /concepts/continuous-queries/
+    see_also:
+      - Join
+      - Relationship
+      - Source Subscription
