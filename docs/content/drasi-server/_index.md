@@ -66,21 +66,21 @@ description: "Standalone Drasi server for process or container deployment"
 <p class="section-intro">Choose Drasi Server for development, testing, and small-scale production deployments of Drasi-powered change-driven solutions.</p>
 
 <div class="card-grid card-grid--3">
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-laptop-code"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Local Development</h3>
       <p class="unified-card-summary">Run Drasi on your development machine for rapid iteration and testing.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fab fa-docker"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Docker Environments</h3>
       <p class="unified-card-summary">Integrate seamlessly with Docker Compose and container-based workflows.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-feather-alt"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Small-Scale Deployments</h3>
@@ -107,15 +107,6 @@ description: "Standalone Drasi server for process or container deployment"
       <div class="unified-card-content">
         <h3 class="unified-card-title">How-to Guides</h3>
         <p class="unified-card-summary">Step-by-step instructions for common tasks</p>
-      </div>
-    </div>
-  </a>
-  <a href="patterns/">
-    <div class="unified-card unified-card--concepts">
-      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Patterns</h3>
-        <p class="unified-card-summary">Best practices for building change-driven applications</p>
       </div>
     </div>
   </a>

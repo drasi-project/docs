@@ -66,21 +66,21 @@ description: "Change-driven Solutions on Kubernetes"
 <p class="section-intro">Choose Drasi for Kubernetes for production workloads requiring enterprise reliability and scale.</p>
 
 <div class="card-grid card-grid--3">
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-industry"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Production Workloads</h3>
       <p class="unified-card-summary">Enterprise-grade reliability with horizontal scaling and high availability.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-cloud"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Managed Kubernetes</h3>
       <p class="unified-card-summary">Run on AKS, EKS, GKE, or any Kubernetes distribution.</p>
     </div>
   </div>
-  <div class="unified-card unified-card--concepts">
+  <div class="unified-card unified-card--concepts unified-card--static">
     <div class="unified-card-icon"><i class="fas fa-tachometer-alt"></i></div>
     <div class="unified-card-content">
       <h3 class="unified-card-title">Observability</h3>
@@ -107,15 +107,6 @@ description: "Change-driven Solutions on Kubernetes"
       <div class="unified-card-content">
         <h3 class="unified-card-title">How-to Guides</h3>
         <p class="unified-card-summary">Installation, configuration, and operations</p>
-      </div>
-    </div>
-  </a>
-  <a href="/patterns/">
-    <div class="unified-card unified-card--concepts">
-      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Patterns</h3>
-        <p class="unified-card-summary">Best practices for building change-driven applications</p>
       </div>
     </div>
   </a>
