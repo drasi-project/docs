@@ -56,11 +56,3 @@ For complete documentation, examples, and API reference, visit the official Rust
     </div>
   </a>
 </div>
-
-## Learn More About Drasi
-
-To understand the concepts behind drasi-lib and how continuous queries work, explore these resources:
-
-- [Continuous Queries](/concepts/continuous-queries/) - Understand how Drasi detects and processes changes
-- [Query Language Reference](/reference/query-language/) - Learn the Cypher-based query syntax
-- [Drasi Overview](/concepts/overview/) - Get a high-level understanding of the Drasi platform

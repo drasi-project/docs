@@ -7,14 +7,18 @@ related:
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
+    - title: "Middleware"
+      url: "/concepts/middleware/"
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
-    - title: "Configure Sources (Kubernetes)"
-      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
     - title: "Configure Sources (Server)"
       url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+    - title: "Configure Sources (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
   reference:
+    - title: "Source Change Event Schema"
+      url: "/reference/schema/source-change-event/"
     - title: "Source Provider Schema"
       url: "/reference/schema/source-provider/"
 ---

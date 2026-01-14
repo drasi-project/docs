@@ -10,15 +10,15 @@ related:
     - title: "Sources"
       url: "/concepts/sources/"
   howto:
-    - title: "Write Continuous Queries (Kubernetes)"
-      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
     - title: "Write Continuous Queries (Server)"
       url: "/drasi-server/how-to-guides/write-continuous-queries/"
+    - title: "Write Continuous Queries (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Middleware Reference"
       url: "/reference/middleware/"
-    - title: "Query Language Reference"
-      url: "/reference/query-language/"
+    - title: "Source Change Event Schema"
+      url: "/reference/schema/source-change-event/"
 ---
 
 Middleware transforms and enriches incoming data changes before they reach your Continuous Queries. This is useful when source data needs preprocessing--normalizing values, extracting nested data, remapping labels, or converting formats.

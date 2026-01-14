@@ -5,7 +5,9 @@ linkTitle: "Why Drasi?"
 weight: 10
 related:
   tutorials:
-    - title: "Getting Started with Drasi"
+    - title: "Getting Started (Server)"
+      url: "/drasi-server/getting-started/"
+    - title: "Getting Started (Kubernetes)"
       url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Sources"
@@ -14,9 +16,8 @@ related:
       url: "/concepts/continuous-queries/"
     - title: "Reactions"
       url: "/concepts/reactions/"
-  howto:
-    - title: "Install Drasi"
-      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Change-Driven Solutions"
+      url: "/concepts/solution-design/"
 ---
 
 Drasi is an open-source Data Change Processing platform that simplifies the creation and operation of change-driven solutions. It enables you to detect and react to meaningful data changes that occur in **existing** databases and software systems—not only new systems built using Drasi.

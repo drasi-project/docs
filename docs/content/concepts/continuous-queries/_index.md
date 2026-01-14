@@ -11,6 +11,8 @@ related:
       url: "/concepts/reactions/"
     - title: "Middleware"
       url: "/concepts/middleware/"
+    - title: "Change-Driven Solutions"
+      url: "/concepts/solution-design/"
   howto:
     - title: "Write Continuous Queries (Kubernetes)"
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
@@ -19,8 +21,8 @@ related:
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
-    - title: "Drasi Custom Functions"
-      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "Result Change Event Schema"
+      url: "/reference/schema/result-change-event/"
 ---
 
 Continuous Queries are the heart of Drasi. They define which changes matter to your solution and what data to distribute when those changes occur. Unlike traditional queries that run once and return static results, Continuous Queries run perpetually, maintaining an up-to-date result set and notifying you precisely when that result set changes.

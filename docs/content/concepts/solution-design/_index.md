@@ -14,6 +14,8 @@ related:
       url: "/concepts/sources/"
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
+    - title: "Middleware"
+      url: "/concepts/middleware/"
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
@@ -21,6 +23,9 @@ related:
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
     - title: "Write Continuous Queries (Server)"
       url: "/drasi-server/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Query Language Reference"
+      url: "/reference/query-language/"
 ---
 
 Drasi simplifies building change-driven solutions by letting you focus on which changes matter rather than how to detect them and process them. This page describes three approaches to using Drasi, from simple change observation to sophisticated dynamic collections. Each approach builds on the previous one, demonstrating how Drasi's capabilities can be progressively adopted.

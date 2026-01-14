@@ -9,12 +9,16 @@ related:
       url: "/concepts/sources/"
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
+    - title: "Change-Driven Solutions"
+      url: "/concepts/solution-design/"
   howto:
-    - title: "Configure Reactions (Kubernetes)"
-      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
     - title: "Configure Reactions (Server)"
       url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+    - title: "Configure Reactions (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
   reference:
+    - title: "Result Change Event Schema"
+      url: "/reference/schema/result-change-event/"
     - title: "Reaction Provider Schema"
       url: "/reference/schema/reaction-provider/"
 ---
