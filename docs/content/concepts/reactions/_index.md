@@ -3,8 +3,6 @@ type: "docs"
 title: "Reactions"
 linkTitle: "Reactions"
 weight: 40
-description: >
-    What are Reactions and how to use them?
 related:
   tutorials:
     - title: "Getting Started with Drasi"
@@ -30,14 +28,14 @@ related:
       url: "/reference/schema/reaction-provider/"
 ---
 
-Reactions process query result changes output by one or more Continuous Queries and act on them. The action taken depends on the Reaction being used. 
+Reactions are triggered actions that respond to changes detected by Continuous Queries. When a Continuous Query's result set changes—items added, updated, or deleted—subscribed Reactions receive notifications and take action. The specific action depends on the type of Reaction: forwarding changes to messaging systems, updating databases, triggering webhooks, or driving real-time user interfaces. 
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
 ## Creation
-Reactions can be created and managed using the [Drasi CLI](/reference/command-line-interface/). 
+Reactions can be created using YAML configuration files. The examples below show how to create Reactions using the Drasi CLI for Drasi for Kubernetes deployments. For other deployment options, see the [drasi-lib](/drasi-lib/) or [Drasi Server](/drasi-server/) documentation.
 
-The easiest way to create a Reaction, and the way you will often create one as part of a broader software solution, is to:
+The easiest way to create a Reaction is to:
 
 1. Collect endpoint addresses and credentials that provide access to the downstream system/s the Reaction will connect to. These could be databases, queues, or service endpoints depending on the Reaction type.
 1. Create Kubernetes secrets containing the credentials the Reaction will use to connect to the external systems. 

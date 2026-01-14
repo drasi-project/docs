@@ -3,8 +3,6 @@ type: "docs"
 title: "Continuous Queries"
 linkTitle: "Continuous Queries"
 weight: 30
-description: >
-    What are Continuous Queries and how to use them?
 related:
   tutorials:
     - title: "Getting Started with Drasi"
@@ -30,7 +28,9 @@ related:
       url: "/reference/query-language/drasi-custom-functions/"
 ---
 
-Continuous Queries are the most important component of Drasi. They are the mechanism by which you tell Drasi what changes to detect in source systems as well as the data you want distributed when changes are detected. [Sources](/concepts/sources) provide source changes to subscribed Continuous Queries, which then provide query result changes to subscribed [Reactions](/concepts/reactions).
+Continuous Queries are the heart of Drasi. They define which changes matter to your solution and what data to distribute when those changes occur. Unlike traditional queries that run once and return static results, Continuous Queries run perpetually, maintaining an up-to-date result set and notifying you precisely when that result set changes.
+
+[Sources](/concepts/sources) feed changes to Continuous Queries, which process them and notify [Reactions](/concepts/reactions) of any additions, updates, or deletions to the query result.
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="65%" >}}
 
@@ -121,9 +121,9 @@ If the **severity** of the Forest Fire then changed from 'extreme' to 'critical'
 In some instances, a single source change can result in multiple changes to the query result e.g. multiple records can be added, updated, and deleted. In such cases, the Continuous Query generates a single result change notification containing all the changes. This enables subscribed Reactions to treat the related changes atomically given they all arose from a single source change.
 
 ## Creation
-Continuous Queries can be created and managed using the [Drasi CLI](/reference/command-line-interface/). 
+Continuous Queries can be created using YAML configuration files. The examples below show how to create Continuous Queries using the Drasi CLI for Drasi for Kubernetes deployments. For other deployment options, see the [drasi-lib](/drasi-lib/) or [Drasi Server](/drasi-server/) documentation.
 
-The easiest way to create a Continuous Query, and the way you will often create one as part of a broader software solution, is to:
+The easiest way to create a Continuous Query is to:
 
 1. Create a YAML file containing the Continuous Query definition. This can be stored in your solution repo and versioned along with all the other solution code / resources.
 1. Run [drasi apply](/reference/command-line-interface/#drasi-apply) to apply the YAML file, creating the Continuous Query

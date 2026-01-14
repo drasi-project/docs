@@ -3,8 +3,6 @@ type: "docs"
 title: "Middleware"
 linkTitle: "Middleware"
 weight: 60
-description: >
-    Preprocessing incoming changes with custom logic
 related:
   concepts:
     - title: "Continuous Queries"
@@ -19,9 +17,9 @@ related:
       url: "/reference/query-language/"
 ---
 
-Middleware serves as an intermediary layer that processes incoming changes from data sources before they are passed to the query engine.  Middleware components are modular and can be stacked or combined in a pipeline to process incoming changes sequentially.
+Middleware transforms and enriches incoming data changes before they reach your Continuous Queries. This is useful when source data needs preprocessing—normalizing values, extracting nested data, remapping labels, or converting formats.
 
-Its primary role is transformation, modifying or enriching the data as needed, such as normalizing values, applying mappings, or adding computed fields.
+Middleware components are modular and can be combined in a pipeline to process changes sequentially. Each middleware in the pipeline receives the output of the previous one, allowing you to chain multiple transformations.
 
 The configuration settings in the **spec.sources.middleware** section of the Continuous Query resource definition hold the individual middleware configurations that can be used in a pipeline for a given source. 
 
