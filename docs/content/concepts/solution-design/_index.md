@@ -98,44 +98,56 @@ Now, using the rich query language supported by Continuous Query and no coding, 
 
 ## Observing Collections
 
-Many software solutions are built to enable people to manage, or even fully automate, the day-to-day operations or processes of a business. In general, such systems enable people and organizations to manage and manipulate collections of things in order to transition the individual things from one state (or collection of things) to another. For example:
-- In an e-commerce system:
-  - There are new customer orders. These need products to be picked from stock to fill the order.
-  - Once picked, orders need to be packed and prepared for dispatch.
-  - Once prepared, the orders need to be dispatched through various delivery options.
-  - Once dispatched, the orders need to be tracked until delivery.
-  - Once the Order is delivered, it is complete, unless the customer has an issue, in which case a customer support process is initiated...
-- In a patient management system:
-  - On any given day there are a collection of patients with appointments scheduled.
-  - When a scheduled patient arrives they sit in the waiting area and go into a queue to be seen.
-  - When the doctor becomes free and they are next in the queue, they go to see the doctor.
-  - Once the doctor is finished, they go into a checkout process, where tests/follow-up visits are organized and payment is collected.
-  - Finally the patient leaves and their visit is complete.
+While Observing Conditions tells you when something becomes true, **Observing Collections** maintains a living set of items that match your criteria and tells you when items **join** or **leave** that set. This distinction is powerful: instead of reacting to individual events, you maintain awareness of an entire category of things and respond to membership changes.
 
-When implementing these kind of system, it is common to both need to get the current things in a given state (or collection) and to know when the collection changes so that processes can be started, UIs updated, and integrated systems notified. Modern databases make it easy to identify the things currently in a collection through simple queries or views, but they generally do not provide the capability to notify the consumer when the things in the collection change. So developers end up building custom change detection / notification solutions, processing low level change feeds, or polling the database periodically for the latest data.
+Consider these examples of dynamic collections:
 
-Drasi provides a new opportunity for creating query-based dynamic collections with integrated change notifications that can power these types of change-driven solutions. A new architectural building block that encapsulates the need for a query-based collection and the dynamic notification when the collection changes. A building block that requires no code and is consistent in its application across many types of data sources. But using this new building block requires that you think about your solution as a set of dynamic collections and how to react to the changes when they occur.
+- **Curbside pickup queue**: All orders marked "ready" where the customer's vehicle is in the pickup zone
+- **At-risk shipments**: All shipments containing temperature-sensitive goods currently in transit through regions with weather delays
+- **SLA breaches**: All support tickets that have exceeded their response time threshold with no agent assigned, grouped by customer tier
+- **Delivery opportunities**: All drivers currently within 10 minutes of a customer who has an order ready but hasn't been dispatched yet
 
-For example, the following Continuous Query maintains a collection of all Employees currently located in Buildings that are in Regions where there are active high risk Incidents.
+Each of these collections spans multiple data sources (order systems, IoT sensors, GPS tracking, weather services) and changes dynamically as the underlying data changes. Without Drasi, building these requires custom code to:
+- Poll multiple databases and APIs
+- Maintain state about what's currently in each collection
+- Detect when items enter or leave
+- Handle the complex joins between disparate data sources
+
+With Drasi, you define the collection as a Continuous Query, and Drasi handles the rest.
+
+### Example: Curbside Pickup
+
+A retailer wants to minimize customer wait times for curbside pickup. The solution needs to know which customers are waiting and for how long, combining data from the order management system and the parking lot vehicle detection system.
 
 ```cypher
 MATCH
-  (e:Employee)-[:ASSIGNED_TO]->(t:Team),
-  (m:Employee)-[:MANAGES]->(t:Team),
-  (e:Employee)-[:LOCATED_IN]->(:Building)-[:LOCATED_IN]->(r:Region),
-  (i:Incident {type:'environmental'})-[:OCCURS_IN]->(r:Region)
-WHERE
-  elementId(e) <> elementId(m) AND i.severity IN ['critical', 'extreme'] AND i.endTimeMs IS NULL
+  (o:Order {status: 'ready'})-[:PLACED_BY]->(c:Customer),
+  (v:Vehicle {licensePlate: c.licensePlate})-[:PARKED_IN]->(z:Zone {type: 'curbside'})
 RETURN
-  m.name AS ManagerName, m.email AS ManagerEmail,
-  e.name AS EmployeeName, e.email AS EmployeeEmail,
-  r.name AS RegionName,
-  elementId(i) AS IncidentId, i.severity AS IncidentSeverity, i.description AS IncidentDescription
+  o.id AS OrderId,
+  c.name AS CustomerName,
+  c.phone AS CustomerPhone,
+  v.licensePlate AS Vehicle,
+  v.arrivedAt AS ArrivedAt
 ```
 
-The collection is updated dynamically when Employees change locations or Incidents change severity. It generates notifications both when new Employees become at risk, and when Employees are no longer at risk. And you can hook this up to alerting and management systems using Reactions with very little code so that people in the organization can make checks or arrangements to deal with Employees at risk.
+This collection updates in real-time as:
+- New orders become ready (potential additions)
+- Vehicles enter the curbside zone (potential additions)
+- Vehicles leave (removals from collection)
+- Orders are fulfilled (removals from collection)
 
-In addition, using Drasi's SignalR or SSE Reactions, applications can drive their entire UI by effectively binding it to the results of a Continuous Query.
+A store associate's dashboard bound to this collection always shows exactly who needs attention, with no polling and no stale data.
+
+### What Makes Collections Powerful
+
+**Membership notifications**: You learn not just that something changed, but specifically that an item **joined** or **left** the collection. When a vehicle leaves the pickup zone, you know that customer is no longer waiting--without having to track state yourself.
+
+**Cross-system visibility**: Collections can span multiple Sources. The curbside example joins order data with vehicle detection data, even though they live in completely separate systems.
+
+**Real-time aggregates**: Because Drasi maintains the collection, you can build dashboards showing "4 customers waiting" that update instantly as the number changes.
+
+**UI binding**: Using SignalR or SSE Reactions, applications can bind their UI directly to a collection. The dashboard doesn't poll--it receives push notifications when the collection changes, showing additions, updates, and removals in real-time.
 
 ## Change-Enabled Systems
 In addition to the three approaches for using Drasi to build change-driven solutions, which are focused on the detection and processing of change in existing systems, you might also consider adopting Drasi if you are creating a system that you want to be a **source of change** for other systems to observe. Under such circumstances, you might consider Drasi as an alternative to implementing your own change notification solution. Just as most people do not implement their own database, messaging infrastructure, or web framework, using Drasi means you do not need to implement your own change notification solution. Instead, as part of your overall solution, you could provision a Drasi deployment and instruct downstream developers to use it to observe and react to changes from your system. You are freed from a great deal of design and development and the downstream developers get a richer and more flexible way to detect and react to change in your system.
