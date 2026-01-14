@@ -2,7 +2,7 @@
 type: "docs"
 title: "Local Development Environment"
 linkTitle: "Local Development"
-weight: 30
+weight: 10
 description: "Set up a complete development environment with Docker"
 ---
 

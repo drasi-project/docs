@@ -2,7 +2,7 @@
 type: "docs"
 title: "Real-time SSE Dashboard"
 linkTitle: "Real-time SSE Dashboard"
-weight: 20
+weight: 30
 description: "Build a live dashboard using Server-Sent Events"
 ---
 

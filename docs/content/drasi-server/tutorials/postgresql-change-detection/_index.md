@@ -2,7 +2,7 @@
 type: "docs"
 title: "PostgreSQL Change Detection"
 linkTitle: "PostgreSQL Change Detection"
-weight: 10
+weight: 20
 description: "Monitor a PostgreSQL database and react to data changes in real-time"
 ---
 
