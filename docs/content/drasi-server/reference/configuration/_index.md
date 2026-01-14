@@ -4,11 +4,29 @@ title: "Configuration Reference"
 linkTitle: "Configuration"
 weight: 30
 description: "Complete YAML configuration schema for Drasi Server"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-server/reference/cli/"
 ---
 
 # Configuration Reference
 
-Complete reference for Drasi Server YAML configuration.
+Complete reference for {{< term "Drasi Server" >}} YAML configuration.
 
 ## Configuration File
 

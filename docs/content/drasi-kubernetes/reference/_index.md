@@ -7,6 +7,20 @@ hide_readingtime: true
 no_list: true
 notoc: true
 description: "Drasi for Kubernetes reference documentation"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Getting Started with Drasi for Kubernetes"
+      url: "/drasi-kubernetes/getting-started/"
+  howto:
+    - title: "Install Drasi on Kubernetes"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
 ---
 
 <div class="card-grid">

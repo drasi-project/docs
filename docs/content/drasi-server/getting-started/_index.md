@@ -14,9 +14,9 @@ related:
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Configure Sources"
-      url: "/drasi-server/how-to-guides/configure-sources/"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
     - title: "Configure Reactions"
-      url: "/drasi-server/how-to-guides/configure-reactions/"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
   reference:
     - title: "CLI Reference"
       url: "/drasi-server/reference/cli/"
@@ -104,7 +104,7 @@ queries:
     auto_start: true
 ```
 
-This Continuous Query uses [openCypher](/concepts/continuous-queries/) to match all `Sensor` nodes and return their properties.
+This Continuous Query uses {{< term "openCypher" >}} to match all `Sensor` {{< term "Node" "nodes" >}} and return their properties.
 
 ### Add a Reaction
 

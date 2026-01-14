@@ -5,9 +5,22 @@ linkTitle: "Configure a Gremlin Command Reaction"
 weight: 70
 description: >
     Learn how to configure a Gremlin Command Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Drasi Gremlin Command Reaction allows you to use the Continuous Query results as parameters to commands that run against a Gremlin database. You can specify a Gremlin Command for each type of query result (Added, Updated or Deleted). The Gremlin Reaction is compatible with [Azure Cosmos DB for Gremlin](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/introduction), [Apache TinkerPop Gremlin Servers](https://tinkerpop.apache.org/docs/3.4.4/reference/#gremlin-server), and [JanusGraph](https://janusgraph.org/).
+The Drasi Gremlin Command {{< term "Reaction" >}} allows you to use the {{< term "Continuous Query" >}} results as parameters to commands that run against a Gremlin database. You can specify a Gremlin Command for each type of query result (Added, Updated or Deleted). The Gremlin Reaction is compatible with [Azure Cosmos DB for Gremlin](https://learn.microsoft.com/en-us/azure/cosmos-db/gremlin/introduction), [Apache TinkerPop Gremlin Servers](https://tinkerpop.apache.org/docs/3.4.4/reference/#gremlin-server), and [JanusGraph](https://janusgraph.org/).
 
 ## Requirements
 On the computer from where you will create the Drasi Gremlin Command Reaction, you need to install the following software:

@@ -4,11 +4,27 @@ title: "REST API Reference"
 linkTitle: "REST API"
 weight: 10
 description: "HTTP endpoints for managing Drasi Server"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-server/reference/cli/"
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 # REST API Reference
 
-Drasi Server exposes a REST API for managing sources, queries, and reactions.
+{{< term "Drasi Server" >}} exposes a REST API for managing {{< term "Source" "sources" >}}, {{< term "Continuous Query" "queries" >}}, and {{< term "Reaction" "reactions" >}}.
 
 ## Base URL
 

@@ -5,13 +5,30 @@ toc_hide: true
 hide_summary: true
 description: >
     Learn how to connect a React App to a continuous query
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Connecting a Vue App"
+      url: "/drasi-kubernetes/tutorials/connecting-frontends/vue/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure SignalR Reaction"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-signalr-reaction/"
+  reference:
+    - title: "Result Change Event Schema"
+      url: "/reference/schema/result-change-event/"
 ---
 
 ## ReactJS
 
-React components for connecting to a Drasi SignalR Reaction are [published on NPM](https://www.npmjs.com/package/@drasi/signalr-react).
+React components for connecting to a Drasi SignalR {{< term "Reaction" >}} are [published on NPM](https://www.npmjs.com/package/@drasi/signalr-react).
 
-A basic React App has been created using `create-react-app`, under the `02-connect-frontends/react` directory.  This app will use these components to connect to a SignalR hub and display the results of a query in real time.
+A basic React App has been created using `create-react-app`, under the `02-connect-frontends/react` directory.  This app will use these components to connect to a SignalR hub and display the {{< term "Result Set" "results" >}} of a {{< term "Continuous Query" "query" >}} in real time.
 
 The following snippet shows the use of the `ResultSet` component in `App.js`.
 It takes a URL that points to the SignalR hub, a queryId that identifies the query to subscribe to, and a sortBy function that will be used to sort the results.

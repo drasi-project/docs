@@ -5,6 +5,22 @@ linkTitle: "Building Comfort"
 weight: 10
 description: >
     Installing the Building Comfort sample application on self-hosted Drasi
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Configure Cosmos Gremlin Source"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 ## Prerequisites
 
@@ -21,9 +37,9 @@ description: >
 
 This application illustrates the use of Drasi for a hypothetical building management scenario, including:
 
-- The use of Continuous Queries over a Cosmos Gremlin database.
+- The use of {{< term "Continuous Query" "Continuous Queries" >}} over a Cosmos Gremlin database.
 - Continuous Queries that include aggregations across hierarchical graph data.
-- The use of the Gremlin Reaction to update a Gremlin database based on the output of a Continuous Query.
+- The use of the Gremlin {{< term "Reaction" >}} to update a Gremlin database based on the output of a Continuous Query.
 - The use of the SignalR Reaction to integrate Continuous Query output with a React JS Application.
 
 In this sample, Continuous Queries are used to calculate a _comfort level_ metric for building management. This is a human-centric measurement that combines the physical measurements in a room such as temperature, humidity, and CO2 levels into a perceptual rating of its comfort. For the purposes of this sample, the comfort level will be calculated dynamically for a room from the physical measurements using the simplified formula:
@@ -42,7 +58,7 @@ The app will provide a dashboard frontend to visualize the comfort levels of roo
 
 This app consists of:
 
-- A Source getting changes to building environment data from Cosmos DB.
+- A {{< term "Source" >}} getting changes to building environment data from Cosmos DB.
 - Several Continuous Queries that calculate comfort levels and alerts for the rooms, as well as aggregate values for the floors and building as a whole.
 - A Gremlin Reaction that updates the Cosmos DB database with the calculated comfort levels and aggregate values based on changes in the room environment measurements.
 - A SignalR Reaction that receives changes and forwards them to any connected front end clients.

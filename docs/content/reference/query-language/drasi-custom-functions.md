@@ -8,21 +8,23 @@ description: >
 related:
   tutorials:
     - title: "Absence of Change Tutorial"
-      url: "/tutorials/absence-of-change/"
-    - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/tutorials/absence-of-change/"
+    - title: "Getting Started (Kubernetes)"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Getting Started (Server)"
+      url: "/drasi-server/getting-started/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
 ---
 
-Drasi is not simply running graph queries across data, it is using the Cypher Query Language or GQL as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language and GQL in order to meet its needs for detecting and reacting to change (or an absence of change).
+Drasi is not simply running graph queries across data, it is using the {{< term "openCypher" "Cypher Query Language" >}} or {{< term "GQL" >}} as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language and GQL in order to meet its needs for detecting and reacting to change (or an absence of change).
 
 | Function                | Description                           |
 |-------------------------|---------------------------------------|
@@ -186,7 +188,7 @@ The `drasi.listMax` function returns a single value, which is the maximum value 
 - drasi.listMax(null) returns null
 
 ## Drasi TEMPORAL Functions
-Drasi TEMPORAL functions make it possible to write Continuous Queries that use previous values of Nodes and Relations in the logic of the query. 
+Drasi TEMPORAL functions make it possible to write {{< term "Continuous Query" "Continuous Queries" >}} that use previous values of {{< term "Node" "Nodes" >}} and {{< term "Relationship" "Relations" >}} in the logic of the query.
 
 A Continuous Query containing TEMPORAL functions must have a temporal Element Index enabled.
 

@@ -5,9 +5,22 @@ linkTitle: "Configure an Azure Storage Queue Reaction"
 weight: 20
 description: >
     Learn how to configure an Azure Storage Queue Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Azure Storage Queue Reaction enqueues messages on [Azure Storage Queues](https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction) in response to changes to the result set of a Drasi Continuous Query.  The output format can either be the packed format of the raw query output or an unpacked format, where a single message represents one change to the result set.
+The Azure Storage Queue {{< term "Reaction" >}} enqueues messages on [Azure Storage Queues](https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction) in response to changes to the {{< term "Result Set" "result set" >}} of a Drasi {{< term "Continuous Query" >}}.  The output format can either be the packed format of the raw query output or an unpacked format, where a single message represents one change to the result set.
 
 ## Requirements
 On the computer from where you will create the Reaction, you need the following software:

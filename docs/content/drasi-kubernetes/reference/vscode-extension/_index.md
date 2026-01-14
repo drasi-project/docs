@@ -7,24 +7,28 @@ description: >
    Learn how to test Continuous Queries and manage Drasi instances with the VS Code extension
 related:
   tutorials:
-    - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+    - title: "Getting Started with Drasi for Kubernetes"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 ## Manage a Drasi environment and test Continuous Queries
 
-The Drasi Visual Studio Code extension integrates with the Drasi platform, enabling developers to manage Drasi resources as well as test and debug Continuous Queries directly within the editor. This document describes how to install the extension and use the Drasi Explorer that is available as part of the extension. With the Drasi Explorer you can:
+The Drasi Visual Studio Code extension integrates with the Drasi platform, enabling developers to manage Drasi resources as well as test and debug {{< term "Continuous Query" "Continuous Queries" >}} directly within the editor. This document describes how to install the extension and use the Drasi Explorer that is available as part of the extension. With the Drasi Explorer you can:
 - Manage resources in your Drasi environment.
 - Watch the live results of your Continuous Queries.
 - Debug Continuous Queries prior to creating them on your Drasi environment
@@ -48,7 +52,7 @@ Once the extension is installed, the `Drasi Explorer` view will be visible in th
 
 #### Managing resources with Drasi Explorer
 
-The extension scans your workspace directory for YAML files that contain Drasi resources (Sources, Continuous Queries, and Reactions) and displays them in the Workspace tab.
+The extension scans your workspace directory for YAML files that contain Drasi resources ({{< term "Source" "Sources" >}}, Continuous Queries, and {{< term "Reaction" "Reactions" >}}) and displays them in the Workspace tab.
 
 ##### Applying resources
 Resources can be created in your Drasi environment using the Apply option available in the Workspace tab.
@@ -73,6 +77,6 @@ Continuous Queries in your workspace can be validated prior to creating them in 
 
 ##### Attach a Continuous Query 
 
-An important capability of the Drasi Explorer is its ability to attach a deployed query and display real-time updates for it. The result set automatically updates when new data arrives and can be viewed within VS Code in dedicated panel. Choose the Attach option for this.
+An important capability of the Drasi Explorer is its ability to attach a deployed query and display real-time updates for it. The {{< term "Result Set" "result set" >}} automatically updates when new data arrives and can be viewed within VS Code in dedicated panel. Choose the Attach option for this.
 
 {{< figure src="AttachQuery.png" alt="Attach a Continuous Query to watch result set" >}}

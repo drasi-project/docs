@@ -8,7 +8,9 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Building Comfort Tutorial"
+      url: "/drasi-kubernetes/tutorials/building-comfort/"
   concepts:
     - title: "Reactions"
       url: "/concepts/reactions/"
@@ -16,7 +18,7 @@ related:
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Configure SignalR Reaction"
-      url: "/how-to-guides/configure-reactions/configure-signalr-reaction/"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/configure-signalr-reaction/"
   reference:
     - title: "Result Change Event Schema"
       url: "/reference/schema/result-change-event/"
@@ -29,7 +31,7 @@ This tutorial continues from the [getting started tutorial](../../getting-starte
 
 ## Deploy the SignalR Reaction
 
-The first step is to deploy the SignalR Reaction.  This will forward the results of a query to a SignalR hub.  This will allow a front end application to connect to the SignalR hub and receive the results of the query in real time.
+The first step is to deploy the SignalR {{< term "Reaction" >}}.  This will forward the results of a {{< term "Continuous Query" "query" >}} to a SignalR hub.  This will allow a front end application to connect to the SignalR hub and receive the results of the query in real time.
 
 This is the Reaction definition that we will use, it will forward the results of the `hello-world-from` query to a SignalR hub.
 

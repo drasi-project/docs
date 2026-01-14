@@ -23,7 +23,7 @@ related:
       url: "/reference/schema/reaction-provider/"
 ---
 
-Reactions are triggered actions that respond to result set changes reported by Continuous Queries. When a Continuous Query's result set changes (i.e. items added, updated, or deleted) subscribed Reactions receive Continuous Query Result notifications that give them the option to take action. The specific action depends on the type of Reaction e.g. forwarding changes to messaging systems, updating databases, triggering webhooks, or driving real-time user interfaces.
+{{< term "Reaction" "Reactions" >}} are triggered actions that respond to {{< term "Result Set" "result set" >}} changes reported by {{< term "Continuous Query" "Continuous Queries" >}}. When a Continuous Query's result set changes (i.e. items added, updated, or deleted) subscribed Reactions receive {{< term "Result Change Event" "Continuous Query Result notifications" >}} that give them the option to take action. The specific action depends on the type of Reaction e.g. forwarding changes to messaging systems, updating databases, triggering webhooks, or driving real-time user interfaces.
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="90%" >}}
 
@@ -46,7 +46,7 @@ When a Reaction receives a notification, it processes the changes according to i
 
 Different Reaction implementations are available depending on which Drasi product you use:
 
-| Reaction Type | drasi-lib / Drasi Server | Drasi for Kubernetes |
+| Reaction Type | {{< term "drasi-lib" >}} / {{< term "Drasi Server" >}} | {{< term "Drasi for Kubernetes" >}} |
 |---------------|:------------------------:|:--------------------:|
 | Debug | - | Yes |
 | HTTP | Yes | Yes |

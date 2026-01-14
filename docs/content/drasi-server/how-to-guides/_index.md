@@ -7,6 +7,24 @@ no_list: true
 notoc: true
 hide_readingtime: true
 description: "Step-by-step instructions for working with Drasi Server"
+related:
+  concepts:
+    - title: "Drasi Overview"
+      url: "/concepts/overview/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+    - title: "PostgreSQL Change Detection"
+      url: "/drasi-server/tutorials/postgresql-change-detection/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
+    - title: "REST API Reference"
+      url: "/drasi-server/reference/rest-api/"
 ---
 
 <div class="card-grid">

@@ -4,9 +4,19 @@ title: "Configure Mock Source"
 linkTitle: "Mock"
 weight: 40
 description: "Generate test data for development and testing"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The Mock source generates synthetic data for development and testing. It creates nodes at configurable intervals, making it easy to test queries and reactions without connecting to real data sources.
+The Mock {{< term "Source" >}} generates synthetic data for development and testing. It creates {{< term "Node" "nodes" >}} at configurable intervals, making it easy to test {{< term "Continuous Query" "queries" >}} and {{< term "Reaction" "reactions" >}} without connecting to real data sources.
 
 ## Basic Configuration
 

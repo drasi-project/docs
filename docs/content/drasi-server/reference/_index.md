@@ -7,6 +7,18 @@ hide_readingtime: true
 no_list: true
 notoc: true
 description: "Drasi Server API, CLI, and configuration reference"
+related:
+  concepts:
+    - title: "Drasi Overview"
+      url: "/concepts/overview/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
 ---
 
 <div class="card-grid">

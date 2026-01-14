@@ -5,9 +5,26 @@ linkTitle: "Cypher"
 weight: 20
 description: >
     openCypher subset supported by Drasi
+related:
+  concepts:
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  tutorials:
+    - title: "Getting Started (Kubernetes)"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Getting Started (Server)"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Write Continuous Queries (Kubernetes)"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "Drasi Custom Functions"
+      url: "/reference/query-language/drasi-custom-functions/"
+    - title: "GQL Reference"
+      url: "/reference/query-language/gql/"
 ---
 
-Continuous Queries are written using a subset of the [Cypher Query Language](https://s3.amazonaws.com/artifacts.opencypher.org/openCypher9.pdf). If you are new to Cypher, Neo4J the original creators of the Cypher Query Language, have a lot of resources to help you understand, learn, and try Cypher, including:
+{{< term "Continuous Query" "Continuous Queries" >}} are written using a subset of the {{< term "openCypher" "Cypher Query Language" >}}. If you are new to Cypher, Neo4J the original creators of the Cypher Query Language, have a lot of resources to help you understand, learn, and try Cypher, including:
   - [Getting Started](https://neo4j.com/docs/getting-started/cypher-intro/)
   - [Cheat Sheet](https://neo4j.com/docs/cypher-cheat-sheet/current/)
 
@@ -15,7 +32,7 @@ Continuous Queries are written using a subset of the [Cypher Query Language](htt
 Drasi currently supports the following subset of the Cypher Query Language:
 - MATCH clause:
   - Path patterns containing:
-    - nodes and relations
+    - {{< term "Node" "nodes" >}} and {{< term "Relationship" "relations" >}}
     - variable binding
     - label expressions
     - property key-value expressions

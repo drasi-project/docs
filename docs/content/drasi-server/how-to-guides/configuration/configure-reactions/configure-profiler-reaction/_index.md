@@ -4,9 +4,21 @@ title: "Configure Profiler Reaction"
 linkTitle: "Profiler"
 weight: 60
 description: "Collect performance metrics for queries"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure Log Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-log-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The Profiler reaction collects and reports performance metrics for queries. Use it to monitor query performance, identify bottlenecks, and optimize your Drasi Server deployment.
+The Profiler {{< term "Reaction" >}} collects and reports performance metrics for {{< term "Continuous Query" "queries" >}}. Use it to monitor query performance, identify bottlenecks, and optimize your {{< term "Drasi Server" >}} deployment.
 
 ## Basic Configuration
 

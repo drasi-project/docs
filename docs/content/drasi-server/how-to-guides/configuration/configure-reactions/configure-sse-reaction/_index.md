@@ -4,9 +4,22 @@ title: "Configure SSE Reaction"
 linkTitle: "SSE"
 weight: 40
 description: "Stream query results via Server-Sent Events for real-time dashboards"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Real-time SSE Dashboard"
+      url: "/drasi-server/tutorials/realtime-sse-dashboard/"
+  howto:
+    - title: "Configure HTTP Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-http-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The SSE (Server-Sent Events) reaction creates an HTTP endpoint that streams query result changes to connected clients. It's ideal for web browsers and applications that need real-time updates.
+The SSE (Server-Sent Events) {{< term "Reaction" >}} creates an HTTP endpoint that streams query {{< term "Result Change Event" "result changes" >}} to connected clients. It's ideal for web browsers and applications that need real-time updates.
 
 ## Basic Configuration
 

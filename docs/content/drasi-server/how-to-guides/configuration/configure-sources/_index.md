@@ -7,9 +7,23 @@ no_list: true
 notoc: true
 hide_readingtime: true
 description: "Connect Drasi Server to databases, APIs, and data streams"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Source Change Events"
+      url: "/concepts/sources/#source-change-events"
+  howto:
+    - title: "Configure Bootstrap Providers"
+      url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-Sources connect Drasi Server to your data systems and stream changes to queries. Drasi Server supports several source types for different data systems and use cases.
+{{< term "Source" "Sources" >}} connect {{< term "Drasi Server" >}} to your data systems and stream changes to {{< term "Continuous Query" "queries" >}}. Drasi Server supports several source types for different data systems and use cases.
 
 <div class="card-grid">
   <a href="configure-postgresql-source/">

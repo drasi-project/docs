@@ -7,6 +7,19 @@ no_list: true
 hide_readingtime: true
 description: >
     Learn how to manage a Drasi environment
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 This section covers operational concerns for running Drasi in production environments. Learn how to monitor, scale, troubleshoot, and maintain your Drasi deployment.

@@ -6,13 +6,23 @@ weight: 50
 toc_hide: true
 description: >
     Setup and Configure SQL Server for Drasi
+related:
+  howto:
+    - title: "Connect to Microsoft SQL Server"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-mssql-source/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-This page describes how to configure your SQL Server database to work with the Drasi SQL Server source.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/sqlserver.html#setting-up-sqlserver). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+This page describes how to configure your SQL Server database to work with the Drasi SQL Server {{< term "Source" "source" >}}.  This is a summary of the Debezium documentation originally published under the Apache 2.0 License. The original documentation can be found at [debezium.io](https://debezium.io/documentation/reference/stable/connectors/sqlserver.html#setting-up-sqlserver). This documentation is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Overview
 
-The SQL Server source is built upon the Debezium SQL Server connector, which is based on the change data capture feature that is available in SQL Server 2016 Service Pack 1 (SP1) and later Standard edition or Enterprise edition.
+The SQL Server source is built upon the Debezium SQL Server connector, which is based on the {{< term "Change Data Capture" "change data capture" >}} feature that is available in SQL Server 2016 Service Pack 1 (SP1) and later Standard edition or Enterprise edition.
 
 To enable the Debezium SQL Server connector to capture change event records for database operations, you must first enable change data capture on the SQL Server database. CDC must be enabled on both the database and on each table that you want to capture. After you set up CDC on the source database, the connector can capture row-level INSERT, UPDATE, and DELETE operations that occur in the database.
 

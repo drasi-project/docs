@@ -4,9 +4,21 @@ title: "Configure HTTP Source"
 linkTitle: "HTTP"
 weight: 20
 description: "Receive events via HTTP endpoints"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Configure Bootstrap Providers"
+      url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The HTTP source creates an HTTP endpoint that receives events from external systems. Use it for webhooks, custom integrations, or any system that can send HTTP requests.
+The HTTP {{< term "Source" >}} creates an HTTP endpoint that receives events from external systems. Use it for webhooks, custom integrations, or any system that can send HTTP requests.
 
 ## Basic Configuration
 

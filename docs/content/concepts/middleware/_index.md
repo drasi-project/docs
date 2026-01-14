@@ -10,8 +10,6 @@ related:
     - title: "Sources"
       url: "/concepts/sources/"
   howto:
-    - title: "Write Continuous Queries (Server)"
-      url: "/drasi-server/how-to-guides/write-continuous-queries/"
     - title: "Write Continuous Queries (Kubernetes)"
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
@@ -21,11 +19,11 @@ related:
       url: "/reference/schema/source-change-event/"
 ---
 
-Middleware transforms and enriches incoming data changes before they reach your Continuous Queries. This is useful when source data needs preprocessing--normalizing values, extracting nested data, remapping labels, or converting formats.
+{{< term "Middleware" >}} transforms and enriches incoming data changes before they reach your {{< term "Continuous Query" "Continuous Queries" >}}. This is useful when source data needs preprocessing--normalizing values, extracting nested data, remapping labels, or converting formats.
 
 ## How Middleware Works
 
-Middleware sits between Sources and Continuous Queries in the data pipeline. When a Source pushes a change, the middleware processes it before the change reaches the query engine. This allows you to:
+Middleware sits between {{< term "Source" "Sources" >}} and Continuous Queries in the data pipeline. When a Source pushes a {{< term "Source Change Event" "change" >}}, the middleware processes it before the change reaches the query engine. This allows you to:
 
 - **Transform data shapes**: Reshape incoming data to match what your queries expect
 - **Extract nested structures**: Unwind arrays or promote nested properties to top-level fields
@@ -86,9 +84,8 @@ Use **JQ** with conditional expressions to route different event types to differ
 
 ## Configuring Middleware
 
-Middleware configuration is product-specific and defined within Continuous Query configuration. See the product-specific guides for details:
+Middleware configuration is product-specific and defined within Continuous Query configuration. See the product-specific guide for details:
 
-- **[Drasi Server](/drasi-server/how-to-guides/write-continuous-queries/)** - Configure middleware in server deployments
 - **[Drasi for Kubernetes](/drasi-kubernetes/how-to-guides/write-continuous-queries/)** - Configure middleware in Kubernetes deployments
 
 For **drasi-lib**, middleware is configured programmatically via the Rust API.

@@ -4,9 +4,21 @@ title: "Install with Docker"
 linkTitle: "Docker"
 weight: 20
 description: "Run Drasi Server as a Docker container"
+related:
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Docker Compose Installation"
+      url: "/drasi-server/how-to-guides/installation/install-with-docker-compose/"
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-This guide covers deploying Drasi Server as a standalone Docker container.
+This guide covers deploying {{< term "Drasi Server" >}} as a standalone Docker container.
 
 ## Prerequisites
 

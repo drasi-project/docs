@@ -4,9 +4,21 @@ title: "Configure HTTP Reaction"
 linkTitle: "HTTP"
 weight: 20
 description: "Send webhooks and HTTP requests when query results change"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure gRPC Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-grpc-reaction/"
+    - title: "Configure SSE Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-sse-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The HTTP reaction sends HTTP requests when query results change. Use it for webhooks, API integrations, and triggering external systems.
+The HTTP {{< term "Reaction" >}} sends HTTP requests when query {{< term "Result Change Event" "results change" >}}. Use it for webhooks, API integrations, and triggering external systems.
 
 ## Basic Configuration
 

@@ -4,9 +4,21 @@ title: "Configure Platform Reaction"
 linkTitle: "Platform"
 weight: 50
 description: "Publish query results to Redis Streams"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure Platform Source"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/configure-platform-source/"
+    - title: "Configure SSE Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-sse-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The Platform reaction publishes query result changes to Redis Streams in CloudEvent format. It enables integration with the Drasi Platform or any system that consumes from Redis Streams.
+The Platform {{< term "Reaction" >}} publishes query {{< term "Result Change Event" "result changes" >}} to Redis Streams in CloudEvent format. It enables integration with {{< term "Drasi for Kubernetes" >}} or any system that consumes from Redis Streams.
 
 ## Basic Configuration
 

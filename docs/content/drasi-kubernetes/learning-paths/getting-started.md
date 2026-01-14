@@ -36,24 +36,6 @@ description: >
 <div class="path-step">
 <div class="step-number">3</div>
 <div class="step-content">
-<span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/drasi-kubernetes/tutorials/write-single-source-continuous-queries/">Write Your First Query</a></h4>
-<p>Create a continuous query against a PostgreSQL database</p>
-<span class="step-duration">30 min</span>
-</div>
-</div>
-<div class="path-step">
-<div class="step-number">4</div>
-<div class="step-content">
-<span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/drasi-kubernetes/tutorials/write-multi-source-continuous-queries/">Multi-Source Queries</a></h4>
-<p>Combine data from multiple sources</p>
-<span class="step-duration">45 min</span>
-</div>
-</div>
-<div class="path-step">
-<div class="step-number">5</div>
-<div class="step-content">
 <span class="step-type step-type--reference">Reference</span>
 <h4><a href="/reference/query-language/">Query Language Reference</a></h4>
 <p>Deep dive into Cypher and Drasi functions</p>

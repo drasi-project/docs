@@ -5,9 +5,22 @@ linkTitle: "Configure a Sync Dapr State Store Reaction"
 weight: 30
 description: >
     Learn how to configure a Reaction to synchronize Drasi Continuous Query results with a Dapr State Store.
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Sync Dapr State Store Reaction materializes the results of Drasi Continuous Queries into a [Dapr state store](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-management-overview/). It performs an initial bulk load of all query results and then incrementally processes changes (adds, updates, deletes) from a Continuous Query to keep the Dapr state store up-to-date.
+The Sync Dapr State Store {{< term "Reaction" >}} materializes the results of Drasi {{< term "Continuous Query" "Continuous Queries" >}} into a [Dapr state store](https://docs.dapr.io/developing-applications/building-blocks/state-management/state-management-overview/). It performs an initial bulk load of all query results and then incrementally processes changes (adds, updates, deletes) from a Continuous Query to keep the Dapr state store up-to-date.
 
 This enables Dapr-based microservices to easily access sophisticated, pre-computed, and continuously updated data views through the standard Dapr state management API.
 

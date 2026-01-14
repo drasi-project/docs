@@ -7,6 +7,20 @@ no_list: true
 notoc: true
 hide_readingtime: true
 description: "Step-by-step instructions for configuring Drasi Server"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 <div class="card-grid">

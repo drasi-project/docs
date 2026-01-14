@@ -7,22 +7,24 @@ description: >
     Learn how to configure a SignalR Reaction
 related:
   tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
     - title: "Connecting Frontends to Queries"
-      url: "/tutorials/connecting-frontends/"
+      url: "/drasi-kubernetes/tutorials/connecting-frontends/"
   concepts:
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
     - title: "Result Change Event Schema"
       url: "/reference/schema/result-change-event/"
 ---
 
-The SignalR Reaction exposes a SignalR endpoint where changes to the result sets of the queries it is subscribed to will be published. The details of this format are described below.  Together with the SignalR Reaction, there are also several client libraries that can be used to connect to it.
+The SignalR {{< term "Reaction" >}} exposes a SignalR endpoint where changes to the {{< term "Result Set" "result sets" >}} of the queries it is subscribed to will be published. The details of this format are described below.  Together with the SignalR Reaction, there are also several client libraries that can be used to connect to it.
 
 ## Requirements
 On the computer from where you will create the Reaction, you need the following software:

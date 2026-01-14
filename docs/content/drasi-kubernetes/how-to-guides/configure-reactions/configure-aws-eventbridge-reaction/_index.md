@@ -5,9 +5,22 @@ linkTitle: "Configure an AWS EventBridge Reaction"
 weight: 5
 description: >
     Learn how to configure an AWS EventBridge Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The AWS EventBridge Reaction generates [CloudEvents](https://cloudevents.io/) from Continuous Query results and publishes them to an AWS EventBus. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
+The AWS EventBridge {{< term "Reaction" >}} generates [CloudEvents](https://cloudevents.io/) from {{< term "Continuous Query" >}} results and publishes them to an AWS EventBus. The output format can either be the packed format of the raw query output or an unpacked format, where a single CloudEvent represents one change to the result set.
 
 The EventBridge Reaction supports using either IAM roles for service accounts ([IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html)) or IAM User keys.
 

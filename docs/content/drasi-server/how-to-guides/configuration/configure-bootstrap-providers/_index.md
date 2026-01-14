@@ -5,11 +5,23 @@ linkTitle: "Configure Bootstrap Providers"
 weight: 30
 no_list: true
 description: "Load initial data before streaming begins"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+    - title: "Configure PostgreSQL Source"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/configure-postgresql-source/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 # Configure Bootstrap Providers
 
-Bootstrap providers load initial data into queries before streaming begins. This ensures queries have complete state from the start, not just changes that occur after startup.
+{{< term "Bootstrap" >}} providers load initial data into {{< term "Continuous Query" "queries" >}} before streaming begins. This ensures queries have complete state from the start, not just changes that occur after startup.
 
 ## Why Bootstrap?
 

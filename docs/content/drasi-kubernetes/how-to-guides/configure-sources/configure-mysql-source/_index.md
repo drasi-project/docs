@@ -5,22 +5,41 @@ linkTitle: "Connect to MySQL"
 weight: 60
 description: >
     Learn how to configure a MySQL Source to connect to a MySQL database
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Setup MySQL for Drasi"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-mysql-source/setup-mysql/"
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The MySQL Source enables Drasi connectivity to MySQL databases.
+The MySQL {{< term "Source" >}} enables Drasi connectivity to MySQL databases.
 
 {{< figure src="mysql-source.png" alt="MySQL Source" width="65%" >}}
 
 ## Data Model
-The MySQL Source translates the relational data from change events to more closely resemble property graph data change events so that they can be processed by subscribed Continuous Queries. To achieve this, it represents table rows as graph Nodes, as follows:
+The MySQL Source translates the relational data from change events to more closely resemble {{< term "Property Graph" "property graph" >}} data change events so that they can be processed by subscribed {{< term "Continuous Query" "Continuous Queries" >}}. To achieve this, it represents table rows as graph {{< term "Node" "Nodes" >}}, as follows:
 - Each row gets represented as a Node with the table columns as properties of the Node.
 - The Node is assigned an id that is a composite of the table name and the row's primary key. This is Node metadata, not a property of the Node.
 - The name of the table is assigned as a **Label** of the Node.
 
-The MySQL Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries) section for details.
+The MySQL Source **does not** interpret foreign keys or joins from the relational source, instead relying on the {{< term "Join" "Source Join" >}} feature provided by Continuous Queries to mimic graph-style {{< term "Relationship" "Relations" >}} between Nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries) section for details.
 
 ## Requirements
-To create and manage Sources using the steps described in this guide, you need the [Drasi CLI](/reference/command-line-interface/) installed on your computer.
+To create and manage Sources using the steps described in this guide, you need the {{< term "Drasi CLI" >}} installed on your computer.
 
 The MySQL database you connect to must have binary logging enabled.
 

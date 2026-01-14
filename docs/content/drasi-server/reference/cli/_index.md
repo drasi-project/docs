@@ -4,11 +4,22 @@ title: "CLI Reference"
 linkTitle: "CLI"
 weight: 20
 description: "Command-line interface reference for Drasi Server"
+related:
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+    - title: "Build from Source"
+      url: "/drasi-server/how-to-guides/installation/build-from-source/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
+    - title: "REST API Reference"
+      url: "/drasi-server/reference/rest-api/"
 ---
 
 # CLI Reference
 
-Drasi Server command-line interface reference.
+{{< term "Drasi Server" >}} command-line interface reference.
 
 ## Synopsis
 

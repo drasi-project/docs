@@ -5,6 +5,22 @@ linkTitle: "Troubleshooting"
 weight: 40
 description: >
     Diagnose and resolve common issues with your Drasi deployment
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Monitoring"
+      url: "/drasi-kubernetes/how-to-guides/operations/monitoring/"
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 This guide helps you diagnose and resolve common issues with Drasi deployments. For each issue, we provide symptoms, possible causes, and resolution steps.
@@ -16,7 +32,7 @@ This guide helps you diagnose and resolve common issues with Drasi deployments. 
 Start by checking the status of all Drasi components:
 
 ```bash
-# List all Drasi resources
+# List all Drasi resources (Sources, Continuous Queries, Reactions)
 kubectl get sources,continuousqueries,reactions -n drasi-system
 
 # Check pod status
@@ -44,7 +60,7 @@ kubectl logs -n drasi-system -l drasi.io/component=reaction
 kubectl logs -n drasi-system -l drasi.io/component=source -f
 ```
 
-## Source Issues
+## {{< term "Source" >}} Issues
 
 ### Source Not Connecting
 
@@ -106,7 +122,7 @@ kubectl top pod -n drasi-system -l drasi.io/component=source
 
 3. Consider scaling source connector resources
 
-## Query Issues
+## {{< term "Continuous Query" >}} Issues
 
 ### Query Not Producing Results
 
@@ -192,7 +208,7 @@ SELECT * FROM <table> WHERE <column> IS NULL;
 3. Scale query container resources
 4. Distribute queries across containers
 
-## Reaction Issues
+## {{< term "Reaction" >}} Issues
 
 ### Reaction Not Executing
 

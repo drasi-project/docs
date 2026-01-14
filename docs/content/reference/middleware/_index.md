@@ -14,11 +14,9 @@ related:
   howto:
     - title: "Write Continuous Queries (Kubernetes)"
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
-    - title: "Write Continuous Queries (Server)"
-      url: "/drasi-server/how-to-guides/write-continuous-queries/"
 ---
 
-Middleware components transform and enrich incoming Source Change Events before they reach your Continuous Queries. This reference provides complete specifications for each available middleware type.
+{{< term "Middleware" >}} components transform and enrich incoming {{< term "Source Change Event" "Source Change Events" >}} before they reach your {{< term "Continuous Query" "Continuous Queries" >}}. This reference provides complete specifications for each available middleware type.
 
 For a conceptual overview of middleware, see [Middleware Concepts](/concepts/middleware/).
 
@@ -26,9 +24,9 @@ For a conceptual overview of middleware, see [Middleware Concepts](/concepts/mid
 
 Middleware is configured within Continuous Query definitions. The specific syntax varies by product:
 
-- **drasi-lib**: Configured programmatically via the Rust API
-- **Drasi Server**: Configured in YAML/JSON configuration files
-- **Drasi for Kubernetes**: Configured in the Continuous Query resource manifest
+- **{{< term "drasi-lib" >}}**: Configured programmatically via the Rust API
+- **{{< term "Drasi Server" >}}**: Configured in YAML/JSON configuration files
+- **{{< term "Drasi for Kubernetes" >}}**: Configured in the Continuous Query resource manifest
 
 Middleware components are modular and can be combined in a pipeline to process changes sequentially. Each middleware in the pipeline receives the output of the previous one, allowing you to chain multiple transformations.
 
@@ -47,7 +45,7 @@ Middleware components are modular and can be combined in a pipeline to process c
 
 ## Unwind
 
-The **unwind** middleware component expands an array of values nested inside a Node or Relation's properties into separate top-level elements in the graph. This allows you to query unwound elements using standard Cypher or GQL patterns.
+The **unwind** middleware component expands an array of values nested inside a {{< term "Node" >}} or {{< term "Relationship" "Relation's" >}} properties into separate top-level elements in the graph. This allows you to query unwound elements using standard {{< term "openCypher" "Cypher" >}} or {{< term "GQL" >}} patterns.
 
 ### Configuration Properties
 

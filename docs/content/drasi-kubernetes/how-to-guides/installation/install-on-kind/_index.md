@@ -5,6 +5,23 @@ linkTitle: "Install on kind"
 weight: 40
 description: >
     Learn how to install Drasi on a kind cluster for local development and testing
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
+    - title: "Quickly Test a Drasi Environment"
+      url: "/drasi-kubernetes/how-to-guides/testing/quick-test-environment/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 [kind](https://kind.sigs.k8s.io/) is a tool for running Kubernetes clusters on your local computer. Aimed primarily at developers, kind is an easy to use option for doing local development and testing of Drasi, Drasi extensions, and Drasi-based solutions. This guide describes how to install Drasi on kind.
@@ -115,13 +132,13 @@ Note that the Drasi installation also installs a number of dependencies, includi
 - [Redis](https://redis.io/)
 - [Mongo DB](https://www.mongodb.com/).
 
-If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 {{% alert tip %}}
 To test that Drasi has been successfully installed on your kind cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).
 {{% /alert %}}
 
-If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 ## Troubleshooting Installation Problems
 If any of installation steps fail, a check mark will appear next to the failed step and the installation process will abort. For example:

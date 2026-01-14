@@ -4,9 +4,22 @@ title: "Configure PostgreSQL Source"
 linkTitle: "PostgreSQL"
 weight: 10
 description: "Stream changes from PostgreSQL using logical replication"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  tutorials:
+    - title: "PostgreSQL Change Detection"
+      url: "/drasi-server/tutorials/postgresql-change-detection/"
+  howto:
+    - title: "Configure Bootstrap Providers"
+      url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The PostgreSQL source streams changes from PostgreSQL databases using logical replication (WAL). It monitors specified tables and converts row changes into graph node events for continuous queries.
+The PostgreSQL {{< term "Source" >}} streams changes from PostgreSQL databases using logical replication (WAL). It monitors specified tables and converts row changes into graph {{< term "Node" >}} events for {{< term "Continuous Query" "continuous queries" >}}.
 
 ## Prerequisites
 

@@ -7,6 +7,18 @@ no_list: true
 notoc: true
 hide_readingtime: true
 description: "Deploy Drasi Server with Docker, Docker Compose, or build from source"
+related:
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-server/reference/cli/"
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 <div class="card-grid">

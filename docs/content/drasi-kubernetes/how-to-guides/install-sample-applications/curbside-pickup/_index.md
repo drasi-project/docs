@@ -5,6 +5,22 @@ linkTitle: "Curbside Pickup"
 weight: 20
 description: >
     Installing the Curbside Pickup sample application on self-hosted Drasi
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Configure Cosmos Gremlin Source"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-azure-cosmos-gremlin-source/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 ## Prerequisites
@@ -20,10 +36,10 @@ description: >
 ## Overview of the app
 
 This demo consists of
-  - 2 sources, each watching a different database
-  - Several continuous queries against each database
+  - 2 {{< term "Source" "sources" >}}, each watching a different database
+  - Several {{< term "Continuous Query" "continuous queries" >}} against each database
   - A continuous query that joins across the 2 databases
-  - A SignalR reaction that receives changes and forwards them to any connected front end clients
+  - A SignalR {{< term "Reaction" "reaction" >}} that receives changes and forwards them to any connected front end clients
   - An Azure Function App that provides Http endpoints that directly manipulate the data in each database
   - A React frontend that invokes updates via the Function App and listens for changes via the SignalR reaction
 

@@ -5,13 +5,30 @@ linkTitle: "Connect to Kubernetes"
 weight: 20
 description: >
     Learn how to configure a Kubernetes Source to connect to a Kubernetes Cluster
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The Kubernetes Source is an early stage experimental Source that enables Drasi connectivity to Kubernetes clusters, enabling Drasi to support Continuous Queries that incorporate changes to Kubernetes resources.
+The Kubernetes {{< term "Source" >}} is an early stage experimental Source that enables Drasi connectivity to Kubernetes clusters, enabling Drasi to support {{< term "Continuous Query" "Continuous Queries" >}} that incorporate changes to Kubernetes resources.
 
 ## Source Requirements
 
-To create and manage Sources using the steps described in this guide, you need the [Drasi CLI](/reference/command-line-interface/) installed on your computer.
+To create and manage Sources using the steps described in this guide, you need the {{< term "Drasi CLI" >}} installed on your computer.
 
 You will need a client side credentials that can be used to authenticate against your Kubernetes cluster and has permission to watch resources.
 
@@ -98,7 +115,7 @@ The following table describes the properties that must be configured in the **sp
 
 ## Data Model
 
-Graphs nodes will be created for the following resources:
+Graph {{< term "Node" "nodes" >}} will be created for the following resources:
 
 | Resource               | Documentation Link                                                                 |
 |------------------------|------------------------------------------------------------------------------------|
@@ -117,7 +134,7 @@ Graphs nodes will be created for the following resources:
 
 The properties of these nodes will be populated with the properties of the corresponding Kubernetes resources. For more information on the properties of these resources, see the [Kubernetes API Reference](https://kubernetes.io/docs/reference/kubernetes-api/) or the [Kubernetes API Explorer](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/)..
 
-In addition to these nodes, any resources that are owned by a parent resource will be linked to their parent with a relation labeled `OWNS`. For example, Pods will be linked to their parent Deployment or ReplicaSet.
+In addition to these nodes, any resources that are owned by a parent resource will be linked to their parent with a {{< term "Relationship" "relation" >}} labeled `OWNS`. For example, Pods will be linked to their parent Deployment or ReplicaSet.
 
 For example, your could query all Pods owned by a Deployment with the following Cypher query:
 
@@ -132,7 +149,7 @@ RETURN
 
 ### Decomposing Kubernetes Resources into Nodes and Relations
 
-Many Kubernetes resources are complex and contain nested properties. For example, a Pod contains a `status` property that contains a `containerStatuses` property that contains a list. In order to make it easier to query these nested objects, you can use the `unwind` middleware within your query to extract and project them as top-level nodes within the graph. For example, the following query will extract the `containerStatuses` property from the `status` property of a Pod and project it as a top-level node with the label of `Container`, and connect them with a relation labeled `HAS`:
+Many Kubernetes resources are complex and contain nested properties. For example, a Pod contains a `status` property that contains a `containerStatuses` property that contains a list. In order to make it easier to query these nested objects, you can use the `unwind` {{< term "Middleware" "middleware" >}} within your query to extract and project them as top-level nodes within the graph. For example, the following query will extract the `containerStatuses` property from the `status` property of a Pod and project it as a top-level node with the label of `Container`, and connect them with a relation labeled `HAS`:
 
 ```yaml
 apiVersion: v1

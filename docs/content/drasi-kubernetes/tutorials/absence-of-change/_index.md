@@ -8,13 +8,13 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
   howto:
     - title: "Configure PostgreSQL Source"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
   reference:
     - title: "Drasi Custom Functions"
       url: "/reference/query-language/drasi-custom-functions/"

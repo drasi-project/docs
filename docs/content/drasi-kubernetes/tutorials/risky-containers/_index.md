@@ -8,9 +8,7 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
-    - title: "Writing Multi-Source Queries"
-      url: "/tutorials/write-multi-source-continuous-queries/"
+      url: "/drasi-kubernetes/getting-started/"
   concepts:
     - title: "Continuous Queries"
       url: "/concepts/continuous-queries/"
@@ -18,9 +16,9 @@ related:
       url: "/concepts/sources/"
   howto:
     - title: "Configure Kubernetes Source"
-      url: "/how-to-guides/configure-sources/configure-kubernetes-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-kubernetes-source/"
     - title: "Configure PostgreSQL Source"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"

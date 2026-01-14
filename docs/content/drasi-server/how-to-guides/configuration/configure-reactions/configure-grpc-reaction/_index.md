@@ -4,9 +4,21 @@ title: "Configure gRPC Reaction"
 linkTitle: "gRPC"
 weight: 30
 description: "Stream query results via gRPC"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure gRPC Source"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/configure-grpc-source/"
+    - title: "Configure HTTP Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-http-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The gRPC reaction streams query result changes to gRPC clients. It's ideal for high-performance, low-latency applications that need real-time updates.
+The gRPC {{< term "Reaction" >}} streams query {{< term "Result Change Event" "result changes" >}} to gRPC clients. It's ideal for high-performance, low-latency applications that need real-time updates.
 
 ## Basic Configuration
 

@@ -4,9 +4,21 @@ title: "Configure Platform Source"
 linkTitle: "Platform"
 weight: 50
 description: "Consume events from Redis Streams for Drasi Platform integration"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Configure Platform Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-platform-reaction/"
+    - title: "Configure Bootstrap Providers"
+      url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The Platform source consumes events from Redis Streams, enabling integration with the Drasi Platform or other systems that publish to Redis Streams.
+The Platform {{< term "Source" >}} consumes events from Redis Streams, enabling integration with {{< term "Drasi for Kubernetes" >}} or other systems that publish to Redis Streams.
 
 ## Basic Configuration
 

@@ -8,9 +8,7 @@ description: >
 related:
   tutorials:
     - title: "Connecting Frontends to Queries"
-      url: "/tutorials/connecting-frontends/"
-    - title: "Writing Single-Source Queries"
-      url: "/tutorials/write-single-source-continuous-queries/"
+      url: "/drasi-kubernetes/tutorials/connecting-frontends/"
   concepts:
     - title: "Why Drasi?"
       url: "/concepts/overview/"
@@ -22,17 +20,17 @@ related:
       url: "/concepts/reactions/"
   howto:
     - title: "Install Drasi"
-      url: "/how-to-guides/installation/"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
     - title: "Configure PostgreSQL Source"
-      url: "/how-to-guides/configure-sources/configure-postgresql-source/"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
     - title: "Query Language Reference"
       url: "/reference/query-language/"
 ---
 
-This step-by-step tutorial will help you get Drasi up and running quickly and show you how easy it is to create Sources, Continuous Queries, and Reactions.
+This step-by-step tutorial will help you get {{< term "Drasi for Kubernetes" >}} up and running quickly and show you how easy it is to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 After completing this tutorial, which should take around 30 minutes, you will have created a simple end-to-end Drasi-based change-driven solution, and you will have a fully functional Drasi environment suitable for further experimentation on your own. You will then be able to continue to explore the capabilities of the Drasi platform creating [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
 
@@ -326,7 +324,7 @@ spec:
         LastMessageTimestamp
 ```
 
-Notice that the YAML describes three Continuous Queries. The `message-count` query uses GQL (Graph Query Language) as indicated by the `queryLanguage: GQL` property, while the other queries use the default Cypher query language. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
+Notice that the YAML describes three Continuous Queries. The `message-count` query uses {{< term "GQL" >}} (Graph Query Language) as indicated by the `queryLanguage: GQL` property, while the other queries use the default {{< term "openCypher" "Cypher" >}} query language. You can define any number of Drasi Sources, Continuous Queries, and Reactions in a single YAML file as long as you separate each definition with a line containing `---`.
 
 This table describes the most important configuration settings in these Continuous Query definitions.
 

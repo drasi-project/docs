@@ -4,9 +4,21 @@ title: "Configure Log Reaction"
 linkTitle: "Log"
 weight: 10
 description: "Output query results to console with customizable templates"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Configure HTTP Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-http-reaction/"
+    - title: "Configure SSE Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-sse-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The Log reaction outputs query result changes to the console. It's useful for development, debugging, and simple monitoring scenarios.
+The Log {{< term "Reaction" >}} outputs query {{< term "Result Change Event" "result changes" >}} to the console. It's useful for development, debugging, and simple monitoring scenarios.
 
 ## Basic Configuration
 

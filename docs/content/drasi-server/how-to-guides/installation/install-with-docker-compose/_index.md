@@ -4,9 +4,23 @@ title: "Install with Docker Compose"
 linkTitle: "Docker Compose"
 weight: 30
 description: "Deploy Drasi Server with Docker Compose for multi-service environments"
+related:
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+    - title: "Local Development"
+      url: "/drasi-server/tutorials/local-development/"
+  howto:
+    - title: "Docker Installation"
+      url: "/drasi-server/how-to-guides/installation/install-with-docker/"
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-Docker Compose simplifies deploying Drasi Server alongside related services like databases. This guide covers common Docker Compose configurations.
+Docker Compose simplifies deploying {{< term "Drasi Server" >}} alongside related services like databases. This guide covers common Docker Compose configurations.
 
 ## Prerequisites
 

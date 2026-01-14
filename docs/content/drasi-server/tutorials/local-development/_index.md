@@ -4,11 +4,32 @@ title: "Local Development Environment"
 linkTitle: "Local Development"
 weight: 10
 description: "Set up a complete development environment with Docker"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "PostgreSQL Change Detection"
+      url: "/drasi-server/tutorials/postgresql-change-detection/"
+    - title: "Real-time SSE Dashboard"
+      url: "/drasi-server/tutorials/realtime-sse-dashboard/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 # Local Development Environment Tutorial
 
-This tutorial guides you through setting up a complete local development environment for working with Drasi Server. You'll learn how to configure, debug, and test your Drasi applications.
+This tutorial guides you through setting up a complete local development environment for working with {{< term "Drasi Server" >}}. You'll learn how to configure, debug, and test your Drasi applications.
 
 ## What You'll Build
 

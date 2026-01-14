@@ -5,23 +5,42 @@ linkTitle: "Connect to Microsoft SQL Server"
 weight: 40
 description: >
     Learn how to configure a SQL Server Source to connect to Microsoft SQL Server
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Setup SQL Server for CDC"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-mssql-source/setup-sql-server/"
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The SQLServer Source enables Drasi connectivity to Microsoft SQL Server databases.
+The SQLServer {{< term "Source" >}} enables Drasi connectivity to Microsoft SQL Server databases.
 
 ## Data Model
-The SQL Source translates the relational data from change events to more closely resemble property graph data change events so that they can be processed by subscribed Continuous Queries. To achieve this, it represents table rows as graph Nodes, as follows:
+The SQL Source translates the relational data from change events to more closely resemble {{< term "Property Graph" "property graph" >}} data change events so that they can be processed by subscribed {{< term "Continuous Query" "Continuous Queries" >}}. To achieve this, it represents table rows as graph {{< term "Node" "Nodes" >}}, as follows:
 - Each row gets represented as a Node with the table columns as properties of the Node.
 - The Node is assigned an id the is a composite of the table id and the row's primary key. This is Node metadata, not a property of the Node.
 - The name of the table is assigned as a **Label** of the Node.
 
-The SQL Server Source **does not** interpret foreign keys or joins from the relational source, instead relying on the Source Join feature provided by Continuous Queries to mimic graph-style Relations between Nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries) section for details. 
+The SQL Server Source **does not** interpret foreign keys or joins from the relational source, instead relying on the {{< term "Join" "Source Join" >}} feature provided by Continuous Queries to mimic graph-style {{< term "Relationship" "Relations" >}} between Nodes based on the values of specified properties. See the [Source Joins](/concepts/continuous-queries/#sources) topic in the [Continuous Queries](/concepts/continuous-queries) section for details. 
 
 
 ## Requirements
 On the computer from where you will create the Source, you need the following software:
-- Change data capture must be enabled on the database and each table you wish to observe.  See the documentation on [configuring SQL Server for CDC](./setup-sql-server).
-- [Drasi CLI](/reference/command-line-interface/) 
+- {{< term "Change Data Capture" >}} must be enabled on the database and each table you wish to observe.  See the documentation on [configuring SQL Server for CDC](./setup-sql-server).
+- {{< term "Drasi CLI" >}} 
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
 
 

@@ -9,20 +9,20 @@ description: >
 related:
   tutorials:
     - title: "Getting Started with Drasi"
-      url: "/getting-started/"
+      url: "/drasi-kubernetes/getting-started/"
     - title: "Connecting Frontends to Queries"
-      url: "/tutorials/connecting-frontends/"
+      url: "/drasi-kubernetes/tutorials/connecting-frontends/"
   concepts:
     - title: "Reactions"
       url: "/concepts/reactions/"
   howto:
     - title: "Write Continuous Queries"
-      url: "/how-to-guides/write-continuous-queries/"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
     - title: "Implement a Custom Reaction"
-      url: "/how-to-guides/extend-drasi/implement-a-reaction/"
+      url: "/drasi-kubernetes/how-to-guides/extend-drasi/implement-a-reaction/"
   reference:
     - title: "CLI Reference"
-      url: "/reference/command-line-interface/"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
     - title: "Reaction Provider Schema"
       url: "/reference/schema/reaction-provider/"
 ---

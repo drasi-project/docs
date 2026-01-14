@@ -21,20 +21,18 @@ related:
   howto:
     - title: "Write Continuous Queries (Kubernetes)"
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
-    - title: "Write Continuous Queries (Server)"
-      url: "/drasi-server/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
 ---
 
-Drasi simplifies building change-driven solutions by letting you focus on which changes matter rather than how to detect them and process them. This page describes three approaches to using Drasi, from simple change observation to sophisticated dynamic collections. Each approach builds on the previous one, demonstrating how Drasi's capabilities can be progressively adopted.
+Drasi simplifies building change-driven solutions by letting you focus on which changes matter rather than how to detect them and process them. This page describes three approaches to using Drasi, from simple change observation to sophisticated dynamic collections. Each approach builds on the previous one, demonstrating how Drasi's {{< term "Data Change Processing" >}} capabilities can be progressively adopted.
 
 1. [Observing Changes](#observing-changes), where you use Drasi to detect the simple creation, modification, and deletion of data elements in one or more source systems and take some action in response to those changes. This approach is the most similar to existing event-driven and change-detection solutions and is the easiest way in which to use Drasi in place of existing alternatives.
-2. [Observing Conditions](#observing-conditions), where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition to be met. These conditions can be simple property constraints, but more interestingly they can describe conditions that include multiple entities and the dynamic relationships that exist between them. Without Drasi, doing this requires the development of a custom service or function that periodically checks for the condition, or which takes multiple source feeds and performs checks to determine when the condition is met.
-3. [Observing Collections](#observing-collections), where you use Drasi to define stateful collections of data elements that meet some criteria, for example **all orders that are ready for which there is a vehicle waiting in the curbside pickup zone** or **all employees in my team that are currently in a location that is at risk due to a high severity incident**. Using Drasi, changes to the content of these collections can be used to trigger automated processes or through real-time Reactions to dynamically update application UIs.
+2. [Observing Conditions](#observing-conditions), where you use Drasi to detect when changes in one or more source systems cause some pre-defined condition to be met. These conditions can be simple property constraints, but more interestingly they can describe conditions that include multiple entities and the dynamic {{< term "Relationship" "relationships" >}} that exist between them. Without Drasi, doing this requires the development of a custom service or function that periodically checks for the condition, or which takes multiple source feeds and performs checks to determine when the condition is met.
+3. [Observing Collections](#observing-collections), where you use Drasi to define stateful collections of data elements that meet some criteria, for example **all orders that are ready for which there is a vehicle waiting in the curbside pickup zone** or **all employees in my team that are currently in a location that is at risk due to a high severity incident**. Using Drasi, changes to the content of these collections can be used to trigger automated processes or through real-time {{< term "Reaction" "Reactions" >}} to dynamically update application UIs.
 
-Each of these approaches is described in more detail in the sections below. However, it is important to understand that the only difference in these approaches is the degree to which you embrace the capabilities of Drasi. The more sophisticated approaches require you to include more Sources; write richer Continuous Queries; and take a greater dependency on Drasi's Reactions. But they also allow you to push more responsibility onto Drasi, meaning you write and maintain less code.
+Each of these approaches is described in more detail in the sections below. However, it is important to understand that the only difference in these approaches is the degree to which you embrace the capabilities of Drasi. The more sophisticated approaches require you to include more {{< term "Source" "Sources" >}}; write richer {{< term "Continuous Query" "Continuous Queries" >}}; and take a greater dependency on Drasi's Reactions. But they also allow you to push more responsibility onto Drasi, meaning you write and maintain less code.
 
 ## Observing Changes
 

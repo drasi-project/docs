@@ -8,6 +8,25 @@ no_list: true
 hide_readingtime: true
 description: >
     Learning paths guide you through Drasi Server documentation in a structured way. Choose a path based on your role or what you want to accomplish, and follow the steps in order for the best learning experience.
+related:
+  concepts:
+    - title: "Drasi Overview"
+      url: "/concepts/overview/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Getting Started"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 ## Choose Your Path

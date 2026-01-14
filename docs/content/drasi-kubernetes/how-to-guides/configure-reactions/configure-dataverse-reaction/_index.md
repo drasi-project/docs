@@ -7,9 +7,22 @@ toc_hide: true
 hide_summary: true
 description: >
     Learn how to configure a Dataverse Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Dataverse reaction enables entities in Microsoft Dataverse to be added/updated/deleted when a continuous query emits changes.
+The Dataverse {{< term "Reaction" "reaction" >}} enables entities in Microsoft Dataverse to be added/updated/deleted when a {{< term "Continuous Query" "continuous query" >}} emits changes.
 
 #### Tenant Setup
 

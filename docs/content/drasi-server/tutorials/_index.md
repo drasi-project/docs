@@ -7,6 +7,22 @@ hide_readingtime: true
 no_list: true
 notoc: true
 description: "Learn Drasi Server by building real applications. These tutorials guide you through complete, working examples."
+related:
+  concepts:
+    - title: "Drasi Overview"
+      url: "/concepts/overview/"
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 <div class="card-grid">

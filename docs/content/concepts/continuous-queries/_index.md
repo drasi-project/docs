@@ -16,8 +16,6 @@ related:
   howto:
     - title: "Write Continuous Queries (Kubernetes)"
       url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
-    - title: "Write Continuous Queries (Server)"
-      url: "/drasi-server/how-to-guides/write-continuous-queries/"
   reference:
     - title: "Query Language Reference"
       url: "/reference/query-language/"
@@ -25,15 +23,15 @@ related:
       url: "/reference/schema/result-change-event/"
 ---
 
-Continuous Queries are the heart of Drasi. They define which changes matter to your solution and what data to distribute when those changes occur. Unlike traditional queries that run once and return static results, Continuous Queries run perpetually, maintaining an up-to-date result set and notifying you precisely when that result set changes.
+{{< term "Continuous Query" "Continuous Queries" >}} are the heart of Drasi. They define which changes matter to your solution and what data to distribute when those changes occur. Unlike traditional queries that run once and return static results, Continuous Queries run perpetually, maintaining an up-to-date {{< term "Result Set" "result set" >}} and notifying you precisely when that result set changes.
 
-[Sources](/concepts/sources) feed Source Change Events to Continuous Queries, which process them and notify [Reactions](/concepts/reactions) of any additions, updates, or deletions to the query result caused by the Source Change Event.
+{{< term "Source" "Sources" >}} feed {{< term "Source Change Event" "Source Change Events" >}} to Continuous Queries, which process them and notify {{< term "Reaction" "Reactions" >}} of any additions, updates, or deletions to the query result caused by the Source Change Event.
 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="90%" >}}
 
 ## How Continuous Queries Work
 
-To understand what makes Continuous Queries unique, contrast them with the **instantaneous queries** developers typically run against databases.
+To understand what makes Continuous Queries unique, contrast them with the {{< term "Instantaneous Query" "instantaneous queries" >}} developers typically run against databases.
 
 When you execute an **instantaneous query**, you run the query against the database at a point in time. The database calculates the results and returns them. While you work with those results, you have a static snapshot--you are unaware of any changes that happen after you ran the query. If you run the same query periodically, the results might differ each time due to changes made by other processes. But to understand what changed, you would need to compare the most recent result with the previous result.
 
@@ -45,7 +43,7 @@ When you execute an **instantaneous query**, you run the query against the datab
 
 ## Query Languages
 
-Continuous Queries are written using either **openCypher** or **Graph Query Language** (GQL). Both are declarative graph query languages that allow you to:
+Continuous Queries are written using either {{< term "openCypher" >}} or {{< term "GQL" "Graph Query Language" >}} (GQL). Both are declarative graph query languages that allow you to:
 
 - Describe in a single query expression which changes you want to detect and what data notifications should contain
 - Express rich query logic that considers both property values and relationships between data
@@ -158,14 +156,14 @@ Continuous Query configuration varies by Drasi product, but all products support
 
 ### Source Subscriptions
 
-Queries subscribe to one or more Sources to receive data. Within each subscription, you can:
+Queries subscribe to one or more Sources to receive data via {{< term "Source Subscription" "source subscriptions" >}}. Within each subscription, you can:
 
-- Specify which node and relation labels the query expects from that Source
-- Define middleware pipelines to transform incoming changes (see below)
+- Specify which {{< term "Node" "node" >}} and {{< term "Relationship" "relation" >}} labels the query expects from that Source
+- Define {{< term "Middleware" "middleware" >}} pipelines to transform incoming changes (see below)
 
 ### Joins
 
-When a query uses multiple Sources, joins define how elements from different Sources connect. This allows you to write unified graph queries that span multiple databases without complex join syntax complicating the query.
+When a query uses multiple Sources, {{< term "Join" "joins" >}} define how elements from different Sources connect. This allows you to write unified graph queries that span multiple databases without complex join syntax complicating the query. These connections create {{< term "Synthetic Join" "synthetic joins" >}} between nodes from different sources.
 
 ### Middleware
 
@@ -176,8 +174,8 @@ Middleware transforms and enriches incoming data changes before they reach the q
 When a new Continuous Query is started, it:
 
 1. Subscribes to its Sources, describing the types of changes it wants to receive
-2. Queries its Sources to load initial data for its query result
-3. Processes the stream of Source Change Events from its Sources, translating them into changes to its query result
+2. Queries its Sources to load initial data for its query result (the {{< term "Bootstrap" "bootstrap" >}} process)
+3. Processes the stream of Source Change Events from its Sources, translating them into {{< term "Result Change Event" "changes to its query result" >}}
 
 The Continuous Query continues running until explicitly stopped or deleted, at which point any Reactions that depend on it stop receiving query result changes. 
 
@@ -189,9 +187,8 @@ Drasi for Kubernetes does not currently enforce dependency integrity between Con
 
 Query configuration varies by Drasi product. Each product provides its own approach for defining queries with source subscriptions, joins, and middleware.
 
-To configure Continuous Queries for your deployment, see the product-specific guides:
+To configure Continuous Queries for your deployment, see the product-specific guide:
 
-- **[Drasi Server Queries](/drasi-server/how-to-guides/write-continuous-queries/)** - Configure queries in standalone server deployments
-- **[Drasi for Kubernetes Queries](/drasi-kubernetes/how-to-guides/write-continuous-queries/)** - Configure queries using Kubernetes resource manifests
+- **[{{< term "Drasi for Kubernetes" >}} Queries](/drasi-kubernetes/how-to-guides/write-continuous-queries/)** - Configure queries using Kubernetes resource manifests
 
-For **drasi-lib**, queries are configured programmatically via the Rust API. See the [drasi-lib documentation](/drasi-lib/) for details.
+For **{{< term "drasi-lib" >}}**, queries are configured programmatically via the Rust API. See the [drasi-lib documentation](/drasi-lib/) for details.

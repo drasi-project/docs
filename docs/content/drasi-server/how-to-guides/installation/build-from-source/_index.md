@@ -4,9 +4,18 @@ title: "Build from Source"
 linkTitle: "Build from Source"
 weight: 40
 description: "Compile Drasi Server from source code"
+related:
+  howto:
+    - title: "Docker Installation"
+      url: "/drasi-server/how-to-guides/installation/install-with-docker/"
+    - title: "Configure Drasi Server"
+      url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-server/reference/cli/"
 ---
 
-Building Drasi Server from source gives you full control over the build process and allows you to contribute to the project or create custom builds.
+Building {{< term "Drasi Server" >}} from source gives you full control over the build process and allows you to contribute to the project or create custom builds.
 
 ## Prerequisites
 
@@ -38,7 +47,7 @@ cd drasi-server
 ```
 
 {{< alert title="Important" color="warning" >}}
-The `--recurse-submodules` flag is required. Drasi Server depends on the DrasiLib library which is included as a Git submodule.
+The `--recurse-submodules` flag is required. Drasi Server depends on the {{< term "drasi-lib" >}} library which is included as a Git submodule.
 {{< /alert >}}
 
 If you already cloned without submodules, initialize them:

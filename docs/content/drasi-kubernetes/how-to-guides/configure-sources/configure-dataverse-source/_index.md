@@ -5,18 +5,35 @@ linkTitle: "Connect to Microsoft Dataverse"
 weight: 30
 description: >
     Learn how to configure a Dataverse Source to connect to Microsoft Dataverse
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
+    - title: "Source Provider Schema"
+      url: "/reference/schema/source-provider/"
 ---
 
-The Dataverse Source connects to Microsoft Dataverse tables and tracks changes in real-time using Dataverse's change tracking capabilities.
+The Dataverse {{< term "Source" >}} connects to Microsoft Dataverse tables and tracks changes in real-time using Dataverse's change tracking capabilities.
 
 ## Data Model
-The Dataverse Source translates Dataverse table data into a format that can be processed by Drasi Continuous Queries. Similar to how relational databases are handled, the Dataverse Source treats each table row as a graph node:
+The Dataverse Source translates Dataverse table data into a format that can be processed by Drasi {{< term "Continuous Query" "Continuous Queries" >}}. Similar to how relational databases are handled, the Dataverse Source treats each table row as a graph {{< term "Node" "node" >}}:
 
 - Each change to a table row is represented as a change to a node, with the table columns represented as properties of the node.
 - Each node is assigned a unique **id** that corresponds to the row's **primary key** in Dataverse (typically in GUID format). This **id** is part of the node's metadata, not a property of the node.
 - The node is assigned a **label** name that matches the **logical name of the Dataverse table** (e.g., `<dataverse_prefix>_account` for the Account table).
 
-The Dataverse Source uses Dataverse's built-in change tracking feature to detect data modifications. It maintains delta tokens to track the position in the change stream, ensuring that all changes are captured even if the source restarts. The Dataverse Source **does not** interpret relationships or lookups from Dataverse as graph relations or edges.
+The Dataverse Source uses Dataverse's built-in {{< term "Change Data Capture" "change tracking" >}} feature to detect data modifications. It maintains delta tokens to track the position in the change stream, ensuring that all changes are captured even if the source restarts. The Dataverse Source **does not** interpret {{< term "Relationship" "relationships" >}} or lookups from Dataverse as graph relations or edges.
 
 The Dataverse Source supports the following data types:
 
@@ -37,12 +54,12 @@ The Dataverse Source supports the following data types:
 
 ## Requirements
 On the computer from where you will create the Source, you need the following software:
-- [Drasi CLI](/reference/command-line-interface/) 
+- {{< term "Drasi CLI" >}}
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/) (If using Azure Managed Identities)
 
 The Dataverse table you want to use must have Change Tracking enabled. For more information, see [Enable change tracking for an entity (table)](https://learn.microsoft.com/en-us/power-platform/admin/enable-change-tracking-control-data-synchronization).
 
-You also need a Kubernetes cluster with Drasi installed. For more information, see [Install Drasi](/how-to-guides/installation/).
+You also need a Kubernetes cluster with Drasi installed. For more information, see [Install Drasi](/drasi-kubernetes/how-to-guides/installation/).
 
 ## Creating the Source
 To create a Dataverse Source, execute the `drasi apply` command as follows:

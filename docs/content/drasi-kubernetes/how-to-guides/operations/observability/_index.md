@@ -1,4 +1,3 @@
-
 ---
 type: "docs"
 title: "Configure Observability"
@@ -6,6 +5,15 @@ linkTitle: "Configure Observability"
 weight: 50
 description: >
     Configuring platform observability
+related:
+  howto:
+    - title: "Install Drasi"
+      url: "/drasi-kubernetes/how-to-guides/installation/"
+    - title: "Monitoring"
+      url: "/drasi-kubernetes/how-to-guides/operations/monitoring/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 The `--observability-level` flag in [drasi init](/reference/command-line-interface/#drasi-init) simplifies setting up various types of observability infrastructure in a Drasi environment. This page describes the different components that can be installed using this flag and explains how to use them.

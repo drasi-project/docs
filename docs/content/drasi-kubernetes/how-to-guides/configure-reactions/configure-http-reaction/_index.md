@@ -5,9 +5,22 @@ linkTitle: "Configure an Http Reaction"
 weight: 50
 description: >
     Learn how to configure an Http Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Http Reaction enables you to craft HTTP calls that are automatically invoked when query result sets change. This reaction is particularly useful for integrating with external APIs, triggering webhooks, or automating workflows based on data changes.
+The Http {{< term "Reaction" >}} enables you to craft HTTP calls that are automatically invoked when query {{< term "Result Set" "result sets" >}} change. This reaction is particularly useful for integrating with external APIs, triggering webhooks, or automating workflows based on data changes.
 
 ## Requirements
 On the computer from where you will create the Drasi Http Reaction, you need to install the following software:

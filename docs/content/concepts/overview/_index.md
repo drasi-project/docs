@@ -37,9 +37,9 @@ Drasi's low-code query-based approach enables you to write declarative graph que
 When changes do occur - TODO: talk about reactions as opposed to custom code / integration with downstream systems.
 
 Drasi is available in three deployment options to match your needs:
-- **[drasi-lib](/drasi-lib/)** - A Rust crate for building change-driven Rust solutions
-- **[Drasi Server](/drasi-server/)** - A standalone Data Change Processing server running as a process or Docker container
-- **[Drasi for Kubernetes](/drasi-kubernetes/)** - A scalable Data Change Processing platform running on Kubernetes clusters
+- **[{{< term "drasi-lib" >}}](/drasi-lib/)** - A Rust crate for building change-driven Rust solutions
+- **[{{< term "Drasi Server" >}}](/drasi-server/)** - A standalone {{< term "Data Change Processing" >}} server running as a process or Docker container
+- **[{{< term "Drasi for Kubernetes" >}}](/drasi-kubernetes/)** - A scalable Data Change Processing platform running on Kubernetes clusters
 
 Here are examples of change-driven solutions across different industries:
 
@@ -95,7 +95,7 @@ Drasi is built around three simple components: {{< term "Source" "Sources" >}}, 
 {{< figure src="simple-end-to-end.png" alt="End to End" width="90%" >}}
 
 ### Sources
-Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current data in the system. This diagram shows three Sources, providing Drasi with access to changes from an Azure Cosmos Gremlin database, a PostgreSQL database, and a Kubernetes cluster.
+Sources provide connectivity to the systems that Drasi can observe as sources of change. These are often relational or graph databases. But Sources can be implemented for any system that provides a low-level change feed and a way to query the current data in the system. Sources translate data into a unified {{< term "Property Graph" "property graph" >}} model. This diagram shows three Sources, providing Drasi with access to changes from an Azure Cosmos Gremlin database, a PostgreSQL database, and a Kubernetes cluster.
 
 {{< figure src="sources-component.png" alt="Sources Component" width="85%" >}}
 
@@ -105,7 +105,7 @@ More detail about Sources is available in the [Sources](/concepts/sources) overv
 
 ### Continuous Queries
 
-Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of **instantaneous queries** developers are accustomed to running against databases. 
+Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of {{< term "Instantaneous Query" "instantaneous queries" >}} developers are accustomed to running against databases. 
 
 When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 

@@ -5,6 +5,23 @@ linkTitle: "Install on AWS Elastic Kubernetes Service"
 weight: 50
 description: >
     Learn how to install Drasi on an AWS Elastic Kubernetes Service (EKS) cluster
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Why Drasi?"
+      url: "/concepts/overview/"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/"
+    - title: "Configure Reactions"
+      url: "/drasi-kubernetes/how-to-guides/configure-reactions/"
+    - title: "Quickly Test a Drasi Environment"
+      url: "/drasi-kubernetes/how-to-guides/testing/quick-test-environment/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
 [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) is a managed Kubernetes service that allows users to run Kubernetes on Amazon Web Services (AWS).
@@ -199,7 +216,7 @@ Note that the Drasi installation also installs a number of dependencies, includi
 - [Redis](https://redis.io/)
 - [Mongo DB](https://www.mongodb.com/).
 
-If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create [Sources](/how-to-guides/configure-sources/), [Continuous Queries](/how-to-guides/write-continuous-queries/), and [Reactions](/how-to-guides/configure-reactions/).
+If `drasi init` completes without error, the Drasi environment is ready for use and you can start to create {{< term "Source" "Sources" >}}, {{< term "Continuous Query" "Continuous Queries" >}}, and {{< term "Reaction" "Reactions" >}}.
 
 {{% alert tip %}}
 To test that Drasi has been successfully installed on your EKS cluster, you can run a quick end to end test by following the [Quickly Test a Drasi Environment guide](/docs/content/how-to-guides/testing/quick-test-environment).

@@ -4,18 +4,39 @@ title: "PostgreSQL Change Detection"
 linkTitle: "PostgreSQL Change Detection"
 weight: 20
 description: "Monitor a PostgreSQL database and react to data changes in real-time"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  tutorials:
+    - title: "Real-time SSE Dashboard"
+      url: "/drasi-server/tutorials/realtime-sse-dashboard/"
+    - title: "Local Development"
+      url: "/drasi-server/tutorials/local-development/"
+  howto:
+    - title: "Configure PostgreSQL Source"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/configure-postgresql-source/"
+    - title: "Configure Bootstrap Providers"
+      url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 # PostgreSQL Change Detection Tutorial
 
-In this tutorial, you'll set up Drasi Server to monitor a PostgreSQL database and react to data changes in real-time. You'll create a complete change data capture (CDC) pipeline.
+In this tutorial, you'll set up {{< term "Drasi Server" >}} to monitor a PostgreSQL database and react to data changes in real-time. You'll create a complete change data capture (CDC) pipeline.
 
 ## What You'll Build
 
 - PostgreSQL database with sample data
-- Drasi Server with PostgreSQL source
-- Continuous query for change detection
-- Log reaction to see changes
+- Drasi Server with PostgreSQL {{< term "Source" >}}
+- {{< term "Continuous Query" >}} for change detection
+- Log {{< term "Reaction" >}} to see changes
 
 ## Prerequisites
 

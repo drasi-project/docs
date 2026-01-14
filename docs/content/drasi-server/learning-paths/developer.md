@@ -36,15 +36,6 @@ description: >
 <div class="path-step">
 <div class="step-number">3</div>
 <div class="step-content">
-<span class="step-type step-type--howto">How-to</span>
-<h4><a href="/drasi-server/how-to-guides/write-continuous-queries/">Write Continuous Queries</a></h4>
-<p>Create queries with joins and filters</p>
-<span class="step-duration">30 min</span>
-</div>
-</div>
-<div class="path-step">
-<div class="step-number">4</div>
-<div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
 <h4><a href="/drasi-server/tutorials/realtime-sse-dashboard/">Build Real-time Dashboard</a></h4>
 <p>Create a live SSE dashboard</p>
@@ -52,16 +43,16 @@ description: >
 </div>
 </div>
 <div class="path-step">
-<div class="step-number">5</div>
+<div class="step-number">4</div>
 <div class="step-content">
 <span class="step-type step-type--howto">How-to</span>
-<h4><a href="/drasi-server/how-to-guides/configure-reactions/configure-http-reaction/">Configure HTTP Reaction</a></h4>
+<h4><a href="/drasi-server/how-to-guides/configuration/configure-reactions/configure-http-reaction/">Configure HTTP Reaction</a></h4>
 <p>Send changes to webhooks</p>
 <span class="step-duration">20 min</span>
 </div>
 </div>
 <div class="path-step">
-<div class="step-number">6</div>
+<div class="step-number">5</div>
 <div class="step-content">
 <span class="step-type step-type--pattern">Pattern</span>
 <h4><a href="/drasi-server/patterns/query-design/">Query Design Patterns</a></h4>

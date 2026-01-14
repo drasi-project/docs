@@ -7,9 +7,21 @@ no_list: true
 notoc: true
 hide_readingtime: true
 description: "Set up actions triggered by data changes"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Result Change Events"
+      url: "/concepts/reactions/#result-change-events"
+  howto:
+    - title: "Configure Sources"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-Reactions process query result changes and perform actions. Drasi Server supports several reaction types for different output needs.
+{{< term "Reaction" "Reactions" >}} process query {{< term "Result Change Event" "result changes" >}} and perform actions. {{< term "Drasi Server" >}} supports several reaction types for different output needs.
 
 <div class="card-grid">
   <a href="configure-log-reaction/">

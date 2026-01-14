@@ -5,9 +5,22 @@ linkTitle: "Configure a Drasi Result Reaction"
 weight: 60
 description: >
     Learn how to configure a Drasi Result Reaction
+related:
+  tutorials:
+    - title: "Getting Started with Drasi"
+      url: "/drasi-kubernetes/getting-started/"
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+  howto:
+    - title: "Write Continuous Queries"
+      url: "/drasi-kubernetes/how-to-guides/write-continuous-queries/"
+  reference:
+    - title: "CLI Reference"
+      url: "/drasi-kubernetes/reference/command-line-interface/"
 ---
 
-The Drasi Result Reaction is primarily designed for programmatic access to the result set of a Continuous Query by providing an endpoint accessible via HTTP GET requests. Users can use this reaction to either retrieve the current result set, or to view the result set of a query at a specific timestamp.
+The Drasi Result {{< term "Reaction" >}} is primarily designed for programmatic access to the {{< term "Result Set" "result set" >}} of a {{< term "Continuous Query" >}} by providing an endpoint accessible via HTTP GET requests. Users can use this reaction to either retrieve the current result set, or to view the result set of a query at a specific timestamp.
 
 ## Requirements
 On the computer from where you will create the Drasi Debug Reaction, you need to install the following software:

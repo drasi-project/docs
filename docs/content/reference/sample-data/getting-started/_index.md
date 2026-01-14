@@ -6,6 +6,18 @@ weight: 10
 toc_hide: true
 description: >
     Simple PostgreSQL dataset from the Drasi Getting Started Tutorial
+related:
+  tutorials:
+    - title: "Getting Started (Kubernetes)"
+      url: "/drasi-kubernetes/getting-started/"
+    - title: "Getting Started (Server)"
+      url: "/drasi-server/getting-started/"
+  howto:
+    - title: "Configure PostgreSQL Source"
+      url: "/drasi-kubernetes/how-to-guides/configure-sources/configure-postgresql-source/"
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
 ---
 
 ## Overview

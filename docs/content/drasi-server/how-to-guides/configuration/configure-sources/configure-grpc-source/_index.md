@@ -4,9 +4,19 @@ title: "Configure gRPC Source"
 linkTitle: "gRPC"
 weight: 30
 description: "Receive events via gRPC streaming"
+related:
+  concepts:
+    - title: "Sources"
+      url: "/concepts/sources/"
+  howto:
+    - title: "Configure gRPC Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-grpc-reaction/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
-The gRPC source creates a gRPC endpoint that receives streaming events. It's ideal for high-performance, low-latency event streaming from applications that support gRPC.
+The gRPC {{< term "Source" >}} creates a gRPC endpoint that receives streaming events. It's ideal for high-performance, low-latency event streaming from applications that support gRPC.
 
 ## Basic Configuration
 

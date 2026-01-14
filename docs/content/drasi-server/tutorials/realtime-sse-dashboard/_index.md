@@ -4,18 +4,37 @@ title: "Real-time SSE Dashboard"
 linkTitle: "Real-time SSE Dashboard"
 weight: 30
 description: "Build a live dashboard using Server-Sent Events"
+related:
+  concepts:
+    - title: "Reactions"
+      url: "/concepts/reactions/"
+    - title: "Continuous Queries"
+      url: "/concepts/continuous-queries/"
+  tutorials:
+    - title: "PostgreSQL Change Detection"
+      url: "/drasi-server/tutorials/postgresql-change-detection/"
+    - title: "Local Development"
+      url: "/drasi-server/tutorials/local-development/"
+  howto:
+    - title: "Configure SSE Reaction"
+      url: "/drasi-server/how-to-guides/configuration/configure-reactions/configure-sse-reaction/"
+    - title: "Configure PostgreSQL Source"
+      url: "/drasi-server/how-to-guides/configuration/configure-sources/configure-postgresql-source/"
+  reference:
+    - title: "Configuration Reference"
+      url: "/drasi-server/reference/configuration/"
 ---
 
 # Real-time SSE Dashboard Tutorial
 
-In this tutorial, you'll build a real-time dashboard that displays live data using Server-Sent Events (SSE). The dashboard will automatically update when database changes occur.
+In this tutorial, you'll build a real-time dashboard that displays live data using Server-Sent Events (SSE). The dashboard will automatically update when database changes occur, powered by {{< term "Drasi Server" >}}.
 
 ## What You'll Build
 
 - PostgreSQL database with metrics data
-- Drasi Server with SSE reaction
+- Drasi Server with SSE {{< term "Reaction" >}}
 - HTML dashboard with live updates
-- Real-time visualizations
+- Real-time visualizations powered by {{< term "Continuous Query" "Continuous Queries" >}}
 
 ## Prerequisites
 
