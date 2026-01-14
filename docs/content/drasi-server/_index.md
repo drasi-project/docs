@@ -1,13 +1,13 @@
 ---
+type: "docs"
 title: "Drasi Server"
 linkTitle: "Drasi Server"
 weight: 25
-type: "docs"
 no_list: true
 description: "Standalone Drasi server for process or container deployment"
 ---
 
-<div class="hero-section">
+<div class="hero-section hero-section--compact">
   <h1 class="hero-title">Run Drasi as a Standalone Server</h1>
   <p class="hero-subtitle">Drasi Server is a lightweight, single-process deployment that provides the full power of Drasi's data change processing functionality. Perfect for local development, Docker environments, and small-scale deployments.</p>
 

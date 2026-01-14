@@ -1,14 +1,15 @@
 ---
+type: "docs"
 title: "drasi-lib"
 linkTitle: "drasi-lib"
 weight: 20
-type: "docs"
 no_list: true
-description: "Embed Drasi's change detection in your Rust applications"
+hide_readingtime: true
+description: "Build Change-driven Rust solutions"
 ---
 
-<div class="hero-section">
-  <h1 class="hero-title">Embed Change Detection in Your Rust Applications</h1>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Build Change-driven Rust Solutions</h1>
   <p class="hero-subtitle">drasi-lib is a Rust crate that brings Drasi's powerful change processing functionality directly into your application. Monitor data changes and react to them in real-time without external infrastructure.</p>
 
   <div class="cta-group">

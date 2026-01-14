@@ -1,8 +1,9 @@
 ---
 type: "docs"
-title: "Getting Started with drasi-lib"
+title: "Getting Started"
 linkTitle: "Getting Started"
 weight: 10
+hide_readingtime: true
 description: "Add drasi-lib to your Rust project and run your first continuous query"
 related:
   concepts:

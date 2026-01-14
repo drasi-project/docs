@@ -3,8 +3,8 @@ type: "docs"
 title: "Learning Paths"
 linkTitle: "Learning Paths"
 weight: 15
-hide_readingtime: true
 no_list: true
+hide_readingtime: true
 description: >
     Learning paths guide you through Drasi documentation in a structured way. Choose a path based on your role or what you want to accomplish, and follow the steps in order for the best learning experience.
 ---

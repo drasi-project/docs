@@ -4,11 +4,11 @@ linkTitle: "Drasi for Kubernetes"
 weight: 30
 type: "docs"
 no_list: true
-description: "Production-grade Drasi deployment on Kubernetes"
+description: "Change-driven Solutions on Kubernetes"
 ---
 
-<div class="hero-section">
-  <h1 class="hero-title">Production-Grade Change Detection on Kubernetes</h1>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Change-driven Solutions on Kubernetes</h1>
   <p class="hero-subtitle">Drasi for Kubernetes provides enterprise-grade scalability, observability, and management for reactive data applications. Deploy to any Kubernetes cluster with native tooling.</p>
 
   <div class="cta-group">
