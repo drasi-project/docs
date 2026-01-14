@@ -50,17 +50,6 @@ description: >
       </div>
     </div>
   </a>
-  <a href="/concepts/reactions/">
-    <div class="unified-card unified-card--concepts">
-      <div class="unified-card-icon">
-        <i class="fas fa-bolt"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Reactions</h3>
-        <p class="unified-card-summary">Automatically trigger actions when meaningful changes are detected.</p>
-      </div>
-    </div>
-  </a>
   <a href="/concepts/middleware/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
@@ -72,13 +61,24 @@ description: >
       </div>
     </div>
   </a>
+  <a href="/concepts/reactions/">
+    <div class="unified-card unified-card--concepts">
+      <div class="unified-card-icon">
+        <i class="fas fa-bolt"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Reactions</h3>
+        <p class="unified-card-summary">Automatically trigger actions when meaningful changes are detected.</p>
+      </div>
+    </div>
+  </a>
   <a href="/concepts/solution-design/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
         <i class="fas fa-drafting-compass"></i>
       </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Solution Design</h3>
+        <h3 class="unified-card-title">Change-Driven Solutions</h3>
         <p class="unified-card-summary">Patterns and approaches for designing change-driven solutions with Drasi.</p>
       </div>
     </div>
