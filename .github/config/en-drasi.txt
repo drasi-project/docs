@@ -219,3 +219,8 @@ jq
 haltOnError
 Dataverse's
 maxInterval
+SensorLog
+bootstrapBufferSize
+DrasiLib
+drasi-lib
+
