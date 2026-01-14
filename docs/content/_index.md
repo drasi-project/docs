@@ -4,11 +4,11 @@ title: "Drasi"
 linkTitle: "Home"
 weight: 1
 description: >
-    Drasi makes it easy and efficient to detect and react to changes in databases
+    Drasi makes it easy and efficient to build change-driven solutions
 ---
 
-<div class="hero-section">
-  <h1 class="hero-title">React Instantly and Intelligently to Data Changes</h1>
+<div class="hero-section hero-section--compact">
+  <h1 class="hero-title">Build Change-driven Solutions with Drasi</h1>
   <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
 
   <div class="cta-group">
