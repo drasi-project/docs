@@ -29,31 +29,31 @@
 }
 
 // =============================================================================
-// HOMEPAGE CLEANUP
+// HERO SECTION CLEANUP
 // Hide redundant header elements when hero section is present
 // =============================================================================
 
-// Target homepage specifically - hide the default title, description, reading time
+// Hide default elements on ANY page with hero section
 .td-content:has(.hero-section) {
   // Hide the default page title (we have hero-title instead)
   > h1:first-of-type {
     display: none;
   }
+
+  // Hide the lead/description paragraph
+  > .lead {
+    display: none;
+  }
+
+  // Hide article meta (reading time, etc.)
+  > .article-meta,
+  > header.article-meta {
+    display: none;
+  }
 }
 
-// Hide breadcrumbs on homepage
+// Hide breadcrumbs on pages with hero section
 body:has(.hero-section) .td-breadcrumbs {
-  display: none;
-}
-
-// Hide the page meta info (reading time) on homepage
-body:has(.hero-section) .td-page-meta,
-body:has(.hero-section) .article-meta {
-  display: none;
-}
-
-// Hide the lead/description paragraph that Docsy adds
-body:has(.hero-section) .td-content > .lead:first-of-type {
   display: none;
 }
 
@@ -568,6 +568,35 @@ blockquote {
   flex-grow: 1;
 }
 
+// Use case card list styling (for domain cards with bullet lists)
+.unified-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    font-size: 0.9rem;
+    color: var(--bs-secondary-color);
+    line-height: 1.5;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      color: var(--bs-heading-color);
+      font-weight: 600;
+    }
+  }
+}
+
+// Adjust card title for static domain cards
+.unified-card--static .unified-card-title {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
 // "New" badge for cards
 .card-badge {
   position: absolute;
@@ -804,6 +833,52 @@ blockquote {
 // Reduce top margin of the first heading after hero section
 .td-content .hero-section + h2 {
   margin-top: $spacer-sm !important;
+}
+
+// Compact hero variant for product landing pages
+// Matches standard page layout while keeping CTA buttons
+.hero-section.hero-section--compact {
+  padding: 0 !important;
+  background: none !important;
+  margin: 0 !important;
+
+  // Remove decorative elements
+  &::before,
+  &::after {
+    display: none !important;
+  }
+
+  .hero-title {
+    // Match standard Docsy h1 exactly
+    // Bootstrap 5 h1: calc(1.375rem + 1.5vw), capped at ~2.5rem
+    font-size: calc(1.375rem + 1.5vw);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: normal;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+    color: var(--bs-heading-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  // Plain subtitle text (no colored background/border)
+  .hero-subtitle {
+    padding: 0;
+    margin-bottom: 1.5rem;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: var(--bs-body-color);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .cta-group {
+    margin-bottom: 2rem;
+  }
 }
 
 .hero-title {
