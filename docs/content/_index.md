@@ -134,33 +134,3 @@ description: >
     </div>
   </a>
 </div>
-
-<div class="quick-links">
-  <h3 class="quick-links__title">Quick Links by Product</h3>
-  <div class="quick-links__grid">
-    <a href="/drasi-lib/getting-started/" class="quick-link">
-      <i class="fab fa-rust quick-link__icon"></i>
-      drasi-lib Quick Start
-    </a>
-    <a href="/drasi-server/getting-started/" class="quick-link">
-      <i class="fab fa-docker quick-link__icon"></i>
-      Drasi Server Quick Start
-    </a>
-    <a href="/drasi-kubernetes/getting-started/" class="quick-link">
-      <i class="fas fa-dharmachakra quick-link__icon"></i>
-      Kubernetes Quick Start
-    </a>
-    <a href="/reference/query-language/" class="quick-link">
-      <i class="fas fa-code quick-link__icon"></i>
-      Query Language
-    </a>
-    <a href="/drasi-kubernetes/tutorials/building-comfort/" class="quick-link">
-      <i class="fas fa-building quick-link__icon"></i>
-      Building Comfort Tutorial
-    </a>
-    <a href="/drasi-kubernetes/tutorials/curbside-pickup/" class="quick-link">
-      <i class="fas fa-car quick-link__icon"></i>
-      Curbside Pickup Tutorial
-    </a>
-  </div>
-</div>
