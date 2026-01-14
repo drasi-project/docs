@@ -22,7 +22,7 @@ related:
       url: "/reference/query-language/"
 ---
 
-Drasi is not simply running graph queries across data, it is using the Cypher Query Language as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language in order to meet its needs for detecting and reacting to change (or an absence of change).
+Drasi is not simply running graph queries across data, it is using the Cypher Query Language or GQL as a convenient way to express the data you want to observe for changes. Drasi provides the following functions that extend the base Cypher Query Language and GQL in order to meet its needs for detecting and reacting to change (or an absence of change).
 
 | Function                | Description                           |
 |-------------------------|---------------------------------------|
