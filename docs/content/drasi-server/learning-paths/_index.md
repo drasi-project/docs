@@ -3,6 +3,7 @@ type: "docs"
 title: "Learning Paths"
 linkTitle: "Learning Paths"
 weight: 10
+draft: true
 no_list: true
 hide_readingtime: true
 description: >
