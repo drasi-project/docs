@@ -44,50 +44,15 @@ cd drasi-server
 
 The rest of the tutorial assumes you have the Drasi Server executable at `./bin/drasi-server`, so the next step is to download the appropriate binary for your platform and place it there:
 
-{{< tabpane persist="header" >}}
-{{< tab header="macOS (Apple Silicon)" lang="bash" >}}
-mkdir -p bin
-curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-darwin-arm64.tar.gz | tar xz -C bin
-chmod +x bin/drasi-server
-{{< /tab >}}
-{{< tab header="macOS (Intel)" lang="bash" >}}
-mkdir -p bin
-curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-darwin-amd64.tar.gz | tar xz -C bin
-chmod +x bin/drasi-server
-{{< /tab >}}
-{{< tab header="Linux (x64)" lang="bash" >}}
-mkdir -p bin
-curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-linux-amd64.tar.gz | tar xz -C bin
-chmod +x bin/drasi-server
-{{< /tab >}}
-{{< tab header="Linux (ARM64)" lang="bash" >}}
-mkdir -p bin
-curl -sL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-linux-arm64.tar.gz | tar xz -C bin
-chmod +x bin/drasi-server
-{{< /tab >}}
-{{< /tabpane >}}
-
-## Step 3: Verify the Download
-
-Verify the binary works:
-
-```bash
-./bin/drasi-server --version
-```
-
-You should see output showing the version number, for example:
-
-```text
-drasi-server 0.1.0
-```
+{{< read file="/shared-content/installation/drasi-server/download-binary.md" >}}
 
 ---
 
-## Step 4: Download the Tutorial Files
+## Step 3: Download the Tutorial Files
 
 TODO
 
-## Step 5: Set Environment Variables
+## Step 4: Set Environment Variables
 
 The tutorial uses environment variables for port numbers and database host so the same commands work across all setup environments. Run the following to set the defaults for the Download Binary environment:
 

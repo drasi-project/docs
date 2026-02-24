@@ -122,9 +122,14 @@ The `Message` table is initially populated with these messages:
 
 Run the database initialization script:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -i getting-started-postgres psql -U postgres -d getting_started < examples/getting-started/database/init.sql
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Get-Content examples/getting-started/database/init.sql | docker exec -i getting-started-postgres psql -U postgres -d getting_started
+{{< /tab >}}
+{{< /tabpane >}}
 
 You should see:
 
@@ -436,10 +441,15 @@ However you choose to view the `all-messages` results, that data will look somet
 
 Open a **new terminal** and run the following command to manually **insert** a record into the `Message` table:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('You', 'My first message!');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('You', 'My first message!');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 Watch the Drasi Server console — a notification of an addition to the `all-messages` query result appears instantly output by the Log Reaction:
 
@@ -454,10 +464,15 @@ If you view the `all-messages` query results again through the REST API, you'll 
 
 Now, run the following command to **update** the message we just inserted and change its text:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "UPDATE \"Message\" SET \"Message\" = 'My first UPDATED message!' WHERE \"MessageId\" = 5;"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "UPDATE `"Message`" SET `"Message`" = 'My first UPDATED message!' WHERE `"MessageId`" = 5;"
+{{< /tab >}}
+{{< /tabpane >}}
 
 The notification output by the Log Reaction shows the the item from the query result before and after the update:
 
@@ -470,10 +485,15 @@ If you view the `all-messages` query results again through the REST API, you'll 
 
 Finally, **delete** the message with this command:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "DELETE FROM \"Message\" WHERE \"MessageId\" = 5;"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM `"Message`" WHERE `"MessageId`" = 5;"
+{{< /tab >}}
+{{< /tabpane >}}
 
 The console shows the message being deleted from the query's result set:
 
@@ -524,7 +544,8 @@ Notice this query uses `queryLanguage: Cypher` instead of `GQL` — Drasi Server
 
 In your second terminal, use the following `curl` command to create the `hello-world-senders` Continuous Query:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 curl -X POST http://localhost:8080/api/v1/queries \
   -H "Content-Type: application/json" \
   -d '{
@@ -534,7 +555,19 @@ curl -X POST http://localhost:8080/api/v1/queries \
     "query": "MATCH (m:Message) WHERE m.Message = '\''Hello World'\'' RETURN m.MessageId AS Id, m.From AS Sender",
     "queryLanguage": "Cypher"
   }'
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
+  -ContentType "application/json" `
+  -Body '{
+    "id": "hello-world-senders",
+    "autoStart": true,
+    "sources": [{"sourceId": "my-postgres"}],
+    "query": "MATCH (m:Message) WHERE m.Message = ''Hello World'' RETURN m.MessageId AS Id, m.From AS Sender",
+    "queryLanguage": "Cypher"
+  }'
+{{< /tab >}}
+{{< /tabpane >}}
 
 > **Note:** This command is also included in the `examples/getting-started/requests.http` file for use with the VS Code REST Client extension.
 
@@ -550,7 +583,8 @@ Without a Reaction subscribed to the `hello-world-senders` Continuous Query, Dra
 
 To subscribe the Log Reaction to the new query, you need to delete and re-create it with both queries listed.
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 # Delete the existing log reaction
 curl -X DELETE http://localhost:8080/api/v1/reactions/log-reaction
 
@@ -563,7 +597,22 @@ curl -X POST http://localhost:8080/api/v1/reactions \
     "queries": ["all-messages", "hello-world-senders"],
     "autoStart": true
   }'
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+# Delete the existing log reaction
+Invoke-RestMethod -Method Delete -Uri http://localhost:8080/api/v1/reactions/log-reaction
+
+# Re-create it subscribed to both queries
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/reactions `
+  -ContentType "application/json" `
+  -Body '{
+    "kind": "log",
+    "id": "log-reaction",
+    "queries": ["all-messages", "hello-world-senders"],
+    "autoStart": true
+  }'
+{{< /tab >}}
+{{< /tabpane >}}
 
 You should see in the Drasi Server console that the `log-reaction` is now subscribed to both queries.
 
@@ -592,10 +641,15 @@ This is because Drasi Server's bootstrap process loaded all existing messages fr
 
 Now, run the following command to **insert** a new message that contains **Hello World**, and so matches the `WHERE` criteria of the `hello-world-senders` query:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Hello World');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'Hello World');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 Watch the console and you will see notifications for both the `all-messages` and `hello-world-senders` queries — the new message is part of both query result sets:
 
@@ -608,10 +662,15 @@ Watch the console and you will see notifications for both the `all-messages` and
 
 Now **insert** a message that doesn't match the `hello-world-senders` criteria:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Bob', 'Goodbye World');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Bob', 'Goodbye World');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 The console shows the new message in the `all-messages` query, but there is no notification for the `hello-world-senders` query because the new message doesn't meet the query's `WHERE` criteria and so isn't part of that query's result set:
 
@@ -650,7 +709,8 @@ The `count(m)` aggregation groups messages by their `Message` text and counts ho
 
 ### Add the Query via the REST API
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 curl -X POST http://localhost:8080/api/v1/queries \
   -H "Content-Type: application/json" \
   -d '{
@@ -660,7 +720,19 @@ curl -X POST http://localhost:8080/api/v1/queries \
     "query": "MATCH (m:Message) RETURN m.Message AS MessageText, count(m) AS Count",
     "queryLanguage": "Cypher"
   }'
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
+  -ContentType "application/json" `
+  -Body '{
+    "id": "message-counts",
+    "autoStart": true,
+    "sources": [{"sourceId": "my-postgres"}],
+    "query": "MATCH (m:Message) RETURN m.Message AS MessageText, count(m) AS Count",
+    "queryLanguage": "Cypher"
+  }'
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### Using the SSE Reaction
 
@@ -678,11 +750,18 @@ cd examples/sse-cli && cargo build --release && cd ../..
 
 In a **new terminal**, start the SSE CLI to stream changes from the `message-counts` query:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 ./examples/sse-cli/target/release/drasi-sse-cli \
   --server http://localhost:8080 \
   --query message-counts
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+./examples/sse-cli/target/release/drasi-sse-cli `
+  --server http://localhost:8080 `
+  --query message-counts
+{{< /tab >}}
+{{< /tabpane >}}
 
 You'll see:
 
@@ -695,10 +774,15 @@ Streaming events (Ctrl-C to stop)...
 
 In your other terminal, insert a new "Hello World" message:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Eve', 'Hello World');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Eve', 'Hello World');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 Watch the SSE CLI terminal — you'll see the **Count** update:
 
@@ -726,10 +810,15 @@ The Count for "Hello World" messages increased from 2 to 3.
 
 Now delete Eve's message:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "DELETE FROM \"Message\" WHERE \"From\" = 'Eve';"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM `"Message`" WHERE `"From`" = 'Eve';"
+{{< /tab >}}
+{{< /tabpane >}}
 
 The Count decreases from 3 to 2:
 
@@ -801,7 +890,8 @@ The `WHERE` clause combines two conditions with `OR`: senders who are *already* 
 
 ### Add the Query via the REST API
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 curl -X POST http://localhost:8080/api/v1/queries \
   -H "Content-Type: application/json" \
   -d '{
@@ -811,26 +901,50 @@ curl -X POST http://localhost:8080/api/v1/queries \
     "query": "MATCH (m:Message) WITH m.From AS MessageFrom, max(drasi.changeDateTime(m)) AS LastMessageTimestamp WHERE LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 }) OR drasi.trueLater(LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 }), LastMessageTimestamp + duration({ seconds: 20 })) RETURN MessageFrom, LastMessageTimestamp",
     "queryLanguage": "Cypher"
   }'
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
+  -ContentType "application/json" `
+  -Body '{
+    "id": "inactive-senders",
+    "autoStart": true,
+    "sources": [{"sourceId": "my-postgres"}],
+    "query": "MATCH (m:Message) WITH m.From AS MessageFrom, max(drasi.changeDateTime(m)) AS LastMessageTimestamp WHERE LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 }) OR drasi.trueLater(LastMessageTimestamp <= datetime.realtime() - duration({ seconds: 20 }), LastMessageTimestamp + duration({ seconds: 20 })) RETURN MessageFrom, LastMessageTimestamp",
+    "queryLanguage": "Cypher"
+  }'
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### Stream the inactive-senders Query
 
 In a separate terminal, start the SSE CLI:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 ./examples/sse-cli/target/release/drasi-sse-cli \
   --server http://localhost:8080 \
   --query inactive-senders
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+./examples/sse-cli/target/release/drasi-sse-cli `
+  --server http://localhost:8080 `
+  --query inactive-senders
+{{< /tab >}}
+{{< /tabpane >}}
 
 ### Test the inactive-senders Query
 
 In your other terminal, send a new message from Alice:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'About to go inactive');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'About to go inactive');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 Wait for 20 seconds... Alice will be automatically added to the `inactive-senders` query result because she hasn't sent a new message in the last 20 seconds. The subscribed SSE Reaction (created by the SSE CLI) will forward the change to the SSE CLI and you will see this query result `ADD` notification in your terminal:
 
@@ -852,10 +966,15 @@ Wait for 20 seconds... Alice will be automatically added to the `inactive-sender
 
 Now make Alice active again, by sending a new message from her:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c \
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Active again');"
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'Active again');"
+{{< /tab >}}
+{{< /tabpane >}}
 
 Alice will be immediately removed from the `inactive-senders` query result because she has sent a message within the last 20 seconds. The subscribed SSE Reaction will forward the change to the SSE CLI and you will see this query result `DELETE` notification in your terminal:
 

@@ -17,3 +17,5 @@ related:
     - title: "CLI Reference"
       url: "/drasi-server/reference/cli/"
 ---
+
+{{< read file="/shared-content/installation/drasi-server/download-binary.md" >}}

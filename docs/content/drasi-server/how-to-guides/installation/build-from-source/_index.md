@@ -34,6 +34,10 @@ rustc --version
 cargo --version
 ```
 
+### Native Dependencies
+
+{{< read file="/shared-content/installation/drasi-server/build-from-source-prereqs.md" >}}
+
 ## Clone the Drasi Server Repository
 
 ```bash

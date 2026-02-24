@@ -57,6 +57,10 @@ cargo 1.88.0 (873a06493 2025-05-10)
 
 With the prerequisites verified, you're ready to clone the repository and build Drasi Server from source.
 
+## Build-from-Source Prerequisites
+
+{{< read file="/shared-content/installation/drasi-server/build-from-source-prereqs.md" >}}
+
 ## Step 1: Clone Drasi Server Repo
 
 Clone the <a href="https://github.com/drasi-project/drasi-server" target="_blank" rel="noopener noreferrer">Drasi Server repository</a>. In a terminal, run:
@@ -67,10 +71,77 @@ git clone https://github.com/drasi-project/drasi-server.git
 
 ## Step 2: Build Drasi Server
 
-Once the cloning is complete, change to the newly created `drasi-server` folder and build Drasi Server:
+Once the cloning is complete, change to the newly created `drasi-server` folder.
 
 ```bash
 cd drasi-server
+```
+
+### Build Configuration: jq Middleware
+
+The default `Cargo.toml` enables the `middleware-jq` feature on the `drasi-lib` dependency, which requires the **libjq** C library to be available at build time. If you don't have libjq installed, the build will fail with a jq-related error.
+
+You have two options:
+
+**Option A: Install libjq and set `JQ_LIB_DIR`**
+
+{{< tabpane persist="header" >}}
+{{< tab header="macOS" lang="bash" >}}
+brew install jq
+{{< /tab >}}
+{{< tab header="Debian/Ubuntu" lang="bash" >}}
+sudo apt-get update && sudo apt-get install -y \
+  pkg-config \
+  clang \
+  libclang-dev \
+  libjq-dev \
+  libonig-dev
+{{< /tab >}}
+{{< tab header="Windows" lang="powershell" >}}
+# Building from source on Windows requires MSYS2 for the jq C library.
+# Run all steps below from PowerShell.
+
+# ── Step 1: Install MSYS2 ──────────────────────────────────────────────────
+winget install MSYS2.MSYS2
+
+# ── Step 2: Add MSYS2 to PATH ──────────────────────────────────────────────
+$env:PATH = "C:\Strawberry\perl\bin;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;" + $env:PATH
+
+# ── Step 3: Install dependencies via MSYS2 ─────────────────────────────────
+pacman -S --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-clang mingw-w64-ucrt-x86_64-jq mingw-w64-ucrt-x86_64-oniguruma
+
+# ── Step 4: Configure the build environment ────────────────────────────────
+
+# Switch Rust to the GNU toolchain (required to link against MSYS2 libraries)
+rustup default 1.88-x86_64-pc-windows-gnu
+
+# Tell cargo where to find the libjq library
+$env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
+
+{{< /tab >}}
+{{< /tabpane >}}
+
+**Option B: Disable the jq middleware**
+
+If you don't need the jq middleware, remove `"middleware-jq"` from the `drasi-lib` features list in `Cargo.toml`:
+
+```toml
+drasi-lib = { version = "0.3.8", features = [
+  # "middleware-jq",    # Remove or comment out this line
+  "middleware-decoder",
+  "middleware-map",
+  "middleware-parse-json",
+  "middleware-promote",
+  "middleware-relabel",
+  "middleware-unwind",
+] }
+```
+
+### Run the Build
+
+Once the jq configuration is resolved, build and install:
+
+```bash
 cargo install --path . --root . --locked
 ```
 
