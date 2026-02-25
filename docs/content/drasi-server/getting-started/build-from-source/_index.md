@@ -18,6 +18,7 @@ Build Drasi Server from source. This approach is ideal for contributors or if yo
 - **Rust 1.88+** — For building Drasi Server <a href="https://rustup.rs/" target="_blank" rel="noopener noreferrer">(Install via rustup)</a>
 - **Text Editor** — Needed to edit files during the tutorial (e.g. <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">Visual Studio Code</a>)
 - **curl** — Used in later tutorial steps <a href="https://curl.se/download.html" target="_blank" rel="noopener noreferrer">(Install curl)</a>
+- **Native build dependencies** — Platform-specific C libraries required to compile Drasi Server (see [Install Native Build Dependencies](#install-native-build-dependencies) below)
 
 #### Verify Git is Installed
 
@@ -55,11 +56,11 @@ rustc 1.88.0 (6b00bc388 2025-06-23)
 cargo 1.88.0 (873a06493 2025-05-10)
 ```
 
-With the prerequisites verified, you're ready to clone the repository and build Drasi Server from source.
-
-## Build-from-Source Prerequisites
+#### Install Native Build Dependencies
 
 {{< read file="/shared-content/installation/drasi-server/build-from-source-prereqs.md" >}}
+
+With the prerequisites verified, you're ready to clone the repository and build Drasi Server from source.
 
 ## Step 1: Clone Drasi Server Repo
 
@@ -98,26 +99,15 @@ sudo apt-get update && sudo apt-get install -y \
   libonig-dev
 {{< /tab >}}
 {{< tab header="Windows" lang="powershell" >}}
-# Building from source on Windows requires MSYS2 for the jq C library.
-# Run all steps below from PowerShell.
+# Install libjq via MSYS2
+$env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;" + $env:PATH
 
-# ── Step 1: Install MSYS2 ──────────────────────────────────────────────────
-winget install MSYS2.MSYS2
+pacman -S --noconfirm `
+    mingw-w64-ucrt-x86_64-jq `
+    mingw-w64-ucrt-x86_64-oniguruma
 
-# ── Step 2: Add MSYS2 to PATH ──────────────────────────────────────────────
-$env:PATH = "C:\Strawberry\perl\bin;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;" + $env:PATH
-
-# ── Step 3: Install dependencies via MSYS2 ─────────────────────────────────
-pacman -S --noconfirm mingw-w64-ucrt-x86_64-pkg-config mingw-w64-ucrt-x86_64-clang mingw-w64-ucrt-x86_64-jq mingw-w64-ucrt-x86_64-oniguruma
-
-# ── Step 4: Configure the build environment ────────────────────────────────
-
-# Switch Rust to the GNU toolchain (required to link against MSYS2 libraries)
-rustup default 1.88-x86_64-pc-windows-gnu
-
-# Tell cargo where to find the libjq library
+# Set the library path — tell jq-sys where to find libjq
 $env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
-
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -169,12 +159,26 @@ drasi-server 0.1.0
 
 The tutorial uses environment variables for various port numbers so the same commands work across all setup environments. Run the following to set the required environment variables:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 export SERVER_PORT=8080
 export SSE_PORT=8081
 export POSTGRES_HOST_PORT=5432
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+$env:SERVER_PORT = 8080
+$env:SSE_PORT = 8081
+$env:POSTGRES_HOST_PORT = 5432
+{{< /tab >}}
+{{< /tabpane >}}
 
+## Step 5: Create Docker network
+
+Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
+
+```bash
+docker network create drasi-network
+```
 ---
 
 ## ✅ Environment Setup Complete

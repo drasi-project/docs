@@ -142,9 +142,14 @@ NOTICE:  Replication slot: drasi_slot
 
 Verify the sample data was loaded:
 
-```bash
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
 docker exec getting-started-postgres psql -U drasi_user -d getting_started -c 'SELECT * FROM "Message";'
-```
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+docker exec getting-started-postgres psql -U drasi_user -d getting_started -c "SELECT * FROM \""Message\"";"
+{{< /tab >}}
+{{< /tabpane >}}
 
 You should see the 4 sample messages:
 
@@ -447,7 +452,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('You', 'My first message!');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('You', 'My first message!');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('You', 'My first message!');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -470,7 +475,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "UPDATE \"Message\" SET \"Message\" = 'My first UPDATED message!' WHERE \"MessageId\" = 5;"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "UPDATE `"Message`" SET `"Message`" = 'My first UPDATED message!' WHERE `"MessageId`" = 5;"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "UPDATE \""Message\"" SET \""Message\"" = 'My first UPDATED message!' WHERE \""MessageId\"" = 5;"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -491,7 +496,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "DELETE FROM \"Message\" WHERE \"MessageId\" = 5;"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM `"Message`" WHERE `"MessageId`" = 5;"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM \""Message\"" WHERE \""MessageId\"" = 5;"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -647,7 +652,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Hello World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'Hello World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'Hello World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -668,7 +673,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Bob', 'Goodbye World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Bob', 'Goodbye World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Bob', 'Goodbye World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -746,18 +751,51 @@ Build the SSE CLI:
 cd examples/sse-cli && cargo build --release && cd ../..
 ```
 
+Alternatively, if you don't have Cargo installed, you can download a pre-built binary. Replace `VERSION` with the desired version (e.g., `0.1.9`):
+
+{{< tabpane persist="header" >}}
+{{< tab header="macOS (Apple Silicon)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-aarch64-apple-darwin -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="macOS (Intel)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-x86_64-apple-darwin -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="Linux (x64)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-x86_64-linux-gnu -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="Linux (ARM64)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-aarch64-linux-gnu -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="Linux musl (x64)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-x86_64-linux-musl -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="Linux musl (ARM64)" lang="bash" >}}
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/VERSION/drasi-sse-cli-VERSION-aarch64-linux-musl -o examples/sse-cli/target/release/sse-cli
+chmod +x examples/sse-cli/target/release/sse-cli
+{{< /tab >}}
+{{< tab header="Windows (x64)" lang="powershell" >}}
+New-Item -ItemType Directory -Force -Path examples\sse-cli\target\release
+Invoke-WebRequest -Uri "https://github.com/ruokun-niu/drasi-server/releases/download/0.1.9/drasi-sse-cli-0.1.9-x86_64-windows.exe" -OutFile "examples\sse-cli\target\release\sse-cli.exe"
+{{< /tab >}}
+{{< /tabpane >}}
+
 ### Stream the message-counts Query
 
 In a **new terminal**, start the SSE CLI to stream changes from the `message-counts` query:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
-./examples/sse-cli/target/release/drasi-sse-cli \
+./examples/sse-cli/target/release/sse-cli \
   --server http://localhost:8080 \
   --query message-counts
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-./examples/sse-cli/target/release/drasi-sse-cli `
+./examples/sse-cli/target/release/sse-cli `
   --server http://localhost:8080 `
   --query message-counts
 {{< /tab >}}
@@ -780,7 +818,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Eve', 'Hello World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Eve', 'Hello World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Eve', 'Hello World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -816,7 +854,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "DELETE FROM \"Message\" WHERE \"From\" = 'Eve';"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM `"Message`" WHERE `"From`" = 'Eve';"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM \""Message\"" WHERE \""From\"" = 'Eve';"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -921,12 +959,12 @@ In a separate terminal, start the SSE CLI:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
-./examples/sse-cli/target/release/drasi-sse-cli \
+./examples/sse-cli/target/release/sse-cli \
   --server http://localhost:8080 \
   --query inactive-senders
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-./examples/sse-cli/target/release/drasi-sse-cli `
+./examples/sse-cli/target/release/sse-cli `
   --server http://localhost:8080 `
   --query inactive-senders
 {{< /tab >}}
@@ -942,7 +980,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'About to go inactive');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'About to go inactive');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'About to go inactive');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -972,7 +1010,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Active again');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO `"Message`" (`"From`", `"Message`") VALUES ('Alice', 'Active again');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'Active again');"
 {{< /tab >}}
 {{< /tabpane >}}
 
