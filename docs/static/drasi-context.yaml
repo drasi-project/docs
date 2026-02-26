@@ -2,8 +2,8 @@
 # DRASI AUTHORITATIVE CONTEXT
 # Purpose: Single source of truth for AI agents generating code, docs,
 #          blog posts, or answers about Drasi.
-# Version: 0.4.0
-# Updated: 2026-01-14
+# Version: 0.5.0
+# Updated: 2026-02-26
 # ===================================================================
 
 project:
@@ -17,7 +17,7 @@ project:
     - name: drasi-lib
       type: Rust crate / library
       description: "Rust crate embedding Drasi's continuous query engine in-process for change detection without external dependencies."
-      current_stable_version: 0.2.1
+      current_stable_version: 0.3.8
       use_when: [embedded Rust apps, edge computing, custom pipelines, self-contained reactive apps]
       repo: https://github.com/drasi-project/drasi-core
       crate: https://crates.io/crates/drasi-lib
@@ -26,7 +26,7 @@ project:
       reactions: [Log, HTTP, gRPC, gRPC-Adaptive, SSE, Platform, Profiler, Custom]
     - name: Drasi Server
       type: standalone
-      description: "Single-process or Docker container deployment with full Drasi functionality without Kubernetes."
+      description: "Single-process or Docker container deployment with full Drasi functionality without Kubernetes. Includes built-in Admin UI for visual pipeline management."
       current_stable_version: 0.2.1
       use_when: [local development, Docker/Compose deployments, non-K8s environments, simpler production]
       repo: https://github.com/drasi-project/drasi-server
@@ -35,6 +35,7 @@ project:
       config_file: config/server.yaml
       sources: [PostgreSQL, HTTP, gRPC, Mock, Platform]
       reactions: [Log, HTTP, HTTP-Adaptive, gRPC, gRPC-Adaptive, SSE, Platform, Profiler]
+      web_ui: "Built-in Admin UI for visual pipeline management and real-time monitoring"
     - name: Drasi for Kubernetes
       type: platform
       description: "Production-ready Kubernetes deployment with enterprise-grade scalability, observability, and management."
@@ -83,6 +84,7 @@ key_differentiators:
   - temporal_capabilities: "Historical result set retrieval for audits/debugging"
   - low_code: "Rich graph queries for sophisticated change rules"
   - flexible_deployment: "Embedded library, Docker container, or Kubernetes platform"
+  - visual_management: "Built-in web UI for interactive pipeline visualization and real-time monitoring (Drasi Server)"
 
 architecture:
   data_flow: "Sources -> Continuous Queries -> Reactions"
@@ -435,6 +437,17 @@ drasi_server:
     required: "${VAR}"
     optional: "${VAR:-default}"
     dotenv: ".env file auto-loaded from current directory"
+
+  web_ui:
+    description: "Built-in Admin UI for visual pipeline management"
+    path: "/ui"
+    features:
+      - "Interactive flow canvas for Sources → Queries → Reactions visualization"
+      - "Real-time component status monitoring via Server-Sent Events"
+      - "Multi-instance management and switching"
+      - "Query result inspection and streaming"
+      - "Solution template deployment"
+    enabled_by_default: true
 
   structure:
     id: "UUID auto-generated if not provided"
