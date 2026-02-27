@@ -6,7 +6,7 @@ weight: 40
 description: "Build Drasi Server from source code"
 ---
 
-Build Drasi Server from source. This approach is ideal for contributors or if you want to modify the code.
+Building from source is the most complex approach for getting Drasi Server so you can work through the Getting Started tutorial, and it is strongly recommended to use one of the other approaches if you just want to start using Drasi Server quickly. This approach is ideal for future contributors or if you want to modify the code.
 
 ## Prerequisites
 
@@ -15,11 +15,113 @@ Build Drasi Server from source. This approach is ideal for contributors or if yo
 - **Rust 1.88+** — For building Drasi Server
 - **Text Editor** — Needed to edit files during the tutorial
 - **curl** — Used in later tutorial steps
-- **Native build dependencies** — Platform-specific C libraries required to compile Drasi Server
 
 If you are not sure you have these prerequisits installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
-## Step 1: Clone Drasi Server Repo
+## Step 1: Setup Native Build Dependencies
+
+Building `drasi-server` requires several native C libraries. Install the dependencies for your platform:
+
+### macOS
+
+Install Xcode Command Line Tools to get `clang` and `perl`.
+
+Then install the remaining dependencies with Homebrew:
+
+```bash
+brew install protobuf
+brew install jq
+```
+
+### Debian / Ubuntu
+
+`perl` is pre-installed. Install everything else with:
+
+```bash
+sudo apt-get install -y libssl-dev pkg-config clang libclang-dev libjq-dev libonig-dev protobuf-compiler 
+```
+  
+### Windows
+
+Building natively on Windows requires MSYS2, LLVM, Strawberry Perl, and protoc.
+
+**Install MSYS2**  
+MSYS2 provides Unix-like build tools and C libraries needed for native dependencies (OpenSSL, RocksDB, etc.).
+
+```powershell
+winget install MSYS2.MSYS2
+```
+
+Then install the required packages:
+
+```powershell
+pacman -S --noconfirm `
+    make `
+    perl `
+    mingw-w64-ucrt-x86_64-gcc `
+    mingw-w64-ucrt-x86_64-pkg-config `
+    mingw-w64-ucrt-x86_64-clang
+```
+
+**Install LLVM**  
+
+```powershell
+winget install LLVM.LLVM
+```
+
+**Install Strawberry Perl**  
+> **Note:** MSYS2's `perl` must appear **before** Strawberry Perl on PATH.
+> OpenSSL's build requires Unix-like paths that only MSYS2's perl provides.
+
+```powershell
+winget install StrawberryPerl.StrawberryPerl
+```
+
+**Install Protocol Buffers Compiler**  
+
+```powershell
+winget install Google.Protobuf
+```
+
+If `protoc` is not on your PATH after installation:
+
+```powershell
+$env:PROTOC = "C:\path\to\protoc.exe"
+```
+
+**Switch to the GNU Toolchain**  
+This project's `rust-toolchain.toml` pins Rust 1.88.0 and defaults to the MSVC target.
+Since we link against MSYS2 libraries, we need the GNU toolchain. Setting `$env:RUSTUP_TOOLCHAIN`
+overrides `rust-toolchain.toml` (note: `rustup default` alone is **not** sufficient).
+
+```powershell
+rustup toolchain install 1.88.0-x86_64-pc-windows-gnu
+$env:RUSTUP_TOOLCHAIN = "1.88.0-x86_64-pc-windows-gnu"
+```
+
+**Set PATH**  
+MSYS2 paths must come **before** Strawberry Perl so that OpenSSL uses MSYS2's Unix-like `perl`:
+
+```powershell
+$env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;C:\Strawberry\perl\bin;" + $env:PATH
+```
+
+**Set Tool Paths**  
+```powershell
+$env:LIBCLANG_PATH = "C:\Program Files\LLVM\bin"
+```
+
+**Install libjq**  
+
+```powershell
+pacman -S --noconfirm `
+    mingw-w64-ucrt-x86_64-jq `
+    mingw-w64-ucrt-x86_64-oniguruma
+
+$env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
+```
+
+## Step 2: Clone Drasi Server Repo
 
 Clone the <a href="https://github.com/drasi-project/drasi-server" target="_blank" rel="noopener noreferrer">Drasi Server repository</a>. In a terminal, run:
 
@@ -27,7 +129,7 @@ Clone the <a href="https://github.com/drasi-project/drasi-server" target="_blank
 git clone https://github.com/drasi-project/drasi-server.git
 ```
 
-## Step 2: Build Drasi Server
+## Step 3: Build Drasi Server
 
 Once the cloning is complete, change to the newly created `drasi-server` folder.
 
@@ -35,58 +137,9 @@ Once the cloning is complete, change to the newly created `drasi-server` folder.
 cd drasi-server
 ```
 
-### Build Configuration: jq Middleware
-
-The default `Cargo.toml` enables the `middleware-jq` feature on the `drasi-lib` dependency, which requires the **libjq** C library to be available at build time. If you don't have libjq installed, the build will fail with a jq-related error.
-
-You have two options:
-
-**Option A: Install libjq and set `JQ_LIB_DIR`**
-
-{{< tabpane persist="header" >}}
-{{< tab header="macOS" lang="bash" >}}
-brew install jq
-{{< /tab >}}
-{{< tab header="Debian/Ubuntu" lang="bash" >}}
-sudo apt-get update && sudo apt-get install -y \
-  pkg-config \
-  clang \
-  libclang-dev \
-  libjq-dev \
-  libonig-dev
-{{< /tab >}}
-{{< tab header="Windows" lang="powershell" >}}
-# Install libjq via MSYS2
-$env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;" + $env:PATH
-
-pacman -S --noconfirm `
-    mingw-w64-ucrt-x86_64-jq `
-    mingw-w64-ucrt-x86_64-oniguruma
-
-# Set the library path — tell jq-sys where to find libjq
-$env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
-{{< /tab >}}
-{{< /tabpane >}}
-
-**Option B: Disable the jq middleware**
-
-If you don't need the jq middleware, remove `"middleware-jq"` from the `drasi-lib` features list in `Cargo.toml`:
-
-```toml
-drasi-lib = { version = "0.3.8", features = [
-  # "middleware-jq",    # Remove or comment out this line
-  "middleware-decoder",
-  "middleware-map",
-  "middleware-parse-json",
-  "middleware-promote",
-  "middleware-relabel",
-  "middleware-unwind",
-] }
-```
-
 ### Run the Build
 
-Once the jq configuration is resolved, build and install Drasi Server:
+Build and install Drasi Server:
 
 ```bash
 cargo install --path . --root . --locked
@@ -110,7 +163,7 @@ You should see output showing the version number, for example:
 drasi-server 0.1.0
 ```
 
-## Step 3: Build the SSE CLI
+## Step 4: Build the SSE CLI
 
 The tutorial uses a companion CLI tool called `drasi-sse-cli` to observe Server-Sent Events (SSE) sent by Drasi Server in later steps. This is a separate Rust project in the `examples/sse-cli` folder of the repository.
 
@@ -134,7 +187,7 @@ You should see output showing the version number, for example:
 drasi-sse-cli 0.1.0
 ```
 
-## Step 4: Set Environment Variables
+## Step 5: Set Environment Variables
 
 The tutorial uses environment variables for various port numbers so the same commands work across all setup environments. Run the following to set the required environment variables:
 
@@ -151,7 +204,7 @@ $env:POSTGRES_HOST_PORT = 5432
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Step 5: Create Docker network
+## Step 6: Create Docker network
 
 Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
 
@@ -235,7 +288,3 @@ cargo 1.88.0 (873a06493 2025-05-10)
 ### Installing curl
 
 The tutorial uses `curl` to interact with Drasi Server during the tutorial. If you don't have `curl` installed you can install it using the instructions on the <a href="https://curl.se/download.html" target="_blank" rel="noopener noreferrer">curl download page</a>.
-
-### Installing Native Build Dependencies
-
-{{< read file="/shared-content/installation/drasi-server/build-from-source-prereqs.md" >}}
