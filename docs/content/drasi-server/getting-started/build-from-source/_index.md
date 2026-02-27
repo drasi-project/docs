@@ -16,7 +16,7 @@ Building from source is the most complex approach for getting Drasi Server so yo
 - **Text Editor** — Needed to edit files during the tutorial
 - **curl** — Used in later tutorial steps
 
-If you are not sure you have these prerequisits installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
+If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Setup Native Build Dependencies
 

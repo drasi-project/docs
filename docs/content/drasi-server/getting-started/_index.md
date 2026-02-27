@@ -741,52 +741,13 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
 
 ### Using the SSE Reaction
 
-Until now, you've been observing Continuous Query changes through the Log Reaction in the Drasi Server console. For the remaining steps, you'll use the **SSE CLI** — a command-line tool included with the Drasi Server repo. When you run the SSE CLI, it calls Drasi Server's REST API and creates an SSE (Server-Sent Events) Reaction that it subscribes to a Continuous Query of your choice. While running, the SSE CLI prints all the query result changes it receives to the terminal in real time. When you stop the SSE CLI (by pressing `Ctrl+C`), it automatically deletes the SSE Reaction it created on Drasi Server.
+Until now, you've been observing Continuous Query changes through the Log Reaction in the Drasi Server console. For the remaining steps, you'll use the **SSE CLI** — a command-line tool included with the Drasi Server repo. When you run the SSE CLI, it calls Drasi Server's REST API and creates an SSE (Server-Sent Events) Reaction that it subscribes to a Continuous Query that you specify. While running, the SSE CLI prints all the query result changes it receives to the terminal in real time. When you stop the SSE CLI (by pressing `Ctrl+C`), it automatically deletes the SSE Reaction it created on Drasi Server.
 
 The SSE CLI will enable you to see query result updates from the `message-counts` query as you change the underlying data without needing to view the Drasi Server console or call the REST API repeatedly.
 
-Build the SSE CLI:
-
-```bash
-cd examples/sse-cli && cargo build --release && cd ../..
-```
-
-Alternatively, if you don't have Cargo installed, you can download a pre-built binary:
-
-{{< tabpane persist="header" >}}
-{{< tab header="macOS (Apple Silicon)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-aarch64-apple-darwin -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="macOS (Intel)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-apple-darwin -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="Linux (x64)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-linux-gnu -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="Linux (ARM64)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-aarch64-linux-gnu -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="Linux musl (x64)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-linux-musl -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="Linux musl (ARM64)" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-aarch64-linux-musl -o examples/sse-cli/target/release/sse-cli
-chmod +x examples/sse-cli/target/release/sse-cli
-{{< /tab >}}
-{{< tab header="Windows (x64)" lang="powershell" >}}
-New-Item -ItemType Directory -Force -Path examples\sse-cli\target\release
-Invoke-WebRequest -Uri "https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-windows.exe" -OutFile "examples\sse-cli\target\release\sse-cli.exe"
-{{< /tab >}}
-{{< /tabpane >}}
-
 ### Stream the message-counts Query
 
-In a **new terminal**, start the SSE CLI to stream changes from the `message-counts` query:
+In a **new terminal**, start the SSE CLI to stream changes from the `message-counts` query. You must specify the Drasi Server URL and the Continuous Query ID to subscribe to:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}

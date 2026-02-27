@@ -14,7 +14,7 @@ This is the fastest way to get started with Drasi Server. The instructions below
 - **Docker** and **Docker Compose** — Needed to run the PostgreSQL database used in the tutorial
 - **Text Editor** — Needed to edit files during the tutorial
 
-If you are not sure you have these prerequisits installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
+If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Create Tutorial Directory
 
@@ -130,4 +130,4 @@ If you don't have Docker and Docker Compose installed, the easiest way to get st
   - **Linux**: Install <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener noreferrer">Docker Engine</a> and the <a href="https://docs.docker.com/compose/install/linux/" target="_blank" rel="noopener noreferrer">Docker Compose plugin</a>, or install <a href="https://docs.docker.com/desktop/setup/install/linux/" target="_blank" rel="noopener noreferrer">Docker Desktop</a> (includes Docker Compose)
   - Recommended resources: 4+ CPU cores, 8+ GB memory
 
- If have problems runnign or installing Docker, see the [Docker troubleshooting guide](https://docs.docker.com/config/daemon/troubleshoot/) for help.
+ If have problems running or installing Docker, see the [Docker troubleshooting guide](https://docs.docker.com/config/daemon/troubleshoot/) for help.

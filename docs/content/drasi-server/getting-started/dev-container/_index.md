@@ -15,7 +15,7 @@ Use VS Code Dev Containers for a consistent development environment with all dep
 - **VS Code** — Needed to run the Drasi Server Dev Container and edit files during the tutorial
 - **VS Code Dev Containers extension** — Needed to run the Drasi Server Dev Container
 
-If you are not sure you have these prerequisits installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
+If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Clone Drasi Server Repo
 
