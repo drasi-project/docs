@@ -36,7 +36,7 @@ Or manually:
 
 The Codespace takes a few minutes to initialize. During this time the setup script will:
 
-1. Build Drasi Server and put the executable in the `./bin/drasi-server` folder.
+1. Download Drasi Server and put the executable in the `./bin/drasi-server` folder.
 2. Install a PostgreSQL client for use during the tutorial.
 3. Install `curl`, which is used in later tutorial steps.
 
@@ -46,7 +46,7 @@ This indicates the container is ready to use.
 
 > **Tip**: The first build takes several minutes. Subsequent Codespace sessions are faster if you don't delete the Codespace.
 
-## Step 3: Verify the Build
+## Step 3: Verify the Setup
 
 Verify that Drasi Server is accessible:
 

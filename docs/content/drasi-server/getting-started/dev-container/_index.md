@@ -46,7 +46,7 @@ VS Code will display a list of available Dev Container configurations. Select **
 
 The container takes several minutes to build on first run. During this time the setup script will:
 
-1. Build Drasi Server and put the executable in the `./bin/drasi-server` folder.
+1. Download Drasi Server and put the executable in the `./bin/drasi-server` folder.
 2. Install a PostgreSQL client for use during the tutorial.
 3. Install `curl`, which is used in later tutorial steps.
 
@@ -54,7 +54,7 @@ Watch the terminal for: **✅ Drasi Server Getting Started tutorial environment 
 
 This indicates the container is ready to use.
 
-## Step 3: Verify the Build
+## Step 3: Verify the Setup
 
 Verify that Drasi Server is accessible by running the following command in the terminal:
 
