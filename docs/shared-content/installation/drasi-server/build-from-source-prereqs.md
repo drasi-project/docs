@@ -1,7 +1,7 @@
 Building `drasi-server` requires several native C libraries. Install the dependencies for your platform:
 
 
-### macOS
+#### macOS
 
 Xcode Command Line Tools provide `clang` and `perl`. Install the remaining dependencies with Homebrew:
 
@@ -9,7 +9,7 @@ Xcode Command Line Tools provide `clang` and `perl`. Install the remaining depen
 brew install protobuf
 ```
 
-### Debian / Ubuntu
+#### Debian / Ubuntu
 
 `perl` is pre-installed. Install everything else with:
 
@@ -17,11 +17,11 @@ brew install protobuf
 sudo apt-get install -y libssl-dev pkg-config clang libclang-dev libjq-dev libonig-dev protobuf-compiler 
 ```
 
-### Windows
+#### Windows
 
 Building natively on Windows requires MSYS2, LLVM, Strawberry Perl, and protoc.
 
-### 1. Install MSYS2
+##### 1. Install MSYS2
 
 MSYS2 provides Unix-like build tools and C libraries needed for native dependencies (OpenSSL, RocksDB, etc.).
 
@@ -40,13 +40,13 @@ pacman -S --noconfirm `
     mingw-w64-ucrt-x86_64-clang
 ```
 
-### 2. Install LLVM
+##### 2. Install LLVM
 
 ```powershell
 winget install LLVM.LLVM
 ```
 
-### 3. Install Strawberry Perl
+##### 3. Install Strawberry Perl
 
 > **Note:** MSYS2's `perl` must appear **before** Strawberry Perl on PATH.
 > OpenSSL's build requires Unix-like paths that only MSYS2's perl provides.
@@ -55,7 +55,7 @@ winget install LLVM.LLVM
 winget install StrawberryPerl.StrawberryPerl
 ```
 
-### 4. Install Protocol Buffers Compiler
+##### 4. Install Protocol Buffers Compiler
 
 ```powershell
 winget install Google.Protobuf
@@ -67,7 +67,7 @@ If `protoc` is not on your PATH after installation:
 $env:PROTOC = "C:\path\to\protoc.exe"
 ```
 
-### 5. Switch to the GNU Toolchain
+##### 5. Switch to the GNU Toolchain
 
 This project's `rust-toolchain.toml` pins Rust 1.88.0 and defaults to the MSVC target.
 Since we link against MSYS2 libraries, we need the GNU toolchain. Setting `$env:RUSTUP_TOOLCHAIN`
@@ -78,7 +78,7 @@ rustup toolchain install 1.88.0-x86_64-pc-windows-gnu
 $env:RUSTUP_TOOLCHAIN = "1.88.0-x86_64-pc-windows-gnu"
 ```
 
-### 6. Set PATH
+##### 6. Set PATH
 
 MSYS2 paths must come **before** Strawberry Perl so that OpenSSL uses MSYS2's Unix-like `perl`:
 
@@ -86,7 +86,7 @@ MSYS2 paths must come **before** Strawberry Perl so that OpenSSL uses MSYS2's Un
 $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;C:\Strawberry\perl\bin;" + $env:PATH
 ```
 
-### 7. Set Tool Paths
+##### 7. Set Tool Paths
 
 ```powershell
 $env:LIBCLANG_PATH = "C:\Program Files\LLVM\bin"

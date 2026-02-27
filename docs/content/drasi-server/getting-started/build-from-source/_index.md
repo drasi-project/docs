@@ -86,7 +86,7 @@ drasi-lib = { version = "0.3.8", features = [
 
 ### Run the Build
 
-Once the jq configuration is resolved, build and install:
+Once the jq configuration is resolved, build and install Drasi Server:
 
 ```bash
 cargo install --path . --root . --locked
@@ -94,11 +94,11 @@ cargo install --path . --root . --locked
 
 The `cargo install` command takes several minutes to complete the first time you run it because it needs to download and compile all dependencies. Subsequent runs will be much faster since Cargo caches the compiled dependencies.
 
-The `--root .` flag tells Cargo to install the Drasi Server binary to `./bin/drasi-server` in the current directory, which is where the rest of the tutorial assumes it will be.
+The `--root .` flag tells Cargo to put the newly built `drasi-server` binary in the `./bin` directory, which is where the rest of the tutorial assumes it will be.
 
-## Step 3: Verify the Build
+### Verify the Build
 
-Verify the binary works:
+Verify the `drasi-server` binary works:
 
 ```bash
 ./bin/drasi-server --version
@@ -108,6 +108,30 @@ You should see output showing the version number, for example:
 
 ```text
 drasi-server 0.1.0
+```
+
+## Step 3: Build the SSE CLI
+
+The tutorial uses a companion CLI tool called `drasi-sse-cli` to observe Server-Sent Events (SSE) sent by Drasi Server in later steps. This is a separate Rust project in the `examples/sse-cli` folder of the repository.
+
+To build the SSE CLI run:
+
+```bash
+cargo install --path examples/sse-cli --root . --locked
+```
+
+The build will put the `drasi-sse-cli` binary in the `./bin` directory with the `drasi-server` binary, where the tutorial expects it.
+
+Verify the `drasi-sse-cli` binary works:
+
+```bash
+./bin/drasi-sse-cli --version
+```
+
+You should see output showing the version number, for example:
+
+```text
+drasi-sse-cli 0.1.0
 ```
 
 ## Step 4: Set Environment Variables
