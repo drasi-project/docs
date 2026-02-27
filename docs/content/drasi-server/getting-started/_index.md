@@ -10,6 +10,9 @@ description: "Build your first change-driven solution with Drasi Server"
 
 This Getting Started tutorial teaches you how to use Drasi Server by getting it installed and running, then progressively building an increasingly sophisticated change-driven solution. You'll start with a simple configuration and extend it step by step — each step introduces a new Drasi capability.
 
+**Steps 1–3** give you a working Drasi Server solution in under 20 minutes.  
+**Steps 4–6** explore progressively advanced capabilities of Drasi Server.
+
 | Step | What You'll Learn | Time |
 | ---- | ----------------- | ---- |
 | **[Step 1: Set Up Your Environment](#setup)** | Install Drasi Server and set up your development environment | 5 min |
@@ -19,14 +22,20 @@ This Getting Started tutorial teaches you how to use Drasi Server by getting it 
 | **[Step 5: Add an Aggregation Query](#phase-3)** | Add a query with `count()` — see aggregations update automatically as data changes. Introduces the SSE CLI for streaming results | 5 min |
 | **[Step 6: Add Time-Based Detection](#phase-4)** | Detect the *absence* of activity over time — a powerful capability for monitoring and alerting | 5 min |
 
-**Steps 1–3** give you a working Drasi Server solution in under 20 minutes.  
-**Steps 4–6** explore progressively advanced capabilities of Drasi Server.
-
 ## Step 1: Set Up Your Environment {#setup}
 
-Choose your preferred environment for working through the Getting Started tutorial. Each approach gets you to the same starting point with Drasi Server installed and ready to run the tutorial.
+Choose your preferred environment for working through the Getting Started tutorial. Each approach gets you to the same starting point with Drasi Server installed and ready to work through the tutorial.
 
 <div class="card-grid">
+  <a href="download-binary/">
+    <div class="unified-card unified-card--tutorials">
+      <div class="unified-card-icon"><i class="fas fa-download"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Download Binary</h3>
+        <p class="unified-card-summary">Download a prebuilt binary. The fastest way to get started.</p>
+      </div>
+    </div>
+  </a>
   <a href="github-codespace/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fab fa-github"></i></div>
@@ -45,21 +54,12 @@ Choose your preferred environment for working through the Getting Started tutori
       </div>
     </div>
   </a>
-  <a href="download-binary/">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon"><i class="fas fa-download"></i></div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Download Binary</h3>
-        <p class="unified-card-summary">Download a prebuilt binary for macOS or Linux. The fastest way to get started.</p>
-      </div>
-    </div>
-  </a>
   <a href="build-from-source/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fas fa-hammer"></i></div>
       <div class="unified-card-content">
         <h3 class="unified-card-title">Build from Source</h3>
-        <p class="unified-card-summary">Clone and build Drasi Server yourself. Ideal for contributors.</p>
+        <p class="unified-card-summary">Clone and build Drasi Server yourself. Ideal for would-be contributors.</p>
       </div>
     </div>
   </a>
@@ -381,7 +381,7 @@ Shortly after, the bootstrap process loads the initial data from the `Messages` 
 
 ### View Continuous Query Results
 
-At any time you can view the current result set of a Continuous Query using Drasi Server's [REST API](../reference/rest-api/). For example, choose your preferred method to view the `all-messages` query results:
+At any time during the tutorial you can view the current result set of a Continuous Query using Drasi Server's [REST API](../reference/rest-api/). For example, choose your preferred method to view the `all-messages` query results:
 
 {{< tabpane text=true >}}
 {{% tab header="Browser" %}}
