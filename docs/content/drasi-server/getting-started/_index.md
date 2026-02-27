@@ -17,10 +17,10 @@ This Getting Started tutorial teaches you how to use Drasi Server by getting it 
 | ---- | ----------------- | ---- |
 | **[Step 1: Set Up Your Environment](#setup)** | Install Drasi Server and set up your development environment | 5 min |
 | **[Step 2: Set Up the Tutorial Database](#database)** | Start a PostgreSQL database and load sample data | 3 min |
-| **[Step 3: Create Your First Configuration](#phase-1)** | Use `drasi-server init` to create a Source, Continuous Query, and Log Reaction — see changes flow through Drasi in real time | 10 min |
-| **[Step 4: Add a Query with Criteria](#phase-2)** | Add a filtered query via the REST API — learn how `WHERE` clauses control which changes generate notifications | 3 min |
-| **[Step 5: Add an Aggregation Query](#phase-3)** | Add a query with `count()` — see aggregations update automatically as data changes. Introduces the SSE CLI for streaming results | 5 min |
-| **[Step 6: Add Time-Based Detection](#phase-4)** | Detect the *absence* of activity over time — a powerful capability for monitoring and alerting | 5 min |
+| **[Step 3: Create Your First Configuration](#phase-1)** | Use `drasi-server init` to create a Source, Continuous Query, and Log Reaction — see Drasi detect and react to change in real time | 10 min |
+| **[Step 4: Add a Query with Criteria](#phase-2)** | Add a filtered query via the REST API — learn how `WHERE` clauses tell Drasi what changes you are interested in | 3 min |
+| **[Step 5: Add an Aggregation Query](#phase-3)** | Add a query with `count()` — see aggregations update automatically as data changes and add a new Reaction that generates Server-Sent Events (SSE) when query results change | 5 min |
+| **[Step 6: Add Time-Based Detection](#phase-4)** | Detect the *absence of change* over time — a powerful capability for monitoring and alerting | 5 min |
 
 ## Step 1: Set Up Your Environment {#setup}
 

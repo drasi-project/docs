@@ -60,15 +60,11 @@ You should see output showing the version number, for example:
 drasi-server 0.1.0
 ```
 
----
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
 <p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
-
----
 
 ## Codespace Tips
 

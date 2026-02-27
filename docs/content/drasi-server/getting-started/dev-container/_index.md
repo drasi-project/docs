@@ -10,35 +10,12 @@ Use VS Code Dev Containers for a consistent development environment with all dep
 
 ## Prerequisites
 
-- **Git** — Needed to clone the Drasi Server code (<a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">Install Git</a>)
-- **Docker** — Needed to run the Drasi Server Dev Container and the PostgreSQL database used in the tutorial. The easiest way to get started depends on your platform:
-  - **Mac/Windows**: Install <a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener noreferrer">Docker Desktop</a>
-  - **Linux**: Install <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener noreferrer">Docker Engine</a> (recommended) or <a href="https://docs.docker.com/desktop/setup/install/linux/" target="_blank" rel="noopener noreferrer">Docker Desktop</a>
-  - Recommended resources: 4+ CPU cores, 8+ GB memory
-- **VS Code** — Needed to run the Drasi Server Dev Container and edit files during the tutorial (<a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">Install Visual Studio Code</a>)
-- **VS Code Dev Containers extension** — Needed to run the Drasi Server Dev Container (<a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers" target="_blank" rel="noopener noreferrer">Install from VS Code Marketplace</a>)
+- **Git** — Needed to clone the Drasi Server code
+- **Docker** — Needed to run the Drasi Server Dev Container and the PostgreSQL database used in the tutorial
+- **VS Code** — Needed to run the Drasi Server Dev Container and edit files during the tutorial
+- **VS Code Dev Containers extension** — Needed to run the Drasi Server Dev Container
 
-#### Verify Git is Installed
-
-```bash
-git --version
-```
-
-You should see output like `git version 2.x.x`. If you see "command not found", install Git from the link above.
-
-#### Verify Docker is Running
-
-```bash
-docker ps
-```
-
-If Docker is running, you'll see a table with these headings showing running containers (even if no containers are running):
-
-```text
-CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
-```
-
-If you see an error like `Cannot connect to the Docker daemon`, Docker isn't running. Start Docker Desktop (Mac/Windows) or the Docker service (`sudo systemctl start docker` on Linux) and wait for it to fully initialize, then try again. If problems persist, see the [Docker troubleshooting guide](https://docs.docker.com/config/daemon/troubleshoot/) for additional help.
+If you are not sure you have these prerequisits installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Clone Drasi Server Repo
 
@@ -93,19 +70,60 @@ drasi-server 0.1.0
 
 If you see a "file not found" error, the build may not have completed. Check the terminal output for errors and try rebuilding the container.
 
----
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
 <p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
----
+## Troubleshooting
 
-## Dev Container Tips
+### Installing Git
 
-### Port Forwarding
+The tutorial uses `git` to clone the Drasi Server repository. If you don't have Git installed, you can install it from the <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">Git download page</a>.
+
+To verify Git is installed, run:
+
+```bash
+git --version
+```
+
+You should see output like `git version 2.x.x`. If you see "command not found", install Git from the link above.
+
+### Installing Docker
+
+The tutorial uses Docker to run the Drasi Server Dev Container and the PostgreSQL database.
+
+If you are not sure you have Docker installed or that it is running, you can verify by running:
+
+```bash
+docker ps
+```
+
+If Docker is running, you'll see a table with these headings showing running containers (even if no containers are running):
+
+```text
+CONTAINER ID   IMAGE   COMMAND   CREATED   STATUS   PORTS   NAMES
+```
+
+If you don't have Docker installed, the easiest way to get started depends on your platform:
+  - **Mac/Windows**: Install <a href="https://www.docker.com/products/docker-desktop/" target="_blank" rel="noopener noreferrer">Docker Desktop</a>
+  - **Linux**: Install <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener noreferrer">Docker Engine</a> (recommended) or <a href="https://docs.docker.com/desktop/setup/install/linux/" target="_blank" rel="noopener noreferrer">Docker Desktop</a>
+  - Recommended resources: 4+ CPU cores, 8+ GB memory
+
+If you see an error like `Cannot connect to the Docker daemon`, Docker isn't running. Start Docker Desktop (Mac/Windows) or the Docker service (`sudo systemctl start docker` on Linux) and wait for it to fully initialize, then try again. If problems persist, see the [Docker troubleshooting guide](https://docs.docker.com/config/daemon/troubleshoot/) for additional help.
+
+### Installing VS Code
+
+The tutorial uses VS Code to run the Drasi Server Dev Container and edit files. If you don't have VS Code installed, you can install it from the <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">Visual Studio Code download page</a>.
+
+### Installing VS Code Dev Containers Extension
+
+The tutorial uses the VS Code Dev Containers extension to run the Drasi Server Dev Container. You can install it from the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers" target="_blank" rel="noopener noreferrer">VS Code Marketplace</a>.
+
+### Dev Container Tips
+
+#### Port Forwarding
 
 The Dev Container automatically forwards ports to your local machine. Check the **Ports** tab in VS Code to access:
 
@@ -113,14 +131,14 @@ The Dev Container automatically forwards ports to your local machine. Check the 
 - Port 8181 (SSE stream)
 - Port 5532 (PostgreSQL)
 
-### Rebuild the Container
+#### Rebuild the Container
 
 If you change `.devcontainer/getting-started/devcontainer.json`:
 
 1. Press `F1`
 2. Select "Dev Containers: Rebuild Container"
 
-### Exit the Dev Container
+#### Exit the Dev Container
 
 To return to local development:
 
