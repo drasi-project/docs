@@ -187,24 +187,7 @@ You should see output showing the version number, for example:
 drasi-sse-cli 0.1.0
 ```
 
-## Step 5: Set Environment Variables
-
-The tutorial uses environment variables for various port numbers so the same commands work across all setup environments. Run the following to set the required environment variables:
-
-{{< tabpane persist="header" >}}
-{{< tab header="bash / zsh" lang="bash" >}}
-export SERVER_PORT=8080
-export SSE_PORT=8081
-export POSTGRES_HOST_PORT=5432
-{{< /tab >}}
-{{< tab header="PowerShell" lang="powershell" >}}
-$env:SERVER_PORT = 8080
-$env:SSE_PORT = 8081
-$env:POSTGRES_HOST_PORT = 5432
-{{< /tab >}}
-{{< /tabpane >}}
-
-## Step 6: Create Docker network
+## Step 5: Create Docker network
 
 Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
 
