@@ -181,7 +181,7 @@ docker network create drasi-network
 ```
 ---
 
-## ✅ Environment Setup Complete
+## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 

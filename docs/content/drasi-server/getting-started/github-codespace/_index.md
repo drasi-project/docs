@@ -62,7 +62,7 @@ drasi-server 0.1.0
 
 ---
 
-## ✅ Environment Setup Complete
+## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 

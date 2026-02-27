@@ -95,7 +95,7 @@ If you see a "file not found" error, the build may not have completed. Check the
 
 ---
 
-## ✅ Environment Setup Complete
+## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
