@@ -751,12 +751,12 @@ In a **new terminal**, start the SSE CLI to stream changes from the `message-cou
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
-./examples/sse-cli/target/release/sse-cli \
+./bin/drasi-sse-cli \
   --server http://localhost:8080 \
   --query message-counts
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-./examples/sse-cli/target/release/sse-cli `
+./bin/drasi-sse-cli `
   --server http://localhost:8080 `
   --query message-counts
 {{< /tab >}}
@@ -920,12 +920,12 @@ In a separate terminal, start the SSE CLI:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
-./examples/sse-cli/target/release/sse-cli \
+./bin/drasi-sse-cli \
   --server http://localhost:8080 \
   --query inactive-senders
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-./examples/sse-cli/target/release/sse-cli `
+./bin/drasi-sse-cli `
   --server http://localhost:8080 `
   --query inactive-senders
 {{< /tab >}}
