@@ -341,16 +341,18 @@ blockquote {
   }
 }
   
-/* Adjust the logo size */
+/* Navbar background and logo */
 .td-navbar {
+    background-color: $primary;
+
     .navbar-brand {
         // Margin adjustments go here if needed.
         margin-left: $spacer;
 
         .navbar-brand__logo {
             svg {
-                width: 40%;
-                height: auto;
+                height: 40px;
+                width: auto;
             }
         }
     }
