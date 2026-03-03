@@ -21,6 +21,12 @@
     modalAnimationDuration: 200,
   };
 
+  // Detect base path from the script tag's data attribute
+  // This handles deployments under a subpath (e.g. /docs/ on GitHub Pages)
+  const scriptEl = document.getElementById('glossary-tooltips-script');
+  const rawBase = scriptEl ? scriptEl.getAttribute('data-base-path') || '' : '';
+  const BASE_PATH = rawBase.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '');
+
   // ==========================================================================
   // Glossary Data
   // ==========================================================================
@@ -70,7 +76,7 @@
 
     // Try to fetch from glossary page
     try {
-      const response = await fetch('/reference/glossary/');
+      const response = await fetch(BASE_PATH + '/reference/glossary/');
       if (response.ok) {
         const html = await response.text();
         const parser = new DOMParser();
@@ -284,12 +290,12 @@
         </div>
         <div class="glossary-modal-results" id="glossary-modal-results">
           <div class="glossary-modal-hint">
-            <p>Type to search, or browse all terms in the <a href="/reference/glossary/">full glossary</a>.</p>
+            <p>Type to search, or browse all terms in the <a href="${BASE_PATH}/reference/glossary/">full glossary</a>.</p>
           </div>
         </div>
         <div class="glossary-modal-footer">
           <span class="glossary-modal-shortcut"><kbd>Esc</kbd> to close</span>
-          <a href="/reference/glossary/" class="glossary-modal-link">
+          <a href="${BASE_PATH}/reference/glossary/" class="glossary-modal-link">
             View full glossary <i class="fas fa-arrow-right"></i>
           </a>
         </div>
@@ -377,7 +383,7 @@
       // Show hint when no query
       modalResults.innerHTML = `
         <div class="glossary-modal-hint">
-          <p>Type to search, or browse all terms in the <a href="/reference/glossary/">full glossary</a>.</p>
+          <p>Type to search, or browse all terms in the <a href="${BASE_PATH}/reference/glossary/">full glossary</a>.</p>
         </div>
       `;
       return;
@@ -395,7 +401,7 @@
         <div class="glossary-modal-empty">
           <i class="fas fa-search"></i>
           <p>No terms match "<strong>${escapeHtml(query)}</strong>"</p>
-          <a href="/reference/glossary/">Browse full glossary</a>
+          <a href="${BASE_PATH}/reference/glossary/">Browse full glossary</a>
         </div>
       `;
       return;
@@ -406,7 +412,7 @@
       .slice(0, 10)
       .map(
         (term) => `
-      <a href="/reference/glossary/#${term.id}" class="glossary-modal-result">
+      <a href="${BASE_PATH}/reference/glossary/#${term.id}" class="glossary-modal-result">
         <div class="glossary-modal-result-header">
           <span class="glossary-modal-result-term">${escapeHtml(term.term)}</span>
           <span class="glossary-modal-result-category glossary-modal-result-category--${term.category}">
@@ -422,7 +428,7 @@
     if (matches.length > 10) {
       modalResults.innerHTML += `
         <div class="glossary-modal-more">
-          <a href="/reference/glossary/?q=${encodeURIComponent(query)}">
+          <a href="${BASE_PATH}/reference/glossary/?q=${encodeURIComponent(query)}">
             View all ${matches.length} matches <i class="fas fa-arrow-right"></i>
           </a>
         </div>
