@@ -60,7 +60,6 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/github-pages')
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
