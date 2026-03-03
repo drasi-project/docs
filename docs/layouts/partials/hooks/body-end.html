@@ -1,2 +1,14 @@
 <script src="{{ "js/sync-tabs.js" | relURL }}"></script>
 <script src="{{ "js/glossary-tooltips.js" | relURL }}"></script>
+<script type="text/javascript">
+    // Fix internal links when site is served under a subpath (e.g. /docs/)
+    (function() {
+        var basePath = '{{ site.BaseURL }}'.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '');
+        if (!basePath) return;
+        document.querySelectorAll('a[href^="/"]').forEach(function(link) {
+            var href = link.getAttribute('href');
+            if (href.startsWith(basePath + '/') || href.startsWith('//')) return;
+            link.setAttribute('href', basePath + href);
+        });
+    })();
+</script>

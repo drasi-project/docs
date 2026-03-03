@@ -5,22 +5,4 @@
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "odhx268fnz");
 </script>
-
-<script type="text/javascript">
-    // Fix internal links when site is served under a subpath (e.g. /docs/)
-    // Hugo's baseURL may include a path prefix that hardcoded absolute hrefs don't account for.
-    (function() {
-        var basePath = '{{ site.BaseURL }}'.replace(/^https?:\/\/[^/]+/, '').replace(/\/$/, '');
-        if (!basePath) return; // No subpath, nothing to fix
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="/"]').forEach(function(link) {
-                var href = link.getAttribute('href');
-                // Skip if already prefixed, or if it's a protocol-relative URL
-                if (href.startsWith(basePath + '/') || href.startsWith('//')) return;
-                link.setAttribute('href', basePath + href);
-            });
-        });
-    })();
-</script>
  
