@@ -51,7 +51,7 @@ jobs:
       - name: Build Hugo Site
         run: |
           cd docs
-          hugo --baseURL "https://ruokun-niu.github.io/docs/"
+          hugo --baseURL "https://drasi-project.github.io/docs/"
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
