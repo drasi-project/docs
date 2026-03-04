@@ -12,6 +12,8 @@ description: >
 
 | Title | Source | Date |
 |-------|--------|------|
+| [How Netstar Streamlined Fleet Monitoring and Reduced Custom Integrations with Drasi](https://www.cncf.io/case-studies/netstar/) | CNCF Case Study | Feb 16, 2026 |
+| [Event-Driven to Change-Driven: Low-cost dependency inversion](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/event-driven-to-change-driven-low-cost-dependency-inversion/4478948) | Microsoft Linux and Open Source Blog | Dec 17, 2025 |
 | [Beyond the Chat Window: How Change-Driven Architecture Enables Ambient AI Agents](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/beyond-the-chat-window-how-change-driven-architecture-enables-ambient-ai-agents/4475026)| Microsoft Linux and Open Source Blog | Dec 3, 2025 |
 | [Marking Drasi’s first anniversary: introducing GQL support for Continuous Queries](https://opensource.microsoft.com/blog/2025/10/09/marking-drasis-first-anniversary-introducing-gql-support-for-continuous-queries) | Microsoft Open Source Blog | Oct 9, 2025 |
 | [Drasi is Fluent in GQL: Integrating the New Graph Query Standard](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/drasi-is-fluent-in-gql-integrating-the-new-graph-query-standard/4458888) | Microsoft Open Source Blog | Oct 9, 2025 |
