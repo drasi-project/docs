@@ -67,7 +67,7 @@ Drasi currently supports the following subset of the Cypher Query Language:
   - Numeric: abs, ceil, floor, rand, round, sign
   - String: left, ltrim, replace, reverse, right, rtrim, split, substring, toLower, toString, toStringOrNull, toUpper, trim
   - Temporal: 
-    - Instant: date, datetime, localdatetime, loocaltime, time
+    - Instant: date, datetime, localdatetime, localtime, time
     - Duration: duration, duration.between, duration.inMonths, duration.inDays, duration.inSeconds
   - CASE expressions:
     - simple and generic forms

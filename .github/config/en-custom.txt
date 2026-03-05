@@ -1293,7 +1293,7 @@ inMonths
 inSeconds
 isNan
 localdatetime
-loocaltime
+localtime
 ltrim
 rtrim
 substring
