@@ -27,14 +27,14 @@ Detecting specific meaningful changes in data is complex. Traditional approaches
 - **Polling**: Retrieving current data and comparing it with previous results is inefficient and requires complex logic to isolate what has changed.
 - **Processing change feeds**: Database change logs and message-based notifications generate high volumes of mostly uninteresting changes, requiring significant infrastructure to filter to relevant changes.
 - **Maintaining state**: Determining what has actually changed often requires caching previous states and writing complex comparison logic.
-- **Reacting to change**: TODO: talk about the need to code / integrate with downstream systems.
+- **Reacting to change**: After detecting changes, teams still write custom glue to push updates to downstream systems (webhooks, queues, dashboards) and handle retries, mapping, and alerting.
 
 These approaches make solutions brittle and costly to maintain / update as requirements change.
 
 ## How Drasi Helps
 Drasi's low-code query-based approach enables you to write declarative graph queries that define the changes you want to detect and the data you want to distribute when those changes occur. Change semantics are defined by your query, not the source system. This eliminates the overhead of polling, parsing, filtering, and state management.
 
-When changes do occur - TODO: talk about reactions as opposed to custom code / integration with downstream systems.
+When changes do occur, Drasi uses {{< term "Reaction" "Reactions" >}} to deliver those changes to downstream systems, so you configure integrations instead of writing custom code.
 
 Drasi is available in three deployment options to match your needs:
 - **[{{< term "drasi-lib" >}}](/drasi-lib/)** - A Rust crate for building change-driven Rust solutions
