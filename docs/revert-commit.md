@@ -1,0 +1,1 @@
+"Revert \"Spellcheck: allow Netstar\"\n\nThis reverts commit 0970db26676a2ae631c57f3861df02fa93b86e44."
