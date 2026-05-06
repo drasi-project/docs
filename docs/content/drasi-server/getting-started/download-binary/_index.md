@@ -31,11 +31,11 @@ There are a set files used during setup and the tutorial that you need to downlo
 
 {{< tabpane persist="header" >}}
 {{< tab header="Mac / Linux" lang="bash" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/0.1.3/drasi-server-examples.zip -o drasi-server-examples.zip
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-examples.zip -o drasi-server-examples.zip
 unzip drasi-server-examples.zip -d .
 {{< /tab >}}
 {{< tab header="Windows" lang="powershell" >}}
-curl -fsSL https://github.com/drasi-project/drasi-server/releases/download/0.1.3/drasi-server-examples.zip -o drasi-server-examples.zip
+curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-examples.zip -o drasi-server-examples.zip
 tar -xf drasi-server-examples.zip
 {{< /tab >}}
 {{< /tabpane >}}
