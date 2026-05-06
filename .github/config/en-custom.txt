@@ -1636,3 +1636,9 @@ musl
 xf
 prereqs
 Netstar
+HMAC
+Preflight
+Shopify
+ns
+Handlebars
+Stripe
