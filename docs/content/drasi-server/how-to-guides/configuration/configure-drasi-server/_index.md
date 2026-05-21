@@ -104,6 +104,12 @@ stateStore:
 defaultPriorityQueueCapacity: 10000
 defaultDispatchBufferCapacity: 1000
 
+# Named storage backends (optional, referenced by queries)
+storageBackends:
+  - id: persistent
+    backend_type: rocksdb
+    path: /data/drasi/indexes
+
 # Sources (see: Configure Sources)
 sources:
   - kind: postgres
@@ -151,6 +157,7 @@ Top-level settings in `server.yaml`:
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources) |
 | `queries` | array | `[]` | Continuous queries |
 | `reactions` | array | `[]` | Reactions to query changes (see: Configure Reactions) |
+| `storageBackends` | array | `[]` | Named storage backend definitions (referenced by queries via `storageBackend`) |
 | `instances` | array | `[]` | Optional multi-instance mode (see below) |
 
 ### Example
@@ -236,7 +243,7 @@ This page covers the **common fields** shared by all queries; see the query lang
 | `priorityQueueCapacity` | integer | None | Per-query override for the event priority queue capacity |
 | `dispatchBufferCapacity` | integer | None | Per-query override for the dispatch buffer capacity |
 | `dispatchMode` | string | None | Advanced; currently only `Channel` is accepted when set |
-| `storageBackend` | object | None | Advanced; storage backend configuration (structure depends on backend) |
+| `storageBackend` | string or object | None | Storage backend for query indexes; a string references a named backend, or an inline object (see [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)) |
 | `middleware` | array | `[]` | Reserved for future use (currently ignored) |
 
 ## Environment Variable Interpolation
