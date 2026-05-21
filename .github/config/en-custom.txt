@@ -145,6 +145,7 @@ aws
 az
 azure
 backend
+backends
 btn
 cardpane
 cas
@@ -1462,6 +1463,7 @@ websockets
 DrasiApproach
 RetailOps
 BackendApi
+Backends
 MakePortPublic
 FailedToFetch
 FrontendUI
