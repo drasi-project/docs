@@ -48,6 +48,15 @@ description: "Connect Drasi Server to databases, APIs, and data streams"
       </div>
     </div>
   </a> -->
+  <a href="configure-mysql-source/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">MySQL</h3>
+        <p class="unified-card-summary">Stream changes from MySQL using binlog replication</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-postgresql-source/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-database"></i></div>
