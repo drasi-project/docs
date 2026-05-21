@@ -227,7 +227,7 @@ FLUSH PRIVILEGES;
 ## Known limitations
 
 - Packets larger than 16 MB are not supported.
-- DDL changes (schema migrations) during streaming may require a source restart.
+- Schema changes (migrations, column additions/removals) during streaming may require a source restart.
 
 ## Documentation resources
 
