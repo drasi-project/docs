@@ -26,7 +26,7 @@ The MySQL {{< term "Source" >}} streams row-level changes from a MySQL database 
 
 ## Prerequisites
 
-- MySQL **5.7+** or **8.0+**.
+- MySQL **8.0+**.
 - Binary logging enabled with row-based format:
   - `binlog_format = ROW`
   - `binlog_row_image = FULL`
@@ -129,7 +129,7 @@ If no key columns can be resolved for a row, the source logs a warning and falls
 | `serverId` | integer | auto-generated | MySQL server ID for the replication connection. Auto-generated from source instance ID if not specified. |
 | `heartbeatIntervalSeconds` | integer | `30` | Heartbeat interval in seconds for the replication connection. |
 
-Fields marked with support Drasi Server config references like `${ENV_VAR}` / `${ENV_VAR:-default}`.
+Fields support Drasi Server config references like `${ENV_VAR}` / `${ENV_VAR:-default}`.
 
 ### tableKeys
 
@@ -198,8 +198,7 @@ curl http://localhost:8080/api/v1/queries/my-query/results
 ### 4. Check binlog status in MySQL
 
 ```sql
-SHOW BINARY LOG STATUS;
-SHOW REPLICAS;
+SHOW MASTER STATUS;
 ```
 
 ## Troubleshooting
