@@ -1642,3 +1642,11 @@ Shopify
 ns
 Handlebars
 Stripe
+ACI
+Hardcoded
+IntelliJ
+KDE
+Keychain
+Keyring
+keyring
+VMs
