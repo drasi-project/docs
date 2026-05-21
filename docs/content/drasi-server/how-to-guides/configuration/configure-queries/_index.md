@@ -312,7 +312,7 @@ queries:
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `backend_type` | string | — | Must be `memory` |
-| `enable_archive` | boolean | `false` | Enable archive index for `drasi.past()` time-travel queries |
+| `enable_archive` | boolean | `false` | Enable archive index for time-travel queries |
 
 ### RocksDB Backend
 
@@ -335,7 +335,7 @@ queries:
 |-------|------|---------|-------------|
 | `backend_type` | string | — | Must be `rocksdb` |
 | `path` | string | Required | Absolute path for RocksDB data files |
-| `enable_archive` | boolean | `false` | Enable archive index for `drasi.past()` time-travel queries |
+| `enable_archive` | boolean | `false` | Enable archive index for time-travel queries |
 | `direct_io` | boolean | `false` | Use direct I/O (bypasses OS page cache) |
 
 {{< alert title="Note" color="info" >}}
