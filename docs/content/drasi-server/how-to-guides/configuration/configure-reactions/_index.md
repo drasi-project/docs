@@ -12,6 +12,15 @@ description: "Set up actions triggered by data changes"
 {{< term "Reaction" "Reactions" >}} process query {{< term "Result Change Event" "result changes" >}} and perform actions. {{< term "Drasi Server" >}} supports several reaction types for different output needs.
 
 <div class="card-grid">
+  <a href="configure-aws-sqs-reaction/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fab fa-aws"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">AWS SQS</h3>
+        <p class="unified-card-summary">Send messages to Amazon SQS on changes</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-grpc-reaction/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-network-wired"></i></div>
