@@ -107,7 +107,7 @@ reactions:
 | Pie Chart | `pie_chart` | `queryId`, `nameField`, `valueField` |
 | Gauge | `gauge` | `queryId`, `valueField`, `min`, `max`, `aggregation` |
 | KPI | `kpi` | `queryId`, `valueField`, `aggregation`, `label` |
-| Markdown | `text` | `queryId`, `template` (Handlebars + Markdown) |
+| Text (Markdown) | `text` | `queryId`, `template` (Handlebars + Markdown) |
 | Map | `map` | `queryId`, `latField`, `lngField`, `valueField` |
 
 ### Widget Grid Placement
@@ -436,8 +436,12 @@ services:
 ## Limitations
 
 - No built-in authentication (single-user assumption in v1)
-- Clients re-accumulate in-memory state after WebSocket reconnect
+- After a WebSocket reconnect, clients must rebuild their state from a fresh snapshot — there is no server-side replay or backfill of missed events
 - Map widget uses scatter coordinates unless ECharts geo map data is registered
+
+{{< alert title="Security" color="warning" >}}
+The dashboard reaction does not include authentication or TLS. Do not expose the dashboard port directly to the public internet. In production, place it behind a reverse proxy or ingress controller that provides authentication, TLS termination, and network access restrictions.
+{{< /alert >}}
 
 ## Documentation resources
 
