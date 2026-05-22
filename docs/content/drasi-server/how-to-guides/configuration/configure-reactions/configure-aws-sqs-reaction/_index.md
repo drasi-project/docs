@@ -36,21 +36,21 @@ reactions:
 
 ## Configuration Reference
 
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `kind` | string | Yes | — | Must be `aws-sqs` |
-| `id` | string | Yes | — | Unique reaction identifier |
-| `queries` | array | Yes | — | Query IDs to subscribe to |
-| `autoStart` | boolean | No | `true` | Start reaction automatically |
-| `queueUrl` | string | Yes | — | Full SQS queue URL |
-| `region` | string | No | None | AWS region override |
-| `endpointUrl` | string | No | None | Custom SQS endpoint (ElasticMQ/LocalStack) |
-| `accessKeyId` | string | No | None | Explicit AWS access key ID |
-| `secretAccessKey` | string | No | None | Explicit AWS secret access key |
-| `fifoQueue` | boolean | No | `false` | Enable FIFO queue options |
-| `messageGroupIdTemplate` | string | No | None | Handlebars template for FIFO `MessageGroupId` |
-| `routes` | object | No | `{}` | Per-query templates |
-| `defaultTemplate` | object | No | None | Fallback templates when a query-specific route is not defined |
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `kind` | string | Required | Must be `aws-sqs` |
+| `id` | string | Required | Unique reaction identifier |
+| `queries` | array | Required | Query IDs to subscribe to |
+| `autoStart` | boolean | `true` | Start reaction automatically |
+| `queueUrl` | string | Required | Full SQS queue URL |
+| `region` | string | None | AWS region override |
+| `endpointUrl` | string | None | Custom SQS endpoint (ElasticMQ/LocalStack) |
+| `accessKeyId` | string | None | Explicit AWS access key ID |
+| `secretAccessKey` | string | None | Explicit AWS secret access key |
+| `fifoQueue` | boolean | `false` | Enable FIFO queue options |
+| `messageGroupIdTemplate` | string | None | Handlebars template for FIFO `MessageGroupId` |
+| `routes` | object | `{}` | Per-query templates |
+| `defaultTemplate` | object | None | Fallback templates when a query-specific route is not defined |
 
 ## Route Configuration
 
@@ -111,13 +111,13 @@ Message bodies and attribute values support Handlebars templating.
 
 | Variable | Available On | Description |
 |----------|-------------|-------------|
-| `{{after}}` | ADD, UPDATE | The new data object |
-| `{{after.property}}` | ADD, UPDATE | Specific property from new data |
-| `{{before}}` | UPDATE, DELETE | The previous data object |
-| `{{before.property}}` | UPDATE, DELETE | Specific property from previous data |
+| `{{after}}` | `added`, `updated` | The new data object |
+| `{{after.property}}` | `added`, `updated` | Specific property from new data |
+| `{{before}}` | `updated`, `deleted` | The previous data object |
+| `{{before.property}}` | `updated`, `deleted` | Specific property from previous data |
 | `{{query_id}}` | All | The query ID that produced this change |
 | `{{query_name}}` | All | The query name |
-| `{{operation}}` | All | The operation type (`add`, `update`, `delete`) |
+| `{{operation}}` | All | The operation type (`added`, `updated`, `deleted`) |
 | `{{timestamp}}` | All | Event timestamp |
 | `{{json value}}` | All | JSON-serializes nested objects |
 

@@ -1642,3 +1642,6 @@ Shopify
 ns
 Handlebars
 Stripe
+ElasticMQ
+LocalStack
+deduplication
