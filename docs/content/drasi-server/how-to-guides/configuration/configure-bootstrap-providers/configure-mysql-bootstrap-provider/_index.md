@@ -26,7 +26,7 @@ The **MySQL bootstrap provider** loads initial state from a MySQL database so qu
 
 - Use with a **MySQL source** (`sources[].kind: mysql`).
 - The database user must have **SELECT** permission on the configured tables.
-- The `tables` list is **required** — you must explicitly specify which tables to bootstrap.
+- Configure `tables` (and optional `tableKeys`) on the MySQL source.
 
 ## Quick example (Drasi Server config)
 
@@ -54,32 +54,16 @@ sources:
 
 ## Configuration reference
 
+`mysql` accepts **no additional fields**.
+
 | Field | Type | Required | Description |
 |---|---|---:|---|
 | `kind` | string | Yes | Must be `mysql`. |
-| `host` | string | No | MySQL host (default: `localhost`). |
-| `port` | integer | No | MySQL port (default: `3306`). |
-| `database` | string | Yes | Database name to connect to. |
-| `user` | string | Yes | Database user with SELECT permission. |
-| `password` | string | No | Password (default: `""`). |
-| `tables` | string[] | Yes | Table allow-list for bootstrapping. Must contain at least one table. |
-| `tableKeys` | array | No | Override key columns per table (see below). |
-
-### tableKeys
-
-Use `tableKeys` to define key columns for element ID generation when primary keys are missing.
-
-```yaml
-bootstrapProvider:
-  kind: mysql
-  tableKeys:
-    - table: order_items
-      keyColumns: [order_id, product_id]
-```
 
 ## Notes
 
 - Drasi Server only allows `kind: mysql` when the source is also `kind: mysql`.
+- Connection and table scope come from the MySQL source configuration (for example `host`, `database`, `tables`, and `tableKeys`).
 - The `tables` list acts as a security allow-list — only tables explicitly listed will be bootstrapped.
 - Table names must use only letters, numbers, and underscores.
 
