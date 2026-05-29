@@ -10,7 +10,7 @@ description: "Declare reusable identity providers and reference them from source
 
 **Identity providers** let {{< term "Source" "sources" >}} and {{< term "Reaction" "reactions" >}} authenticate with databases and external services without hardcoding credentials in each component. They are declared once at the top of the Drasi Server config and referenced by `id` from any source or reaction that needs to authenticate.
 
-This page covers **where and how** to define identity providers and reference them. Per-provider configuration (auth methods, plugin-specific fields) is documented on each provider's page.
+This page covers how to define identity providers and reference them. Per-provider configuration (auth methods, plugin-specific fields) is documented below.
 
 ## Define Identity Providers
 
