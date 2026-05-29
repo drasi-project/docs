@@ -1642,3 +1642,7 @@ Shopify
 ns
 Handlebars
 Stripe
+OSSRDBMS
+IMDS
+VMs
+enum
