@@ -8,7 +8,9 @@ hide_readingtime: true
 description: "Build your first change-driven solution with Drasi Server"
 ---
 
-This Getting Started tutorial teaches you how to use Drasi Server by getting it installed and running, then progressively building an increasingly sophisticated change-driven solution. You'll start with a simple configuration and extend it step by step — each step introduces a new Drasi capability.
+Imagine you want to react the instant data changes — a new row in a database, a value crossing a threshold, or something that *should* have happened but didn't. Maybe something more complex like cross-referencing the pods running on your Kubernetes cluster against a database of vulnerable and non-compliant images.
+
+Drasi Server lets you express these as Continuous Queries that stay constantly up to date, with no polling. In this tutorial you'll connect Drasi Server to a live PostgreSQL server and, step by step, build four Continuous Queries that detect changes, filter them, aggregate them, and even detect the *absence* of change — watching each one react in real time. By the end of the tutorial you'll have a running Drasi Server reacting to live database changes and a solid understanding of how to use Drasi Server to build your own change-driven solutions.
 
 **Steps 1–3** give you a working Drasi Server solution in under 20 minutes.  
 **Steps 4–6** explore progressively advanced capabilities of Drasi Server.
