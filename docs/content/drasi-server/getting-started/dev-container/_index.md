@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Dev Container"
 linkTitle: "Dev Container"
 weight: 20
+toc_hide: true
 description: "Run Drasi Server in a VS Code Dev Container"
 ---
 
@@ -74,7 +75,7 @@ If you see a "file not found" error, the build may not have completed. Check the
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 

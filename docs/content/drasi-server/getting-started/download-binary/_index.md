@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Download Binary"
 linkTitle: "Download Binary"
 weight: 5
+toc_hide: true
 description: "Download a prebuilt Drasi Server binary for your platform"
 ---
 
@@ -72,7 +73,7 @@ docker network create drasi-network
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 

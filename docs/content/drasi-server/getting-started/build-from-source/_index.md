@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Build from Source"
 linkTitle: "Build from Source"
 weight: 40
+toc_hide: true
 description: "Build Drasi Server from source code"
 ---
 
@@ -201,7 +202,7 @@ docker network create drasi-network
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 
