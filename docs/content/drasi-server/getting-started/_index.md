@@ -17,7 +17,7 @@ This Getting Started tutorial teaches you how to use Drasi Server by getting it 
 | ---- | ----------------- | ---- |
 | **[Step 1: Set Up Your Environment](#setup)** | Install Drasi Server and set up your development environment | 5 min |
 | **[Step 2: Set Up the Tutorial Database](#database)** | Start a PostgreSQL database and load sample data | 3 min |
-| **[Step 3: Create Your First Configuration](#phase-1)** | Use `drasi-server init` to create a Source, Continuous Query, and Log Reaction — see Drasi detect and react to change in real time | 10 min |
+| **[Step 3: Create Your First Configuration](#phase-1)** | Start from a provided config file with a Source, Continuous Query, and Log Reaction — see Drasi detect and react to change in real time | 3 min |
 | **[Step 4: Add a Query with Criteria](#phase-2)** | Add a filtered query via the REST API — learn how `WHERE` clauses tell Drasi what changes you are interested in | 3 min |
 | **[Step 5: Add an Aggregation Query](#phase-3)** | Add a query with `count()` — see aggregations update automatically as data changes and add a new Reaction that generates Server-Sent Events (SSE) when query results change | 5 min |
 | **[Step 6: Add Time-Based Detection](#phase-4)** | Detect the *absence of change* over time — a powerful capability for monitoring and alerting | 5 min |
@@ -167,180 +167,28 @@ You should see the 4 sample messages:
 
 ## Step 3: Create Your First Configuration {#phase-1}
 
-Now you'll create your initial Drasi Server configuration using the interactive `drasi-server init` command.
+Now you'll create your initial Drasi Server configuration. To keep this first step focused on getting Drasi Server running, you'll start from a pre-prepared config file included with the tutorial.
 
-The `init` command walks you through an interactive wizard that will assist you in creating a correctly formatted Drasi Server config file. The wizard will only write the config file at the end, so if you make a mistake just break out of the wizard using `ctrl-c` and run `drasi-server init` again.
+The config file creates:
 
-> **Note:** The `init` command cannot be used to edit existing config files, you must edit them in your preferred text editor.
+- A **PostgreSQL Source** named `my-postgres` that connects to the `getting_started` database and monitors the `Message` table for changes.
+- A **Continuous Query** named `all-messages` that selects all messages from the source.
+- A **Log Reaction** named `log-reaction` that prints query result changes to the console.
 
-### Create the Drasi Server Configuration
+### Copy the Tutorial Config File
 
-From the tutorial root folder, run the following command:
+From the tutorial root folder, copy the pre-prepared config file and rename it `getting-started.yaml`:
 
-```bash
-./bin/drasi-server init --output getting-started.yaml
-```
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
+cp examples/getting-started/configs/getting-started-step-3.yaml getting-started.yaml
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Copy-Item examples/getting-started/configs/getting-started-step-3.yaml getting-started.yaml
+{{< /tab >}}
+{{< /tabpane >}}
 
-Here's what to enter at each prompt:
-
-#### 1. Server Settings
-
-Configuration starts with general Drasi Server settings.
-
-| Prompt | Enter | Notes |
-| ------ | ----- | ----- |
-| **Server host** | `0.0.0.0` (default) | Press Enter to accept |
-| **Server port** | `${SERVER_PORT:-8080}` | Uses env var with 8080 as default (see note below) |
-| **Log level** | `info` | Use arrow keys to select |
-| **Enable persistent indexing (RocksDB)?** | `No` (default) | Press Enter to accept |
-| **State store** | `None` | Use arrow keys to select "None - In-memory state" |
-
-<div style="margin-top: 1.5rem;"></div>
-
-Your terminal should show this once you have completed the Server Settings section of the wizard:
-
-```text
-Server Settings
----------------
-> Server host: 0.0.0.0
-> Server port: ${SERVER_PORT:-8080}
-> Log level: info
-> Enable persistent indexing (RocksDB)? No
-> State store (for plugin state persistence): None - In-memory state (lost on restart)
-```
-
-> **Environment variables in config values:** The `${SERVER_PORT:-8080}` syntax tells Drasi Server to use the value of the `SERVER_PORT` environment variable, falling back to `8080` if it isn't set. You can use this `${VAR:-default}` pattern in any configuration value.
-
-#### 2. Data Sources
-
-After configuring server settings, you'll add a data source. For this tutorial, use the arrow keys to highlight **PostgreSQL**, press Space to select the source, then Enter.
-
-After selecting PostgreSQL, you'll configure the database connection settings:
-
-| Prompt | Enter | Notes |
-| ------ | ----- | ----- |
-| **Source ID** | `my-postgres` | A unique name for this source |
-| **Database host** | `${DB_HOST:-localhost}` | Defaults to `localhost` if `DB_HOST` is not set |
-| **Database port** | `${POSTGRES_HOST_PORT:-5432}` | Defaults to `5432` if `POSTGRES_HOST_PORT` is not set |
-| **Database name** | `getting_started` | The tutorial database |
-| **Database user** | `drasi_user` | |
-| **Database password** | `drasi_password` | Type the password (characters won't display) and press Enter |
-| **Tables to monitor** | `Message` | The table we'll query |
-| **Configure table keys for tables without primary keys??** | `Yes` | Required for CDC change tracking |
-| **Does table 'Message' need key columns specified?** | `Yes` | Need to configure tableKey for `Message` table |
-| **Key columns for 'Message'** | `MessageId` | The Message table's primary key |
-| **Bootstrap provider** | `PostgreSQL` | Use arrow keys to select "PostgreSQL - Load initial data" |
-
-<div style="margin-top: 1.5rem;"></div>
-
-Your terminal should show this once you complete the Data Source section of the wizard:
-
-```text
-Data Sources
-------------
-Select one or more data sources for your configuration.
-
-> Select sources (space to select, enter to confirm): PostgreSQL - CDC from PostgreSQL database
-
-Configuring PostgreSQL Source
-------------------------------
-> Source ID: my-postgres
-> Database host: ${DB_HOST:-localhost}
-> Database port: ${POSTGRES_HOST_PORT:-5432}
-> Database name: getting_started
-> Database user: drasi_user
-> Database password: ********
-> Tables to monitor (comma-separated): Message
-> Configure table keys for tables without primary keys? Yes
-> Does table 'Message' need key columns specified? Yes
-> Key columns for 'Message' (comma-separated): MessageId
-> Bootstrap provider (for initial data loading): PostgreSQL - Load initial data from PostgreSQL
-```
-
-#### 3. Reactions
-
-Finally, you will add a Reaction to process changes to the Continuous Query results.
-
-Use the arrow keys to highlight **Log**, press Space to select the Reaction, then Enter.
-
-After selecting Log, you'll configure the following settings:
-
-| Prompt | Enter | Notes |
-| ------ | ----- | ----- |
-| **Reaction ID** | `log-reaction` (default) | Press Enter to accept |
-
-After completing the Reactions section of the wizard, your terminal will show the following:
-
-```text
-Reactions
----------
-Select how you want to receive query results.
-
-> Select reactions (space to select, enter to confirm): Log - Write query results to console
-
-Configuring Log Reaction
-------------------------
-> Reaction ID: log-reaction
-
-
-Configuration saved to: getting-started.yaml
-
-Next steps:
-  1. Review and edit getting-started.yaml as needed
-  2. Run: drasi-server --config getting-started.yaml
-```
-
-### Update the Default Continuous Query
-
-The wizard created a default Continuous Query that selects all nodes from the `my-postgres` Source. Now you'll edit the Continuous Query to select only `Message` nodes and to rename some of their fields for clarity.
-
-Open `getting-started.yaml` in your preferred editor and find the `queries` section. The wizard's default Continuous Query looks like this:
-
-```yaml
-queries:
-- id: my-query
-  autoStart: true
-  query: MATCH (n) RETURN n
-  queryLanguage: GQL
-  middleware: []
-  sources:
-  - sourceId: my-postgres
-    nodes: []
-    relations: []
-    pipeline: []
-  enableBootstrap: true
-  bootstrapBufferSize: 10000
-```
-
-Replace the `id` and `query` settings as shown here:
-
-```yaml
-queries:
-  - id: all-messages
-    autoStart: true
-    query: |
-      MATCH (m:Message)
-      RETURN m.MessageId AS MessageId, m.From AS From, m.Message AS Message
-    queryLanguage: GQL
-    ...
-```
-
-The `|` character allows you to write the query across multiple lines for readability. The `Message` label in the `Match` clause must match the table name exactly (labels are case-sensitive). Leave the other fields (`queryLanguage`, `sources`, etc.) as they are.
-
-### Update the Log Reaction
-
-Because you changed the Continuous Query's `id` from `my-query` to `all-messages`, you need to update the Log Reaction's configuration to subscribe to the new Continuous Query ID.
-
-Find the `reactions` section in your config file and update the `queries` field to reference the new query ID as shown here:
-
-```yaml
-reactions:
-  - kind: log
-    id: log-reaction
-    queries:
-      - all-messages    # Update this from my-query to all-messages
-    autoStart: true
-```
+> **Tip:** This tutorial uses a provided config so you can get Drasi Server running quickly. To create the same kind of config from scratch, use the interactive `drasi-server init` wizard. See [Create Configuration with the Wizard](../how-to-guides/configuration/create-config-with-wizard/) for a step-by-step walkthrough.
 
 ### Run Drasi Server
 
@@ -350,33 +198,26 @@ Run Drasi Server with your new configuration using the following command:
 ./bin/drasi-server --config getting-started.yaml
 ```
 
-You'll see detailed startup logs as Drasi Server initializes all configured Sources, Continuous Queries, and Reactions. There's a lot of output, so look for these key lines:
+You'll see detailed startup logs as Drasi Server downloads plugins and initializes all configured Sources, Continuous Queries, and Reactions. There's a lot of output, so look for these key lines at the end of the startup process:
 
 ```text
-Starting Drasi Server
-  Config file: getting-started.yaml
-  API Port: 8080
-  Log level: info
+2026-05-31T16:21:00.488072Z  INFO drasi_lib::lifecycle: [STARTUP-COMPLETE] DrasiLib.start() is now returning - all components and subscriptions should be active
+2026-05-31T16:21:00.488075Z  INFO drasi_lib::lib_core: drasi-lib started successfully
+2026-05-31T16:21:00.489511Z  INFO drasi_server::server: Configuration persistence enabled
+2026-05-31T16:21:00.502638Z  INFO drasi_server::server: Drasi Server Admin UI found on filesystem, serving at /ui/
+2026-05-31T16:21:00.503097Z  INFO drasi_server::server: Starting web API on 0.0.0.0:8080
+2026-05-31T16:21:00.503108Z  INFO drasi_server::server: API v1 available at http://0.0.0.0:8080/api/v1/
+2026-05-31T16:21:00.503110Z  INFO drasi_server::server: Swagger UI available at http://0.0.0.0:8080/api/v1/docs/
+2026-05-31T16:21:00.503112Z  INFO drasi_server::server: Drasi Server Admin UI at http://0.0.0.0:8080/ui/
+2026-05-31T16:21:00.503548Z  INFO drasi_server::server: Drasi Server started successfully with API on port 8080
 ```
 
-This shows the name of the config file being used, the log level that controls the output to the console, and the port on which the Drasi Server management API is accessible.
+This shows that Drasi Server has started successfully and lists the URLs for Drasi Servers REST API, Swagger UI, and Admin UI.
+
+As part of the startup process, Drasi Server would have bootrapped the `all-messages` Continuous Query by loading all existing messages from the `Message` table and processing them through the query. Within the log output you should be able to see a message like this confirming the bootstrap process completed successfully:
 
 ```text
-[log-reaction] Started - receiving results from queries: ["all-messages"]
-```
-
-This confirms that the `log-reaction` Reaction is subscribed to Query Result Change notifications from the `all-messages` Continuous Query.
-
-```text
-Drasi Server started successfully with API on port 8080
-```
-
-Shortly after, the bootstrap process loads the initial data from the `Messages` table and passes it to the `all-messages` query for processing. Look for output like this in the console:
-
-```text
-[BOOTSTRAP] Query 'all-messages' completed bootstrap from source 'my-postgres' (4 events)
-[BOOTSTRAP] Query 'all-messages' all sources completed bootstrap
-[BOOTSTRAP] Emitted bootstrapCompleted signal for query 'all-messages'
+2026-05-31T16:21:00.486167Z  INFO drasi_host_sdk::callbacks: [plugin:postgres-bootstrap] Completed PostgreSQL bootstrap for query all-messages: sent 4 records
 ```
 
 ### View Continuous Query Results
@@ -516,8 +357,6 @@ All data source changes that alter the result set of a Continuous Query generate
 <div style="margin-top: 1.5rem;"></div>
 
 **✅ Checkpoint**: You've created your first Source, Continuous Query, and Reaction. You know how to view the current result set of a Continuous Query through the REST API. And you've also seen how changes in the database flow into Drasi Server and notification of changes to Continuous Query results are output by Reactions as soon as they happen.
-
-> **Note**: The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-3.yaml` if you want to compare it with your config file or use it as a reference for future use.
 
 ---
 
@@ -1009,7 +848,7 @@ That concludes the Drasi Server Getting Started tutorial. You have learned the c
 
 | Concept | What You Did |
 | ------- | ------------ |
-| **Configuration** | Used `drasi-server init` to scaffold an initial configuration, then dynamically added components via the REST API |
+| **Configuration** | Started from a pre-prepared config file, then dynamically added components via the REST API (the interactive `drasi-server init` wizard can also create config files from scratch) |
 | **Sources** | Created a PostgreSQL source to connect Drasi to your database |
 | **Queries** | Wrote 4 Continuous Queries: simple change detection, criteria-based selection, aggregation, and time-based detection |
 | **Reactions** | Configured a Log Reaction for console output and used the SSE CLI to stream query result changes to your terminal |
