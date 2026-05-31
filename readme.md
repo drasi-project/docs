@@ -48,7 +48,7 @@ Alternatively, you can follow the instructions below to setup and run a local Hu
 1. Ensure you are in the  ```docs``` folder of the drasi-project/docs repo.
 1. Run the command:
 
-     ```hugo server --gc --noHTTPCache --ignoreCache --disableFastRender```
+     ```hugo server --disableFastRender```
 
 ### Browse the documentation
 
