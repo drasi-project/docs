@@ -20,7 +20,7 @@ If you are not sure you have these prerequisites installed, or need help install
 
 ## Step 1: Setup Native Build Dependencies
 
-Building `drasi-server` requires several native C libraries. Install the dependencies for your platform:
+Building Drasi Server requires several native C libraries. Install the dependencies for your platform:
 
 ### macOS
 
@@ -160,7 +160,9 @@ Verify the `drasi-server` binary works:
 You should see output showing the version number, for example:
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.0
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.8.4
 ```
 
 ## Step 4: Build the SSE CLI
