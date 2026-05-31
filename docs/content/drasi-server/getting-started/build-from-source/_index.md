@@ -12,9 +12,9 @@ Building from source is the most complex approach for getting Drasi Server so yo
 
 - **Git** — Needed to clone the Drasi Server code
 - **Docker** and **Docker Compose** — Needed to run the PostgreSQL database used in the tutorial
-- **Rust 1.88+** — For building Drasi Server
+- **Rust 1.88+** — Needed to build Drasi Server
 - **Text Editor** — Needed to edit files during the tutorial
-- **curl** — Used in later tutorial steps
+- **curl** — Used to interact with Drasi Server's REST API during the tutorial
 
 If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
