@@ -8,11 +8,13 @@ hide_readingtime: true
 description: "Build your first change-driven solution with Drasi Server"
 ---
 
-Imagine you want to react the instant data changes — a new row in a database, a value crossing a threshold, or something that *should* have happened but didn't. Maybe something more complex like cross-referencing the pods running on your Kubernetes cluster against a database of vulnerable and non-compliant images.
+Imagine you want to react the instant data changes — a new row in a database, a value crossing a threshold, or something that *should* have changed but didn't. Maybe something more complex like cross-referencing the pods running on your Kubernetes cluster against a database of vulnerable and non-compliant images.
 
 Drasi Server lets you express these as Continuous Queries that stay constantly up to date, with no polling. In this tutorial you'll connect Drasi Server to a live PostgreSQL server and, step by step, build four Continuous Queries that detect changes, filter them, aggregate them, and even detect the *absence* of change — watching each one react in real time. By the end of the tutorial you'll have a running Drasi Server reacting to live database changes and a solid understanding of how to use Drasi Server to build your own change-driven solutions.
 
 You'll work with a single PostgreSQL table of messages — imagine it as a simple live message feed — and build a monitor over it one query at a time. Throughout, you write only declarative queries and configuration; there's no application code to write.
+
+Building this kind of capability by hand usually means stitching together several moving parts — change-data-capture, a message queue, a stream processor to filter and aggregate, somewhere to hold state, and a scheduler for time-based checks — plus the code and operations to connect them. In this tutorial, you'll see Drasi Server simplifies these concerns, turning them into a single, unified experience of writing queries and configuration against a single server that handles the rest.
 
 **What you'll build:** a running Drasi Server that connects to a live PostgreSQL database and reacts to its changes, assembled from Drasi's three core building blocks:
 
@@ -621,6 +623,8 @@ The console shows the new message in the `all-messages` query, but there is no n
 
 **✅ Checkpoint**: You understand how to add new Continuous Queries to a running Drasi Server instance via the REST API. You also understand how `WHERE` clauses in Continuous Queries control what data is part of the query's result set and therefore what changes generate notifications to subscribed Reactions.
 
+Doing this without Drasi would typically mean adding a filter stage to a stream-processing job and redeploying it; here it's one `WHERE` clause added to a running server.
+
 {{% alert title="Note" color="info" %}}
 The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-4.yaml` if you want to compare it with your config file or use it as a reference for future use.
 {{% /alert %}}
@@ -816,7 +820,7 @@ Drasi Server didn't re-scan the `Message` table in the database at any point —
 
 Press `Ctrl+C` in the SSE CLI terminal to stop streaming and delete the SSE Reaction.
 
-**✅ Checkpoint**: You understand that Drasi tracks state — aggregations update in real-time as data changes, without re-querying the database. You have seen it is possible to create temporary Reactions programmatically (like the SSE CLI) that subscribe to Continuous Queries on the fly to stream changes in real time. To do the equivalent yourself, you would write and maintain change-handling and incremental-aggregation code; here it is a query plus a Reaction.
+**✅ Checkpoint**: You understand that Drasi tracks state — aggregations update in real-time as data changes, without re-querying the database. You have seen it is possible to create temporary Reactions programmatically (like the SSE CLI) that subscribe to Continuous Queries on the fly to stream changes in real time. To do the equivalent yourself, you would write and maintain the kind of stateful, incremental-aggregation logic you'd normally implement in a stream processor; here it is a query plus a Reaction.
 
 {{% alert title="Note" color="info" %}}
 The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-5.yaml` if you want to compare it with your config file or use it as a reference for future use.
@@ -976,7 +980,7 @@ No database change triggered this second notification — Drasi re-evaluated the
 
 Press `Ctrl+C` to stop the SSE CLI.
 
-**✅ Checkpoint**: You understand that Drasi can detect the *absence of change* over time — a powerful capability for monitoring, alerting, and SLA enforcement.
+**✅ Checkpoint**: You understand that Drasi can detect the *absence of change* over time — a powerful capability for monitoring, alerting, and SLA enforcement — without a scheduler or background worker you run.
 
 {{% alert title="Note" color="info" %}}
 The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-6.yaml` if you want to compare it with your config file or use it as a reference for future use.
@@ -997,6 +1001,8 @@ That concludes the Drasi Server Getting Started tutorial. You have learned the c
 | **REST API** | Used the REST API to create, delete, and query Sources, Continuous Queries, and Reactions while the server is running |
 
 **Lines of application code written: 0.** You built all of this with declarative queries and configuration.
+
+A conventional change-driven stack would assemble these capabilities from separate tools — change-data-capture, streaming, state management, and scheduling — each integrated and operated by you. Here the same behavior came from queries and configuration against a single server.
 
 ---
 
