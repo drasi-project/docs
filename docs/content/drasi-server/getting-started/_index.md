@@ -688,7 +688,7 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
 
 ### Installing the SSE Reaction
 
-Until now, you've been observing Continuous Query changes through the Log Reaction in the Drasi Server console. Now you will start using a second Reaction--the SSE Reaction. The SSE Reaction subscribes to one or more Continuous Queries and when there are query result changes, it formats them and sends them as Server-Sent Events (SSE) to any client that is subscribed to the SSE Reaction. The SSE Reaction is ideal for streaming real-time updates to dashboards, web applications, or any system that can consume SSE.
+Until now, you've been observing Continuous Query changes through the Log Reaction in the Drasi Server console. Now you will start using a second Reaction — the SSE Reaction. The SSE Reaction subscribes to one or more Continuous Queries and when there are query result changes, it formats them and sends them as Server-Sent Events (SSE) to any client that is subscribed to the SSE Reaction. The SSE Reaction is ideal for streaming real-time updates to dashboards, web applications, or any system that can consume SSE.
 
 To install the SSE Reaction plugin on your Drasi Server from the Drasi plugin repository, run the following command in your terminal:
 
