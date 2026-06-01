@@ -12,6 +12,46 @@ Imagine you want to react the instant data changes — a new row in a database, 
 
 Drasi Server lets you express these as Continuous Queries that stay constantly up to date, with no polling. In this tutorial you'll connect Drasi Server to a live PostgreSQL server and, step by step, build four Continuous Queries that detect changes, filter them, aggregate them, and even detect the *absence* of change — watching each one react in real time. By the end of the tutorial you'll have a running Drasi Server reacting to live database changes and a solid understanding of how to use Drasi Server to build your own change-driven solutions.
 
+You'll work with a single PostgreSQL table of messages — imagine it as a simple live message feed — and build a monitor over it one query at a time. Throughout, you write only declarative queries and configuration; there's no application code to write.
+
+**What you'll build:** a running Drasi Server that connects to a live PostgreSQL database and reacts to its changes, assembled from Drasi's three core building blocks:
+
+<div class="flow-diagram">
+  <div class="flow-step">
+    <div class="flow-step__icon">
+      <i class="fas fa-database"></i>
+    </div>
+    <div class="flow-step__label">Sources</div>
+    <div class="flow-step__description">Connect to your data sources</div>
+  </div>
+
+  <div class="flow-arrow">
+    <i class="fas fa-arrow-right"></i>
+  </div>
+
+  <div class="flow-step">
+    <div class="flow-step__icon">
+      <i class="fas fa-filter"></i>
+    </div>
+    <div class="flow-step__label">Continuous Queries</div>
+    <div class="flow-step__description">Define what changes matter</div>
+  </div>
+
+  <div class="flow-arrow">
+    <i class="fas fa-arrow-right"></i>
+  </div>
+
+  <div class="flow-step">
+    <div class="flow-step__icon">
+      <i class="fas fa-bolt"></i>
+    </div>
+    <div class="flow-step__label">Reactions</div>
+    <div class="flow-step__description">Take action automatically</div>
+  </div>
+</div>
+
+You'll configure each of these building blocks yourself as you work through the steps below.
+
 **Steps 1–3** give you a working Drasi Server solution in under 20 minutes.  
 **Steps 4–6** explore progressively advanced capabilities of Drasi Server.
 
@@ -20,11 +60,17 @@ Drasi Server lets you express these as Continuous Queries that stay constantly u
 | **[Step 1: Set Up Your Environment](#setup)** | Install Drasi Server and set up your development environment | 5 min |
 | **[Step 2: Set Up the Tutorial Database](#database)** | Start a PostgreSQL database and load sample data | 3 min |
 | **[Step 3: Create Your First Configuration](#phase-1)** | Start from a provided config file with a Source, Continuous Query, and Log Reaction — see Drasi detect and react to change in real time | 3 min |
-| **[Step 4: Add a Query with Criteria](#phase-2)** | Add a filtered query via the REST API — learn how `WHERE` clauses tell Drasi what changes you are interested in | 3 min |
+| **[Step 4: Add a Continuous Query with Criteria](#phase-2)** | Add a filtered query via the REST API — learn how `WHERE` clauses tell Drasi what changes you are interested in | 3 min |
 | **[Step 5: Add an Aggregation Query](#phase-3)** | Add a query with `count()` — see aggregations update automatically as data changes and add a new Reaction that generates Server-Sent Events (SSE) when query results change | 5 min |
 | **[Step 6: Add Time-Based Detection](#phase-4)** | Detect the *absence of change* over time — a powerful capability for monitoring and alerting | 5 min |
 
-## Step 1: Set Up Your Environment {#setup}
+{{% alert title="Before you begin" color="info" %}}
+- **Terminals:** you'll use more than one. **Terminal 1** runs Drasi Server; use **Terminal 2** for `docker` and `curl` commands. Step 5 adds **Terminal 3** for the SSE CLI.
+- **Command tabs:** commands are shown in tabs (for example *bash / zsh* and *PowerShell*) — use the one for your shell.
+- **Expected output** blocks show roughly what you'll see; exact versions, IDs, and timestamps will differ.
+{{% /alert %}}
+
+## Step 1 of 6: Set Up Your Environment {#setup}
 
 Choose your preferred environment for working through the Getting Started tutorial. Each approach gets you to the same starting point with Drasi Server installed and ready to work through the tutorial.
 
@@ -34,7 +80,7 @@ Choose your preferred environment for working through the Getting Started tutori
       <div class="unified-card-icon"><i class="fas fa-download"></i></div>
       <div class="unified-card-content">
         <h3 class="unified-card-title">Download Binary</h3>
-        <p class="unified-card-summary">Download a prebuilt binary. The fastest way to get started.</p>
+        <p class="unified-card-summary">Download a prebuilt binary. The fastest way to get started (recommended).</p>
       </div>
     </div>
   </a>
@@ -73,7 +119,7 @@ After completing your preferred setup, return here to continue with the tutorial
 
 ---
 
-## Step 2: Setup the Tutorial Database {#database}
+## Step 2 of 6: Set Up the Tutorial Database {#database}
 
 The tutorial uses a PostgreSQL database as a data source. Start the database container using Docker Compose:
 
@@ -167,7 +213,7 @@ You should see the 4 sample messages:
 
 ---
 
-## Step 3: Create Your First Configuration {#phase-1}
+## Step 3 of 6: Run Your First Drasi Server {#phase-1}
 
 Now you'll create your initial Drasi Server configuration. To keep this first step focused on getting Drasi Server running, you'll start from a pre-prepared config file included with the tutorial.
 
@@ -190,11 +236,32 @@ Copy-Item examples/getting-started/configs/getting-started-step-3.yaml getting-s
 {{< /tab >}}
 {{< /tabpane >}}
 
-> **Tip:** This tutorial uses a provided config so you can get Drasi Server running quickly. To create the same kind of config from scratch, use the interactive `drasi-server init` wizard. See [Create Configuration with the Wizard](../how-to-guides/configuration/create-config-with-wizard/) for a step-by-step walkthrough.
+### The all-messages Continuous Query
 
-### Run Drasi Server
+The Continuous Query is at the heart of Drasi Server, so before running anything it's worth looking at the one in this config. Here's how `all-messages` looks in the config file:
 
-Run Drasi Server with your new configuration using the following command:
+```yaml
+- id: all-messages
+  autoStart: true
+  sources:
+    - sourceId: my-postgres
+  query: |
+    MATCH (m:Message)
+    RETURN m.MessageId AS MessageId, m.From AS From, m.Message AS Message
+  queryLanguage: GQL
+```
+
+The `sources` section connects the query to the `my-postgres` Source, so it receives all changes made to the `Message` table. The `queryLanguage` field is set to `GQL`; Drasi Server supports Continuous Queries written in both [GQL](../../reference/query-language/gql.md) and [openCypher](../../reference/query-language/cypher.md).
+
+The `query` itself is deliberately trivial — just enough to get started. The `MATCH` clause selects every `Message` node from the Source, and the `RETURN` clause passes through the `MessageId`, `From`, and `Message` fields unchanged. There's no `WHERE` filter or aggregation, so the result set is simply *every* message in the table, kept continuously up to date. In Steps 4, 5, and 6 you'll write queries that filter, aggregate, and reason about time — but this one establishes the basic shape: `MATCH` what you care about, `RETURN` the fields you want.
+
+{{% alert title="Graph queries over any source" color="info" %}}
+Notice that you're using a *graph* query language (GQL) to query a *relational* database. Drasi Server projects every Source — relational, NoSQL, an HTTP API, and more — into a common graph model, so the same query language works regardless of where the data lives. This is also what lets a single Continuous Query draw on *multiple, disparate* Sources at once, correlating changes across systems that have no knowledge of each other. See [Continuous Queries](/concepts/continuous-queries/) to go deeper.
+{{% /alert %}}
+
+### Start Drasi Server
+
+In **Terminal 1**, run Drasi Server with your new configuration:
 
 ```bash
 ./bin/drasi-server --config getting-started.yaml
@@ -215,6 +282,14 @@ You'll see detailed startup logs as Drasi Server downloads plugins and initializ
 ```
 
 This shows that Drasi Server has started successfully and lists the URLs for Drasi Servers REST API, Swagger UI, and Admin UI.
+
+You can confirm the server is healthy at any time by requesting its health endpoint: `curl http://localhost:8080/health`.
+
+{{% alert title="If Drasi Server didn't start" color="info" %}}
+- **`Address already in use`**: port 8080 is already taken. Stop the process using it, or change the port in `getting-started.yaml`.
+- **Plugin download errors**: Drasi downloads plugins on first start. Check your network or proxy, then run the command again.
+- Drasi Server is safe to stop (`Ctrl+C`) and restart; it reloads from `getting-started.yaml`.
+{{% /alert %}}
 
 As part of the startup process, Drasi Server would have bootrapped the `all-messages` Continuous Query by loading all existing messages from the `Message` table and processing them through the query. Within the log output you should be able to see a message like this confirming the bootstrap process completed successfully:
 
@@ -283,11 +358,15 @@ However you choose to view the `all-messages` results, that data will look somet
 }
 ```
 
-> **Tip:** The Drasi Server REST API also provides a Swagger UI at <a href="http://localhost:8080/api/v1/docs/" target="_blank" rel="noopener noreferrer">http://localhost:8080/api/v1/docs/</a> where you can explore all available endpoints interactively.
+{{% alert title="Tip" color="primary" %}}
+The Drasi Server REST API also provides a Swagger UI at <a href="http://localhost:8080/api/v1/docs/" target="_blank" rel="noopener noreferrer">http://localhost:8080/api/v1/docs/</a> where you can explore all available endpoints interactively.
+{{% /alert %}}
+
+If a `curl` command can't connect, confirm Drasi Server is still running in **Terminal 1** and reported that the API is available on port 8080.
 
 ### Test the all-messages Continuous Query
 
-Open a **new terminal** and run the following command to manually **insert** a record into the `Message` table:
+Open **Terminal 2** and run the following command, which calls `psql` in the database container to manually **insert** a record into the `Message` table:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -306,8 +385,6 @@ Watch the Drasi Server console — a notification of an addition to the `all-mes
 [log-reaction]   [ADD] {"From":"You","Message":"My first message!","MessageId":"5"}
 ```
 
-> **Tip:** You can customize the Log Reaction output format using templates. See [Configure Log Reaction](../how-to-guides/configuration/configure-reactions/configure-log-reaction/) for details.
-
 If you view the `all-messages` query results again through the REST API, you'll see the new message included in the result set.
 
 Now, run the following command to **update** the message we just inserted and change its text:
@@ -322,7 +399,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
 {{< /tab >}}
 {{< /tabpane >}}
 
-The notification output by the Log Reaction shows the the item from the query result before and after the update:
+The notification output by the Log Reaction shows the item before and after the update — Drasi reports the transition because it maintains the query's result set, not just the latest change:
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
@@ -352,9 +429,13 @@ The console shows the message being deleted from the query's result set:
 
 If you view the `all-messages` query results again through the REST API, you'll see the message is no longer included in the result set.
 
-{{< alert title="Key Concept" color="info" >}}
+With three SQL statements you've now seen all three change notifications the Log Reaction emits: an **ADD** when a row entered the result set, an **UPDATE** showing the row's *before* and *after* values, and a **DELETE** when the row left. Each appeared in the console the instant the database changed — and you didn't write a single line of code to detect, diff, or deliver them. That work is the Continuous Query and the Reaction doing their job.
+
+Try it with your own data: insert a few more messages with any text you like, and watch each change appear in the Log Reaction output.
+
+{{% alert title="Key Concept" color="info" %}}
 All data source changes that alter the result set of a Continuous Query generate notifications that are delivered to subscribed Reactions for handling. The above example demonstrates the simple Log Reaction that displays these notifications to the console, but there are more sophisticated Reactions that can send notifications to other systems, trigger actions, update databases, and more. You can also write your own custom Reactions to implement any behavior you want in response to changes in your data.
-{{< /alert >}}
+{{% /alert %}}
 
 <div style="margin-top: 1.5rem;"></div>
 
@@ -362,7 +443,7 @@ All data source changes that alter the result set of a Continuous Query generate
 
 ---
 
-## Step 4: Add a Continuous Query with Criteria {#phase-2}
+## Step 4 of 6: Add a Continuous Query with Criteria {#phase-2}
 
 The `all-messages` Continuous Query is very simple and includes all messages written to the Message table. Now you'll add a second Continuous Query that answers the question "Who sent messages containing 'Hello World'?". You will add the new `hello-world-senders` Continuous Query using the Drasi Server REST API so you learn how to extend your configuration without restarting Drasi Server.
 
@@ -388,9 +469,11 @@ The `queryLanguage` field specifies that this query is written in openCypher. Dr
 
 The `query` section contains the openCypher query that selects only messages where the `Message` field equals `'Hello World'`. The `MATCH` clause selects all `Message` nodes from the data source. The `WHERE` clause filters to only messages where the `Message` field equals `'Hello World'` — so changes to messages with different content won't appear in this query's result set. The `RETURN` clause renames the output fields to `Id` and `Sender`.
 
+This is the kind of filter that turns a raw change feed into a focused signal — for example, selecting only the items that became non-compliant rather than every change in the table.
+
 ### Add the hello-world-senders Query using the REST API
 
-In your second terminal, use the following `curl` command to create the `hello-world-senders` Continuous Query:
+In **Terminal 2**, use the following `curl` command to create the `hello-world-senders` Continuous Query:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -417,7 +500,9 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
 {{< /tab >}}
 {{< /tabpane >}}
 
-> **Note:** This command is also included in the `examples/getting-started/requests.http` file for use with the VS Code REST Client extension.
+{{% alert title="Note" color="info" %}}
+This command is also included in the `examples/getting-started/requests.http` file for use with the VS Code REST Client extension.
+{{% /alert %}}
 
 ### Update the Log Reaction
 
@@ -464,11 +549,20 @@ You should see in the Drasi Server console that the `log-reaction` is created an
 
 Also, if you open the Drasi Server config file (getting-started.yaml), you'll see that the new query has been added to the `queries` section, and the `log-reaction` configuration has been updated to include both queries. Drasi Server automatically updates the config file when you make changes through the REST API, so the config file is always an up-to-date representation of your running Drasi Server configuration.
 
-> **Tip**: You can stop Drasi Server from automatically updating the config file by setting `persistConfig` to `false` in the **Server Settings** section of the config file. If you do this, Drasi Server will revert to the last saved config file on restart instead of the current running configuration. 
-
 ### Test the hello-world-senders Continuous Query
 
-Even though you haven't inserted any new data, if you view the `hello-world-senders` query results through the REST API, you'll see that it already includes Brian Kernighan's "Hello World" message from the initial data load:
+Even though you haven't inserted any new data, if you view the `hello-world-senders` query results through the REST API using the following command:
+
+{{< tabpane persist="header" >}}
+{{< tab header="bash / zsh" lang="bash" >}}
+curl -s http://localhost:8080/api/v1/queries/hello-world-senders/results
+{{< /tab >}}
+{{< tab header="PowerShell" lang="powershell" >}}
+Invoke-RestMethod -Method Get -Uri http://localhost:8080/api/v1/queries/hello-world-senders/results
+{{< /tab >}}
+{{< /tabpane >}}
+
+...you'll see that it already includes Brian Kernighan's "Hello World" message:
 
 ```json
 {
@@ -527,14 +621,18 @@ The console shows the new message in the `all-messages` query, but there is no n
 
 **✅ Checkpoint**: You understand how to add new Continuous Queries to a running Drasi Server instance via the REST API. You also understand how `WHERE` clauses in Continuous Queries control what data is part of the query's result set and therefore what changes generate notifications to subscribed Reactions.
 
-> **Note**: The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-4.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% alert title="Note" color="info" %}}
+The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-4.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% /alert %}}
 ---
 
-## Step 5: Add an Aggregation Query and the SSE Reaction {#phase-3}
+## Step 5 of 6: Add an Aggregation Query and the SSE Reaction {#phase-3}
 
 Drasi maintains state across all the data it processes, enabling Continuous Queries that compute aggregations — like counts, sums, or averages — that update automatically as the underlying data changes. This is useful for dashboards, reporting, and any scenario where you need live summary statistics without polling or recalculating from scratch.
 
 In this step, you'll add a new `message-counts` Continuous Query that contains the count of how many times each unique message text has been sent. As you insert, update, or delete messages, you'll see the counts of each unique message update in real time.
+
+Aggregations like this are what back live dashboards and metrics — kept current incrementally, without re-running a `GROUP BY` over the whole table on every change.
 
 ### The message-counts Query
 
@@ -557,7 +655,7 @@ In the `query` section, the `RETURN` clause includes the `count(m)` aggregation,
 
 ### Add the message-counts Continuous Query using the REST API
 
-In your second terminal, use the following curl command to create the `message-counts` Continuous Query:
+In **Terminal 2**, use the following curl command to create the `message-counts` Continuous Query:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -608,13 +706,15 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/plugins/install
 {{< /tab >}}
 {{< /tabpane >}}
 
+In the Drasi Server console, you will see logs indicating that the SSE Reaction plugin is being downloaded and installed.
+
 ### Stream the message-counts Continuous Query using SSE
 
 To receive notifications from the SSE Reaction you'll use the **SSE CLI** — a command-line tool included with the Drasi Server repo. When you run the SSE CLI, it calls Drasi Server's REST API and creates an SSE Reaction that it subscribes to a Continuous Query that you specify. While running, the SSE CLI prints all the query result changes it receives to the terminal in real time. When you stop the SSE CLI (by pressing `Ctrl+C`), it automatically deletes the SSE Reaction it created on Drasi Server.
 
 The SSE CLI will enable you to see query result updates from the `message-counts` query as you change the underlying data without needing to view the Drasi Server console or call the REST API repeatedly.
 
-In a **new terminal**, start the SSE CLI to stream changes from the `message-counts` query. You must specify the Drasi Server URL and the Continuous Query ID you want the SSE Reaction to subscribe to:
+In **Terminal 3**, start the SSE CLI to stream changes from the `message-counts` query. You must specify the Drasi Server URL and the Continuous Query ID you want the SSE Reaction to subscribe to:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -634,13 +734,15 @@ You'll see:
 ```text
 Creating SSE reaction 'sse-cli-...' for query 'message-counts'... done.
 Streaming events (Ctrl-C to stop)...
+
+Connected to SSE stream at http://localhost:8090/events
 ```
 
 You will also see in the Drasi Server console that a new SSE Reaction has been created and subscribed to the `message-counts` query.
 
 ### Test Aggregation Updates
 
-In your other terminal, insert a new "Hello World" message:
+In **Terminal 2**, insert a new "Hello World" message:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -708,17 +810,21 @@ The `Count` decreases from 3 to 2:
 }
 ```
 
-Its important to understand that Drasi Server didn't re-scan the `Message` table in the database at any point — it incrementally updated the Continuous Query's aggregation based on each individual change as it processed them.
+{{% alert title="Key Concept" color="info" %}}
+Drasi Server didn't re-scan the `Message` table in the database at any point — it incrementally updated the Continuous Query's aggregation from each individual change as it processed it. This is what lets a query stay current over a large dataset without the cost of repeatedly re-reading it.
+{{% /alert %}}
 
 Press `Ctrl+C` in the SSE CLI terminal to stop streaming and delete the SSE Reaction.
 
-**✅ Checkpoint**: You understand that Drasi tracks state — aggregations update in real-time as data changes, without re-querying the database. You have seen it is possible to create temporary Reactions programmatically (like the SSE CLI) that subscribe to Continuous Queries on the fly to stream changes in real time.
+**✅ Checkpoint**: You understand that Drasi tracks state — aggregations update in real-time as data changes, without re-querying the database. You have seen it is possible to create temporary Reactions programmatically (like the SSE CLI) that subscribe to Continuous Queries on the fly to stream changes in real time. To do the equivalent yourself, you would write and maintain change-handling and incremental-aggregation code; here it is a query plus a Reaction.
 
-> **Note**: The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-5.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% alert title="Note" color="info" %}}
+The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-5.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% /alert %}}
 
 ---
 
-## Step 6: Add Time-Based Detection {#phase-4}
+## Step 6 of 6: Add Time-Based Detection {#phase-4}
 
 Drasi can query patterns over time, including the **absence of change**. This is powerful for monitoring and alerting scenarios — for example queries that contain:
 
@@ -727,6 +833,8 @@ Drasi can query patterns over time, including the **absence of change**. This is
 - all deliveries that are overdue
 
 In this step, you'll add an `inactive-senders` Continuous Query that contains people who haven't sent a message in the last 20 seconds. You'll see how Drasi can automatically re-evaluate the query over time to detect when senders become inactive even if no new messages are inserted, all without the need for polling or external schedulers.
+
+This is the "something that *should* have happened but didn't" case — expressed as a query rather than a cron job or a background worker you maintain.
 
 ### The inactive-senders Continuous Query
 
@@ -750,13 +858,13 @@ Here's the new `inactive-senders` query as it would appear in a Drasi Server con
 This query introduces two [Drasi custom functions](../../reference/query-language/drasi-custom-functions):
 
 - **`drasi.changeDateTime(m)`** — returns the timestamp when the node was last changed, rather than relying on a user-managed timestamp column in the source data.
-- **`drasi.trueLater(condition, futureTime)`** — schedules Drasi to re-evaluate the condition at `futureTime`. Without this, the time-based `WHERE` clause would only be checked when data changes. With `drasi.trueLater`, Drasi automatically re-evaluates after the 20-second window expires, causing idle senders to appear in the result set even when no new data arrives.
+- **`drasi.trueLater(condition, futureTime)`** — schedules Drasi Server to re-evaluate the condition at `futureTime`. Without this, the time-based `WHERE` clause would only be checked when data changes. With `drasi.trueLater`, Drasi automatically re-evaluates after the 20-second window expires, causing idle senders to appear in the result set even when no new data arrives.
 
 The `WHERE` clause combines two conditions with `OR`: senders who are *already* inactive, and a scheduled future check for senders who *will become* inactive if no new message arrives within 20 seconds.
 
 ### Add the inactive-senders Continuous Query using the REST API
 
-In your second terminal, use the following curl command to create the `inactive-senders` Continuous Query:
+In **Terminal 2**, use the following curl command to create the `inactive-senders` Continuous Query:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -785,7 +893,7 @@ Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/queries `
 
 ### Stream the inactive-senders Query
 
-In a separate terminal, start the SSE CLI:
+In **Terminal 3**, start the SSE CLI:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -802,7 +910,7 @@ In a separate terminal, start the SSE CLI:
 
 ### Test the inactive-senders Continuous Query
 
-In your other terminal, create a new message from Alice:
+In **Terminal 2**, create a new message from Alice:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -864,11 +972,15 @@ Alice will be immediately removed from the `inactive-senders` query result becau
 
 If you wait a further 20 seconds without sending a message from Alice, she will once again be added to the `inactive-senders` query result and you'll see another `ADD` notification in the SSE CLI terminal.
 
+No database change triggered this second notification — Drasi re-evaluated the time condition on its own. You expressed the intent in the query; there's no polling loop or scheduler in your code.
+
 Press `Ctrl+C` to stop the SSE CLI.
 
 **✅ Checkpoint**: You understand that Drasi can detect the *absence of change* over time — a powerful capability for monitoring, alerting, and SLA enforcement.
 
-> **Note**: The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-6.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% alert title="Note" color="info" %}}
+The Drasi Server config file after the changes made in this step is available in `./examples/getting-started/configs/getting-started-step-6.yaml` if you want to compare it with your config file or use it as a reference for future use.
+{{% /alert %}}
 
 ---
 
@@ -878,17 +990,21 @@ That concludes the Drasi Server Getting Started tutorial. You have learned the c
 
 | Concept | What You Did |
 | ------- | ------------ |
-| **Configuration** | Started from a pre-prepared config file, then dynamically added components via the REST API (the interactive `drasi-server init` wizard can also create config files from scratch) |
+| **Configuration** | Started from a pre-prepared config file, then dynamically added components via the REST API |
 | **Sources** | Created a PostgreSQL source to connect Drasi to your database |
 | **Queries** | Wrote 4 Continuous Queries: simple change detection, criteria-based selection, aggregation, and time-based detection |
 | **Reactions** | Configured a Log Reaction for console output and used the SSE CLI to stream query result changes to your terminal |
 | **REST API** | Used the REST API to create, delete, and query Sources, Continuous Queries, and Reactions while the server is running |
 
+**Lines of application code written: 0.** You built all of this with declarative queries and configuration.
+
 ---
 
 ## Cleanup {#cleanup}
 
-Stop Drasi Server with `Ctrl+C`.
+Stop the SSE CLI if it's still running by pressing `Ctrl+C` in the terminal where it's running.
+
+Stop Drasi Server with `Ctrl+C` in the Drasi Server console.
 
 Stop the tutorial database:
 
@@ -902,16 +1018,34 @@ The `-v` flag removes the persistent volume. Without it, the database data persi
 
 ## Next Steps
 
-Now that you understand the core Drasi concepts, here are some things you can do next:
+Now that you understand the core Drasi concepts, here's where to go next.
 
-- **Deepen your understanding** — Read the <a href="/concepts/overview/" target="_blank" rel="noopener noreferrer">Drasi Concepts</a> to understand how Drasi works under the hood.
-- **Build a change-driven POC** — Try connecting Drasi Server to one of your own databases and build a proof-of-concept to test it on a real problem.
+**Start here:** **Build a change-driven POC** — try connecting Drasi Server to one of your own databases and build a proof-of-concept to test it on a real problem.
+
+**Go further with the components you used**
+
+You used a config file, a Log Reaction, and the SSE Reaction in their simplest form. Each offers more:
+
+- **Generate config files with the wizard** — instead of editing YAML by hand, use the interactive `drasi-server init` wizard. See [Create Configuration with the Wizard](../how-to-guides/configuration/create-config-with-wizard/).
+- **Customize Log Reaction output** — format the console output with templates. See [Configure Log Reaction](../how-to-guides/configuration/configure-reactions/configure-log-reaction/).
+- **Shape SSE Reaction payloads** — use templates to control the events the SSE Reaction streams. See [Configure SSE Reaction](../how-to-guides/configuration/configure-reactions/configure-sse-reaction/).
+- **Control config persistence** — by default Drasi Server writes REST API changes back to your config file. Set `persistConfig` to `false` in the **Server Settings** section to keep the file fixed and revert to it on restart.
+
+**Go deeper**
+
+- **Read the Concepts** — Read the <a href="/concepts/overview/" target="_blank" rel="noopener noreferrer">Drasi Concepts</a> to understand how Drasi works under the hood.
+- **Explore drasi-lib** — Use the <a href="/drasi-lib/" target="_blank" rel="noopener noreferrer">drasi-lib Rust crate</a> to embed Drasi capabilities directly in your Rust applications.
+
+**Build something**
+
 - **Configure Sources** — Learn how to <a href="../how-to-guides/configuration/configure-sources/" target="_blank" rel="noopener noreferrer">detect changes in PostgreSQL, HTTP, gRPC, and more</a>.
 - **Configure Queries** — Learn how to <a href="../how-to-guides/configuration/configure-queries/" target="_blank" rel="noopener noreferrer">write advanced Continuous Queries in GQL and openCypher</a>.
 - **Configure Reactions** — Learn how to <a href="../how-to-guides/configuration/configure-reactions/" target="_blank" rel="noopener noreferrer">react to changes using SSE, gRPC, Stored Procedures, and more</a>.
-- **Explore drasi-lib** — Use the <a href="/drasi-lib/" target="_blank" rel="noopener noreferrer">drasi-lib Rust crate</a> to embed Drasi capabilities directly in your Rust applications.
 - **Try Drasi for Kubernetes** — Deploy Drasi as a managed service on Kubernetes with <a href="/drasi-kubernetes/" target="_blank" rel="noopener noreferrer">Drasi for Kubernetes</a>.
 - **Walk through a tutorial** — Follow one of the <a href="/drasi-kubernetes/tutorials/" target="_blank" rel="noopener noreferrer">end-to-end tutorials</a> to see Drasi in action on realistic scenarios.
+
+**Get involved**
+
 - **Contribute to Drasi** — Explore the <a href="https://github.com/drasi-project" target="_blank" rel="noopener noreferrer">Drasi project on GitHub</a> and read the <a href="https://github.com/drasi-project/drasi-server/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing Guide</a> to start contributing.
 - **Join the conversation** — Connect with the Drasi community on <a href="https://aka.ms/drasidiscord" target="_blank" rel="noopener noreferrer">Discord</a>.
 - **Follow Drasi** — Stay up to date on <a href="https://x.com/drasi_project" target="_blank" rel="noopener noreferrer">X</a>, <a href="https://www.youtube.com/@DrasiProject" target="_blank" rel="noopener noreferrer">YouTube</a>, and <a href="https://bsky.app/profile/drasi-project.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>.

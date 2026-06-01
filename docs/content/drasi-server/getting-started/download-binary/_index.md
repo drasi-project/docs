@@ -61,14 +61,6 @@ To download the correct binaries for your platform run the following command:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Step 4: Create Docker network
-
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
-
-```bash
-docker network create drasi-network
-```
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.

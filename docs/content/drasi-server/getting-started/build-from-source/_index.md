@@ -190,14 +190,6 @@ You should see output showing the version number, for example:
 drasi-sse-cli 0.1.0
 ```
 
-## Step 5: Create Docker network
-
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
-
-```bash
-docker network create drasi-network
-```
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.

@@ -66,7 +66,7 @@ Verify that Drasi Server is accessible by running the following command in the t
 You should see output showing the version number, for example:
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.0
 ```
 
 If you see a "file not found" error, the build may not have completed. Check the terminal output for errors and try rebuilding the container.

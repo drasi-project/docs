@@ -58,7 +58,7 @@ Verify that Drasi Server is accessible:
 You should see output showing the version number, for example:
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.0
 ```
 
 ## ✅ Setup Complete
