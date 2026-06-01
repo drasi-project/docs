@@ -293,7 +293,7 @@ You can confirm the server is healthy at any time by requesting its health endpo
 - Drasi Server is safe to stop (`Ctrl+C`) and restart; it reloads from `getting-started.yaml`.
 {{% /alert %}}
 
-As part of the startup process, Drasi Server would have bootrapped the `all-messages` Continuous Query by loading all existing messages from the `Message` table and processing them through the query. Within the log output you should be able to see a message like this confirming the bootstrap process completed successfully:
+As part of the startup process, Drasi Server would have bootstrapped the `all-messages` Continuous Query by loading all existing messages from the `Message` table and processing them through the query. Within the log output you should be able to see a message like this confirming the bootstrap process completed successfully:
 
 ```text
 2026-05-31T16:21:00.486167Z  INFO drasi_host_sdk::callbacks: [plugin:postgres-bootstrap] Completed PostgreSQL bootstrap for query all-messages: sent 4 records
