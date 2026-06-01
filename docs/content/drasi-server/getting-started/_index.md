@@ -514,7 +514,7 @@ In Drasi Server, a single Reaction can subscribe to multiple Continuous Queries 
 
 <div style="margin-top: 1.5rem;"></div>
 
-To subscribe the Log Reaction to the new query, you need to delete and re-create it with using these calls to the Drasi Server REST API.
+To subscribe the Log Reaction to the new query, you need to delete and re-create it using these calls to the Drasi Server REST API.
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
