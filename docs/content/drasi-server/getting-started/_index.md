@@ -1032,7 +1032,7 @@ Now that you understand the core Drasi concepts, here's where to go next.
 
 You used a config file, a Log Reaction, and the SSE Reaction in their simplest form. Each offers more:
 
-- **Generate config files with the wizard** — instead of editing YAML by hand, use the interactive `drasi-server init` wizard. See [Create Configuration with the Wizard](../how-to-guides/configuration/create-config-with-wizard/).
+- **Generate config files with the wizard** — instead of editing YAML by hand, use the interactive `drasi-server init` wizard.
 - **Customize Log Reaction output** — format the console output with templates. See [Configure Log Reaction](../how-to-guides/configuration/configure-reactions/configure-log-reaction/).
 - **Shape SSE Reaction payloads** — use templates to control the events the SSE Reaction streams. See [Configure SSE Reaction](../how-to-guides/configuration/configure-reactions/configure-sse-reaction/).
 - **Control config persistence** — by default Drasi Server writes REST API changes back to your config file. Set `persistConfig` to `false` in the **Server Settings** section to keep the file fixed and revert to it on restart.
