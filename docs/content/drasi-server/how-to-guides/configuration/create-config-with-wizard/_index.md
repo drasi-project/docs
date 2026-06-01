@@ -119,7 +119,7 @@ No source plugins installed locally.
 [Use arrow keys to navigate, space to select/deselect]
 ```
 
-Press `space` and a checkmark will appear next to `Install a source from a registry`, then press `enter` to confirm your selection.
+Press `space` and a check mark will appear next to `Install a source from a registry`, then press `enter` to confirm your selection.
 
 You will be asked to confirm the plugin source:
 
