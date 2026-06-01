@@ -165,7 +165,7 @@ Press `space` and then `enter` and the configuration wizard will prompt you for 
 | **Database user** | `drasi_user` | |
 | **Database password** | `drasi_password` | Type the password (characters won't display) and press Enter |
 | **Tables to monitor** | `Message` | The table we'll query |
-| **Configure table keys for tables without primary keys??** | `Y` | Required for CDC change tracking |
+| **Configure table keys for tables without primary keys?** | `Y` | Required for CDC change tracking |
 | **Does table 'Message' need key columns specified?** | `Y` | Need to configure tableKey for `Message` table |
 | **Key columns for 'Message'** | `MessageId` | The Message table's primary key |
 | **Bootstrap provider** | `PostgreSQL` | Use arrow keys to select "PostgreSQL - Load initial data" |
