@@ -283,7 +283,7 @@ You'll see detailed startup logs as Drasi Server downloads plugins and initializ
 2026-05-31T16:21:00.503548Z  INFO drasi_server::server: Drasi Server started successfully with API on port 8080
 ```
 
-This shows that Drasi Server has started successfully and lists the URLs for Drasi Servers REST API, Swagger UI, and Admin UI.
+This shows that Drasi Server has started successfully and lists the URLs for Drasi Server's REST API, Swagger UI, and Admin UI.
 
 You can confirm the server is healthy at any time by requesting its health endpoint: `curl http://localhost:8080/health`.
 
