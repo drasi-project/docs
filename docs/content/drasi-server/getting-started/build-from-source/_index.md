@@ -43,82 +43,17 @@ sudo apt-get install -y libssl-dev pkg-config clang libclang-dev libjq-dev libon
   
 ### Windows
 
-Building natively on Windows requires MSYS2, LLVM, Strawberry Perl, and protoc.
-
-**Install MSYS2**  
-MSYS2 provides Unix-like build tools and C libraries needed for native dependencies (OpenSSL, RocksDB, etc.).
+Building natively on Windows requires the Visual Studio 2022 Build Tools (for the MSVC toolchain):
 
 ```powershell
-winget install MSYS2.MSYS2
+winget install --id Microsoft.VisualStudio.2022.BuildTools -e `
+    --override "--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 ```
 
-Then install the required packages:
+Then install the pinned Rust MSVC toolchain:
 
 ```powershell
-pacman -S --noconfirm `
-    make `
-    perl `
-    mingw-w64-ucrt-x86_64-gcc `
-    mingw-w64-ucrt-x86_64-pkg-config `
-    mingw-w64-ucrt-x86_64-clang
-```
-
-**Install LLVM**  
-
-```powershell
-winget install LLVM.LLVM
-```
-
-**Install Strawberry Perl**  
-> **Note:** MSYS2's `perl` must appear **before** Strawberry Perl on PATH.
-> OpenSSL's build requires Unix-like paths that only MSYS2's perl provides.
-
-```powershell
-winget install StrawberryPerl.StrawberryPerl
-```
-
-**Install Protocol Buffers Compiler**  
-
-```powershell
-winget install Google.Protobuf
-```
-
-If `protoc` is not on your PATH after installation:
-
-```powershell
-$env:PROTOC = "C:\path\to\protoc.exe"
-```
-
-**Switch to the GNU Toolchain**  
-This project's `rust-toolchain.toml` pins Rust 1.88.0 and defaults to the MSVC target.
-Since we link against MSYS2 libraries, we need the GNU toolchain. Setting `$env:RUSTUP_TOOLCHAIN`
-overrides `rust-toolchain.toml` (note: `rustup default` alone is **not** sufficient).
-
-```powershell
-rustup toolchain install 1.88.0-x86_64-pc-windows-gnu
-$env:RUSTUP_TOOLCHAIN = "1.88.0-x86_64-pc-windows-gnu"
-```
-
-**Set PATH**  
-MSYS2 paths must come **before** Strawberry Perl so that OpenSSL uses MSYS2's Unix-like `perl`:
-
-```powershell
-$env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;C:\Strawberry\perl\bin;" + $env:PATH
-```
-
-**Set Tool Paths**  
-```powershell
-$env:LIBCLANG_PATH = "C:\Program Files\LLVM\bin"
-```
-
-**Install libjq**  
-
-```powershell
-pacman -S --noconfirm `
-    mingw-w64-ucrt-x86_64-jq `
-    mingw-w64-ucrt-x86_64-oniguruma
-
-$env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
+rustup toolchain install 1.88.0-x86_64-pc-windows-msvc
 ```
 
 ## Step 2: Clone Drasi Server Repo
