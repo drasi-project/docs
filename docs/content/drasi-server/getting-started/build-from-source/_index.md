@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Build from Source"
 linkTitle: "Build from Source"
 weight: 40
+toc_hide: true
 description: "Build Drasi Server from source code"
 ---
 
@@ -12,15 +13,15 @@ Building from source is the most complex approach for getting Drasi Server so yo
 
 - **Git** — Needed to clone the Drasi Server code
 - **Docker** and **Docker Compose** — Needed to run the PostgreSQL database used in the tutorial
-- **Rust 1.88+** — For building Drasi Server
+- **Rust 1.88+** — Needed to build Drasi Server
 - **Text Editor** — Needed to edit files during the tutorial
-- **curl** — Used in later tutorial steps
+- **curl** — Used to interact with Drasi Server's REST API during the tutorial
 
 If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Setup Native Build Dependencies
 
-Building `drasi-server` requires several native C libraries. Install the dependencies for your platform:
+Building Drasi Server requires several native C libraries. Install the dependencies for your platform:
 
 ### macOS
 
@@ -95,7 +96,9 @@ Verify the `drasi-server` binary works:
 You should see output showing the version number, for example:
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.0
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.8.4
 ```
 
 ## Step 4: Build the SSE CLI
@@ -122,19 +125,11 @@ You should see output showing the version number, for example:
 drasi-sse-cli 0.1.0
 ```
 
-## Step 5: Create Docker network
-
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
-
-```bash
-docker network create drasi-network
-```
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 
