@@ -1642,3 +1642,5 @@ Shopify
 ns
 Handlebars
 Stripe
+cp
+cron
