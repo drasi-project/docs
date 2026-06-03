@@ -1642,5 +1642,9 @@ Shopify
 ns
 Handlebars
 Stripe
+KPI
+KPIs
+repositioned
+ECharts
 cp
 cron
