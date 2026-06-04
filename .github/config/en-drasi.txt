@@ -12,6 +12,7 @@ ApplySource
 ApplySources
 AttachQuery
 autocomplete
+authMode
 autocompletion
 backticks
 Balancers
@@ -122,6 +123,7 @@ listMax
 listMin
 LiveDashboard
 localhost
+LSN
 macOS
 maxInterval
 mcp
@@ -222,6 +224,7 @@ Streamable
 supportability
 SyncDaprStateStore
 tableKeys
+TDS
 tenantId
 trueFor
 trueLater
