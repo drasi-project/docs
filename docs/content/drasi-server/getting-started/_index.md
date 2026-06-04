@@ -283,6 +283,10 @@ INFO drasi_host_sdk::registry::resolver: Resolving latest compatible version for
 This is normal — **do not interrupt it**. Subsequent starts are fast because the plugins are cached locally.
 {{% /alert %}}
 
+{{% alert title="About the plugin signature-verification lines" color="info" %}}
+As each plugin is downloaded, Drasi Server verifies its cosign signature and logs a line for it. The signer subject may reference an internal publishing branch name from the Drasi project's CI — this is expected and does not indicate a problem. As long as verification succeeds (the line is prefixed with a `✓` and reports the plugin as trusted/signed), the plugin is authentic and safe to use.
+{{% /alert %}}
+
 You'll see detailed startup logs as Drasi Server downloads plugins and initializes all configured Sources, Continuous Queries, and Reactions. There's a lot of output, so look for these key lines at the end of the startup process:
 
 ```text
