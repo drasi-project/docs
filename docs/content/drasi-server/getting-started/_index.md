@@ -144,6 +144,10 @@ getting-started-postgres   postgres:14-alpine   "docker-entrypoint.s…"   postg
 
 If the container shows a different status or you see errors, check the container logs with `docker compose -f examples/getting-started/database/docker-compose.yml logs`. See the [Docker Compose documentation](https://docs.docker.com/compose/) for additional troubleshooting help.
 
+{{% alert title="Port already in use?" color="info" %}}
+The database publishes on host port `5432`. If that port is already taken (for example by a local PostgreSQL), `docker compose ... up -d` will fail to bind it. Set `POSTGRES_HOST_PORT` to a free port before starting — for example add `POSTGRES_HOST_PORT=5433` to `examples/getting-started/.env` (or export it in your shell), then run the `up` command again. Note that later tutorial steps assume the database is reachable on the default port `5432`, so if you change the host port you'll also need to set the matching Source `port` in your Drasi Server config accordingly.
+{{% /alert %}}
+
 ### Initialize the Database
 
 Once the container is up, initialize the database schema and sample data.
