@@ -3811,4 +3811,52 @@ pre:hover .copy-code-button {
     background-color: rgba(255, 255, 255, 0.04);
     border-left-color: $secondary;
   }
+
+  // ---------------------------------------------------------------------------
+  // "How Drasi Works" flow diagram boxes (also used on the Drasi Server getting
+  // started page). The light-mode border uses rgba($primary, 0.1) — the deep
+  // navy is invisible on the dark canvas, so the boxes disappear. Give them a
+  // slightly elevated surface, a visible border and a shadow.
+  // ---------------------------------------------------------------------------
+  .flow-step {
+    background: var(--bs-tertiary-bg);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Secondary / muted text hard-codes light-mode greys ($gray-600 / $gray-700),
+  // which are too dark to read on the dark canvas (e.g. the section intros under
+  // each heading, flow-step captions, card taglines). Promote them to lighter
+  // neutrals. $gray-500 and lighter already read well, so they are left as-is.
+  // ---------------------------------------------------------------------------
+  .section-intro,
+  .quick-link,
+  .learning-path__text,
+  .learning-path-mini,
+  .learning-path-card .learning-path-description,
+  .learning-paths-preview > p:first-child,
+  .product-card__features li,
+  .glossary-term-tooltip-text,
+  .glossary-entry-definition {
+    color: $gray-300;
+  }
+
+  .hero-subtitle,
+  .flow-step__description,
+  .product-card__tagline,
+  .whats-new-item__description,
+  .step-content p,
+  .path-step .step-duration,
+  .path-duration,
+  .code-header,
+  .nav-tabs .nav-link,
+  .related-content__section-title,
+  .glossary-modal-result-description,
+  .glossary-filter,
+  .glossary-entry-see-also-label,
+  .td-breadcrumbs .breadcrumb .breadcrumb-item a,
+  .td-toc #TableOfContents a {
+    color: $gray-400;
+  }
 }
