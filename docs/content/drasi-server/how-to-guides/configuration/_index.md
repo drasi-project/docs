@@ -66,4 +66,13 @@ description: "Step-by-step instructions for configuring Drasi Server"
       </div>
     </div>
   </a>
+  <a href="configure-identity-providers/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-key"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Configure Identity Providers</h3>
+        <p class="unified-card-summary">Authenticate sources and reactions with static credentials or cloud identity</p>
+      </div>
+    </div>
+  </a>
 </div>
