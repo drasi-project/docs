@@ -935,6 +935,10 @@ In **Terminal 3**, start the SSE CLI:
 
 ### Test the inactive-senders Continuous Query
 
+{{% alert title="What you'll see, given the earlier steps" color="info" %}}
+Because every sender created in earlier steps (Buzz Lightyear, Brian Kernighan, Antoninus, David, Alice, Bob) has now been idle for far more than 20 seconds, the `inactive-senders` result set is **already pre-populated** with all of them when you start streaming — `GET /api/v1/queries/inactive-senders/results` returns them all immediately. As a result, the transitions below are relative to that pre-populated state: re-inserting a message for Alice first **removes** her from the set (a `DELETE`, because she's active again) and then, about 20 seconds later, **adds** her back (an `ADD`) when she becomes idle once more. If you'd prefer to watch a sender enter the set from an empty starting point, start the tutorial from a fresh database.
+{{% /alert %}}
+
 In **Terminal 2**, create a new message from Alice:
 
 {{< tabpane persist="header" >}}
@@ -947,7 +951,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
 {{< /tab >}}
 {{< /tabpane >}}
 
-Wait for 20 seconds... Alice will be automatically added to the `inactive-senders` query result because she hasn't sent a new message in the last 20 seconds. The subscribed SSE Reaction (created by the SSE CLI) will forward the change to the SSE CLI and you will see this query result `ADD` notification in your terminal:
+Because Alice was already in the `inactive-senders` result set (see the note above), this new message first makes her active, so you'll immediately see a `DELETE` notification removing her. Then wait for 20 seconds — with no further messages from Alice she ages back into the set, and you'll see this query result `ADD` notification in your terminal:
 
 ```json
 {
