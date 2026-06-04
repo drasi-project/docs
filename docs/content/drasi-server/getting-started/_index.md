@@ -69,7 +69,7 @@ You'll configure each of these building blocks yourself as you work through the 
 {{% alert title="Before you begin" color="info" %}}
 - **Terminals:** you'll use more than one. **Terminal 1** runs Drasi Server; use **Terminal 2** for `docker` and `curl` commands. Step 5 adds **Terminal 3** for the SSE CLI.
 - **Command tabs:** commands are shown in tabs (for example *bash / zsh* and *PowerShell*) — use the one for your shell.
-- **Expected output** blocks show roughly what you'll see; exact versions, IDs, and timestamps will differ.
+- **Expected output** blocks are illustrative — exact versions, IDs, and timestamps will differ. So may field ordering, the numeric-vs-string representation of ID fields, additional metadata fields (such as `row_signature` on aggregation events), and the relative ordering of notifications between different queries.
 {{% /alert %}}
 
 ## Step 1 of 6: Set Up Your Environment {#setup}
@@ -356,22 +356,22 @@ However you choose to view the `all-messages` results, that data will look somet
     {
       "From": "Buzz Lightyear",
       "Message": "To infinity and beyond!",
-      "MessageId": "1"
+      "MessageId": 1
     },
     {
       "From": "Brian Kernighan",
       "Message": "Hello World",
-      "MessageId": "2"
+      "MessageId": 2
     },
     {
       "From": "Antoninus",
       "Message": "I am Spartacus",
-      "MessageId": "3"
+      "MessageId": 3
     },
     {
       "From": "David",
       "Message": "I am Spartacus",
-      "MessageId": "4"
+      "MessageId": 4
     }
   ],
   "error": null
@@ -402,7 +402,7 @@ Watch the Drasi Server console — a notification of an addition to the `all-mes
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"You","Message":"My first message!","MessageId":"5"}
+[log-reaction]   [ADD] {"From":"You","Message":"My first message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the new message included in the result set.
@@ -423,7 +423,7 @@ The notification output by the Log Reaction shows the item before and after the 
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [UPDATE] {"From":"You","Message":"My first message!","MessageId":"5"} -> {"From":"You","Message":"My first UPDATED message!","MessageId":"5"}
+[log-reaction]   [UPDATE] {"From":"You","Message":"My first message!","MessageId":5} -> {"From":"You","Message":"My first UPDATED message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the message text has been updated in the query result set.
@@ -444,7 +444,7 @@ The console shows the message being deleted from the query's result set:
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [DELETE] {"From":"You","Message":"My first UPDATED message!","MessageId":"5"}
+[log-reaction]   [DELETE] {"From":"You","Message":"My first UPDATED message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the message is no longer included in the result set.
@@ -589,7 +589,7 @@ Invoke-RestMethod -Method Get -Uri http://localhost:8080/api/v1/queries/hello-wo
   "success": true,
   "data": [
     {
-      "Id": "2",
+      "Id": 2,
       "Sender": "Brian Kernighan"
     }
   ],
@@ -615,9 +615,9 @@ Watch the console and you will see notifications for both the `all-messages` and
 
 ```text
 [log-reaction] Query 'hello-world-senders' (1 items):
-[log-reaction]   [ADD] {"Id":"6","Sender":"Alice"}
+[log-reaction]   [ADD] {"Id":6,"Sender":"Alice"}
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"Alice","Message":"Hello World","MessageId":"6"}
+[log-reaction]   [ADD] {"From":"Alice","Message":"Hello World","MessageId":6}
 ```
 
 Now **insert** a message that doesn't match the `hello-world-senders` criteria:
@@ -636,7 +636,7 @@ The console shows the new message in the `all-messages` query, but there is no n
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"Bob","Message":"Goodbye World","MessageId":"7"}
+[log-reaction]   [ADD] {"From":"Bob","Message":"Goodbye World","MessageId":7}
 ```
 
 **✅ Checkpoint**: You understand how to add new Continuous Queries to a running Drasi Server instance via the REST API. You also understand how `WHERE` clauses in Continuous Queries control what data is part of the query's result set and therefore what changes generate notifications to subscribed Reactions.
@@ -792,6 +792,7 @@ Watch the SSE CLI terminal — you'll see the **Count** field has increased from
         "Count": 2,
         "MessageText": "Hello World"
       },
+      "row_signature": 2186641145172575182,
       "type": "aggregation"
     }
   ],
@@ -826,6 +827,7 @@ The `Count` decreases from 3 to 2:
         "Count": 3,
         "MessageText": "Hello World"
       },
+      "row_signature": 2186641145172575182,
       "type": "aggregation"
     }
   ],
