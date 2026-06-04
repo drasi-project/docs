@@ -69,7 +69,7 @@ You'll configure each of these building blocks yourself as you work through the 
 {{% alert title="Before you begin" color="info" %}}
 - **Terminals:** you'll use more than one. **Terminal 1** runs Drasi Server; use **Terminal 2** for `docker` and `curl` commands. Step 5 adds **Terminal 3** for the SSE CLI.
 - **Command tabs:** commands are shown in tabs (for example *bash / zsh* and *PowerShell*) — use the one for your shell.
-- **Expected output** blocks are illustrative — exact versions, IDs, and timestamps will differ. So may field ordering, the numeric-vs-string representation of ID fields, additional metadata fields (such as `row_signature` on aggregation events), and the relative ordering of notifications between different queries.
+- **Expected output** blocks are illustrative — exact versions, IDs, and timestamps will differ. Field ordering may also differ, as may whether ID fields are represented as numbers or strings, whether additional metadata fields are present (such as `row_signature` on aggregation events), and the relative ordering of notifications between different queries.
 {{% /alert %}}
 
 ## Step 1 of 6: Set Up Your Environment {#setup}
