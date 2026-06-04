@@ -2,8 +2,8 @@
 # DRASI AUTHORITATIVE CONTEXT
 # Purpose: Single source of truth for AI agents generating code, docs,
 #          blog posts, or answers about Drasi.
-# Version: 0.5.0
-# Updated: 2026-02-26
+# Version: 0.5.1
+# Updated: 2026-05-31
 # ===================================================================
 
 project:
@@ -67,6 +67,9 @@ key_phrases:
     - "Continuous queries can span data from multiple sources in a single query."
     - "Change semantics are defined by your query, not the source system."
     - "Drasi works with existing databases and software systems."
+    - "Drasi incrementally maintains query results as data changes, without re-scanning the source or polling."
+    - "Building change-driven solutions with Drasi requires no application code, only declarative queries and configuration."
+    - "You describe what changes you care about; Drasi handles how to detect and react to them continuously."
   never_say:
     - "Drasi is an event-driven platform"
     - "Drasi is used to build event-driven architectures"
@@ -82,9 +85,35 @@ key_differentiators:
   - less_brittle: "Eliminates parsing/filtering/state overhead"
   - standardized_patterns: "Consistent change detection across organization"
   - temporal_capabilities: "Historical result set retrieval for audits/debugging"
+  - incremental_maintenance: "Standing query results updated incrementally from each change; never re-scans the source or polls (e.g. aggregates update with constant work per change)"
+  - no_application_code: "Change detection, state tracking, and time-based logic are declarative; no polling loops, result diffing, state caches, or schedulers to write"
   - low_code: "Rich graph queries for sophisticated change rules"
   - flexible_deployment: "Embedded library, Docker container, or Kubernetes platform"
   - visual_management: "Built-in web UI for interactive pipeline visualization and real-time monitoring (Drasi Server)"
+
+explaining_value_to_developers:
+  audience: "Software and infrastructure engineers evaluating Drasi."
+  core_message: "The compelling part of Drasi is not that a change produces a reaction, but the work Drasi does *between* the change and the reaction, and that it requires zero application / solution code."
+  conviction_through_contrast: "Engineers will be convinced not by demos of the functionality which mirrors the results they already produce today but by realizing what they did NOT have to build when using Drasi."
+  declarative_principle: "You describe WHAT you care about (a query); Drasi handles HOW (continuously, incrementally, over time)."
+  mental_model:
+    pipeline: "Source -> Continuous Query -> Reaction"
+    continuous_query_analogy: "A Continuous Query is like a database materialized view that stays continuously up to date AND streams its deltas (add/update/delete) to subscribed Reactions."
+    familiar_anchors: [materialized views, "PostgreSQL LISTEN/NOTIFY", standing/live query]
+  what_happens_between_change_and_reaction:
+    - "Manages connection to data source using low impact change logs where available."
+    - "Maintains the query's standing result set as data changes, rather than running a one-shot query."
+    - "Updates incrementally from each individual change and never re-scans the source (an aggregate count updates with constant work per change, even over millions of rows)."
+    - "Tracks prior state, so update notifications carry both the before and after values."
+    - "Re-evaluates time-based conditions on a schedule, detecting the absence of change with no polling loop or external scheduler."
+  zero_application_code:
+    claim: "Building a change-driven solution with Drasi requires no application code; only declarative queries and configuration."
+    you_would_otherwise_write: [change-data-capture consumer, polling loop, result-diffing logic, external state store/cache, debounce logic, timers/schedulers]
+  most_convincing_demonstration: "Absence-of-change detection: a Reaction fires when nothing changed in the source. Because no event triggers it, it is undeniable proof that Drasi performs continuous, real work the developer never implemented."
+  guidance:
+    - "Lead with the contrast to hand-rolled solutions and the no-polling / no-re-scan property."
+    - "Surface the invisible work (standing state, incremental updates, temporal re-evaluation) in prose at the moment it happens."
+    - "Avoid manufactured 'wow' demos; let the running system plus a clear explanation be the proof."
 
 architecture:
   data_flow: "Sources -> Continuous Queries -> Reactions"
@@ -593,3 +622,9 @@ faq:
     a: "Yes, same query language and concepts across all deployment options."
   - q: "Does drasi-lib require infrastructure?"
     a: "No, runs entirely in-process within Rust application."
+  - q: "How much application code do I write to build a change-driven solution?"
+    a: "None for the change logic. You write declarative continuous queries and configuration; Drasi handles detection, state, incremental updates, and time-based evaluation, so there are no polling loops, result-diffing, state caches, or schedulers to write."
+  - q: "Does Drasi re-query or re-scan the source when data changes?"
+    a: "No. Drasi maintains each query's standing result set and updates it incrementally from individual changes, so aggregates and joins update with constant work per change rather than re-scanning the source."
+  - q: "What is the clearest proof that Drasi is doing real, continuous work?"
+    a: "Absence-of-change detection: a Reaction fires when nothing changed in the source. Since no event triggers it, it demonstrates Drasi continuously maintains and re-evaluates results on its own."

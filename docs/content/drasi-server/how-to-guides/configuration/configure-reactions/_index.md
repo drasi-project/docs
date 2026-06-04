@@ -21,6 +21,15 @@ description: "Set up actions triggered by data changes"
       </div>
     </div>
   </a>
+  <a href="configure-dashboard-reaction/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-tachometer-alt"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Dashboard</h3>
+        <p class="unified-card-summary">Real-time web dashboard with charts and widgets</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-grpc-reaction/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-network-wired"></i></div>
