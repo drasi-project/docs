@@ -723,7 +723,8 @@ curl -X POST http://localhost:8080/api/v1/plugins/install \
 Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/plugins/install `
   -ContentType "application/json" `
   -Body '{
-    "ref": "reaction/sse"
+    "ref": "reaction/sse",
+    "registry": "ghcr.io/drasi-project"
   }'
 {{< /tab >}}
 {{< /tabpane >}}
