@@ -273,6 +273,16 @@ In **Terminal 1**, run Drasi Server with your new configuration:
 ./bin/drasi-server --config getting-started.yaml
 ```
 
+{{% alert title="The first launch downloads plugins — give it a minute" color="info" %}}
+The **first** time you start Drasi Server it downloads and cryptographically verifies the required plugins (Source, Bootstrap, and Reaction) from a container registry. This can pause for up to a minute — longer on a slow connection — while showing only a line such as:
+
+```text
+INFO drasi_host_sdk::registry::resolver: Resolving latest compatible version for ghcr.io/drasi-project/source/postgres...
+```
+
+This is normal — **do not interrupt it**. Subsequent starts are fast because the plugins are cached locally.
+{{% /alert %}}
+
 You'll see detailed startup logs as Drasi Server downloads plugins and initializes all configured Sources, Continuous Queries, and Reactions. There's a lot of output, so look for these key lines at the end of the startup process:
 
 ```text
