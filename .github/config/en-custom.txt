@@ -81,6 +81,7 @@ Microservice
 Mongo
 MongoDb
 NAV
+NDJSON
 NODEAPP
 NodeJS
 OAuth
@@ -1650,3 +1651,13 @@ Keychain
 Keyring
 keyring
 VMs
+OSSRDBMS
+IMDS
+VMs
+enum
+KPI
+KPIs
+repositioned
+ECharts
+cp
+cron

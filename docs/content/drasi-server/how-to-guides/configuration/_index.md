@@ -10,6 +10,17 @@ description: "Step-by-step instructions for configuring Drasi Server"
 ---
 
 <div class="card-grid">
+  <!--
+  <a href="create-config-with-wizard/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-magic"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Create Configuration with the Wizard</h3>
+        <p class="unified-card-summary">Scaffold a config file interactively with <code>drasi-server init</code></p>
+      </div>
+    </div>
+  </a>
+  -->
   <a href="configure-drasi-server/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-file-alt"></i></div>
@@ -61,6 +72,15 @@ description: "Step-by-step instructions for configuring Drasi Server"
       <div class="unified-card-content">
         <h3 class="unified-card-title">Configure Secret Stores</h3>
         <p class="unified-card-summary">Resolve passwords and tokens from external secret stores</p>
+      </div>
+    </div>
+  </a>
+  <a href="configure-identity-providers/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-key"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Configure Identity Providers</h3>
+        <p class="unified-card-summary">Authenticate sources and reactions with static credentials or cloud identity</p>
       </div>
     </div>
   </a>
