@@ -13,6 +13,7 @@ ApplySources
 ARCHIVELOG
 AttachQuery
 autocomplete
+authMode
 autocompletion
 backticks
 Balancers
@@ -127,6 +128,7 @@ listMin
 LiveDashboard
 localhost
 LogMiner
+LSN
 macOS
 maxInterval
 MCP
@@ -229,6 +231,7 @@ supportability
 SyncDaprStateStore
 SYSDBA
 tableKeys
+TDS
 tenantId
 trueFor
 trueLater
@@ -257,3 +260,4 @@ WebhookUrl
 wget
 workspace's
 youtube
+ConfigValue
