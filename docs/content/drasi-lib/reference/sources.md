@@ -78,6 +78,15 @@ Sources ingest data from external systems or your application and emit graph ele
       </div>
     </div>
   </a>
+  <a href="https://crates.io/crates/drasi-source-mssql" target="_blank" rel="noopener">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">SQL Server</h3>
+        <p class="unified-card-summary">Stream changes from SQL Server using Change Data Capture (CDC)</p>
+      </div>
+    </div>
+  </a>
 </div>
 
 ## Building Custom Sources

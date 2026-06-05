@@ -41,6 +41,15 @@ description: "Load initial data before streaming begins"
       </div>
     </div>
   </a>
+  <a href="configure-mssql-bootstrap-provider/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">SQL Server</h3>
+        <p class="unified-card-summary">Bootstrap from a SQL Server snapshot (SQL Server sources only)</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-scriptfile-bootstrap-provider/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-file-alt"></i></div>

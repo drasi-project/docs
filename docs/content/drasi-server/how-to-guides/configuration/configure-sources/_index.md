@@ -57,4 +57,13 @@ description: "Connect Drasi Server to databases, APIs, and data streams"
       </div>
     </div>
   </a>
+  <a href="configure-mssql-source/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">SQL Server</h3>
+        <p class="unified-card-summary">Stream changes from SQL Server using Change Data Capture (CDC)</p>
+      </div>
+    </div>
+  </a>
 </div>
