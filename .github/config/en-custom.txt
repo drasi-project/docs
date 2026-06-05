@@ -81,6 +81,7 @@ Microservice
 Mongo
 MongoDb
 NAV
+NDJSON
 NODEAPP
 NodeJS
 OAuth
