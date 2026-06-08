@@ -12,6 +12,15 @@ description: "Set up actions triggered by data changes"
 {{< term "Reaction" "Reactions" >}} process query {{< term "Result Change Event" "result changes" >}} and perform actions. {{< term "Drasi Server" >}} supports several reaction types for different output needs.
 
 <div class="card-grid">
+  <a href="configure-file-reaction/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-file-alt"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">File</h3>
+        <p class="unified-card-summary">Write query result diffs to the filesystem</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-dashboard-reaction/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-tachometer-alt"></i></div>
