@@ -48,7 +48,7 @@ There are 2 binary files you need to download to proceed with the tutorial:
 1. **drasi-server** - the main Drasi Server executable
 2. **drasi-sse-cli** - a tool used during the tutorial to observe notifications sent by Drasi Server
 
-The rest of the tutorial assumes these files are in the `./bin/drasi-server` directory.
+The rest of the tutorial assumes these files are in the `./bin/` directory (as `./bin/drasi-server` and `./bin/drasi-sse-cli`).
 
 To download the correct binaries for your platform run the following command:
 
