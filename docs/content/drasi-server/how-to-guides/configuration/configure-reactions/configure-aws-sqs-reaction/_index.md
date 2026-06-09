@@ -117,7 +117,7 @@ Message bodies and attribute values support Handlebars templating.
 | `{{before.property}}` | `updated`, `deleted` | Specific property from previous data |
 | `{{query_id}}` | All | The query ID that produced this change |
 | `{{query_name}}` | All | The query name |
-| `{{operation}}` | All | The operation type (`added`, `updated`, `deleted`) |
+| `{{operation}}` | All | The operation type (`add`, `update`, `delete`) |
 | `{{timestamp}}` | All | Event timestamp |
 | `{{json value}}` | All | JSON-serializes nested objects |
 
@@ -365,7 +365,7 @@ reactions:
 
 - Messages are sent one at a time (no `SendMessageBatch` optimization)
 - SQS message size limit applies (256 KB)
-- Aggregation diffs are sent as `UPDATE` messages
+- Aggregation diffs are sent as `update` messages
 - Noop diffs are silently ignored
 
 ## Complete Example
