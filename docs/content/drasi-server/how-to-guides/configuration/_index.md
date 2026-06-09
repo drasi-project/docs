@@ -66,6 +66,15 @@ description: "Step-by-step instructions for configuring Drasi Server"
       </div>
     </div>
   </a>
+  <a href="configure-secret-stores/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-key"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Configure Secret Stores</h3>
+        <p class="unified-card-summary">Resolve passwords and tokens from external secret stores</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-identity-providers/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-key"></i></div>

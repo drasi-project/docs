@@ -70,7 +70,7 @@ You'll configure each of these building blocks yourself as you work through the 
 {{% alert title="Before you begin" color="info" %}}
 - **Terminals:** you'll use more than one. **Terminal 1** runs Drasi Server; use **Terminal 2** for `docker` and `curl` commands. Step 5 adds **Terminal 3** for the SSE CLI.
 - **Command tabs:** commands are shown in tabs (for example *bash / zsh* and *PowerShell*) — use the one for your shell.
-- **Expected output** blocks show roughly what you'll see; exact versions, IDs, and timestamps will differ.
+- **Expected output** blocks are illustrative — exact versions, IDs, and timestamps will differ. Field ordering may also differ, as may whether ID fields are represented as numbers or strings, whether additional metadata fields are present (such as `row_signature` on aggregation events), and the relative ordering of notifications between different queries.
 {{% /alert %}}
 
 ## Step 1 of 7: Set Up Your Environment {#setup}
@@ -144,6 +144,10 @@ getting-started-postgres   postgres:14-alpine   "docker-entrypoint.s…"   postg
 ```
 
 If the container shows a different status or you see errors, check the container logs with `docker compose -f examples/getting-started/database/docker-compose.yml logs`. See the [Docker Compose documentation](https://docs.docker.com/compose/) for additional troubleshooting help.
+
+{{% alert title="Port already in use?" color="info" %}}
+The database publishes on host port `5432`. If that port is already taken (for example by a local PostgreSQL), `docker compose ... up -d` will fail to bind it. Set `POSTGRES_HOST_PORT` to a free port before starting — for example add `POSTGRES_HOST_PORT=5433` to `examples/getting-started/.env` (or export it in your shell), then run the `up` command again. Note that later tutorial steps assume the database is reachable on the default port `5432`, so if you change the host port you'll also need to set the matching Source `port` in your Drasi Server config accordingly.
+{{% /alert %}}
 
 ### Initialize the Database
 
@@ -270,6 +274,20 @@ In **Terminal 1**, run Drasi Server with your new configuration:
 ./bin/drasi-server --config getting-started.yaml
 ```
 
+{{% alert title="The first launch downloads plugins — give it a minute" color="info" %}}
+The **first** time you start Drasi Server it downloads and cryptographically verifies the required plugins (Source, Bootstrap, and Reaction) from a container registry. This can pause for up to a minute — longer on a slow connection — while showing only a line such as:
+
+```text
+INFO drasi_host_sdk::registry::resolver: Resolving latest compatible version for ghcr.io/drasi-project/source/postgres...
+```
+
+This is normal — **do not interrupt it**. Subsequent starts are fast because the plugins are cached locally.
+{{% /alert %}}
+
+{{% alert title="About the plugin signature-verification lines" color="info" %}}
+As each plugin is downloaded, Drasi Server verifies its cosign signature and logs a line for it. The signer subject may reference an internal publishing branch name from the Drasi project's CI — this is expected and does not indicate a problem. As long as verification succeeds (the line is prefixed with a `✓` and reports the plugin as trusted/signed), the plugin is authentic and safe to use.
+{{% /alert %}}
+
 You'll see detailed startup logs as Drasi Server downloads plugins and initializes all configured Sources, Continuous Queries, and Reactions. There's a lot of output, so look for these key lines at the end of the startup process:
 
 ```text
@@ -339,22 +357,22 @@ However you choose to view the `all-messages` results, that data will look somet
     {
       "From": "Buzz Lightyear",
       "Message": "To infinity and beyond!",
-      "MessageId": "1"
+      "MessageId": 1
     },
     {
       "From": "Brian Kernighan",
       "Message": "Hello World",
-      "MessageId": "2"
+      "MessageId": 2
     },
     {
       "From": "Antoninus",
       "Message": "I am Spartacus",
-      "MessageId": "3"
+      "MessageId": 3
     },
     {
       "From": "David",
       "Message": "I am Spartacus",
-      "MessageId": "4"
+      "MessageId": 4
     }
   ],
   "error": null
@@ -385,7 +403,7 @@ Watch the Drasi Server console — a notification of an addition to the `all-mes
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"You","Message":"My first message!","MessageId":"5"}
+[log-reaction]   [ADD] {"From":"You","Message":"My first message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the new message included in the result set.
@@ -406,7 +424,7 @@ The notification output by the Log Reaction shows the item before and after the 
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [UPDATE] {"From":"You","Message":"My first message!","MessageId":"5"} -> {"From":"You","Message":"My first UPDATED message!","MessageId":"5"}
+[log-reaction]   [UPDATE] {"From":"You","Message":"My first message!","MessageId":5} -> {"From":"You","Message":"My first UPDATED message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the message text has been updated in the query result set.
@@ -427,7 +445,7 @@ The console shows the message being deleted from the query's result set:
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [DELETE] {"From":"You","Message":"My first UPDATED message!","MessageId":"5"}
+[log-reaction]   [DELETE] {"From":"You","Message":"My first UPDATED message!","MessageId":5}
 ```
 
 If you view the `all-messages` query results again through the REST API, you'll see the message is no longer included in the result set.
@@ -572,7 +590,7 @@ Invoke-RestMethod -Method Get -Uri http://localhost:8080/api/v1/queries/hello-wo
   "success": true,
   "data": [
     {
-      "Id": "2",
+      "Id": 2,
       "Sender": "Brian Kernighan"
     }
   ],
@@ -598,9 +616,9 @@ Watch the console and you will see notifications for both the `all-messages` and
 
 ```text
 [log-reaction] Query 'hello-world-senders' (1 items):
-[log-reaction]   [ADD] {"Id":"6","Sender":"Alice"}
+[log-reaction]   [ADD] {"Id":6,"Sender":"Alice"}
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"Alice","Message":"Hello World","MessageId":"6"}
+[log-reaction]   [ADD] {"From":"Alice","Message":"Hello World","MessageId":6}
 ```
 
 Now **insert** a message that doesn't match the `hello-world-senders` criteria:
@@ -619,7 +637,7 @@ The console shows the new message in the `all-messages` query, but there is no n
 
 ```text
 [log-reaction] Query 'all-messages' (1 items):
-[log-reaction]   [ADD] {"From":"Bob","Message":"Goodbye World","MessageId":"7"}
+[log-reaction]   [ADD] {"From":"Bob","Message":"Goodbye World","MessageId":7}
 ```
 
 **✅ Checkpoint**: You understand how to add new Continuous Queries to a running Drasi Server instance via the REST API. You also understand how `WHERE` clauses in Continuous Queries control what data is part of the query's result set and therefore what changes generate notifications to subscribed Reactions.
@@ -706,7 +724,8 @@ curl -X POST http://localhost:8080/api/v1/plugins/install \
 Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/plugins/install `
   -ContentType "application/json" `
   -Body '{
-    "ref": "reaction/sse"
+    "ref": "reaction/sse",
+    "registry": "ghcr.io/drasi-project"
   }'
 {{< /tab >}}
 {{< /tabpane >}}
@@ -774,6 +793,7 @@ Watch the SSE CLI terminal — you'll see the **Count** field has increased from
         "Count": 2,
         "MessageText": "Hello World"
       },
+      "row_signature": 2186641145172575182,
       "type": "aggregation"
     }
   ],
@@ -808,6 +828,7 @@ The `Count` decreases from 3 to 2:
         "Count": 3,
         "MessageText": "Hello World"
       },
+      "row_signature": 2186641145172575182,
       "type": "aggregation"
     }
   ],
@@ -915,6 +936,10 @@ In **Terminal 3**, start the SSE CLI:
 
 ### Test the inactive-senders Continuous Query
 
+{{% alert title="What you'll see, given the earlier steps" color="info" %}}
+Because every sender created in earlier steps (Buzz Lightyear, Brian Kernighan, Antoninus, David, Alice, Bob) has now been idle for far more than 20 seconds, the `inactive-senders` result set is **already pre-populated** with all of them when you start streaming — `GET /api/v1/queries/inactive-senders/results` returns them all immediately. As a result, the transitions below are relative to that pre-populated state: re-inserting a message for Alice first **removes** her from the set (a `DELETE`, because she's active again) and then, about 20 seconds later, **adds** her back (an `ADD`) when she becomes idle once more. If you'd prefer to watch a sender enter the set from an empty starting point, start the tutorial from a fresh database.
+{{% /alert %}}
+
 In **Terminal 2**, create a new message from Alice:
 
 {{< tabpane persist="header" >}}
@@ -927,7 +952,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
 {{< /tab >}}
 {{< /tabpane >}}
 
-Wait for 20 seconds... Alice will be automatically added to the `inactive-senders` query result because she hasn't sent a new message in the last 20 seconds. The subscribed SSE Reaction (created by the SSE CLI) will forward the change to the SSE CLI and you will see this query result `ADD` notification in your terminal:
+Because Alice was already in the `inactive-senders` result set (see the note above), this new message first makes her active, so you'll immediately see a `DELETE` notification removing her. Then wait for 20 seconds — with no further messages from Alice she ages back into the set, and you'll see this query result `ADD` notification in your terminal:
 
 ```json
 {
