@@ -198,7 +198,7 @@ Verify the sample data was loaded:
 docker exec getting-started-postgres psql -U drasi_user -d getting_started -c 'SELECT * FROM "Message";'
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec getting-started-postgres psql -U drasi_user -d getting_started -c "SELECT * FROM \""Message\"";"
+docker exec getting-started-postgres psql -U drasi_user -d getting_started -c "SELECT * FROM ""Message"";"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -377,7 +377,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('You', 'My first message!');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('You', 'My first message!');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('You', 'My first message!');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -398,7 +398,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "UPDATE \"Message\" SET \"Message\" = 'My first UPDATED message!' WHERE \"MessageId\" = 5;"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "UPDATE \""Message\"" SET \""Message\"" = 'My first UPDATED message!' WHERE \""MessageId\"" = 5;"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "UPDATE ""Message"" SET ""Message"" = 'My first UPDATED message!' WHERE ""MessageId"" = 5;"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -419,7 +419,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "DELETE FROM \"Message\" WHERE \"MessageId\" = 5;"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM \""Message\"" WHERE \""MessageId\"" = 5;"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM ""Message"" WHERE ""MessageId"" = 5;"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -590,7 +590,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Hello World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'Hello World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Alice', 'Hello World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -611,7 +611,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Bob', 'Goodbye World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Bob', 'Goodbye World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Bob', 'Goodbye World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -755,7 +755,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Eve', 'Hello World');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Eve', 'Hello World');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Eve', 'Hello World');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -789,7 +789,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "DELETE FROM \"Message\" WHERE \"From\" = 'Eve';"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM \""Message\"" WHERE \""From\"" = 'Eve';"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "DELETE FROM ""Message"" WHERE ""From"" = 'Eve';"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -923,7 +923,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'About to go inactive');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'About to go inactive');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Alice', 'About to go inactive');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -953,7 +953,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Alice', 'Active again');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Alice', 'Active again');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Alice', 'Active again');"
 {{< /tab >}}
 {{< /tabpane >}}
 
@@ -1023,12 +1023,12 @@ Here's the new `messages-with-location` query as it would appear in a Drasi Serv
 
 The `sources` section lists **two Sources** — the `my-postgres` Source used by previous queries, and a new `location-tracker` HTTP Source you'll add next. The `joins` section defines a virtual relationship `FROM_USER` that connects `Message.From` to `UserLocation.name`, so the `MATCH` clause can traverse between the two Sources as if the data were stored in a single graph. Drasi handles join state and propagates changes from either Source into the result set.
 
-### Installing the HTTP Source and Scriptfile Bootstrap Plugins
+### Installing the HTTP Source and ScriptFile Bootstrap Plugins
 
 So far you've only used the PostgreSQL Source, which was already installed in your Drasi Server. To add the new `location-tracker` HTTP Source, you first need to install two plugins from the Drasi plugin repository:
 
 - The **HTTP Source** plugin — provides the `http` source kind used to receive location update events.
-- The **Scriptfile Bootstrap** plugin — provides the `scriptfile` bootstrap kind used to load the initial location data from a JSON file on startup.
+- The **ScriptFile Bootstrap** plugin — provides the `scriptfile` bootstrap kind used to load the initial location data from a JSONL (JSON Lines) file on startup (the first record must be a `Header`).
 
 In **Terminal 2**, install the HTTP Source plugin:
 
@@ -1045,12 +1045,13 @@ curl -X POST http://localhost:8080/api/v1/plugins/install \
 Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/plugins/install `
   -ContentType "application/json" `
   -Body '{
-    "ref": "source/http"
+    "ref": "source/http",
+    "registry": "ghcr.io/drasi-project"
   }'
 {{< /tab >}}
 {{< /tabpane >}}
 
-Then install the Scriptfile Bootstrap plugin:
+Then install the ScriptFile Bootstrap plugin:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -1065,7 +1066,8 @@ curl -X POST http://localhost:8080/api/v1/plugins/install \
 Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/plugins/install `
   -ContentType "application/json" `
   -Body '{
-    "ref": "bootstrap/scriptfile"
+    "ref": "bootstrap/scriptfile",
+    "registry": "ghcr.io/drasi-project"
   }'
 {{< /tab >}}
 {{< /tabpane >}}
@@ -1074,7 +1076,7 @@ In the Drasi Server console, you will see logs indicating that each plugin is be
 
 ### Add the location-tracker HTTP Source using the REST API
 
-In **Terminal 2**, use the following curl command to create the `location-tracker` HTTP Source. It listens on port 9000 for location update events and loads initial location data from a JSON file on startup using the `bootstrapProvider`:
+In **Terminal 2**, use the following curl command to create the `location-tracker` HTTP Source. It listens on port 9000 for location update events and loads initial location data from a JSONL (JSON Lines) file on startup using the `bootstrapProvider`:
 
 {{< tabpane persist="header" >}}
 {{< tab header="bash / zsh" lang="bash" >}}
@@ -1249,7 +1251,7 @@ docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -
   "INSERT INTO \"Message\" (\"From\", \"Message\") VALUES ('Carol', 'Good morning!');"
 {{< /tab >}}
 {{< tab header="PowerShell" lang="powershell" >}}
-docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO \""Message\"" (\""From\"", \""Message\"") VALUES ('Carol', 'Good morning!');"
+docker exec -it getting-started-postgres psql -U drasi_user -d getting_started -c "INSERT INTO ""Message"" (""From"", ""Message"") VALUES ('Carol', 'Good morning!');"
 {{< /tab >}}
 {{< /tabpane >}}
 
