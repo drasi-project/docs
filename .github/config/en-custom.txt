@@ -81,6 +81,7 @@ Microservice
 Mongo
 MongoDb
 NAV
+NDJSON
 NODEAPP
 NodeJS
 OAuth
@@ -1645,9 +1646,16 @@ Stripe
 ElasticMQ
 LocalStack
 deduplication
+ACI
+Hardcoded
+IntelliJ
+KDE
+Keychain
+Keyring
+keyring
+VMs
 OSSRDBMS
 IMDS
-VMs
 enum
 KPI
 KPIs
@@ -1655,3 +1663,4 @@ repositioned
 ECharts
 cp
 cron
+cryptographically
