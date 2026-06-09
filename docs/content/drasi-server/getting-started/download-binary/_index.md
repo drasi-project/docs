@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Download Binary"
 linkTitle: "Download Binary"
 weight: 5
+toc_hide: true
 description: "Download a prebuilt Drasi Server binary for your platform"
 ---
 
@@ -47,7 +48,7 @@ There are 2 binary files you need to download to proceed with the tutorial:
 1. **drasi-server** - the main Drasi Server executable
 2. **drasi-sse-cli** - a tool used during the tutorial to observe notifications sent by Drasi Server
 
-The rest of the tutorial assumes these files are in the `./bin/drasi-server` directory.
+The rest of the tutorial assumes these files are in the `./bin/` directory (as `./bin/drasi-server` and `./bin/drasi-sse-cli`).
 
 To download the correct binaries for your platform run the following command:
 
@@ -60,19 +61,11 @@ To download the correct binaries for your platform run the following command:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Step 4: Create Docker network
-
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
-
-```bash
-docker network create drasi-network
-```
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 

@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Build from Source"
 linkTitle: "Build from Source"
 weight: 40
+toc_hide: true
 description: "Build Drasi Server from source code"
 ---
 
@@ -12,15 +13,15 @@ Building from source is the most complex approach for getting Drasi Server so yo
 
 - **Git** — Needed to clone the Drasi Server code
 - **Docker** and **Docker Compose** — Needed to run the PostgreSQL database used in the tutorial
-- **Rust 1.88+** — For building Drasi Server
+- **Rust 1.88+** — Needed to build Drasi Server
 - **Text Editor** — Needed to edit files during the tutorial
-- **curl** — Used in later tutorial steps
+- **curl** — Used to interact with Drasi Server's REST API during the tutorial
 
 If you are not sure you have these prerequisites installed, or need help installing them, see the [troubleshooting section](#troubleshooting) at the end of this page for guidance.
 
 ## Step 1: Setup Native Build Dependencies
 
-Building `drasi-server` requires several native C libraries. Install the dependencies for your platform:
+Building Drasi Server requires several native C libraries. Install the dependencies for your platform:
 
 ### macOS
 
@@ -43,82 +44,17 @@ sudo apt-get install -y libssl-dev pkg-config clang libclang-dev libjq-dev libon
   
 ### Windows
 
-Building natively on Windows requires MSYS2, LLVM, Strawberry Perl, and protoc.
-
-**Install MSYS2**  
-MSYS2 provides Unix-like build tools and C libraries needed for native dependencies (OpenSSL, RocksDB, etc.).
+Building natively on Windows requires the Visual Studio 2022 Build Tools (for the MSVC toolchain):
 
 ```powershell
-winget install MSYS2.MSYS2
+winget install --id Microsoft.VisualStudio.2022.BuildTools -e `
+    --override "--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 ```
 
-Then install the required packages:
+Then install the pinned Rust MSVC toolchain:
 
 ```powershell
-pacman -S --noconfirm `
-    make `
-    perl `
-    mingw-w64-ucrt-x86_64-gcc `
-    mingw-w64-ucrt-x86_64-pkg-config `
-    mingw-w64-ucrt-x86_64-clang
-```
-
-**Install LLVM**  
-
-```powershell
-winget install LLVM.LLVM
-```
-
-**Install Strawberry Perl**  
-> **Note:** MSYS2's `perl` must appear **before** Strawberry Perl on PATH.
-> OpenSSL's build requires Unix-like paths that only MSYS2's perl provides.
-
-```powershell
-winget install StrawberryPerl.StrawberryPerl
-```
-
-**Install Protocol Buffers Compiler**  
-
-```powershell
-winget install Google.Protobuf
-```
-
-If `protoc` is not on your PATH after installation:
-
-```powershell
-$env:PROTOC = "C:\path\to\protoc.exe"
-```
-
-**Switch to the GNU Toolchain**  
-This project's `rust-toolchain.toml` pins Rust 1.88.0 and defaults to the MSVC target.
-Since we link against MSYS2 libraries, we need the GNU toolchain. Setting `$env:RUSTUP_TOOLCHAIN`
-overrides `rust-toolchain.toml` (note: `rustup default` alone is **not** sufficient).
-
-```powershell
-rustup toolchain install 1.88.0-x86_64-pc-windows-gnu
-$env:RUSTUP_TOOLCHAIN = "1.88.0-x86_64-pc-windows-gnu"
-```
-
-**Set PATH**  
-MSYS2 paths must come **before** Strawberry Perl so that OpenSSL uses MSYS2's Unix-like `perl`:
-
-```powershell
-$env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;C:\Strawberry\perl\bin;" + $env:PATH
-```
-
-**Set Tool Paths**  
-```powershell
-$env:LIBCLANG_PATH = "C:\Program Files\LLVM\bin"
-```
-
-**Install libjq**  
-
-```powershell
-pacman -S --noconfirm `
-    mingw-w64-ucrt-x86_64-jq `
-    mingw-w64-ucrt-x86_64-oniguruma
-
-$env:JQ_LIB_DIR = "C:\msys64\ucrt64\lib"
+rustup toolchain install 1.88.0-x86_64-pc-windows-msvc
 ```
 
 ## Step 2: Clone Drasi Server Repo
@@ -160,7 +96,9 @@ Verify the `drasi-server` binary works:
 You should see output showing the version number, for example:
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.0
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.8.4
 ```
 
 ## Step 4: Build the SSE CLI
@@ -187,19 +125,11 @@ You should see output showing the version number, for example:
 drasi-sse-cli 0.1.0
 ```
 
-## Step 5: Create Docker network
-
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
-
-```bash
-docker network create drasi-network
-```
-
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 
