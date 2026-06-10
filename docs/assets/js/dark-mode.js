@@ -25,7 +25,7 @@
 
   const getPreferredTheme = () => {
     const storedTheme = getStoredTheme()
-    if (storedTheme) {
+    if (storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'auto') {
       return storedTheme
     }
 
