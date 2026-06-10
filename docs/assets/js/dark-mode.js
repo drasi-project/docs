@@ -16,8 +16,12 @@
   'use strict'
 
   const themeKey = 'td-color-theme'
-  const getStoredTheme = () => localStorage.getItem(themeKey)
-  const setStoredTheme = theme => localStorage.setItem(themeKey, theme)
+  const getStoredTheme = () => {
+    try { return localStorage.getItem(themeKey) } catch (e) { return null }
+  }
+  const setStoredTheme = theme => {
+    try { localStorage.setItem(themeKey, theme) } catch (e) { /* ignore */ }
+  }
 
   const getPreferredTheme = () => {
     const storedTheme = getStoredTheme()
