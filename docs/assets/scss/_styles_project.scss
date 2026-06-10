@@ -3767,6 +3767,7 @@ pre:hover .copy-code-button {
   // ---------------------------------------------------------------------------
   .cta-button--secondary {
     color: $secondary;
+    border-color: rgba($secondary, 0.55);
 
     &:hover {
       border-color: $secondary;
