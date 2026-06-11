@@ -3,6 +3,11 @@
 // A fresh, distinctive design that prioritizes usability and visual appeal
 // =============================================================================
 
+// Docsy dark-mode color-contrast adjustments (lightens the deep-navy $primary
+// for links/accents that use Bootstrap's --bs-primary in dark mode).
+// See $lighten-amount-for-dark-color-variant in _variables_project.scss.
+@import 'td/color-adjustments-dark';
+
 // CSS Custom Properties for dynamic theming
 :root {
   --drasi-primary: #{$primary};
@@ -3666,5 +3671,193 @@ pre:hover .copy-code-button {
     &::after {
       display: none;
     }
+  }
+}
+
+// =============================================================================
+// DARK MODE ADJUSTMENTS
+// Docsy + Bootstrap handle the base canvas (body, navbar, sidebar, footer)
+// through CSS variables. The rules below adapt Drasi's custom components, which
+// hard-code the deep-navy $primary as a foreground colour, so they stay legible
+// on a dark canvas. Code blocks keep their distinctive always-dark theme.
+// =============================================================================
+[data-bs-theme="dark"] {
+  // Card titles and any element using Bootstrap's heading colour reference the
+  // deep-navy $primary, which is unreadable on a dark canvas. Promote it to a
+  // light tone (page headings already inherit the light body colour).
+  --bs-heading-color: #{$gray-100};
+
+  // ---------------------------------------------------------------------------
+  // Content headings hard-code $primary as a foreground colour (h3) or a deep
+  // navy gradient (h1 / hero title). These selectors out-specify the heading
+  // colour variable, so adapt them directly. h3 also covers card titles such as
+  // the Diátaxis Concepts/Reference cards, which render as <h3 class="unified-
+  // card-title">.
+  // ---------------------------------------------------------------------------
+  .td-content h3 {
+    color: $gray-100;
+  }
+
+  .td-content h1,
+  .hero-title {
+    background: linear-gradient(135deg, $gray-100 0%, lighten($secondary, 5%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Custom component titles / emphasis that hard-code color: $primary
+  // ---------------------------------------------------------------------------
+  .unified-card:hover .unified-card-title,
+  .flow-step__label,
+  .product-card__title,
+  .learning-path__text strong,
+  .learning-path-card .learning-path-content h3,
+  .page-nav__link__title,
+  .whats-new-item__title,
+  .quick-links__title,
+  .quick-link:hover,
+  .related-content__header,
+  .related-content__toggle:hover,
+  .related-content__link:hover,
+  .related-content__link.active,
+  .glossary-term-tooltip-title,
+  .glossary-modal-header h2,
+  .glossary-modal-close:hover,
+  .glossary-modal-search input,
+  .glossary-modal-result-term,
+  .glossary-entry-term {
+    color: $gray-100;
+  }
+
+  // The base (non-variant) landing-page icon uses $primary; use the brand green
+  // so it stays vivid on a dark background. Diátaxis variant cards keep their own
+  // accent colours, which already read well on a dark canvas.
+  .unified-card:not([class*="unified-card--"]) .unified-card-icon {
+    color: $secondary;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Muted greys (links, captions) used in light mode are too dark to read on a
+  // dark canvas. Promote them to a lighter neutral.
+  // ---------------------------------------------------------------------------
+  .related-content__link {
+    color: $gray-400;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Navigation chrome accents (active/hover) that use color: $primary
+  // ---------------------------------------------------------------------------
+  .td-sidebar-nav .td-sidebar-link.active,
+  .td-breadcrumbs .breadcrumb-item a:hover,
+  .td-breadcrumbs .breadcrumb-item.active,
+  .td-toc #TableOfContents a:hover,
+  .td-toc #TableOfContents a.active,
+  .code-tabs__tab:hover,
+  .code-tabs__tab.active,
+  .learning-path-indicator a,
+  .learning-path-mini:hover {
+    color: $secondary;
+  }
+
+  // ---------------------------------------------------------------------------
+  // CTA "secondary" (outline) button: navy text/border is invisible in dark
+  // mode, switch to the brand green.
+  // ---------------------------------------------------------------------------
+  .cta-button--secondary {
+    color: $secondary;
+    border-color: rgba($secondary, 0.55);
+
+    &:hover {
+      border-color: $secondary;
+      background: rgba($secondary, 0.12);
+      color: $secondary;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Components with hard-coded light ($white) backgrounds become dark surfaces.
+  // ---------------------------------------------------------------------------
+  .learning-path-card,
+  .learning-path-mini {
+    background: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Cards: stronger borders/shadows so they read against the dark canvas, and a
+  // light backdrop behind product/source logos so dark artwork stays visible.
+  // ---------------------------------------------------------------------------
+  .unified-card,
+  .extension-card,
+  .product-card {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+
+    &:hover {
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  .unified-card-image,
+  .extension-card-image {
+    background: #f8f9fa;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Blockquotes: a subtle light fill reads better than the light-mode tint.
+  // ---------------------------------------------------------------------------
+  blockquote {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-left-color: $secondary;
+  }
+
+  // ---------------------------------------------------------------------------
+  // "How Drasi Works" flow diagram boxes (also used on the Drasi Server getting
+  // started page). The light-mode border uses rgba($primary, 0.1) — the deep
+  // navy is invisible on the dark canvas, so the boxes disappear. Give them a
+  // slightly elevated surface, a visible border and a shadow.
+  // ---------------------------------------------------------------------------
+  .flow-step {
+    background: var(--bs-tertiary-bg);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Secondary / muted text hard-codes light-mode greys ($gray-600 / $gray-700),
+  // which are too dark to read on the dark canvas (e.g. the section intros under
+  // each heading, flow-step captions, card taglines). Promote them to lighter
+  // neutrals. $gray-500 and lighter already read well, so they are left as-is.
+  // ---------------------------------------------------------------------------
+  .section-intro,
+  .quick-link,
+  .learning-path__text,
+  .learning-path-mini,
+  .learning-path-card .learning-path-description,
+  .learning-paths-preview > p:first-child,
+  .product-card__features li,
+  .glossary-term-tooltip-text,
+  .glossary-entry-definition {
+    color: $gray-300;
+  }
+
+  .hero-subtitle,
+  .flow-step__description,
+  .product-card__tagline,
+  .whats-new-item__description,
+  .step-content p,
+  .path-step .step-duration,
+  .path-duration,
+  .code-header,
+  .nav-tabs .nav-link,
+  .related-content__section-title,
+  .glossary-modal-result-description,
+  .glossary-filter,
+  .glossary-entry-see-also-label,
+  .td-breadcrumbs .breadcrumb .breadcrumb-item a,
+  .td-toc #TableOfContents a {
+    color: $gray-400;
   }
 }

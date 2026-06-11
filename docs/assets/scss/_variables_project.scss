@@ -39,6 +39,11 @@ $color-reference: #9f7aea;    // Purple - technical depth
 /* Set the heading colors to Drasi's primary color */
 $headings-color: $primary;
 
+/* Dark mode configuration */
+/* The primary navy is very dark, so lighten it substantially in dark mode for
+   readable links and accents (see td/color-adjustments-dark). */
+$lighten-amount-for-dark-color-variant: 30%;
+
 // =============================================================================
 // TYPOGRAPHY SYSTEM
 // Modern, readable typography with clear hierarchy
