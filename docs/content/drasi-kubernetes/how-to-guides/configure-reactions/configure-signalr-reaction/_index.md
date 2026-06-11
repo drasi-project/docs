@@ -305,7 +305,7 @@ npm install --save @drasi/signalr-react
 
 #### ResultSet Component
 
-The `ResultSet` component requires an endpoint to the SignalR reaction and a query ID. It will render a copy of it's children for every item in the result set of that query, and keep the data up to date via the SignalR connection.
+The `ResultSet` component requires an endpoint to the SignalR reaction and a query ID. It will render a copy of its children for every item in the result set of that query, and keep the data up to date via the SignalR connection.
 
 ```jsx
 <ResultSet url='<Your Drasi SignalR endpoint>' queryId='<query name>' sortBy={item => item.field1}>
@@ -359,7 +359,7 @@ npm install --save @drasi/signalr-vue
 
 #### ResultSet Component
 
-The `ResultSet` component requires an endpoint to the SignalR reaction and a query ID. It will render a copy of it's children for every item in the result set of that query, and keep the data up to date via the SignalR connection.
+The `ResultSet` component requires an endpoint to the SignalR reaction and a query ID. It will render a copy of its children for every item in the result set of that query, and keep the data up to date via the SignalR connection.
 
 ```vue
 <ResultSet url="<your signalr endpoint>" queryId="<query name>" :sortBy="item => item.field1">

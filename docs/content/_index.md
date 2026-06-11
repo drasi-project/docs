@@ -9,7 +9,7 @@ description: >
 
 <div class="hero-section hero-section--compact">
   <h1 class="hero-title">Build Change-driven Solutions with Drasi</h1>
-  <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
+  <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy to build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
 
   <div class="cta-group">
     <a href="/drasi-server/getting-started/" class="cta-button cta-button--primary">
