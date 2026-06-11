@@ -54,6 +54,7 @@ It does **not** document the per-component configuration for Sources, Queries, R
 | `sources` | array | `[]` | Source configurations |
 | `queries` | array | `[]` | Query configurations |
 | `reactions` | array | `[]` | Reaction configurations |
+| `storageBackends` | array | `[]` | Named storage backend definitions |
 | `instances` | array | `[]` | Multi-instance configurations |
 
 ## Key rules
@@ -189,6 +190,9 @@ sources: []
 queries: []
 reactions: []
 
+# Named storage backends (referenced by queries via storageBackend field)
+storageBackends: []
+
 # Multi-instance mode (when non-empty, the single-instance fields above are ignored)
 instances: []
 ```
@@ -224,6 +228,7 @@ When `instances` is empty (the default), Drasi Server runs **one** DrasiLib inst
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources). |
 | `queries` | array | `[]` | Continuous queries. |
 | `reactions` | array | `[]` | Reactions to query result change events (see: Configure Reactions). |
+| `storageBackends` | array | `[]` | Named storage backend definitions (see: [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)). |
 
 ## State store configuration
 
