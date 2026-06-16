@@ -105,7 +105,7 @@ More detail about Sources is available in the [Sources](/concepts/sources) overv
 
 ### Continuous Queries
 
-Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with a the kind of {{< term "Instantaneous Query" "instantaneous queries" >}} developers are accustomed to running against databases. 
+Continuous Queries, as the name implies, are queries that run continuously. To understand what is unique about them, it is useful to contrast them with the kind of {{< term "Instantaneous Query" "instantaneous queries" >}} developers are accustomed to running against databases. 
 
 When you execute an **instantaneous query**, you are running the query against the database at a point in time. The database calculates the results to the query and returns them. While you work with those results, you are working with a static snapshot of the data and are unaware of any changes that may have happened to the data after you ran the query. If you run the same instantaneous query periodically, the query results might be different each time due to changes made to the data by other processes. But to understand what has changed, you would need to compare the most recent result with the previous result.
 
