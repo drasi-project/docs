@@ -222,6 +222,8 @@ SignalRHub
 slidingWindow
 sortBy
 SourceConfirm
+startPosition
+sourceprovider
 SourceProvider
 sourceprovider
 SourceProviders

@@ -32,6 +32,15 @@ description: "Load initial data before streaming begins"
       </div>
     </div>
   </a> -->
+  <a href="configure-mysql-bootstrap-provider/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">MySQL</h3>
+        <p class="unified-card-summary">Bootstrap from a MySQL snapshot (MySQL sources only)</p>
+      </div>
+    </div>
+  </a>
   <a href="configure-oracle-bootstrap-provider/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-database"></i></div>
