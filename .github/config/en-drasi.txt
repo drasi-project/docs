@@ -20,9 +20,11 @@ Balancers
 baseUrl
 BlankDashboard
 bootstrapBufferSize
+bootstrapProvider
 BothQueriesReady
 BothSourcesReady
 BreakFloor
+brian
 BuildingComfort
 ClickOnPort
 ClickPort
@@ -94,6 +96,7 @@ eventBusName
 eventGridKey
 eventGridSchema
 eventGridUri
+filePaths
 frontends
 githubusercontent
 GQL
@@ -119,6 +122,7 @@ JDBC
 JQ
 jq
 JSONPath
+jsonl
 Kube
 kube
 labelMappings
@@ -218,6 +222,8 @@ SignalRHub
 slidingWindow
 sortBy
 SourceConfirm
+startPosition
+sourceprovider
 SourceProvider
 sourceprovider
 SourceProviders
@@ -241,6 +247,7 @@ TunnelPort
 TutorialReadyScreen
 unescaped
 updatedResultCommand
+UserLocation
 useb
 VentureBeat
 volumeMounts
