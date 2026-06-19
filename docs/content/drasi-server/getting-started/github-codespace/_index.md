@@ -55,10 +55,12 @@ Verify that Drasi Server is accessible:
 ./bin/drasi-server --version
 ```
 
-You should see output showing the version number, for example:
+You should see output showing the version number. The exact version depends on which release of Drasi Server you have installed, so the number below is only an example. The latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
 
 ```text
-drasi-server 0.2.0
+drasi-server 0.2.1
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.9.1
 ```
 
 ## ✅ Setup Complete
