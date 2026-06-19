@@ -63,10 +63,12 @@ Verify that Drasi Server is accessible by running the following command in the t
 ./bin/drasi-server --version
 ```
 
-You should see output showing the version number, for example:
+You should see output showing the version number. The exact version depends on which release of Drasi Server you have installed, so the number below is only an example. The latest release is always available from the <a href="https://github.com/drasi-project/drasi-server/releases" target="_blank" rel="noopener noreferrer">Drasi Server releases page</a>.
 
 ```text
-drasi-server 0.2.0
+drasi-server 0.2.1
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.9.1
 ```
 
 If you see a "file not found" error, the build may not have completed. Check the terminal output for errors and try rebuilding the container.

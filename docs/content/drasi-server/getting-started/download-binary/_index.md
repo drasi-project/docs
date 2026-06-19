@@ -61,6 +61,38 @@ To download the correct binaries for your platform run the following command:
 {{< /tab >}}
 {{< /tabpane >}}
 
+## Step 4: Verify the Binaries
+
+Before continuing, confirm that both binaries downloaded correctly and run on your platform.
+
+First, check `drasi-server`:
+
+```bash
+./bin/drasi-server --version
+```
+
+You should see output showing the version number. The exact version depends on which release of Drasi Server you have installed, so the number below is only an example. The latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
+
+```text
+drasi-server 0.2.1
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.9.1
+```
+
+Next, check `drasi-sse-cli`:
+
+```bash
+./bin/drasi-sse-cli --version
+```
+
+You should see output showing the version number. The exact version depends on which release you have installed, so the number below is only an example.
+
+```text
+drasi-sse-cli 0.1.0
+```
+
+If both commands print version information, your binaries are working correctly and you're ready to continue. If you see a "command not found", "permission denied", or similar error, the download may not have completed — re-run the download command in [Step 3](#step-3-download-drasi-binaries), then try again.
+
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
