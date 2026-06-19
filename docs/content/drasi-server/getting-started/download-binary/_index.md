@@ -61,37 +61,26 @@ To download the correct binaries for your platform run the following command:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Step 4: Verify the Binaries
-
-Before continuing, confirm that both binaries downloaded correctly and run on your platform.
-
-First, check `drasi-server`:
-
-```bash
-./bin/drasi-server --version
-```
-
-You should see output showing the version number. The exact version depends on which release of Drasi Server you have installed, so the number below is only an example. The latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
+The script detects your platform, downloads the matching binaries into the `./bin/` directory, and then runs each one to verify it works. When everything succeeds you'll see output similar to this:
 
 ```text
+Detected: Darwin (arm64)
+Downloading: drasi-server-aarch64-apple-darwin
+Downloading: drasi-sse-cli-aarch64-apple-darwin
+
+Verifying installations...
 drasi-server 0.2.1
 rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
 plugin-sdk: 0.9.1
-```
-
-Next, check `drasi-sse-cli`:
-
-```bash
-./bin/drasi-sse-cli --version
-```
-
-You should see output showing the version number. The exact version depends on which release you have installed, so the number below is only an example.
-
-```text
 drasi-sse-cli 0.1.0
+
+✅ Drasi Server installed to bin/drasi-server
+✅ Drasi SSE CLI installed to bin/drasi-sse-cli
 ```
 
-If both commands print version information, your binaries are working correctly and you're ready to continue. If you see a "command not found", "permission denied", or similar error, the download may not have completed — re-run the download command in [Step 3](#step-3-download-drasi-binaries), then try again.
+The script runs both binaries for you (the `Verifying installations...` section), so there's no need to test them manually. The exact version numbers depend on which release the script downloads, so the values above are only examples — the latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
+
+The two `✅` lines confirm both binaries were installed and ran successfully. If you don't see them, the download didn't complete — re-run the command above. If it keeps failing, check that `curl` is installed (see the [troubleshooting section](#troubleshooting) below).
 
 ## ✅ Setup Complete
 
