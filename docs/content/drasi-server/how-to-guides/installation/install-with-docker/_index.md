@@ -7,7 +7,7 @@ description: "Run Drasi Server as a Docker container"
 related:
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/getting-started/"
+      url: "/drasi-server/tutorials/getting-started/"
   howto:
     - title: "Configure Sources"
       url: "/drasi-server/how-to-guides/configuration/configure-sources/"

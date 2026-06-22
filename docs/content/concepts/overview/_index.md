@@ -6,7 +6,7 @@ weight: 10
 related:
   tutorials:
     - title: "Getting Started (Server)"
-      url: "/drasi-server/getting-started/"
+      url: "/drasi-server/tutorials/getting-started/"
     - title: "Getting Started (Kubernetes)"
       url: "/drasi-kubernetes/getting-started/"
   concepts:
