@@ -66,14 +66,6 @@ defaultContentLanguageInSubdir = false
   # Mount the Drasi Server tutorials, authored in the
   # drasi-project/learning-drasi-server repository, as a Hugo module so the
   # tutorial content lives in a single source of truth.
-  #
-  # ignoreConfig / ignoreImports keep that repo's own site config (its
-  # standalone homepage, Docsy import, and content mounts) from leaking into
-  # this build — only the explicit mount below is applied.
-  #
-  # The module version is pinned in go.mod. To pick up the latest tutorial
-  # content, run `make update-tutorials` from the repo root (or
-  # `hugo mod get github.com/drasi-project/learning-drasi-server@latest`).
   [[module.imports]]
     path = "github.com/drasi-project/learning-drasi-server"
     ignoreConfig = true
