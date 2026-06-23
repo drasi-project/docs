@@ -20,7 +20,7 @@ VERSION ?= latest
 # render uncommitted/untagged tutorial changes via a Hugo module replacement.
 TUTORIALS_LOCAL ?= ../learning-drasi-server
 
-.PHONY: help update-tutorials tidy serve preview-tutorials build
+.PHONY: help update-tutorials tidy serve preview-tutorials preview-docs build
 
 help: ## Show this help.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -39,6 +39,8 @@ serve: ## Run the local Hugo server against the pinned module version.
 
 preview-tutorials: ## Run the local Hugo server using a local checkout of the tutorials repo (TUTORIALS_LOCAL).
 	cd $(HUGO_DIR) && HUGO_MODULE_REPLACEMENTS="$(TUTORIALS_MODULE) -> $(abspath $(TUTORIALS_LOCAL))" hugo server --disableFastRender
+
+preview-docs: preview-tutorials ## Alias of preview-tutorials.
 
 build: ## Build the static site into docs/public.
 	cd $(HUGO_DIR) && hugo
