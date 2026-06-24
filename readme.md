@@ -86,6 +86,10 @@ Use this when testing tutorial changes before creating/tagging a module release.
 
      ```hugo server --disableFastRender```
 
+     > **Note:** If the server takes a long time to start and `http://localhost:1313/` shows no content until it finishes, you are likely running from a networked or external/mounted volume where Hugo's native file watching is slow to set up. Add the `--poll` flag to use polling instead:
+
+     ```hugo server --disableFastRender --poll 700ms```
+
 ### Browse the documentation
 
 The documentation website will be accessible on the URL **http://localhost:1313/**

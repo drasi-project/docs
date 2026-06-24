@@ -12,7 +12,7 @@ description: "Standalone Drasi server for process or container deployment"
   <p class="hero-subtitle">Drasi Server is a lightweight, single-process Drasi deployment that provides the full power of Drasi's data change processing functionality. Perfect for local development, Docker environments, and small-scale deployments.</p>
 
   <div class="cta-group">
-    <a href="getting-started/" class="cta-button cta-button--primary">
+    <a href="tutorials/getting-started/" class="cta-button cta-button--primary">
       <i class="fas fa-rocket"></i>
       Get Started
     </a>
@@ -74,7 +74,7 @@ Drasi Server is ideal when you need **full Drasi functionality** as a standalone
 ## Explore Drasi Server
 
 <div class="card-grid">
-  <a href="getting-started/">
+  <a href="tutorials/getting-started/">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fas fa-rocket"></i></div>
       <div class="unified-card-content">

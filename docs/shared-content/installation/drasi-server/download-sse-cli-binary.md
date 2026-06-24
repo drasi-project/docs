@@ -47,7 +47,7 @@ Verify the binary works:
 ./bin/drasi-sse-cli --version
 ```
 
-You should see output showing the version number, for example:
+You should see output showing the version number. The exact version depends on which release you have installed, so the number below is only an example. The latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
 
 ```text
 drasi-sse-cli 0.1.0
