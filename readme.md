@@ -24,12 +24,12 @@ Alternatively, you can follow the instructions below to setup and run a local Hu
 
 ### Pre-requisites
 
-
+- [Hugo extended](https://gohugo.io/)
+- [Go](https://go.dev/) (required for Hugo modules)
 - [Node.js](https://nodejs.org/en/)
 
 ### Setup Hugo and Docsy
 
-1. Install [Hugo](https://gohugo.io/)
 1. Clone the [drasi-project/docs](https://github.com/drasi-project/docs) repo
 1. The Docsy theme is configured as a submodule which needs to be pulled. From the root of the drasi-project/docs repo (where this readme is located) run: 
 
@@ -43,10 +43,46 @@ Alternatively, you can follow the instructions below to setup and run a local Hu
 
      ```npm install```
 
+### Drasi Server tutorials module workflow
+
+The Drasi Server tutorials are sourced from
+`github.com/drasi-project/learning-drasi-server` via Hugo modules, pinned in
+`docs/go.mod`.
+
+- Update to the latest published module version:
+
+     ```
+     make update-tutorials
+     ```
+
+- Update to a specific version:
+
+     ```
+     make update-tutorials VERSION=v0.1.1
+     ```
+
+After updating, commit `docs/go.mod` and `docs/go.sum`.
+
+### Preview docs against a local learning-drasi-server checkout
+
+Use this when testing tutorial changes before creating/tagging a module release.
+
+- If your local checkout is at `../learning-drasi-server`:
+
+     ```
+     make preview-docs
+     ```
+
+- If your checkout is elsewhere, pass the path explicitly:
+
+     ```
+     make preview-docs TUTORIALS_LOCAL=/absolute/path/to/learning-drasi-server
+     ```
+
 ### Run the Hugo server
 
-1. Ensure you are in the  ```docs``` folder of the drasi-project/docs repo.
-1. Run the command:
+1. Ensure you are in the `docs` folder of the drasi-project/docs repo.
+1. Run:
 
      ```hugo server --disableFastRender```
 

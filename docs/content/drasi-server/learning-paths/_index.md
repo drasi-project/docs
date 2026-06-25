@@ -20,7 +20,7 @@ related:
       url: "/concepts/reactions/"
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/getting-started/"
+      url: "/drasi-server/tutorials/getting-started/"
   howto:
     - title: "Configure Drasi Server"
       url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"

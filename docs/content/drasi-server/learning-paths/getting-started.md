@@ -19,7 +19,7 @@ description: >
 <div class="step-number">1</div>
 <div class="step-content">
 <span class="step-type step-type--tutorial">Tutorial</span>
-<h4><a href="/drasi-server/getting-started/">Getting Started with Drasi Server</a></h4>
+<h4><a href="/drasi-server/tutorials/getting-started/">Getting Started with Drasi Server</a></h4>
 <p>Install and run your first query</p>
 <span class="step-duration">15 min</span>
 </div>

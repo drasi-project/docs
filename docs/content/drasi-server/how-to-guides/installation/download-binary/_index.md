@@ -7,7 +7,7 @@ description: "Download a pre-built binary for your platform."
 related:
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/getting-started/"
+      url: "/drasi-server/tutorials/getting-started/"
   howto:
     - title: "Docker Installation"
       url: "/drasi-server/how-to-guides/installation/install-with-docker/"
@@ -19,7 +19,7 @@ related:
 ---
 
 {{% alert title="Following the Getting Started tutorial?" color="warning" %}}
-Use the [Getting Started setup page](/drasi-server/getting-started/download-binary/) instead. This how-to page downloads only the `drasi-server` binary, whereas the tutorial setup page also downloads the example files (used from Step 2 onward) and the `drasi-sse-cli` binary (required in Steps 5 and 6).
+Use the [Getting Started setup page](/drasi-server/tutorials/getting-started/download-binary/) instead. This how-to page downloads only the `drasi-server` binary, whereas the tutorial setup page also downloads the example files (used from Step 2 onward) and the `drasi-sse-cli` binary (required in Steps 5 and 6).
 {{% /alert %}}
 
 {{< read file="/shared-content/installation/drasi-server/download-binary.md" >}}

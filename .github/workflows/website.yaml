@@ -25,7 +25,7 @@ jobs:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.152.2
+      HUGO_VERSION: 0.155.3
     steps:
       - name: Checkout docs repo
         uses: actions/checkout@v4
@@ -41,6 +41,11 @@ jobs:
         with:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
+      - name: Setup Go (for Hugo Modules)
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: docs/go.mod
+          cache: true
       - name: Setup Docsy
         run: |
           cd docs
@@ -48,10 +53,14 @@ jobs:
           sudo npm install -D --save postcss-cli
           cd themes/docsy
           npm install
+      - name: Download Go/Hugo Modules
+        run: |
+          cd docs
+          go mod download
       - name: Build Hugo Site
         run: |
           cd docs
-          hugo --baseURL "https://drasi.io/"
+          hugo --baseURL "https://drasi.io/" --cleanDestinationDir
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

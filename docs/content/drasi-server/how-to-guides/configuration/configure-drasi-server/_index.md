@@ -7,7 +7,7 @@ description: "Understanding the Drasi Server YAML configuration file structure"
 related:
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/getting-started/"
+      url: "/drasi-server/tutorials/getting-started/"
   concepts:
     - title: "Sources"
       url: "/concepts/sources/"

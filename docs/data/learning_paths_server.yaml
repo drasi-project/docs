@@ -11,7 +11,7 @@ paths:
     duration: "1-2 hours"
     steps:
       - title: "Getting Started with Drasi Server"
-        url: "/drasi-server/getting-started/"
+        url: "/drasi-server/tutorials/getting-started/"
         type: "tutorial"
         duration: "15 min"
         description: "Install and run your first query"
@@ -45,7 +45,7 @@ paths:
     duration: "3-4 hours"
     steps:
       - title: "Complete Getting Started"
-        url: "/drasi-server/getting-started/"
+        url: "/drasi-server/tutorials/getting-started/"
         type: "tutorial"
         duration: "15 min"
         description: "Ensure Drasi Server is running"
