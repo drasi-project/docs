@@ -104,12 +104,6 @@ stateStore:
 defaultPriorityQueueCapacity: 10000
 defaultDispatchBufferCapacity: 1000
 
-# Named storage backends (optional, referenced by queries)
-storageBackends:
-  - id: persistent
-    backend_type: rocksdb
-    path: /data/drasi/indexes
-
 # Sources (see: Configure Sources)
 sources:
   - kind: postgres
@@ -150,14 +144,13 @@ Top-level settings in `server.yaml`:
 | `port` | integer | `8080` | REST API port |
 | `logLevel` | string | `info` | Log level: `trace`, `debug`, `info`, `warn`, `error` |
 | `persistConfig` | boolean | `true` | Persist API changes back to the config file (if writable) |
-| `persistIndex` | boolean | `false` | Enable persistent indexes using RocksDB (stored under `./data/<instanceId>/index`) |
+| `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes |
 | `stateStore` | object | None | Persist plugin state across restarts (see below) |
 | `defaultPriorityQueueCapacity` | integer | None | Default event queue capacity for queries/reactions (if set, overrides DrasiLib defaults) |
 | `defaultDispatchBufferCapacity` | integer | None | Default dispatch buffer capacity for sources/queries (if set, overrides DrasiLib defaults) |
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources) |
 | `queries` | array | `[]` | Continuous queries |
 | `reactions` | array | `[]` | Reactions to query changes (see: Configure Reactions) |
-| `storageBackends` | array | `[]` | Named storage backend definitions (referenced by queries via `storageBackend`) |
 | `instances` | array | `[]` | Optional multi-instance mode (see below) |
 
 ### Example
@@ -243,7 +236,7 @@ This page covers the **common fields** shared by all queries; see the query lang
 | `priorityQueueCapacity` | integer | None | Per-query override for the event priority queue capacity |
 | `dispatchBufferCapacity` | integer | None | Per-query override for the dispatch buffer capacity |
 | `dispatchMode` | string | None | Advanced; currently only `Channel` is accepted when set |
-| `storageBackend` | string or object | None | Storage backend for query indexes; a string references a named backend, or an inline object (see [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)) |
+| `storageBackend` | string or object | Instance default | Per-query index backend override: a registered provider name (`rocksdb`, requires `persistIndex: true`), or an inline object (`kind: memory`). See [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration) |
 | `middleware` | array | `[]` | Reserved for future use (currently ignored) |
 
 ## Environment Variable Interpolation

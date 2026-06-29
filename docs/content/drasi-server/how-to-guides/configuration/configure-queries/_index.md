@@ -46,7 +46,7 @@ queries:
 | `joins` | array | None | Join configuration for multi-label queries |
 | `priorityQueueCapacity` | integer | None | Override default event queue capacity |
 | `dispatchBufferCapacity` | integer | None | Override default dispatch buffer capacity |
-| `storageBackend` | string or object | None | Storage backend for query indexes (see [Storage Backend](#storage-backend-configuration)) |
+| `storageBackend` | string or object | Instance default | Per-query index backend override: a registered provider name (`rocksdb`) or an inline object (`kind: memory`). See [Storage Backend Configuration](#storage-backend-configuration) |
 
 ## Source Subscriptions
 
@@ -279,44 +279,19 @@ queries:
 
 ## Storage Backend Configuration
 
-By default, query indexes are held **in memory** — fast, but volatile (data is lost on restart and must be re-bootstrapped). For production workloads or large datasets, configure a persistent storage backend so query state survives restarts.
+By default, every query uses the **instance's index backend**, which is determined by the [`persistIndex`](/drasi-server/how-to-guides/configuration/configure-drasi-server/) server setting:
 
-The `storageBackend` field accepts either:
+- `persistIndex: false` (the default) — indexes are held **in memory**. Fast, but volatile: data is lost on restart and must be re-bootstrapped.
+- `persistIndex: true` — indexes are persisted with **RocksDB** under `./data/<instanceId>/index`, so query state survives restarts. This registers a persistent index provider named `rocksdb` as the default backend for **all** queries in the instance.
 
-- A **string** — referencing a named backend defined in the top-level `storageBackends` array
-- An **inline object** — specifying the backend type and its configuration directly
+The optional per-query `storageBackend` field overrides that instance default for a single query. It accepts either:
 
-### Backend Types
+- A **string** — the name of a registered index provider. The only persistent provider compiled into Drasi Server is `rocksdb`, and it is **only registered when `persistIndex: true`**.
+- An **inline object** — a backend specification keyed by `kind`.
 
-| `backend_type` | Persistence | Description |
-|----------------|-------------|-------------|
-| `memory` | No (volatile) | In-memory storage. Fast, but state is lost on restart. |
-| `rocksdb` | Yes (local disk) | RocksDB-backed persistent storage. Production-ready for single-node deployments. |
-| `redis` | Yes (network) | Redis/Garnet-backed storage. Persistent and distributed. |
+### Reference a named provider
 
-### Memory Backend
-
-In-memory storage is the default when `storageBackend` is not set. You can also specify it explicitly to enable the archive feature:
-
-```yaml
-queries:
-  - id: time-travel-query
-    query: "MATCH (s:Sensor) RETURN s"
-    sources:
-      - sourceId: sensors
-    storageBackend:
-      backend_type: memory
-      enable_archive: true
-```
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `backend_type` | string | — | Must be `memory` |
-| `enable_archive` | boolean | `false` | Enable archive index for time-travel queries |
-
-### RocksDB Backend
-
-Persistent local storage using RocksDB. Query indexes survive restarts without re-bootstrapping:
+Use a string to pin a query to the persistent `rocksdb` provider. This requires `persistIndex: true` so the provider is registered:
 
 ```yaml
 queries:
@@ -324,82 +299,39 @@ queries:
     query: "MATCH (o:Order) RETURN o"
     sources:
       - sourceId: orders-db
-    storageBackend:
-      backend_type: rocksdb
-      path: /data/drasi/indexes
-      enable_archive: false
-      direct_io: false
+    storageBackend: rocksdb
 ```
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `backend_type` | string | — | Must be `rocksdb` |
-| `path` | string | Required | Absolute path for RocksDB data files |
-| `enable_archive` | boolean | `false` | Enable archive index for time-travel queries |
-| `direct_io` | boolean | `false` | Use direct I/O (bypasses OS page cache) |
 
 {{< alert title="Note" color="info" >}}
-The `path` must be an absolute path (e.g., `/data/drasi/indexes`). Relative paths are rejected.
+`rocksdb` is the only persistent provider compiled into Drasi Server, and it is only registered when `persistIndex: true`. Referencing a backend name that has not been registered will fail query startup.
 {{< /alert >}}
 
-### Redis Backend
+### Inline in-memory backend
 
-Persistent distributed storage using Redis or Garnet:
+Use an inline object to force a query to use **in-memory** indexes — for example to opt a single query out of persistence when `persistIndex: true`, or to enable the archive index for time-travel (`past()`) queries:
 
 ```yaml
 queries:
-  - id: distributed-query
-    query: "MATCH (e:Event) RETURN e"
+  - id: volatile-query
+    query: "MATCH (s:Sensor) RETURN s"
     sources:
-      - sourceId: events
+      - sourceId: sensors
     storageBackend:
-      backend_type: redis
-      connection_string: "redis://redis-host:6379"
-      cache_size: 10000
+      kind: memory
+      enableArchive: true
 ```
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `backend_type` | string | — | Must be `redis` |
-| `connection_string` | string | Required | Redis URL (must start with `redis://` or `rediss://`) |
-| `cache_size` | integer | None | Optional local LRU cache size (number of elements) |
-
-### Named Storage Backends
-
-Instead of repeating backend configuration on every query, you can define named backends at the top level and reference them by name:
-
-```yaml
-storageBackends:
-  - id: rocks-persistent
-    backend_type: rocksdb
-    path: /data/drasi/indexes
-    enable_archive: false
-
-  - id: fast-memory
-    backend_type: memory
-    enable_archive: true
-
-queries:
-  - id: orders-query
-    query: "MATCH (o:Order) RETURN o"
-    sources:
-      - sourceId: orders-db
-    storageBackend: rocks-persistent    # Reference by name
-
-  - id: analytics-query
-    query: "MATCH (m:Metric) RETURN m"
-    sources:
-      - sourceId: metrics
-    storageBackend: fast-memory         # Reference by name
-```
-
-Named backends are validated at startup — referencing an undefined backend name will produce a configuration error.
+| `kind` | string | — | Must be `memory` |
+| `enableArchive` | boolean | `false` | Enable the archive index for time-travel (`past()`) queries |
 
 ## Complete Example
 
 ```yaml
 host: 0.0.0.0
 port: 8080
+persistIndex: true   # RocksDB is the default index backend for all queries
 
 sources:
   - kind: postgres
@@ -415,14 +347,8 @@ sources:
     bootstrapProvider:
       kind: postgres
 
-# Named storage backends (referenced by queries below)
-storageBackends:
-  - id: persistent
-    backend_type: rocksdb
-    path: /data/drasi/indexes
-
 queries:
-  # Simple: All pending orders (persistent storage)
+  # Simple: All pending orders (persisted via the instance default)
   - id: pending-orders
     autoStart: true
     query: |
@@ -431,7 +357,6 @@ queries:
       RETURN o.id, o.customer_id, o.total, o.created_at
     sources:
       - sourceId: orders-db
-    storageBackend: persistent          # Named reference
 
   # Aggregation: Order statistics  
   - id: order-stats
@@ -444,7 +369,7 @@ queries:
     sources:
       - sourceId: orders-db
 
-  # Join: Orders with customer details (inline storage backend)
+  # Join: Orders with customer details (force in-memory for this query)
   - id: orders-with-customers
     autoStart: true
     query: |
@@ -453,9 +378,9 @@ queries:
       RETURN o.id, o.total, c.name, c.email
     sources:
       - sourceId: orders-db
-    storageBackend:                      # Inline configuration
-      backend_type: redis
-      connection_string: "redis://redis:6379"
+    storageBackend:                      # Override the instance default
+      kind: memory
+      enableArchive: false
     joins:
       - id: CUSTOMER
         keys:
@@ -480,9 +405,7 @@ reactions:
 | Bootstrap timeout | Large dataset | Increase `bootstrapBufferSize` |
 | Query not starting | `autoStart: false` | Set `autoStart: true` or start via API |
 | Missing data | Wrong source subscription | Verify `sourceId` matches your source's `id` |
-| Storage backend error on startup | Invalid backend reference | Ensure the named backend exists in `storageBackends` |
-| RocksDB path rejected | Relative path used | Use an absolute path (e.g., `/data/drasi/indexes`) |
-| Redis connection failed | Invalid connection string | Must start with `redis://` or `rediss://` |
+| Storage backend error on startup | Query references an unregistered backend name | Use `rocksdb` only with `persistIndex: true`, or an inline `kind: memory` backend |
 
 ### Verifying Query Results
 

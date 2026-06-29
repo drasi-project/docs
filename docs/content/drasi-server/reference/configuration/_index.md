@@ -53,7 +53,6 @@ It does **not** document the per-component configuration for Sources, Queries, R
 | `sources` | array | `[]` | Source configurations |
 | `queries` | array | `[]` | Query configurations |
 | `reactions` | array | `[]` | Reaction configurations |
-| `storageBackends` | array | `[]` | Named storage backend definitions |
 | `instances` | array | `[]` | Multi-instance configurations |
 
 ## Key rules
@@ -188,9 +187,6 @@ sources: []
 queries: []
 reactions: []
 
-# Named storage backends (referenced by queries via storageBackend field)
-storageBackends: []
-
 # Multi-instance mode (when non-empty, the single-instance fields above are ignored)
 instances: []
 ```
@@ -218,14 +214,13 @@ When `instances` is empty (the default), Drasi Server runs **one** DrasiLib inst
 
 | Field | Type | Default | Description |
 |---|---:|---:|---|
-| `persistIndex` | boolean | `false` | Enable persistent query indexing using RocksDB (stored under `./data/<instanceId>/index`). |
+| `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes. Individual queries can override this via `storageBackend` (see: [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)). |
 | `stateStore` | object | none | Optional state store for plugin runtime state persistence (see below). |
 | `defaultPriorityQueueCapacity` | integer | none | If set, overrides the DrasiLib default priority queue capacity for queries/reactions. |
 | `defaultDispatchBufferCapacity` | integer | none | If set, overrides the DrasiLib default dispatch buffer capacity for sources/queries. |
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources). |
 | `queries` | array | `[]` | Continuous queries. |
 | `reactions` | array | `[]` | Reactions to query result change events (see: Configure Reactions). |
-| `storageBackends` | array | `[]` | Named storage backend definitions (see: [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)). |
 
 ## State store configuration
 
