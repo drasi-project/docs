@@ -216,7 +216,7 @@ When `instances` is empty (the default), Drasi Server runs **one** DrasiLib inst
 
 | Field | Type | Default | Description |
 |---|---:|---:|---|
-| `persistIndex` | boolean | `false` | Enable persistent query indexing using RocksDB (stored under `./data/<instanceId>/index`). |
+| `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes. Individual queries can override this via `storageBackend` (see: [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)). |
 | `stateStore` | object | none | Optional state store for plugin runtime state persistence (see below). |
 | `secretStore` | object | none | Optional secret store provider for resolving `Secret` envelope references in source/reaction configs (see below). |
 | `defaultPriorityQueueCapacity` | integer | none | If set, overrides the DrasiLib default priority queue capacity for queries/reactions. |
