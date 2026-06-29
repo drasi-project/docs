@@ -22,6 +22,8 @@ related:
       url: "/drasi-server/how-to-guides/configuration/configure-reactions/"
     - title: "Configure Bootstrap Providers"
       url: "/drasi-server/how-to-guides/configuration/configure-bootstrap-providers/"
+    - title: "Configure Secret Stores"
+      url: "/drasi-server/how-to-guides/configuration/configure-secret-stores/"
     - title: "Install with Docker"
       url: "/drasi-server/how-to-guides/installation/install-with-docker/"
   reference:
@@ -99,6 +101,11 @@ stateStore:
   kind: redb
   path: ./data/state.redb
 
+# Secret store for resolving secret references (optional)
+# secretStore:
+#   kind: file
+#   path: ./secrets.json
+
 # Performance tuning (optional)
 # (if omitted, DrasiLib defaults are used)
 defaultPriorityQueueCapacity: 10000
@@ -146,6 +153,7 @@ Top-level settings in `server.yaml`:
 | `persistConfig` | boolean | `true` | Persist API changes back to the config file (if writable) |
 | `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes |
 | `stateStore` | object | None | Persist plugin state across restarts (see below) |
+| `secretStore` | object | None | Secret store provider for resolving secret references (see below) |
 | `defaultPriorityQueueCapacity` | integer | None | Default event queue capacity for queries/reactions (if set, overrides DrasiLib defaults) |
 | `defaultDispatchBufferCapacity` | integer | None | Default dispatch buffer capacity for sources/queries (if set, overrides DrasiLib defaults) |
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources) |
@@ -188,6 +196,43 @@ stateStore:
 ### In-Memory (Default)
 
 If `stateStore` is not configured, an in-memory store is used and plugin state is lost on restart.
+
+## Secret Store Configuration
+
+The secret store enables you to keep sensitive values (passwords, API keys, tokens) out of your configuration file. Instead of embedding secrets as plaintext or relying solely on environment variables, you reference named secrets that are resolved at runtime from an external store.
+
+Configure a secret store by adding a `secretStore` field at the top level:
+
+```yaml
+secretStore:
+  kind: file
+  path: ./secrets.json
+```
+
+Then use **secret envelopes** in source or reaction configuration fields:
+
+```yaml
+sources:
+  - kind: postgres
+    id: my-db
+    password:
+      kind: Secret
+      name: DB_PASSWORD    # resolved from the secret store at runtime
+```
+
+Three providers are available:
+
+| Provider | `kind` | Use case |
+|----------|--------|----------|
+| File | `file` | Development/testing — reads from a JSON file |
+| OS Keyring | `keyring` | Local development — uses OS credential manager |
+| Azure Key Vault | `azure-keyvault` | Production on Azure — resolves from Key Vault |
+
+For full provider configuration details, see [Configure Secret Stores]({{< relref "configure-secret-stores" >}}).
+
+{{% alert title="Bootstrap constraint" color="info" %}}
+The `secretStore` configuration itself cannot use secret references (circular dependency). Use literal values or environment variables for the secret store's own fields.
+{{% /alert %}}
 
 ## Performance Tuning
 
@@ -546,6 +591,10 @@ DB_PASSWORD=secret123
 ```
 
 For production, set environment variables through your deployment platform (Docker, systemd, etc.).
+
+{{% alert title="Tip: Secret stores" color="info" %}}
+For stronger secret management, consider using a [secret store]({{< relref "configure-secret-stores" >}}) instead of (or alongside) environment variables. Secret stores keep credentials in a dedicated vault and prevent them from appearing in environment variable dumps or process listings.
+{{% /alert %}}
 
 ### Separating Concerns with Multiple Config Files
 

@@ -48,6 +48,7 @@ It does **not** document the per-component configuration for Sources, Queries, R
 | `persistConfig` | boolean | `true` | Save API changes to config file |
 | `persistIndex` | boolean | `false` | Use persistent RocksDB indexes |
 | `stateStore` | object | None | Plugin state persistence |
+| `secretStore` | object | None | Secret store provider for resolving secret references |
 | `defaultPriorityQueueCapacity` | integer | None | Default queue size |
 | `defaultDispatchBufferCapacity` | integer | None | Default buffer size |
 | `sources` | array | `[]` | Source configurations |
@@ -178,6 +179,7 @@ persistConfig: true
 # Single-instance mode instance settings (used when instances: [] is empty)
 persistIndex: false
 stateStore: null
+secretStore: null
 
 defaultPriorityQueueCapacity: null
 defaultDispatchBufferCapacity: null
@@ -216,6 +218,7 @@ When `instances` is empty (the default), Drasi Server runs **one** DrasiLib inst
 |---|---:|---:|---|
 | `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes. Individual queries can override this via `storageBackend` (see: [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration)). |
 | `stateStore` | object | none | Optional state store for plugin runtime state persistence (see below). |
+| `secretStore` | object | none | Optional secret store provider for resolving `Secret` envelope references in source/reaction configs (see below). |
 | `defaultPriorityQueueCapacity` | integer | none | If set, overrides the DrasiLib default priority queue capacity for queries/reactions. |
 | `defaultDispatchBufferCapacity` | integer | none | If set, overrides the DrasiLib default dispatch buffer capacity for sources/queries. |
 | `sources` | array | `[]` | Source plugin instances (see: Configure Sources). |
@@ -241,13 +244,85 @@ stateStore:
 | `kind` | string | Yes | Must be `redb`. |
 | `path` | string | Yes | Path to the REDB file. Supports env interpolation (e.g. `${STATE_STORE_PATH:-./data/state.redb}`). |
 
+## Secret store configuration
+
+The secret store allows source and reaction configurations to reference named secrets instead of embedding sensitive values directly. Secrets are resolved at runtime when plugins are initialized.
+
+If `secretStore` is omitted, secret envelope references (`kind: Secret`) cannot be used in component configurations.
+
+### Secret envelope syntax
+
+In any source or reaction config field that accepts a string, you can use a secret reference:
+
+```yaml
+# Literal value
+password: my-password
+
+# Secret reference (resolved at runtime)
+password:
+  kind: Secret
+  name: DB_PASSWORD
+```
+
+### file (JSON file)
+
+Reads secrets from a flat JSON file. Best for development and testing.
+
+```yaml
+secretStore:
+  kind: file
+  path: ./secrets.json
+```
+
+| Field | Type | Required | Description |
+|---|---:|:---:|---|
+| `kind` | string | Yes | Must be `file`. |
+| `path` | string | Yes | Path to a JSON file with key-value secret pairs. Supports env interpolation. |
+
+### keyring (OS credential store)
+
+Uses the operating system's native credential manager (macOS Keychain, Linux Secret Service, Windows Credential Manager).
+
+```yaml
+secretStore:
+  kind: keyring
+```
+
+| Field | Type | Required | Description |
+|---|---:|:---:|---|
+| `kind` | string | Yes | Must be `keyring`. |
+
+### azure-keyvault (Azure Key Vault)
+
+Resolves secrets from Azure Key Vault using Azure Identity credentials.
+
+```yaml
+secretStore:
+  kind: azure-keyvault
+  vaultUrl: https://my-vault.vault.azure.net/
+  authMethod: managed_identity
+```
+
+| Field | Type | Required | Description |
+|---|---:|:---:|---|
+| `kind` | string | Yes | Must be `azure-keyvault`. |
+| `vaultUrl` | string | Yes | Full URL to the Azure Key Vault. |
+| `authMethod` | string | Yes | One of: `developer_tools`, `managed_identity`, `managed_identity_user_assigned`, `workload_identity`, `client_secret`. |
+| `clientId` | string | Conditional | Required for `managed_identity_user_assigned` and `client_secret`. |
+| `tenantId` | string | Conditional | Required for `client_secret`. |
+| `clientSecret` | string | Conditional | Required for `client_secret`. |
+
+{{%  alert title="Bootstrap constraint" color="warning" %}}
+The `secretStore` configuration itself **cannot** use secret envelope references (circular dependency). Use literal values or environment variables for the secret store's own fields.
+{{% /alert %}}
+
 ## Multi-instance mode (instances)
 
 When `instances` is **non-empty**, Drasi Server runs **one DrasiLib instance per entry** and uses **per-instance** component lists and instance settings.
 
-{{< alert title="Important" color="warning" >}}
-When `instances` is set, the following **top-level** fields are ignored for runtime behavior: `persistIndex`, `stateStore`, `defaultPriorityQueueCapacity`, `defaultDispatchBufferCapacity`, `sources`, `queries`, `reactions`.
-{{< /alert >}}
+{{% alert title="Important" color="warning" %}}
+When `instances` is set, the following **top-level** fields are ignored for runtime behavior: `persistIndex`, `stateStore`, `secretStore`, `defaultPriorityQueueCapacity`, `defaultDispatchBufferCapacity`, `sources`, `queries`, `reactions`.
+{{% /alert %}}
 
 ### Instance fields
 
@@ -256,6 +331,7 @@ When `instances` is set, the following **top-level** fields are ignored for runt
 | `id` | string | Auto-generated UUID | Unique instance id (used in API routes and for persistence paths). |
 | `persistIndex` | boolean | `false` | Enable persistent indexing for this instance. |
 | `stateStore` | object | none | Optional per-instance state store. |
+| `secretStore` | object | none | Optional per-instance secret store provider. |
 | `defaultPriorityQueueCapacity` | integer | none | Optional per-instance default. |
 | `defaultDispatchBufferCapacity` | integer | none | Optional per-instance default. |
 | `sources` | array | `[]` | Sources for this instance. |

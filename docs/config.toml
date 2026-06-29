@@ -85,6 +85,10 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
   sidebar_menu_truncate = 100
   ul_show = 1
   navbar_logo = true
+
+  # Enable the light/dark mode toggle menu in the navbar
+  showLightDarkModeMenu = true
+
   # Show reading time on documentation pages
   readingtime.enable = true
 

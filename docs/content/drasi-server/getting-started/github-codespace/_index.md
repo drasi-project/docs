@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: GitHub Codespace"
 linkTitle: "GitHub Codespace"
 weight: 10
+toc_hide: true
 description: "Run Drasi Server in a cloud-based GitHub Codespace"
 ---
 
@@ -54,17 +55,19 @@ Verify that Drasi Server is accessible:
 ./bin/drasi-server --version
 ```
 
-You should see output showing the version number, for example:
+You should see output showing the version number. The exact version depends on which release of Drasi Server you have installed, so the number below is only an example. The latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
 
 ```text
-drasi-server 0.1.0
+drasi-server 0.2.1
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.9.1
 ```
 
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Codespace Tips
 

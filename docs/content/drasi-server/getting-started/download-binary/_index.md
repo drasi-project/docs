@@ -3,6 +3,7 @@ type: "docs"
 title: "Setup: Download Binary"
 linkTitle: "Download Binary"
 weight: 5
+toc_hide: true
 description: "Download a prebuilt Drasi Server binary for your platform"
 ---
 
@@ -47,7 +48,7 @@ There are 2 binary files you need to download to proceed with the tutorial:
 1. **drasi-server** - the main Drasi Server executable
 2. **drasi-sse-cli** - a tool used during the tutorial to observe notifications sent by Drasi Server
 
-The rest of the tutorial assumes these files are in the `./bin/drasi-server` directory.
+The rest of the tutorial assumes these files are in the `./bin/` directory (as `./bin/drasi-server` and `./bin/drasi-sse-cli`).
 
 To download the correct binaries for your platform run the following command:
 
@@ -60,19 +61,32 @@ To download the correct binaries for your platform run the following command:
 {{< /tab >}}
 {{< /tabpane >}}
 
-## Step 4: Create Docker network
+The script detects your platform, downloads the matching binaries into the `./bin/` directory, and then runs each one to verify it works. When everything succeeds you'll see output similar to this:
 
-Create a Docker network so that Drasi Server and the tutorial database container can communicate with each other:
+```text
+Detected: Darwin (arm64)
+Downloading: drasi-server-aarch64-apple-darwin
+Downloading: drasi-sse-cli-aarch64-apple-darwin
 
-```bash
-docker network create drasi-network
+Verifying installations...
+drasi-server 0.2.1
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+plugin-sdk: 0.9.1
+drasi-sse-cli 0.1.0
+
+✅ Drasi Server installed to bin/drasi-server
+✅ Drasi SSE CLI installed to bin/drasi-sse-cli
 ```
+
+The script runs both binaries for you (the `Verifying installations...` section), so there's no need to test them manually. The exact version numbers depend on which release the script downloads, so the values above are only examples — the latest release is always available from the [Drasi Server releases page](https://github.com/drasi-project/drasi-server/releases).
+
+The two `✅` lines confirm both binaries were installed and ran successfully. If you don't see them, the download didn't complete — re-run the command above. If it keeps failing, check that `curl` is installed (see the [troubleshooting section](#troubleshooting) below).
 
 ## ✅ Setup Complete
 
 You now have Drasi Server accessible at `./bin/drasi-server` from the repository root.
 
-<p><a href="../#database" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
+<p><a href="../#setup" class="btn btn-success btn-lg">Continue with the Tutorial <i class="fas fa-arrow-right ms-2"></i></a></p>
 
 ## Troubleshooting
 

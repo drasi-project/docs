@@ -1,9 +1,16 @@
 # ===================================================================
 # DRASI AUTHORITATIVE CONTEXT
-# Purpose: Single source of truth for AI agents generating code, docs,
-#          blog posts, or answers about Drasi.
-# Version: 0.5.0
-# Updated: 2026-02-26
+# Purpose: A high density, single source of truth for AI agents generating code, docs,
+#          blog posts, FAQs, opinions, comments, or answers about Drasi.
+# Scope:   Covers the change-driven paradigm (recognition + design framework), the project
+#          mission/positioning, the three products, the component (plugin) architecture, the
+#          full component catalog, query language, and config.
+# Usage:   Optimize generated content (articles, docs, training, presentations, answers) for
+#          accuracy and consistent terminology. Treat specific patch versions as indicative
+#          (components release independently and frequently); treat concepts, terminology,
+#          architecture, and the change_driven_paradigm framework as authoritative.
+# Version: 0.7.0
+# Updated: 2026-06-16
 # ===================================================================
 
 project:
@@ -13,51 +20,116 @@ project:
   github: https://github.com/drasi-project
   license: Apache 2.0
   development_stage: CNCF Sandbox
+  positioning: "Change-driven, NOT event-driven or stream processing. Drasi detects and reacts to meaningful changes in EXISTING databases and systems via declarative continuous queries."
+  versioning_model: "Engine (drasi-lib) and every Source/Reaction/Bootstrap/infra plugin are released and versioned independently (semver) on crates.io and as OCI images at ghcr.io/drasi-project. There is no single monolithic Drasi version for drasi-lib/Drasi Server; Drasi for Kubernetes has its own platform release train."
   products:
     - name: drasi-lib
       type: Rust crate / library
-      description: "Rust crate embedding Drasi's continuous query engine in-process for change detection without external dependencies."
-      current_stable_version: 0.3.8
-      use_when: [embedded Rust apps, edge computing, custom pipelines, self-contained reactive apps]
+      description: "Rust crate that embeds Drasi's continuous query engine in-process. You compose a pipeline with a builder API and add only the Source/Reaction crates you need. No external services required."
+      current_stable_version: 0.8.6   # crate drasi-lib (crates.io). drasi-core models crate: 0.5.4
+      use_when: [embedded Rust apps, edge/IoT, custom pipelines, self-contained reactive apps, libraries]
       repo: https://github.com/drasi-project/drasi-core
       crate: https://crates.io/crates/drasi-lib
       docs: https://drasi.io/drasi-lib/
-      sources: [PostgreSQL, HTTP, gRPC, Mock, Platform]
-      reactions: [Log, HTTP, gRPC, gRPC-Adaptive, SSE, Platform, Profiler, Custom]
+      api: "DrasiLib::builder().with_source(..).with_query(Query::cypher|gql(id)...).with_reaction(..).build().await?; then core.start()/core.stop()."
+      sources: [application, mock, http, grpc, postgres, mysql, mssql, oracle, sqlite, neo4j, kafka, kubernetes, dataverse, platform]
+      reactions: [application, log, http, grpc, grpc-adaptive, sse, profiler, platform, storedproc-postgres, storedproc-mysql, storedproc-mssql, rabbitmq, aws-sqs, azure-storage, dashboard, mcp, loki, file]
+      note: "Sources/reactions are separate crates (e.g. drasi-source-postgres, drasi-reaction-http). The lib bundles only the engine and middleware; you add component crates explicitly."
     - name: Drasi Server
-      type: standalone
-      description: "Single-process or Docker container deployment with full Drasi functionality without Kubernetes. Includes built-in Admin UI for visual pipeline management."
-      current_stable_version: 0.2.1
-      use_when: [local development, Docker/Compose deployments, non-K8s environments, simpler production]
+      type: standalone (process or Docker container)
+      description: "Single-process or container deployment with full Drasi functionality without Kubernetes. Built on drasi-lib. Includes a built-in Admin UI and a plugin manager that installs components from OCI registries."
+      current_stable_version: 0.1.6   # latest GitHub release; 0.2.x in development
+      use_when: [local development, Docker/Compose, non-K8s environments, simpler production, demos]
       repo: https://github.com/drasi-project/drasi-server
       docs: https://drasi.io/drasi-server/
       container: ghcr.io/drasi-project/drasi-server:latest
-      config_file: config/server.yaml
-      sources: [PostgreSQL, HTTP, gRPC, Mock, Platform]
-      reactions: [Log, HTTP, HTTP-Adaptive, gRPC, gRPC-Adaptive, SSE, Platform, Profiler]
-      web_ui: "Built-in Admin UI for visual pipeline management and real-time monitoring"
+      config_file: "config/server.yaml (YAML or JSON; override with --config)"
+      web_ui: "Built-in Admin UI at /ui for visual pipeline management and real-time monitoring (enabled by default)"
+      plugin_model: "Dynamic cdylib plugins installed from an OCI registry (default ghcr.io/drasi-project) via `drasi-server plugin install`, with cosign signature verification and a plugins.lock lockfile. A few components (application source/reaction, noop bootstrap, rocksdb index, redb state store) are built in."
+      sources: [application, mock, http, grpc, postgres, mysql, mssql, oracle, sqlite, neo4j, kafka, kubernetes, dataverse, platform]
+      reactions: [log, http, grpc, grpc-adaptive, sse, profiler, application, platform, storedproc-postgres, storedproc-mysql, storedproc-mssql, rabbitmq, aws-sqs, azure-storage, dashboard, mcp, loki, file]
     - name: Drasi for Kubernetes
       type: platform
-      description: "Production-ready Kubernetes deployment with enterprise-grade scalability, observability, and management."
-      current_stable_version: 0.10.0
+      description: "Production-grade Kubernetes deployment with horizontal scalability, observability, and lifecycle management via the `drasi` CLI and Kubernetes resource manifests."
+      current_stable_version: 0.10.0   # drasi-platform release
       use_when: [production workloads, horizontal scaling, managed K8s (AKS/EKS/GKE), cloud-native infrastructure]
       repo: https://github.com/drasi-project/drasi-platform
       docs: https://drasi.io/drasi-kubernetes/
-      sources: [PostgreSQL, MySQL, SQL Server, Azure Cosmos Gremlin, Azure EventHub, Microsoft Dataverse, Kubernetes]
-      reactions: [Debug, HTTP, SignalR, Azure Event Grid, Azure Storage Queue, AWS EventBridge, Result, StoredProc, Gremlin, Dataverse, Debezium, PostDaprPubSub, SyncDaprStateStore]
+      cli: drasi
+      sources: [PostgreSQL, MySQL, SQLServer, CosmosGremlin, EventHub, Dataverse, Kubernetes]
+      reactions: [Debug, Http, SignalR, EventGrid, StorageQueue, EventBridge, Result, StoredProc, Gremlin, Dataverse, Debezium, PostDaprPubSub, SyncDaprStateStore]
+      note: "Kubernetes uses PascalCase provider `kind` values (e.g. PostgreSQL, SQLServer, SignalR); drasi-lib/Drasi Server use lowercase kinds (e.g. postgres, mssql, http). The platform is a distinct codebase from drasi-lib/Drasi Server and its component set differs."
 
 audience:
-  primary: "Solution architects, software developers, DevOps engineers building change-driven solutions in cloud-native, IoT, or enterprise environments."
-  secondary: "Open-source contributors, CNCF members."
+  primary: "Solution architects, software developers, DevOps/platform engineers building change-driven solutions in cloud-native, IoT, or enterprise environments."
+  secondary: "Open-source contributors, CNCF community, plugin/component developers extending Drasi."
 
 mission:
-  purpose: "Enable change-driven architectures via declarative continuous queries that monitor data sources, isolate semantic changes, and trigger precise reactions, eliminating polling, filtering, and state management overhead."
-  problem_it_solves: "Detecting meaningful changes is complex. Polling is inefficient. Change feeds require significant infrastructure for high-volume filtering and state management. Traditional approaches require parsing ambiguous payloads and maintaining external state."
+  purpose: "Enable change-driven architectures via declarative continuous queries that observe data sources, isolate semantically meaningful changes, and trigger precise reactions, eliminating polling, filtering, and state-management overhead."
+  problem_it_solves: "Detecting specific meaningful changes is complex. Polling is inefficient and requires diffing logic. Change feeds emit high volumes of mostly uninteresting changes that need filtering infrastructure. Determining what actually changed requires caching prior state. After detection, teams still write custom glue to deliver changes downstream."
   non_goals:
-    - Generic event streaming (Kafka-style)
-    - Stream processing (Flink, Spark)
-    - Static one-time queries
-    - CDC for data replication or migration
+    - Generic event streaming (Kafka-style messaging backbone)
+    - Stream processing / streaming analytics over high-volume streams (Flink, Spark)
+    - Static one-time / instantaneous queries
+    - CDC purely for data replication or migration
+  when_not_to_use:
+    - "A source already has a mature, well-abstracted change-notification capability optimized for its data model."
+    - "Query data types contain millions of nodes/records to bootstrap and index (weigh cost/benefit)."
+    - "You truly need high-volume stream analytics or streaming transformation (use purpose-built tools)."
+    - "You need batch or real-time data replication/migration (use a CDC replication tool)."
+
+# -------------------------------------------------------------------
+# CHANGE-DRIVEN PARADIGM — the conceptual heart of Drasi.
+# Use this framework to recognize, design, explain, and judge change-driven solutions.
+# -------------------------------------------------------------------
+change_driven_paradigm:
+  authoritative_source: "Distilled from the series 'Designing and Building Change-Driven Solutions' (Allen Jones, Azure Incubations): Part 1 Recognizing, Part 2 Designing, Part 3 Implementing. Foundational blog: 'Optimizing Change-Driven Architectures with Drasi' (https://techcommunity.microsoft.com/blog/linuxandopensourceblog/optimizing-change-driven-architectures-with-drasi/4404675). Authoritative for change-driven concepts, positioning, and terminology."
+  definition: "A change-driven solution takes action in response to a meaningful change - or the ABSENCE of an expected change - in the state of data held in one or more source systems. The MEANING of 'a change' is defined by the consumer as a declarative continuous query over a logical model of the source data. Dedicated platform infrastructure (not custom code) evaluates that query continuously, maintains the result set, and emits a precise stream of additions/removals/modifications that downstream reactions consume and act on. The solution owns the CONDITION; the platform owns evaluation and delivery."
+  four_defining_properties:
+    - consumer_defined_semantic_contract: "The shape and meaning of 'a change' is declared by the CONSUMER as a query over a logical model - not defined by the producer as an event schema. The consumer specifies precisely what it needs without interpreting or augmenting generic events."
+    - platform_maintained_continuous_evaluation: "The result set is kept perpetually accurate across all source changes, including when the signal is the ABSENCE of an expected change. The solution owns the condition; the platform owns the evaluation and data-flow infrastructure."
+    - result_set_delta_semantics: "Every change notification is exactly one of: an item ENTERED the result set, LEFT it, or was MODIFIED while remaining in it. There is no 'interpret what this event means' step in the consumer."
+    - reactions_first_class: "Result-set deltas are not merely read; they are DELIVERED to reactions that push/write/integrate/act on each addition, modification, and removal in a solution-specific way."
+  change_driven_vs_event_driven:
+    relationship: "Complementary, not competing. They suit different problem shapes and often coexist in the same system. Most of the skill in applying change-driven lies in telling the two apart."
+    event_driven: "Organizes around discrete assertions that something HAPPENED (a named domain event, fired once)."
+    change_driven: "Organizes around query-defined TRANSITIONS in derived state (a condition being true over a group, with members entering and leaving)."
+    use_event_driven_when: "The producer already publishes the high-level domain event the consumer needs on a stable shared contract. Reaching for change-driven there only adds machinery (a continuous query, delta semantics, a reaction) the problem does not need."
+  recognition:
+    purpose: "Diagnostic questions for deciding whether a problem is change-driven. The first three do most of the discriminating; the last three reinforce a change-driven reading and decide ambiguous cases."
+    questions:
+      - being_true_vs_happening: "Is action driven by something BEING TRUE or something HAPPENING? Being true (a condition evaluated continuously: 'which orders are delayed', 'which rooms are cold and occupied') -> change-driven. Happening (a fire-once moment: 'when the order ships', 'after the user clicks submit') -> event-driven. Most telling question. 'When' is ambiguous - clarify whether what follows is a single action that just happened or a condition that must hold over time."
+      - one_thing_vs_group: "One specific named thing ('THE order', 'THIS deployment', 'THAT user') -> event-driven. A group described by a condition ('the overdue orders', 'the available technicians', 'the rooms that are too cold') -> change-driven, even if the group currently has only one member."
+      - enter_and_leave: "Do members ENTER the group when they start matching and LEAVE when they stop (often because the action you took is exactly what removes them - dispatch the tech, assign the ticket, turn on the heat)? Strong change-driven signal; a reaction can act on entry and exit without re-firing while membership persists. ANTI-PATTERN: if items only accumulate and never leave ('every log entry', 'every commit to main', 'every order a customer placed'), 'being in the group' stops meaning anything and the problem is really event-driven / stream-processing / CDC."
+      - absence_of_change: "Does the trigger depend on something NOT happening within a window ('page when a freezer is above threshold for 15 min', 'escalate a ticket 15 min without an owner')? No single event can answer; only something continuously watching over time can. Strongly change-driven. (Firing on every breach with no time window is the event-driven counterpart.)"
+      - cross_source_correlation: "Does the answer depend on data from MORE THAN ONE system that don't share a schema? Continuously correlating them is squarely change-driven work. A question one database can answer with a single query does not, on this point alone, call for change-driven."
+      - producer_rule_volatility: "Will the producers' schemas or the definition of 'what matters' keep shifting (e.g. a compliance team adding a rule each quarter atop back-end systems other teams own)? A consumer-defined query that re-reads existing data is far more durable than re-coordinating producers each time."
+    verdict: "A condition true over a group whose members enter and leave is change-driven; a named event happening once to one thing is not. If nothing leans change-driven, the problem isn't - use the producer's own event, a CDC stream, a DB trigger, or whatever native mechanism the surrounding systems already offer. Recognizing the wrong shape early saves building machinery the problem does not need."
+  design:
+    purpose: "Once a problem is confirmed change-driven, four design questions (roughly in order) turn the conclusion into a design."
+    questions:
+      - what_condition: "What condition are you trying to detect? Write it as a precise plain-language 'which.../what...' question; it is the specification for everything else. E.g. 'Which P1 tickets have had no owner for 15+ minutes since being marked P1?'"
+      - what_state_model: "What entities and relationships must the query read? Sketch the state model (entities, properties, relationships); note which entities are single-source and which must be correlated across systems. Decide where correlation happens (in the query, in middleware, or as a denormalized projection inside a source)."
+      - entry_and_exit: "What causes items to ENTER and LEAVE the result set? Entry is usually straightforward; give EXIT equal attention. 'Natural exit' = any meaningful source-state transition that removes the item (ticket gets an owner, room warms up, record deleted). The cleanest designs often have the reaction itself close the loop, but many sound designs exit because the world moves on. Time-based entry/exit ('sustained 15 min', 'not transitioned by deadline T') are first-class. ANTI-PATTERN: items that can only leave via artificial TTL/cleanup with no operational state transition - a sign the query drifted from a meaningful condition over live state."
+      - where_reactions_live: "Where does each reaction live? The platform owns the live result set, change detection, delta semantics, and delivery; each reaction owns its action (paging, write-back, external calls, UI). Keep things that look query-able but aren't - geospatial reasoning, wall-clock scheduling with no underlying state change, heavy domain transactions like dispatch commitment - OUT of the query, in surrounding services."
+    solution_tiers:
+      note: "Naming the tier helps judge how much of the design lives in the query versus the reactions. All four design questions apply across all three tiers."
+      observing_changes: "Lightest: react to raw create/update/delete on entities - comparable to a CDC consumer with a query language on top."
+      observing_conditions: "Middle, where most practical solutions land: react when a condition (possibly multi-source, possibly absence-of-change) first becomes true and again when it becomes false."
+      observing_collections: "Heaviest: maintain a live set of items matching a condition and bind UIs or processes to membership changes."
+    ownership_seam: "The continuous query owns the CONDITION and its TIMING and nothing else; the reactions own the ACTIONS; the platform owns the live result set, the delta semantics, and DELIVERY (ordering per item, at-least-once, retries)."
+  hand_assembled_pipeline_contrast: "Without a Data Change Processing platform, teams hand-assemble: a CDC pipeline (e.g. Debezium) -> a stream processor (Kafka Streams, Flink) -> a derived-state store (Redis, a materialized view, or an app-maintained in-memory cache) -> a scheduler sweeping for time-based conditions -> a bespoke consumer service diffing derived state and posting downstream. Each part is sound alone; together they impose a steady tax of moving parts, schema coordination, and seams whose only job is to keep one condition true. A change-driven platform collapses this middle layer into a query plus configuration."
+  canonical_examples:
+    change_driven: "Field-service dispatch (observing collections): a live, always-current set of technicians within range of each open high-priority ticket, certified for the equipment, available (not dispatched), and inside their shift window - correlated across fleet/GPS, ticketing, HR/certifications, and dispatch systems. About BEING TRUE, over a GROUP, with natural ENTER/EXIT (dispatching a tech removes them), spanning MULTIPLE sources, atop rules other teams revise."
+    event_driven: "Order shipping notification: fulfillment publishes OrderShipped on commit; the email service formats and sends. About something HAPPENING, ONCE, to ONE order, from a SINGLE producer that already emits the needed domain event. Use that event - a change-driven approach would add needless machinery."
+    absence_of_change: "Stalled P1 escalation (observing conditions): 'P1 tickets with no owner 15 minutes after being marked P1.' Single Ticket entity; entry at the 15-min mark if still unowned; exit when an owner is assigned, the ticket is closed, or severity is downgraded; reactions page on-call (HTTP) and feed an ops dashboard (SSE)."
+  authoring_guidance:
+    - "When asked 'is X a good fit for Drasi?', apply the six recognition questions and be willing to answer NO - recommend event-driven, CDC, or DB triggers when the shape is wrong."
+    - "Lead change-driven explanations with 'being true vs happening', then group membership with enter/exit, then absence-of-change."
+    - "Frame event-driven and change-driven as complementary; never present event-driven as inferior."
+    - "Stress the ownership seam: the query owns the condition + timing, reactions own actions, the platform owns evaluation + delivery."
+    - "Use the three tiers (observing changes / conditions / collections) to calibrate how much logic belongs in the query vs the reactions."
+    - "Show the contrast: a hand-assembled CDC + stream-processor + state-store + scheduler + consumer pipeline collapses to one query plus configuration."
 
 key_phrases:
   always_say:
@@ -67,6 +139,9 @@ key_phrases:
     - "Continuous queries can span data from multiple sources in a single query."
     - "Change semantics are defined by your query, not the source system."
     - "Drasi works with existing databases and software systems."
+    - "Drasi incrementally maintains query results as data changes, without re-scanning the source or polling."
+    - "Building change-driven solutions with Drasi requires no application code, only declarative queries and configuration."
+    - "You describe what changes you care about; Drasi handles how to detect and react to them continuously."
   never_say:
     - "Drasi is an event-driven platform"
     - "Drasi is used to build event-driven architectures"
@@ -74,74 +149,175 @@ key_phrases:
     - "Drasi is a streaming platform"
     - "Drasi is for stream processing"
     - "Drasi is for stream analytics"
+  terminology_rules:
+    - "Prefer 'change' / 'change-driven' over 'event' / 'event-driven' when describing Drasi's model."
+    - "A Continuous Query result change is reported as added / updated / deleted, not as an 'event'."
+    - "GQL is ISO/IEC 39075:2024 (do NOT cite 9075, which is SQL, nor 9074)."
+    - "Event-driven is a legitimate, COMPLEMENTARY paradigm - do not disparage it. The never_say rules forbid mislabeling DRASI as event-driven/streaming, not criticizing those paradigms; recommend event-driven/CDC/triggers when a problem's shape is not change-driven (see change_driven_paradigm)."
 
 key_differentiators:
-  - consumer_driven_model: "Query structure defined by consumers, not producers"
-  - works_with_existing: "Integrates with existing databases and systems"
-  - multi_source_queries: "Single query spans multiple sources (e.g., PostgreSQL + Cosmos DB)"
-  - less_brittle: "Eliminates parsing/filtering/state overhead"
-  - standardized_patterns: "Consistent change detection across organization"
-  - temporal_capabilities: "Historical result set retrieval for audits/debugging"
-  - low_code: "Rich graph queries for sophisticated change rules"
-  - flexible_deployment: "Embedded library, Docker container, or Kubernetes platform"
-  - visual_management: "Built-in web UI for interactive pipeline visualization and real-time monitoring (Drasi Server)"
+  - consumer_driven_model: "Query structure is defined by consumers, not producers; you define what changes matter."
+  - works_with_existing: "Integrates with existing databases and systems; no need to rebuild systems on Drasi."
+  - multi_source_queries: "A single query spans multiple sources (e.g. PostgreSQL + Cosmos Gremlin) via synthetic joins, even with no natural connection."
+  - less_brittle: "Eliminates parsing/filtering/state-diffing overhead; solutions are easier to evolve."
+  - standardized_patterns: "Consistent change-detection approach across an organization."
+  - temporal_capabilities: "Time-aware functions and historical result retrieval for audits/debugging and absence-of-change detection."
+  - incremental_maintenance: "Standing query results update incrementally from each change; never re-scans the source or polls (aggregates update with constant work per change)."
+  - no_application_code: "Change detection, state tracking, and time-based logic are declarative; no polling loops, result diffing, state caches, or schedulers to write."
+  - low_code: "Rich openCypher/GQL graph queries express sophisticated change rules."
+  - extensible_components: "Pluggable Source/Reaction/Bootstrap components with a stable SDK; build custom plugins without forking the engine."
+  - flexible_deployment: "Embedded library (drasi-lib), standalone process/container (Drasi Server), or Kubernetes platform."
+  - visual_management: "Built-in web Admin UI for interactive pipeline visualization and real-time monitoring (Drasi Server)."
+  - ai_agent_friendly: "An MCP Reaction exposes live continuous-query results as Model Context Protocol resources with subscriptions, so AI agents can read and be notified of changes."
+
+explaining_value_to_developers:
+  audience: "Software and infrastructure engineers evaluating Drasi."
+  core_message: "The compelling part of Drasi is not that a change produces a reaction, but the work Drasi does *between* the change and the reaction, and that it requires zero application / solution code."
+  conviction_through_contrast: "Engineers are convinced not by demos of functionality that mirrors what they already build today, but by realizing what they did NOT have to build when using Drasi."
+  declarative_principle: "You describe WHAT you care about (a query); Drasi handles HOW (continuously, incrementally, over time)."
+  mental_model:
+    pipeline: "Source -> Continuous Query -> Reaction"
+    continuous_query_analogy: "A Continuous Query is like a database materialized view that stays continuously up to date AND streams its deltas (add/update/delete) to subscribed Reactions."
+    familiar_anchors: [materialized views, "PostgreSQL LISTEN/NOTIFY", standing/live query]
+  what_happens_between_change_and_reaction:
+    - "Manages connection to the data source using low-impact change logs where available (e.g. WAL, binlog, CDC)."
+    - "Maintains the query's standing result set as data changes, rather than running a one-shot query."
+    - "Updates incrementally from each individual change and never re-scans the source (an aggregate count updates with constant work per change, even over millions of rows)."
+    - "Tracks prior state, so update notifications carry both the before and after values."
+    - "Re-evaluates time-based conditions on a schedule, detecting the absence of change with no polling loop or external scheduler."
+  zero_application_code:
+    claim: "Building a change-driven solution with Drasi requires no application code; only declarative queries and configuration."
+    you_would_otherwise_write: [change-data-capture consumer, polling loop, result-diffing logic, external state store/cache, debounce logic, timers/schedulers, downstream delivery glue + retries]
+  most_convincing_demonstration: "Absence-of-change detection: a Reaction fires when nothing changed in the source. Because no event triggers it, it is undeniable proof that Drasi performs continuous, real work the developer never implemented."
+  guidance:
+    - "Lead with the contrast to hand-rolled solutions and the no-polling / no-re-scan property."
+    - "Surface the invisible work (standing state, incremental updates, temporal re-evaluation) in prose at the moment it happens."
+    - "Avoid manufactured 'wow' demos; let the running system plus a clear explanation be the proof."
 
 architecture:
-  data_flow: "Sources -> Continuous Queries -> Reactions"
+  data_flow: "Sources -> (optional Middleware) -> Continuous Queries -> Reactions"
   data_model:
     type: property_graph
     elements:
-      node: "label + ID + properties"
-      relationship: "labels + properties + direction"
+      node: "label(s) + ID + properties"
+      relationship: "label + properties + direction (connects two nodes)"
     mapping:
       table_row: graph_node
       table_name: node_label
       columns: node_properties
-      node_id_format: "{table_name}:{primary_key}"
+      node_id_format: "{table_name}:{primary_key} (relational sources); graph sources map natively"
+    input_schema: "Drasi's Source input schema is modeled on Debezium (https://debezium.io), easing integration with existing Debezium-compatible sources."
   query_lifecycle:
-    - "Subscribe to sources, describe expected node/relationship labels"
-    - "Bootstrap: query sources to load initial result data"
-    - "Process Source Change Events continuously"
-    - "Translate to Result Change Events (added/updated/deleted)"
+    - "Subscribe to sources; declare the node/relationship labels the query expects."
+    - "Bootstrap: load an initial snapshot of matching data so the result set starts correct."
+    - "Process Source Change Events continuously as they arrive."
+    - "Translate to Result Change Events (added / updated / deleted) and notify subscribed Reactions."
+  multi_source_joins:
+    description: "A query over multiple sources uses joins that define how elements from different sources connect, creating synthetic joins between nodes from different systems."
+    config: "Joins specify matching keys by label + property; no natural foreign key is required."
+
+component_model:
+  summary: "Drasi capabilities are delivered as PLUGINS. The engine (drasi-lib) knows only the component traits, not which concrete components exist."
+  plugin_types:
+    Source: "Ingests data from an external system and emits SourceChange events. Trait: drasi_lib::sources::Source."
+    Reaction: "Consumes continuous-query result changes and takes action. Trait: drasi_lib::reactions::Reaction."
+    Bootstrap: "Supplies the initial data snapshot to populate a query when a source connects. Trait: drasi_lib::bootstrap::BootstrapProvider."
+  infrastructure_plugins: [state_store, index, wal, secret_store, identity_provider]
+  loading_modes:
+    static:
+      feature: builtin-plugins
+      how: "Plugins are statically linked into the host binary (no FFI overhead). Default build mode."
+    dynamic:
+      feature: dynamic-plugins
+      how: "Self-contained .so/.dylib/.dll cdylib files loaded at runtime over a stable C ABI."
+      entry_points: [drasi_plugin_metadata(), drasi_plugin_init()]
+  sdk_crates:
+    drasi-plugin-sdk: "Plugin side: FFI types, vtables, the export_plugin! macro, FfiLogger, state-store proxy. Located drasi-core/components/plugin-sdk."
+    drasi-host-sdk: "Host side: PluginLoader, proxy types implementing the Source/Reaction/Bootstrap traits, callback wiring, OpenAPI schema merging, OCI registry/fetcher/watcher. Located drasi-core/components/host-sdk."
+  ffi_design:
+    abi: "Stable C ABI using #[repr(C)] vtables (function-pointer tables); rich Rust types cross as opaque pointers (host and plugin statically link drasi-core so layouts match)."
+    runtime: "Each cdylib plugin runs its own tokio runtime (no version coupling). ~20us FFI overhead per async call."
+    safety: "All FFI entry points are wrapped in catch_unwind by export_plugin!; a plugin panic becomes an error, not undefined behavior."
+  version_validation:
+    sdk_version: "major.minor must match host (REJECT on mismatch; #[repr(C)] layout is breaking)."
+    target_triple: "must match host exactly (REJECT)."
+    plugin_version: "logged only (no compatibility constraint)."
+  descriptors: "Each plugin exposes descriptor(s) (SourcePluginDescriptor / ReactionPluginDescriptor / BootstrapPluginDescriptor) providing kind(), config schema JSON (utoipa/OpenAPI), and a factory (create_source/create_reaction/...). Config DTOs do double duty: serde deserialization AND OpenAPI schema generation."
+  distribution:
+    crates: "Each component is published to crates.io (e.g. drasi-source-postgres, drasi-reaction-http, drasi-bootstrap-postgres)."
+    oci: "Components are also published as OCI artifacts at ghcr.io/drasi-project for dynamic install by Drasi Server."
+  developer_guides:
+    sources: "drasi-core/components/sources/README.md (Source Developer Guide)"
+    reactions: "drasi-core/components/reactions/README.md (Reaction Developer Guide)"
+    architecture: "drasi-core/components/plugin-architecture.md (static vs dynamic, FFI, build/test)"
 
 query_languages:
-  supported: [openCypher, GQL (ISO 9074:2024)]
+  supported: [openCypher, "GQL (ISO/IEC 39075:2024)"]
+  selection: "Per query via queryLanguage (e.g. Cypher or GQL)."
   syntax:
-    pattern_matching: "ASCII-art with () for nodes, --> for relationships"
-    clauses: [MATCH, WHERE, RETURN, WITH, OPTIONAL MATCH, UNWIND, ORDER BY, LIMIT]
+    pattern_matching: "ASCII-art: () for nodes, --> / <-- / -- for relationships; fixed-length paths with named (non-anonymous) nodes/relations."
+    clauses_cypher: [MATCH, WHERE, WITH, RETURN, ORDER BY, LIMIT]
+    clauses_gql: [MATCH, WHERE, LET, FILTER, YIELD, RETURN]
     examples:
-      - "MATCH (n:Label) RETURN n.property"
+      - "MATCH (n:Label) WHERE n.status IN ['active','pending'] RETURN n.property"
       - "MATCH (a:TypeA)-[:REL]->(b:TypeB) WHERE a.prop > 5 RETURN a, b"
-      - "MATCH (n) WHERE n.status IN ['active', 'pending'] RETURN n"
-      - "MATCH (n) WHERE n.endTime IS NULL RETURN n"
+      - "MATCH (n) WHERE n.endTime IS NULL RETURN n   // open/active records"
   functions:
-    elementId: "elementId(n) [openCypher] or element_id(n) [GQL] - get node/relationship ID"
-    labels: "labels(n) - get all labels on node"
+    element_id: "elementId(n) [openCypher] / element_id(n) [GQL] - node/relationship ID"
+    scalar: [head, last, size, "char_length/character_length", timestamp]
     aggregations: [count, sum, avg, min, max, collect]
-  escaping: "Labels with special chars: MATCH (v:\\`vehicle-telemetry\\`)"
+  drasi_custom_functions:
+    note: "Drasi-specific functions namespaced under drasi.*; some require a temporal Element Index."
+    change_tracking:
+      "drasi.changeDateTime(element)": "Timestamp of the element's latest change."
+      "drasi.previousValue(expression, default)": "Value of expression before the current change."
+      "drasi.previousDistinctValue(expression, default)": "Previous value distinct from the current one."
+    temporal_absence_of_change:
+      "drasi.trueFor(expression, duration)": "True once condition has held continuously for a duration."
+      "drasi.trueLater(expression, timestamp)": "Schedule a future evaluation at a timestamp."
+      "drasi.trueUntil(expression, timestamp)": "Condition expected to remain true until a timestamp."
+    history_requires_temporal_index:
+      "drasi.getVersionByTimestamp(element, timestamp)": "Element version at a point in time."
+      "drasi.getVersionsByTimeRange(element, from, to, include_initial_version)": "Element versions over a range."
+    aggregation_helpers:
+      "drasi.slidingWindow(duration, aggregation_expression)": "Aggregate over a sliding time window."
+      "drasi.linearGradient(x, y)": "Linear regression gradient over paired values."
+      "drasi.listMin(list)": "Minimum of a list."
+      "drasi.listMax(list)": "Maximum of a list."
+  escaping: "Labels/identifiers with special chars use backticks, e.g. MATCH (v:`vehicle-telemetry`)"
+  reference: https://drasi.io/reference/query-language/
 
 core_concepts:
   - term: Change
-    definition: "Additions, updates, deletions to continuous query result set due to source data changes; semantics defined by query author."
-    aliases: [delta, transition]
+    definition: "Additions, updates, or deletions to a continuous query's result set caused by source data changes; semantics are defined by the query author."
+    aliases: [delta, result change]
     forbidden: [event, signal]
   - term: Continuous Query
-    definition: "openCypher/GQL query running perpetually, fed by change logs, maintaining current results and generating change notifications."
-    aliases: [cq, perpetual query]
-    forbidden: [static query, poll]
+    definition: "An openCypher/GQL query that runs perpetually, fed by source change events, maintaining a live result set and emitting precise add/update/delete notifications."
+    aliases: [cq, perpetual query, standing query]
+    forbidden: [static query, instantaneous query, poll]
   - term: Reaction
-    definition: "Action triggered by change (add/update/delete) in query result set, enabling state transitions."
+    definition: "A component triggered by result-set changes (add/update/delete) that takes action, e.g. webhooks, SSE, database calls, dashboards."
     aliases: [handler, action]
     forbidden: [listener, subscriber]
   - term: Source
-    definition: "Data repository providing change source for Continuous Queries (databases, Kubernetes, monitoring tools)."
+    definition: "A component connecting Drasi to an external system's change feed/log, translating data into the property-graph model and supporting bootstrap."
     aliases: [connector, feed]
     forbidden: [stream, topic]
-  - term: Result Set Transition
-    definition: "Items enter result set when conditions met (trigger action), exit when conditions change (stop action)."
-    aliases: [enter/exit pattern, state transition]
+  - term: Bootstrap
+    definition: "Loading an initial data snapshot when a continuous query starts, so its result set is correct before live changes stream in. Provided by a Bootstrap provider component."
+  - term: Source Change Event
+    definition: "The internal, Debezium-modeled representation of a single source change (insert/update/delete) consumed by continuous queries."
+  - term: Result Set / Result Change Event
+    definition: "The current output of a continuous query (Result Set); changes to it are delivered as Result Change Events with added/updated/deleted collections."
+  - term: Query Container
+    definition: "(Drasi for Kubernetes) A host that runs continuous queries and holds their indexes/state."
   - term: Middleware
-    definition: "Pipeline components that transform/enrich incoming changes before reaching queries."
+    definition: "Pipeline components that transform/enrich incoming source changes before they reach a query (configured per query)."
+  - term: Synthetic Join
+    definition: "A relationship Drasi forms between nodes from different sources based on configured matching keys, enabling multi-source queries."
+  - term: Data Change Processing
+    definition: "The continuous detection and processing of meaningful data changes across systems - the category Drasi defines."
 
 result_change_event:
   format:
@@ -149,286 +325,417 @@ result_change_event:
     updated: "[{before: {...}, after: {...}}]"
     deleted: "[{...}, {...}]"
   change_types:
-    added: "New result matches query criteria"
-    updated: "Result still matches but changed (with before/after)"
-    deleted: "Result no longer matches criteria"
-  atomicity: "Single source change can produce multiple result changes, all in one notification"
+    added: "A new result now matches the query criteria."
+    updated: "A result still matches but its values changed (carries before and after)."
+    deleted: "A result no longer matches the criteria."
+  atomicity: "A single source change can produce multiple result changes, all delivered in one notification so Reactions can treat them atomically."
+  example_added: '{ "added": [{"EmployeeName":"Bob","RegionName":"Southern California","IncidentSeverity":"extreme"}], "updated": [], "deleted": [] }'
 
 sources:
-  postgresql:
-    products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
-    requirements:
-      version: "10+"
-      wal_level: logical
-      permissions: [LOGIN, REPLICATION, SELECT]
-      settings: [max_replication_slots, max_wal_senders]
-    setup_commands:
-      - "ALTER SYSTEM SET wal_level = 'logical';"
-      - "CREATE USER drasi_user WITH REPLICATION LOGIN PASSWORD 'pwd';"
-      - "GRANT SELECT ON ALL TABLES IN SCHEMA public TO drasi_user;"
-      - "CREATE PUBLICATION drasi_publication FOR ALL TABLES;"
-    properties:
-      host: string
-      port: 5432
-      database: string
-      user: string
-      password: string
-      ssl_mode: [prefer, disable, require]
-      slot_name: string
-      publication_name: string
-      tables: "array of schema.table"
-      table_keys: "for composite primary keys: [{table, key_columns: []}]"
-    monitoring:
-      check_slots: "SELECT * FROM pg_replication_slots;"
-      check_lag: "SELECT * FROM pg_stat_replication;"
-      drop_slot: "SELECT pg_drop_replication_slot('slot_name');"
+  kind_conventions:
+    lib_server: "lowercase kind strings (postgres, mysql, mssql, oracle, sqlite, http, grpc, kafka, kubernetes, dataverse, mock, application, platform)."
+    kubernetes: "PascalCase kind strings (PostgreSQL, MySQL, SQLServer, CosmosGremlin, EventHub, Dataverse, Kubernetes)."
+  documented_lib_server: [application, mock, http, grpc, postgres, mssql, platform]
+  documented_kubernetes: [PostgreSQL, MySQL, SQLServer, CosmosGremlin, EventHub, Dataverse, Kubernetes]
 
-  http:
-    products: [drasi-lib, Drasi Server]
-    description: "Receive events via HTTP webhooks"
-    properties:
-      host: "0.0.0.0"
-      port: 9000
-      timeout_ms: 10000
-      adaptive_enabled: boolean
-      adaptive_min_batch_size: 10
-      adaptive_max_batch_size: 1000
-      adaptive_min_wait_ms: 100
-      adaptive_max_wait_ms: 5000
-    endpoint: "/source/{source-id}"
-    event_format:
-      op: [insert, update, delete]
-      label: string
-      id: string
-      properties: object
+  catalog:
+    postgres:
+      kind: postgres
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-source-postgres
+      mechanism: "Logical replication / WAL-based CDC"
+      requirements:
+        version: "10+"
+        wal_level: logical
+        permissions: [LOGIN, REPLICATION, SELECT]
+        settings: [max_replication_slots, max_wal_senders]
+      setup_commands:
+        - "ALTER SYSTEM SET wal_level = 'logical';"
+        - "CREATE USER drasi_user WITH REPLICATION LOGIN PASSWORD 'pwd';"
+        - "GRANT SELECT ON ALL TABLES IN SCHEMA public TO drasi_user;"
+        - "CREATE PUBLICATION drasi_publication FOR ALL TABLES;"
+      properties_lib_server: [host, port, database, user, password, ssl_mode, tables, slot_name, publication_name, table_keys]
+      properties_kubernetes: [host, port, database, user, password, ssl, tables]
+      bootstrap: "drasi-bootstrap-postgres (consistent snapshot coordinated with replication LSN)"
+      monitoring:
+        check_slots: "SELECT * FROM pg_replication_slots;"
+        check_lag: "SELECT * FROM pg_stat_replication;"
+        drop_slot: "SELECT pg_drop_replication_slot('slot_name');"
+    mysql:
+      kind: mysql
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-source-mysql
+      mechanism: "Binlog-based CDC"
+      properties: [host, port, database, user, password, tables, sslMode, tableKeys, startPosition, serverId, heartbeatIntervalSeconds]
+      bootstrap: drasi-bootstrap-mysql
+    mssql:
+      kind: mssql
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-source-mssql
+      mechanism: "SQL Server Change Data Capture (CDC) polling"
+      properties: [host, port, database, user, password, tables, start_position, table_keys]
+    oracle:
+      kind: oracle
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-oracle
+      mechanism: "LogMiner / SCN-window CDC"
+      properties: [host, port, service, user, password, tables, poll_interval_ms, start_position, ssl_mode, table_keys]
+      bootstrap: drasi-bootstrap-oracle
+    sqlite:
+      kind: sqlite
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-sqlite
+      mechanism: "Embedded SQLite CDC via update hooks; optional REST API"
+      properties: [path, tables, tableKeys, "restApi.host", "restApi.port"]
+    http:
+      kind: http
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-http
+      description: "Receive change events via HTTP webhooks/REST with optional adaptive batching."
+      properties: [host, port, endpoint, timeout_ms, adaptive_min_batch_size, adaptive_max_batch_size, adaptive_min_wait_ms, adaptive_max_wait_ms, dispatch_mode]
+      endpoint: "/source/{source-id}"
+      event_format: { op: "[insert,update,delete]", label: string, id: string, properties: object }
+    grpc:
+      kind: grpc
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-grpc
+      description: "High-throughput streaming ingest via gRPC (HTTP/2, bidirectional)."
+      properties: [host, port, endpoint, timeout_ms, dispatch_mode]
+      vs_http: "Higher throughput, lower latency, native bidirectional streaming."
+    kafka:
+      kind: kafka
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-kafka
+      description: "Consume Kafka records and map them into source changes."
+      properties: [bootstrapServers, topic, groupId, nodeLabel, mappings, autoOffsetReset, securityProtocol, "sasl*"]
+      bootstrap: "drasi-bootstrap-kafka (snapshot from low to high watermark)"
+    kubernetes:
+      kind: kubernetes
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-source-kubernetes
+      description: "Watch Kubernetes resources and emit graph changes (with OWNS relations)."
+      properties: [resources, namespaces, authMode, kubeconfigPath, includeOwnerRelations, startFrom]
+      kubeconfig_extraction:
+        kind: "kind get kubeconfig | sed 's/127.0.0.1.*/kubernetes.default.svc/g'"
+        aks: "az aks get-credentials --resource-group <rg> --name <cluster> --file -"
+    dataverse:
+      kind: dataverse / Dataverse
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-source-dataverse
+      description: "Poll Microsoft Dataverse OData change tracking."
+      properties_lib: [environment_url, tenant_id, client_id, client_secret, entities, entity_columns, min_interval_ms, max_interval_seconds]
+      properties_kubernetes: [endpoint, entities, maxInterval, "identity (MicrosoftEntraWorkloadID)"]
+    neo4j:
+      kind: neo4j
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-neo4j
+      maturity: "new (v0.1.0)"
+      mechanism: "Neo4j CDC (native graph source; no relational->graph translation needed)"
+      bootstrap: drasi-bootstrap-neo4j
+    cosmos_gremlin:
+      kind: CosmosGremlin
+      products: [Drasi for Kubernetes]
+      description: "Azure Cosmos DB with Gremlin API (native graph source)."
+      properties: [accountEndpoint, database, container, partitionKey]
+    eventhub:
+      kind: EventHub
+      products: [Drasi for Kubernetes]
+      description: "Azure Event Hubs messages as graph nodes (EventHub name -> label, JSON -> properties)."
+      properties: [connectionString, host, eventHubs, bootstrapWindow]
+      auth: [connection_string, MicrosoftEntraWorkloadID]
+    mock:
+      kind: mock
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-mock
+      maturity: example/test
+      description: "Generate synthetic test data for development/demos."
+      properties: [data_type, interval_ms]
+    application:
+      kind: application
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-application
+      description: "Programmatically inject graph changes from your Rust application (in-process)."
+    platform:
+      kind: platform
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-source-platform
+      description: "Consume Redis Streams (CloudEvents) for Drasi platform integration."
+      properties: [redis_url, stream_key, consumer_group, consumer_name, batch_size, block_ms]
+    mapping:
+      crate: drasi-source-mapping
+      description: "Helper for mapping/transforming external payloads into the graph model (used by other sources)."
+    domain_examples:
+      maturity: "Domain-specific / example sources demonstrating real-world feeds; not general-purpose product sources."
+      list:
+        cloudflare-radar: "Cloudflare Radar network outage/BGP/traffic data."
+        gtfs-rt: "GTFS-Realtime public-transit feeds (trip updates, vehicle positions, alerts)."
+        here-traffic: "HERE Traffic flow and incidents."
+        open511: "Open511 road-event APIs."
+        ris-live: "RIPE RIS Live BGP updates over WebSocket."
+        hyperliquid: "Hyperliquid DeFi market data."
+        sui-deepbook: "Sui DeepBook V3 on-chain order-book events."
 
-  grpc:
-    products: [drasi-lib, Drasi Server]
-    description: "High-throughput streaming via gRPC"
-    properties:
-      host: "0.0.0.0"
-      port: 50051
-      timeout_ms: 5000
-    vs_http: "Higher throughput, lower latency, HTTP/2, native bidirectional streaming"
-
-  kubernetes:
-    products: [Drasi for Kubernetes]
-    status: experimental
-    resources: [Pod, Deployment, ReplicaSet, StatefulSet, DaemonSet, Job, Service, ServiceAccount, Node, Ingress, PersistentVolume, PersistentVolumeClaim]
-    relationships: "OWNS relationships between resources"
-    permissions: "list, watch on all supported resources"
-    kubeconfig_extraction:
-      kind: "kind get kubeconfig | sed 's/127.0.0.1.*/kubernetes.default.svc/g'"
-      k3d: "k3d kubeconfig get k3s-default | sed 's/0.0.0.0.*/kubernetes.default.svc/g'"
-      aks: "az aks get-credentials --resource-group <rg> --name <cluster> --file -"
-
-  eventhub:
-    products: [Drasi for Kubernetes]
-    properties:
-      connectionString: string
-      host: "for Managed Identity"
-      eventHubs: array
-      bootstrapWindow: "minutes of backfill data (default 0)"
-    auth: [connection_string, managed_identity]
-    data_model: "EventHub name -> node label, message JSON -> node properties"
-
-  cosmos_gremlin:
-    products: [Drasi for Kubernetes]
-    description: "Azure Cosmos DB with Gremlin API"
-
-  mysql:
-    products: [Drasi for Kubernetes]
-    description: "MySQL CDC via binlog"
-
-  sqlserver:
-    products: [Drasi for Kubernetes]
-    description: "SQL Server CDC"
-
-  dataverse:
-    products: [Drasi for Kubernetes]
-    description: "Microsoft Dataverse tables"
-
-  mock:
-    products: [drasi-lib, Drasi Server]
-    description: "Generate test data for development"
-
-  platform:
-    products: [drasi-lib, Drasi Server]
-    description: "Consume from Redis Streams for Drasi Platform integration"
+bootstrappers:
+  concept: "A Bootstrap provider supplies the INITIAL snapshot for a query before live streaming begins. Providers are independent from sources and plugged in via the BootstrapProvider trait, so a source's live feed and its initial-state strategy can vary."
+  available:
+    drasi-bootstrap-postgres: "Consistent PostgreSQL snapshot coordinated with replication LSN (pairs with postgres)."
+    drasi-bootstrap-mysql: "MySQL table snapshot (pairs with mysql)."
+    drasi-bootstrap-oracle: "Oracle table snapshot, often anchored to a source SCN (pairs with oracle)."
+    drasi-bootstrap-mssql: "SQL Server snapshot (pairs with mssql)."
+    drasi-bootstrap-sqlite: "SQLite snapshot (pairs with sqlite)."
+    drasi-bootstrap-neo4j: "Neo4j graph snapshot (pairs with neo4j)."
+    drasi-bootstrap-kafka: "Snapshot Kafka topic from low to high watermark (pairs with kafka)."
+    drasi-bootstrap-kubernetes: "List matching Kubernetes resources as bootstrap events (pairs with kubernetes)."
+    drasi-bootstrap-http: "Fetch initial state from REST APIs (endpoints, auth, pagination, response mapping)."
+    drasi-bootstrap-dataverse: "Initial Dataverse snapshot (pairs with dataverse)."
+    drasi-bootstrap-application: "In-memory replay of stored insert events (pairs with application; testing/embedded)."
+    drasi-bootstrap-scriptfile: "Load JSONL graph data from files (testing/demos/static data)."
+    drasi-bootstrap-noop: "Return no initial data (utility/default; pairs with any source)."
+    drasi-bootstrap-platform: "Bootstrap from the Drasi platform feed."
+    domain_examples: [cloudflare-radar, gtfs-rt, here-traffic, open511, sui-deepbook]
 
 middleware:
-  description: "Transform/enrich incoming changes before reaching queries"
-  pipeline: "Sequential processing, output of one feeds next"
-
+  description: "Transform/enrich incoming source changes before they reach queries. Configured per continuous query as an ordered pipeline (output of one feeds the next)."
   components:
     unwind:
-      purpose: "Expand nested arrays into separate graph elements"
-      config:
-        selector: "JSONPath to array ($.items[*])"
-        label: "New node label for extracted elements"
-        key: "Unique key property from child (optional)"
-        relation: "Relationship type to parent (optional)"
-        condition: "JSONPath filter condition (optional)"
-      use_case: "Kubernetes containerStatuses, nested collections"
-
+      kind: unwind
+      purpose: "Expand nested arrays into separate graph elements (nodes/relationships)."
+      config: [selector (JSONPath), label, key, relation, condition]
+      use_case: "Kubernetes containerStatuses, nested collections."
     jq:
-      purpose: "Transform data using jq expressions"
-      operations: [Insert, Update, Delete]
-      config:
-        query: "jq expression"
-        label: "Extract new label (optional)"
-        id: "Extract new ID (optional)"
-        haltOnError: false
-      use_case: "Complex transformations, event routing"
-
+      kind: jq
+      purpose: "Transform data using jq expressions; can route operations (insert/update/delete)."
+      config: [query (jq expression), label, id, haltOnError]
+      use_case: "Complex transformations, conditional event routing."
+    map:
+      kind: map
+      purpose: "Map/reshape fields between source payloads and graph elements (lib feature middleware-map)."
+      note: "Available as a built-in middleware crate; lighter-weight field mapping than jq."
     promote:
-      purpose: "Copy nested values to top-level properties"
-      config:
-        mappings: "[{path: JSONPath, target_name: string}]"
-        on_conflict: [overwrite, skip, fail]
-        on_error: [skip, fail]
-
+      kind: promote
+      purpose: "Copy nested values to top-level properties."
+      config: ["mappings [{path, target_name}]", "on_conflict [overwrite,skip,fail]", "on_error [skip,fail]"]
     parse_json:
-      purpose: "Parse JSON strings into structured objects"
-      config:
-        target_property: string
-        output_property: "optional, defaults to overwrite"
-        on_error: [skip, fail]
-        max_json_size: 1048576
-        max_nesting_depth: 20
-
+      kind: parse_json
+      purpose: "Parse JSON strings into structured objects."
+      config: [target_property, output_property, on_error, max_json_size, max_nesting_depth]
     decoder:
-      purpose: "Decode encoded strings"
+      kind: decoder
+      purpose: "Decode encoded strings."
       encoding_types: [base64, base64url, hex, url, json_escape]
-      config:
-        target_property: string
-        output_property: string
-        strip_quotes: boolean
-        on_error: [skip, fail]
-
+      config: [target_property, output_property, strip_quotes, on_error]
     relabel:
-      purpose: "Remap element labels"
-      config:
-        labelMappings: "{OldLabel: NewLabel}"
-      use_case: "Normalize heterogeneous sources"
+      kind: relabel
+      purpose: "Remap element labels (normalize heterogeneous sources to a common vocabulary)."
+      config: ["labelMappings {OldLabel: NewLabel}"]
+  reference: https://drasi.io/reference/middleware/
 
 reactions:
   common_properties:
-    queries: "array of query IDs to monitor"
+    queries: "array of query IDs to subscribe to"
     auto_start: boolean
+    priority_queue: "Results from all subscribed queries are merged and processed in timestamp order."
+  documented_lib_server: [log, http, grpc, grpc-adaptive, sse, profiler, application, platform, storedproc-postgres, storedproc-mysql, storedproc-mssql]
+  documented_kubernetes: [Debug, Http, SignalR, EventGrid, StorageQueue, EventBridge, Result, StoredProc, Gremlin, Dataverse, Debezium, PostDaprPubSub, SyncDaprStateStore]
 
-  log:
-    products: [drasi-lib, Drasi Server]
-    purpose: "Output changes to console"
-    config:
-      default_template: "applies to all queries"
-      routes: "per-query overrides"
-      levels: [trace, debug, info, warn, error]
-    template_vars:
-      after: "full object after change"
-      before: "full object before change"
-      property: "{{after.property}}"
-      json: "{{json after}}"
+  catalog:
+    log:
+      kind: log
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-log
+      purpose: "Output result changes to the console with Handlebars templates."
+      config: [default_template, routes (per-query), priority_queue_capacity]
+      template_vars: ["{{after}}", "{{before}}", "{{after.property}}", "{{json after}}"]
+    http:
+      kind: http
+      products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
+      crate: drasi-reaction-http
+      purpose: "Send webhooks to external HTTP endpoints on result changes."
+      unification_note: "The HTTP reaction is UNIFIED: adaptive batching is an OPTIONAL built-in mode (no separate http-adaptive plugin). It also publishes a JSON Schema for its typed output payloads."
+      config: [base_url, token, timeout_ms, "routes/output_templates (per-query added/updated/deleted with url, method, body, headers)", adaptive, batch_endpoint]
+      templating: "Handlebars for URL/method/body/headers"
+    grpc:
+      kind: grpc
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-grpc
+      purpose: "Send batched results to an external gRPC service (drasi.v1.ReactionService.ProcessResults)."
+      config: [endpoint, timeout_ms, batch_size, batch_flush_timeout_ms, max_retries, metadata]
+    grpc-adaptive:
+      kind: grpc-adaptive
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-grpc-adaptive
+      purpose: "gRPC delivery with throughput-based adaptive batching (high-volume variant)."
+      config: [endpoint, timeout_ms, max_retries, "adaptive_* (batch size/window/timeout)", metadata]
+    sse:
+      kind: sse
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-sse
+      purpose: "Stream results to browsers/clients via Server-Sent Events; also exposes a snapshot REST endpoint."
+      config: [host, port, sse_path, heartbeat_interval_ms, routes, default_template]
+    profiler:
+      kind: profiler
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-profiler
+      purpose: "Collect latency/throughput metrics (mean/stddev/p50/p95/p99)."
+      config: [window_size, report_interval_secs]
+    application:
+      kind: application
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-application
+      purpose: "Deliver result changes in-process to your Rust app via channels/handles (embedded)."
+    platform:
+      kind: platform
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-platform
+      purpose: "Publish results to Redis Streams as CloudEvents (Drasi platform / Dapr integration)."
+      config: [redis_url, pubsub_name, source_name, max_stream_length, batch_enabled]
+    storedproc:
+      kinds: [storedproc-postgres, storedproc-mysql, storedproc-mssql]
+      products: [drasi-lib, Drasi Server]
+      crates: [drasi-reaction-storedproc-postgres, drasi-reaction-storedproc-mysql, drasi-reaction-storedproc-mssql]
+      purpose: "Execute SQL stored procedures/commands on result changes, using before/after values as parameters."
+      config: [hostname, port, user, password, database, ssl, "default_template + routes OR added/updated/deleted commands", command_timeout_ms, retry_attempts]
+    rabbitmq:
+      kind: rabbitmq
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-rabbitmq
+      purpose: "Publish result changes to RabbitMQ exchanges (per-query routing keys/bodies via Handlebars)."
+      config: [connection_string, exchange_name, exchange_type, message_persistent, tls_enabled, query_configs]
+    aws-sqs:
+      kind: aws-sqs
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-aws-sqs
+      purpose: "Send result changes as messages to AWS SQS (FIFO supported)."
+      config: [queueUrl, region, accessKeyId, secretAccessKey, fifoQueue, messageGroupIdTemplate, routes]
+    azure-storage:
+      kind: azure-storage
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-azure-storage
+      purpose: "Write result changes to Azure Blob/Queue/Table Storage."
+      config: [accountName, accessKey, target, blobEndpoint, queueEndpoint, tableEndpoint, routes]
+    dashboard:
+      kind: dashboard
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-dashboard
+      purpose: "Built-in web dashboard UI with a visual designer; streams live query diffs over WebSocket and exposes dashboard CRUD."
+      config: [host, port, heartbeatIntervalMs, queries]
+    mcp:
+      kind: mcp
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-mcp
+      purpose: "Expose continuous-query results as Model Context Protocol (MCP) resources over HTTP+SSE; clients list resources, read current results, and SUBSCRIBE for change notifications. Enables AI agents/LLM tools to consume live Drasi results."
+      config: [port, host, bearerToken, maxSessions, routes]
+    loki:
+      kind: loki
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-loki
+      purpose: "Push result changes to Grafana Loki (HTTP push API) with dynamic labels."
+      config: [endpoint, labels, default_template, routes]
+    file:
+      kind: file
+      products: [drasi-lib, Drasi Server]
+      crate: drasi-reaction-file
+      purpose: "Write result changes to the filesystem (append/overwrite/per-change)."
+      config: [outputPath, writeMode, filenameTemplate, routes, defaultTemplate]
+    # --- Drasi for Kubernetes reactions ---
+    debug:
+      kind: Debug
+      products: [Drasi for Kubernetes]
+      purpose: "Web UI for inspecting query results during development."
+      config: [queries]
+    signalr:
+      kind: SignalR
+      products: [Drasi for Kubernetes]
+      purpose: "Push changes to web clients in real time via SignalR (packed or unpacked)."
+      output_format: { packed: "addedResults/updatedResults/deletedResults arrays", unpacked: "one message per change with op: i|u|d" }
+      client_libraries: ["@drasi/signalr-react", "@drasi/signalr-vue", ".NET Microsoft.AspNetCore.SignalR.Client"]
+      auth: [MicrosoftEntraWorkloadID, MicrosoftEntraApplication, "Azure SignalR Service"]
+    eventgrid:
+      kind: EventGrid
+      products: [Drasi for Kubernetes]
+      purpose: "Publish CloudEvents to an Azure Event Grid topic."
+      config: [eventGridUri, eventGridKey, eventGridSchema, format]
+      requirement: "Topic must use CloudEventSchemaV1_0 input schema."
+    storagequeue:
+      kind: StorageQueue
+      products: [Drasi for Kubernetes]
+      purpose: "Enqueue messages to an Azure Storage Queue."
+      config: [queueName, format (packed|unpacked), endpoint]
+      auth: [ConnectionString, MicrosoftEntraWorkloadID]
+    eventbridge:
+      kind: EventBridge
+      products: [Drasi for Kubernetes]
+      purpose: "Publish events to AWS EventBridge."
+      config: [eventBusName, format]
+      auth: [AwsIamRole, AwsIamAccessKey]
+    result:
+      kind: Result
+      products: [Drasi for Kubernetes]
+      purpose: "Expose current query results via a queryable endpoint (QueryContainerId)."
+    storedproc_k8s:
+      kind: StoredProc
+      products: [Drasi for Kubernetes]
+      purpose: "Execute SQL stored procedures (databaseClient: pg|mysql|mssql) on result changes."
+      config: [addedResultCommand, updatedResultCommand, deletedResultCommand, databaseClient, databaseHostname, databasePort, databaseUser, databaseDbname, databasePassword]
+    gremlin:
+      kind: Gremlin
+      products: [Drasi for Kubernetes]
+      purpose: "Execute Gremlin commands against a graph database on result changes."
+      config: [addedResultCommand, updatedResultCommand, deletedResultCommand, gremlinHost, gremlinPort, gremlinUsername, gremlinPassword]
+    dataverse_reaction:
+      kind: Dataverse
+      products: [Drasi for Kubernetes]
+      purpose: "Create/update/delete Microsoft Dataverse entities on result changes."
+      config: [endpoint, clientId, secret, "per-query createEntity/updateEntity/deleteEntity"]
+    debezium:
+      kind: Debezium
+      products: [Drasi for Kubernetes]
+      purpose: "Publish changes in Debezium format to Kafka."
+      config: [brokers, topic, saslUsername, saslPassword]
+    dapr:
+      kinds: [PostDaprPubSub, SyncDaprStateStore]
+      products: [Drasi for Kubernetes]
+      purpose: "PostDaprPubSub publishes to a Dapr Pub/Sub topic; SyncDaprStateStore syncs results into a Dapr state store (keyField)."
 
-  http:
-    products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
-    purpose: "Send webhooks to external endpoints"
-    config:
-      base_url: string
-      token: "Bearer token (optional)"
-      timeout_ms: 5000
-      routes:
-        per_query:
-          added: {url, method, body, headers}
-          updated: {url, method, body, headers}
-          deleted: {url, method, body, headers}
-    templating: "Handlebars: {{after}}, {{before}}, {{after.property}}, {{json object}}"
+infrastructure_components:
+  state_stores:
+    purpose: "Persist plugin/query state across restarts."
+    default: "MemoryStateStoreProvider is built into drasi-lib (in-memory)."
+    plugins: { drasi-state-store-redb: "Persistent embedded ACID state store (redb)." }
+  indexes:
+    purpose: "Back the element/result indexes the engine maintains for queries."
+    plugins:
+      drasi-index-rocksdb: "RocksDB-backed persistent index (Drasi Server persistIndex)."
+      drasi-index-garnet: "Garnet/Redis-backed index."
+  wals:
+    purpose: "Write-ahead log for durability of transient sources."
+    plugins: { drasi-wal-redb: "redb-based write-ahead log." }
+  secret_stores:
+    purpose: "Resolve secret references in component configuration."
+    plugins:
+      drasi-secret-store-azure-keyvault: "Azure Key Vault (production/Azure)."
+      drasi-secret-store-file: "Secrets from a JSON file (dev/testing)."
+      drasi-secret-store-keyring: "OS credential store / keyring (local dev)."
+  identity_providers:
+    purpose: "Authenticate sources/reactions to external systems without static credentials."
+    plugins:
+      drasi-identity-azure: "Microsoft Entra ID (Workload Identity / Managed Identity); config identity_name, optional scope."
+      drasi-identity-aws: "AWS identity (IAM role / access key)."
 
-  http_adaptive:
-    products: [Drasi Server]
-    purpose: "High-volume HTTP with dynamic batching"
-    config:
-      adaptive_min_batch_size: 1
-      adaptive_max_batch_size: 1000
-      adaptive_window_size: 100
-      adaptive_batch_timeout_ms: 1000
-
-  sse:
-    products: [Drasi Server]
-    purpose: "Server-Sent Events for browser streaming"
-    config:
-      host: "0.0.0.0"
-      port: 8081
-      sse_path: "/events"
-      heartbeat_interval_ms: 30000
-
-  signalr:
-    products: [Drasi for Kubernetes]
-    purpose: "Real-time web UI updates via SignalR"
-    default_port: 8080
-    service_name: "{reaction-name}-gateway"
-    output_format:
-      packed: "addedResults, updatedResults, deletedResults arrays"
-      unpacked: "one message per change with op: i|u|d"
-    client_libraries: [React @aspnet/signalr, Vue 3, .NET Microsoft.AspNetCore.SignalR.Client]
-    azure_integration: "Azure SignalR Service with managed identity"
-
-  eventgrid:
-    products: [Drasi for Kubernetes]
-    purpose: "Publish CloudEvents to Azure Event Grid Topic"
-    config:
-      eventGridUri: string
-      eventGridKey: string
-      eventGridSchema: [CloudEvents, EventGrid]
-      format: [packed, unpacked]
-    requirement: "Topic must use CloudEventSchemaV1_0 input schema"
-    auth: [access_key, workload_id, application]
-
-  eventbridge:
-    products: [Drasi for Kubernetes]
-    purpose: "Publish events to AWS EventBridge"
-
-  storage_queue:
-    products: [Drasi for Kubernetes]
-    purpose: "Enqueue messages to Azure Storage Queue"
-
-  storedproc:
-    products: [drasi-lib, Drasi Server, Drasi for Kubernetes]
-    purpose: "Execute stored procedures on database changes"
-    databases: [PostgreSQL, MySQL, SQL Server]
-
-  gremlin:
-    products: [Drasi for Kubernetes]
-    purpose: "Execute Gremlin commands on graph database"
-
-  dataverse:
-    products: [Drasi for Kubernetes]
-    purpose: "Update Microsoft Dataverse"
-
-  debezium:
-    products: [Drasi for Kubernetes]
-    purpose: "Publish changes in Debezium format"
-
-  dapr:
-    PostDaprPubSub: "Publish to Dapr Pub/Sub"
-    SyncDaprStateStore: "Sync state to Dapr State Store"
-    products: [Drasi for Kubernetes]
-
-  debug:
-    products: [Drasi for Kubernetes]
-    purpose: "Web UI for inspecting query results during development"
-
-  grpc:
-    products: [drasi-lib, Drasi Server]
-    purpose: "Stream results via gRPC"
-
-  profiler:
-    products: [drasi-lib, Drasi Server]
-    purpose: "Collect performance metrics"
-
-  platform:
-    products: [drasi-lib, Drasi Server]
-    purpose: "Publish to Redis Streams"
+drasi_lib:
+  embedding: "Add drasi-lib plus the specific source/reaction crates to Cargo.toml; compose with the builder API."
+  example: |
+    use drasi_lib::{DrasiLib, Query};
+    let core = DrasiLib::builder()
+        .with_source(MockSource::new("sensors", cfg)?)
+        .with_reaction(LogReaction::new("alerts", vec!["high-temp".into()], cfg)?)
+        .with_query(Query::gql("high-temp")
+            .query("MATCH (s:Sensor) WHERE s.temperature > 75 RETURN s")
+            .from_source("sensors").build())
+        .build().await?;
+    core.start().await?; /* ... */ core.stop().await?;
+  query_builders: ["Query::cypher(id)", "Query::gql(id)"]
+  crates: [drasi-lib, drasi-core, drasi-plugin-sdk, drasi-host-sdk, drasi-middleware]
 
 drasi_server:
   config_format: [YAML, JSON]
@@ -436,87 +743,73 @@ drasi_server:
   env_interpolation:
     required: "${VAR}"
     optional: "${VAR:-default}"
-    dotenv: ".env file auto-loaded from current directory"
-
-  web_ui:
-    description: "Built-in Admin UI for visual pipeline management"
-    path: "/ui"
-    features:
-      - "Interactive flow canvas for Sources → Queries → Reactions visualization"
-      - "Real-time component status monitoring via Server-Sent Events"
-      - "Multi-instance management and switching"
-      - "Query result inspection and streaming"
-      - "Solution template deployment"
-    enabled_by_default: true
-
-  structure:
-    id: "UUID auto-generated if not provided"
+    dotenv: ".env auto-loaded from the current directory"
+  config_structure:
+    apiVersion: "drasi.io/v1"
+    id: "UUID (auto-generated if omitted)"
     host: "0.0.0.0"
     port: 8080
-    log_level: [trace, debug, info, warn, error]
-    persist_config: "Save API changes to file"
-    persist_index: "Use RocksDB for persistent indexes"
-    state_store:
-      kinds: [redb, in-memory]
-      path: "./data/state.redb"
-    default_priority_queue_capacity: 10000
-    default_dispatch_buffer_capacity: 1000
-    sources: array
-    queries: array
-    reactions: array
-    instances: "Multi-instance config (optional)"
-
+    logLevel: [trace, debug, info, warn, error]
+    persistConfig: "save API-driven config changes back to the file"
+    persistIndex: "use RocksDB for persistent indexes"
+    enableUi: "serve the Admin UI at /ui (default true)"
+    sources: "[{id, kind, autoStart, ...kind-specific}]"
+    queries: "[{id, query, queryLanguage: Cypher|GQL, autoStart, enableBootstrap, bootstrapBufferSize, sources: [{sourceId}], joins}]"
+    reactions: "[{id, kind, queries: [...], autoStart, ...kind-specific}]"
+  field_casing: "Server config uses camelCase (e.g. baseUrl, autoStart, enableBootstrap); the underlying Rust plugin config structs use snake_case."
+  web_ui:
+    path: /ui
+    features:
+      - "Interactive flow canvas (Sources -> Queries -> Reactions)"
+      - "Real-time component status via Server-Sent Events"
+      - "Query result inspection and streaming"
+      - "Multi-instance management"
   cli_commands:
-    run: "drasi-server run [--config] [--port]"
-    init: "drasi-server init [--output] [--force]"
-    validate: "drasi-server validate [--config] [--show-resolved]"
+    run: "drasi-server run [--config <f>] [--port <p>] [--plugins-dir <d>] [--skip-verification]"
+    validate: "drasi-server validate [--config <f>] [--show-resolved] [--plugins-dir <d>]"
     doctor: "drasi-server doctor [--all]"
-
-  query_config:
-    id: string
-    query: "Cypher/GQL query string"
-    sources: "[{source_id}]"
-    auto_start: true
-    enableBootstrap: true
-    priority_queue_capacity: "override default"
-    dispatch_buffer_capacity: "override default"
-    joins: "for multi-source: [{id, keys: [{label, property}]}]"
+    init: "drasi-server init [--output <f>] [--force]"
+    plugin: "drasi-server plugin <install|list|search|remove|install-all|upgrade>"
+  plugin_management:
+    registry_default: ghcr.io/drasi-project
+    reference_format: "kind/name[:version] (e.g. source/postgres:0.2.4); also file:// and https:// sources; wildcards like source/*"
+    verification: "cosign signature verification is ON by default (disable per-run with --skip-verification)"
+    lockfile: "plugins.lock pins exact versions; install --locked enforces it"
+    install_all: "drasi-server plugin install-all (install every plugin from the registry's plugin directory)"
+    upgrade: "drasi-server plugin upgrade [<ref>|--all] [--dry-run]"
 
 drasi_kubernetes:
+  cli: drasi
   cli_commands:
-    apply: "drasi apply -f <file>.yaml [-n namespace]"
-    delete_name: "drasi delete source|query|reaction <name> [-n namespace]"
-    delete_file: "drasi delete -f <file>.yaml [-n namespace]"
-    list: "drasi list source|query|reaction [-n namespace]"
-    describe: "drasi describe source|query|reaction <name> [-n namespace]"
-    wait: "drasi wait source|query|reaction <name> -t <seconds>"
-
+    apply: "drasi apply -f <file>.yaml [-n <namespace>]"
+    delete_name: "drasi delete <source|query|reaction> <name> [-n <namespace>]"
+    delete_file: "drasi delete -f <file>.yaml [-n <namespace>]"
+    list: "drasi list <source|query|reaction> [-n <namespace>]"
+    describe: "drasi describe <source|query|reaction> <name> [-n <namespace>]"
+    wait: "drasi wait <source|query|reaction> <name> -t <seconds>"
+    init: "drasi init (install Drasi into the cluster)"
+    other: [namespace, secret, tunnel, ingress, env, watch, uninstall, version, completion]
   flags:
-    file: "-f, --file"
-    namespace: "-n, --namespace"
+    namespace: "-n, --namespace (default: drasi-system)"
+    file: "-f, --files"
     timeout: "-t, --timeout"
-
-  secrets:
-    create: "kubectl create secret generic <name> --from-literal=key=value"
-    reference:
-      kind: Secret
-      name: string
-      key: string
-
   resource_yaml:
     apiVersion: v1
     kind: [Source, ContinuousQuery, Reaction]
     name: string
     spec:
-      kind: "source/reaction type"
+      kind: "provider kind (PascalCase, e.g. PostgreSQL, SignalR)"
       properties: object
-      queries: "for reactions"
-
+      queries: "for reactions; per-query config supported"
+  secrets:
+    create: "kubectl create secret generic <name> --from-literal=<key>=<value>"
+    reference: { kind: Secret, name: string, key: string }
+    note: "Secrets must live in the same namespace as the Drasi install (drasi-system in docs)."
   dependency_notes:
-    - "Does NOT enforce dependencies (plan carefully)"
-    - "Deleting source breaks dependent queries"
-    - "Sources must be available before queries subscribe"
-    - "Stopping reaction stops notifications but query continues"
+    - "Does NOT enforce dependency integrity (plan source/query/reaction lifecycle carefully)."
+    - "Deleting a Source stops dependent Queries from receiving changes."
+    - "Sources must be available before Queries subscribe."
+    - "Stopping a Reaction stops its notifications; the Query keeps running for other Reactions."
 
 numerical_limits:
   queue_capacity:
@@ -532,64 +825,97 @@ numerical_limits:
   postgresql:
     max_replication_slots: 10
     max_wal_senders: 10
+  ffi_overhead_us: 20
 
 environment_variables:
-  RUST_LOG: "debug|warn,drasi_server=debug|drasi_server=trace"
+  RUST_LOG: "e.g. debug | warn,drasi_server=debug | drasi_server=trace"
+
+temporal_functions:
+  summary: "Drasi evaluates time-based conditions and detects absence of change WITHOUT a free-running wall-clock loop or external scheduler. Deadlines are DERIVED FROM SOURCE DATA; Drasi schedules a single re-evaluation per item at the computed time."
+  functions:
+    "drasi.trueFor(expr, duration)": "True once the condition has held continuously for the duration (a sustained condition)."
+    "drasi.trueLater(expr, timestamp)": "Schedules a single deferred re-evaluation of expr at a timestamp DERIVED FROM SOURCE DATA (e.g. p1_since + 15 min). At that moment expr is checked once; if true the item enters the result set. It is NOT a free-running wall-clock condition that Drasi re-evaluates on its own schedule."
+    "drasi.trueUntil(expr, timestamp)": "Condition expected to remain true until a timestamp."
+  absence_of_change_pattern:
+    idea: "Combine an immediate check with a deferred one so both 'deadline already passed when the query first sees the item' and 'deadline still in the future' are covered."
+    example_cypher: |
+      MATCH (t:tickets)
+      WHERE t.severity = 'P1' AND t.owner IS NULL
+        AND ( datetime.realtime() >= t.p1_since + duration({ minutes: 15 })
+              OR drasi.trueLater(t.owner IS NULL, t.p1_since + duration({ minutes: 15 })) )
+      RETURN t.id AS ticketId
+    why_it_matters: "At the deadline the item enters the result set and reactions fire even though NO source row changed in the interval - Drasi scheduled and evaluated the deadline itself. That scheduling/sweep is work you would otherwise build and operate by hand."
+  implementation: "An internal priority queue schedules per-item time-based re-evaluation at data-derived deadlines; no polling loop and no external scheduler."
 
 use_cases:
   infrastructure:
     - "Database Replication Lag Monitoring"
-    - "Container Security Threats"
-    - "Underutilized Resource Detection"
+    - "Container Security Threats (vulnerable images deployed)"
+    - "Underutilized / Underused Resource Detection"
   business:
-    - "Order Exception Handling"
+    - "Order Exception Handling / Payment reconciliation"
     - "Curbside Pickup Optimization"
-    - "Risk Management"
+    - "Risk & Compliance Threshold Monitoring"
   iot:
-    - "Building Comfort Management"
+    - "Building Comfort Management (sensors + HVAC)"
+    - "Predictive Maintenance"
 
 tutorials:
   - title: "Absence of Change"
     url: "https://drasi.io/drasi-kubernetes/tutorials/absence-of-change/"
-    description: "Responding in the absence of changes using trueFor/trueLater"
+    description: "Reacting in the absence of changes using drasi.trueFor / drasi.trueLater."
   - title: "Building Comfort"
     url: "https://drasi.io/drasi-kubernetes/tutorials/building-comfort/"
-    description: "Building management with sensors and HVAC"
+    description: "Building management with sensors and HVAC."
   - title: "Connecting Frontends"
     url: "https://drasi.io/drasi-kubernetes/tutorials/connecting-frontends/"
-    description: "Connect React/Vue frontend to continuous query via SignalR"
+    description: "Connect a React/Vue frontend to a continuous query via SignalR."
   - title: "Curbside Pickup"
     url: "https://drasi.io/drasi-kubernetes/tutorials/curbside-pickup/"
-    description: "Reactive dashboards over multiple data sources"
+    description: "Reactive dashboards over multiple data sources."
   - title: "Drasi for Dapr"
     url: "https://drasi.io/drasi-kubernetes/tutorials/drasi-for-dapr/"
-    description: "Real-time data change processing with Dapr integration"
-  - title: "GitHub Bot"
-    url: "https://drasi.io/drasi-kubernetes/tutorials/github-bot/"
-    description: "Building GitHub Bot with Drasi"
+    description: "Data change processing with Dapr integration."
   - title: "Risky Containers"
     url: "https://drasi.io/drasi-kubernetes/tutorials/risky-containers/"
-    description: "No-code realtime dashboard of high risk container images"
-
-temporal_functions:
-  trueFor: "Continuous duration monitoring - condition true for specified time"
-  trueLater: "Future evaluations - schedule check at future time"
-  implementation: "Internal priority queue for time-based scheduling"
+    description: "No-code real-time dashboard of high-risk container images."
 
 faq:
   - q: "What defines a change in Drasi?"
-    a: "Additions/updates/deletions to continuous query result set, semantics defined by query author."
-  - q: "How differs from event-driven systems?"
-    a: "Change-driven isolates specific data changes via continuous queries, avoiding parsing/filtering overhead."
-  - q: "What query languages supported?"
-    a: "openCypher and GQL (ISO 9074:2024)"
-  - q: "How handle absence of change?"
-    a: "trueFor for continuous durations, trueLater for future evaluations, managed by priority queue."
-  - q: "Can query use multiple sources?"
-    a: "Yes, single query spans multiple Sources with joins, even without natural connection."
+    a: "Additions, updates, or deletions to a continuous query's result set, with semantics defined by the query author."
+  - q: "How does Drasi differ from event-driven systems?"
+    a: "Drasi is change-driven: it isolates specific meaningful data changes via continuous queries, avoiding the parsing/filtering/state overhead of consuming raw event/change feeds."
+  - q: "Which query languages are supported?"
+    a: "openCypher and GQL (ISO/IEC 39075:2024)."
+  - q: "How does Drasi handle absence of change?"
+    a: "Use drasi.trueFor (a condition sustained for a duration) and drasi.trueLater/drasi.trueUntil (deferred evaluation at a deadline DERIVED FROM SOURCE DATA). Drasi schedules one re-evaluation per item via an internal priority queue - no polling and no free-running wall clock."
+  - q: "Can one query use multiple sources?"
+    a: "Yes. A single continuous query can span multiple Sources using joins, even when there is no natural connection between the data (synthetic joins)."
   - q: "Which product should I use?"
-    a: "drasi-lib for Rust embedding, Drasi Server for Docker/standalone, Kubernetes for production scale."
-  - q: "Can migrate between products?"
-    a: "Yes, same query language and concepts across all deployment options."
-  - q: "Does drasi-lib require infrastructure?"
-    a: "No, runs entirely in-process within Rust application."
+    a: "drasi-lib to embed in a Rust app, Drasi Server for standalone/Docker, Drasi for Kubernetes for scalable production."
+  - q: "Can I migrate between products?"
+    a: "The query language and concepts are shared, but component sets and config formats differ (lowercase kinds for lib/server vs PascalCase kinds for Kubernetes)."
+  - q: "How much application code do I write?"
+    a: "None for the change logic. You write declarative continuous queries plus configuration; Drasi handles detection, state, incremental updates, and time-based evaluation."
+  - q: "Does Drasi re-query or re-scan the source when data changes?"
+    a: "No. It maintains each query's standing result set and updates incrementally per change, so aggregates and joins update with constant work rather than re-scanning."
+  - q: "How is Drasi extended with new connectors?"
+    a: "Via plugins. Implement the Source, Reaction, or Bootstrap trait and a descriptor using drasi-plugin-sdk; build statically (builtin-plugins) or as a dynamic cdylib loaded over a stable C ABI."
+  - q: "How does Drasi Server get its connectors?"
+    a: "Mostly as dynamic cdylib plugins installed from an OCI registry (default ghcr.io/drasi-project) via `drasi-server plugin install`, with cosign verification and a plugins.lock lockfile. A few components are built in."
+  - q: "Can AI agents consume Drasi results?"
+    a: "Yes. The MCP Reaction exposes continuous-query results as Model Context Protocol resources with subscriptions, so agents can read current results and be notified of changes."
+  - q: "Is there a single Drasi version number?"
+    a: "No. The engine (drasi-lib) and each component plugin are versioned and released independently on crates.io and ghcr.io; Drasi for Kubernetes has its own platform release."
+  - q: "What is the clearest proof that Drasi is doing real, continuous work?"
+    a: "Absence-of-change detection: a Reaction fires when nothing changed in the source. Since no event triggers it, it demonstrates Drasi continuously maintains and re-evaluates results on its own."
+  - q: "How do I know if my problem is change-driven?"
+    a: "Apply the recognition questions: is action driven by something BEING TRUE vs HAPPENING; is it a GROUP sharing a condition vs one named thing; do members ENTER and LEAVE that group; does it depend on something NOT happening; does it span MULTIPLE systems; will producers/rules keep shifting? A condition true over a group whose members enter and leave is change-driven; a named event happening once to one thing is not."
+  - q: "Isn't change-driven just event-driven, CDC, or stream processing?"
+    a: "No. The CONSUMER defines the meaning of a change as a continuous query (not the producer as an event schema); the platform maintains a live result set and emits enter/leave/modify deltas. Raw CDC/stream processing react to every create/update/delete; change-driven reacts to a query-defined condition becoming true or false, including across sources and including the absence of change. If items only accumulate and never leave a set, the problem is event-driven/CDC, not change-driven."
+  - q: "Does Drasi free-run a wall clock to detect absence of change?"
+    a: "No. Deadlines are derived from source data; for each matching item Drasi schedules a single re-evaluation at the computed time (e.g. p1_since + 15 min) via an internal priority queue. Use the pattern: (immediate condition) OR drasi.trueLater(condition, deadline)."
+  - q: "What stays in the continuous query, and what belongs in my own services?"
+    a: "The query owns the condition and its timing and nothing else. Reactions own the actions. Keep geospatial reasoning, wall-clock scheduling with no underlying state change, and heavy domain transactions (e.g. dispatch commitment) in surrounding services, not the query."
+  - q: "What are the tiers of change-driven solutions?"
+    a: "Observing changes (raw create/update/delete, CDC-like), observing conditions (a condition becoming true/false, possibly multi-source or absence-of-change - the most common), and observing collections (a live membership set bound to UIs/processes)."

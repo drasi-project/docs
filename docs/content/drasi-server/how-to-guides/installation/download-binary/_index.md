@@ -18,4 +18,8 @@ related:
       url: "/drasi-server/reference/cli/"
 ---
 
+{{% alert title="Following the Getting Started tutorial?" color="warning" %}}
+Use the [Getting Started setup page](/drasi-server/getting-started/download-binary/) instead. This how-to page downloads only the `drasi-server` binary, whereas the tutorial setup page also downloads the example files (used from Step 2 onward) and the `drasi-sse-cli` binary (required in Steps 5 and 6).
+{{% /alert %}}
+
 {{< read file="/shared-content/installation/drasi-server/download-binary.md" >}}
