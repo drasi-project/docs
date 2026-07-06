@@ -133,7 +133,7 @@ docker run -d \
 Configure the state store in your configuration:
 
 ```yaml
-state_store:
+stateStore:
   kind: redb
   path: /data/state.redb
 ```
@@ -281,7 +281,7 @@ docker run -d \
 Or in the configuration file:
 
 ```yaml
-log_level: debug  # trace, debug, info, warn, error
+logLevel: debug  # trace, debug, info, warn, error
 ```
 
 ## Container Management
