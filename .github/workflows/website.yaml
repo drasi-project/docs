@@ -53,6 +53,10 @@ jobs:
           sudo npm install -D --save postcss-cli
           cd themes/docsy
           npm install
+      - name: Update learning-drasi-server module to latest main
+        run: |
+          cd docs
+          hugo mod get github.com/drasi-project/learning-drasi-server@main
       - name: Download Go/Hugo Modules
         run: |
           cd docs
