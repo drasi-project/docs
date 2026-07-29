@@ -151,7 +151,7 @@ Top-level settings in `server.yaml`:
 | `port` | integer | `8080` | REST API port |
 | `logLevel` | string | `info` | Log level: `trace`, `debug`, `info`, `warn`, `error` |
 | `persistConfig` | boolean | `true` | Persist API changes back to the config file (if writable) |
-| `persistIndex` | boolean | `false` | Enable persistent indexes using RocksDB (stored under `./data/<instanceId>/index`) |
+| `persistIndex` | boolean | `false` | When `true`, RocksDB-backed persistent indexes become the default backend for all queries in the instance (stored under `./data/<instanceId>/index`); when `false`, queries use in-memory indexes |
 | `stateStore` | object | None | Persist plugin state across restarts (see below) |
 | `secretStore` | object | None | Secret store provider for resolving secret references (see below) |
 | `defaultPriorityQueueCapacity` | integer | None | Default event queue capacity for queries/reactions (if set, overrides DrasiLib defaults) |
@@ -281,7 +281,7 @@ This page covers the **common fields** shared by all queries; see the query lang
 | `priorityQueueCapacity` | integer | None | Per-query override for the event priority queue capacity |
 | `dispatchBufferCapacity` | integer | None | Per-query override for the dispatch buffer capacity |
 | `dispatchMode` | string | None | Advanced; currently only `Channel` is accepted when set |
-| `storageBackend` | object | None | Advanced; storage backend configuration (structure depends on backend) |
+| `storageBackend` | string or object | Instance default | Per-query index backend override: a registered provider name (`rocksdb`, requires `persistIndex: true`), or an inline object (`kind: memory`). See [Configure Queries](/drasi-server/how-to-guides/configuration/configure-queries/#storage-backend-configuration) |
 | `middleware` | array | `[]` | Reserved for future use (currently ignored) |
 
 ## Environment Variable Interpolation
