@@ -63,6 +63,18 @@ defaultContentLanguageInSubdir = false
   [module.hugoVersion]
     extended = true
 
+  # Mount the Drasi Server tutorials, authored in the
+  # drasi-project/learning-drasi-server repository, as a Hugo module so the
+  # tutorial content lives in a single source of truth.
+  [[module.imports]]
+    path = "github.com/drasi-project/learning-drasi-server"
+    ignoreConfig = true
+    ignoreImports = true
+    [[module.imports.mounts]]
+      source = "tutorials/getting-started"
+      target = "content/drasi-server/tutorials/getting-started"
+      excludeFiles = "/README.md"
+
 [params.search.algolia]
 appId = "Q8GYM4KCMH"
 apiKey = "b7594fb9d03b1498e770a5a7a1065e95"

@@ -35,7 +35,7 @@ chmod +x bin/drasi-sse-cli
 {{< /tab >}}
 {{< tab header="Windows (x64)" lang="powershell" >}}
 New-Item -ItemType Directory -Force -Path bin
-Invoke-WebRequest -Uri "https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-windows.exe" -OutFile "bin\drasi-server.exe"
+Invoke-WebRequest -Uri "https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-sse-cli-x86_64-windows.exe" -OutFile "bin\drasi-sse-cli.exe"
 {{< /tab >}}
 {{< /tabpane >}}
 
