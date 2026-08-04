@@ -22,13 +22,13 @@ curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/downloa
 chmod +x bin/drasi-server
 {{< /tab >}}
 {{< tab header="Linux musl (x64)" lang="bash" >}}
-apk add --no-cache libstdc++ libgcc
+apk add --no-cache libstdc++ libgcc curl
 mkdir -p bin
 curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-x86_64-linux-musl -o bin/drasi-server
 chmod +x bin/drasi-server
 {{< /tab >}}
 {{< tab header="Linux musl (ARM64)" lang="bash" >}}
-apk add --no-cache libstdc++ libgcc
+apk add --no-cache libstdc++ libgcc curl
 mkdir -p bin
 curl -fsSL https://github.com/drasi-project/drasi-server/releases/latest/download/drasi-server-aarch64-linux-musl -o bin/drasi-server
 chmod +x bin/drasi-server
@@ -43,7 +43,7 @@ Invoke-WebRequest -Uri "https://github.com/drasi-project/drasi-server/releases/l
 
 Verify the binary works:
 
-```bash
+```bash {#verify-download}
 ./bin/drasi-server --version
 ```
 
@@ -51,6 +51,6 @@ You should see output showing the version number. The exact version depends on w
 
 ```text
 drasi-server 0.2.1
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+rustc: rustc 1.95.0
 plugin-sdk: 0.9.1
 ```

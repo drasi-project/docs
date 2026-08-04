@@ -12,10 +12,10 @@ defaultContentLanguageInSubdir = false
 
 [languages]
   [languages.en]
-    languageName = "English"
+    label = "English"
     weight = 1
 #  [languages.es]
-#    languageName = "Español"
+#    label = "Español"
 #    contentDir = "content/es"
 #    weight = 2
 
@@ -73,7 +73,28 @@ defaultContentLanguageInSubdir = false
     [[module.imports.mounts]]
       source = "tutorials/getting-started"
       target = "content/drasi-server/tutorials/getting-started"
-      excludeFiles = "/README.md"
+      # Exclude the tutorial README and the standalone HTML viewer app (served
+      # locally during the tutorial, not a docs page). Uses the current 'files'
+      # setting; the viewer must be excluded so Hugo doesn't treat its
+      # index.html as page content.
+      files = ['! /README.md', '! viewer/**']
+    [[module.imports.mounts]]
+      source = "tutorials/building-comfort"
+      target = "content/drasi-server/tutorials/building-comfort"
+      # Exclude the tutorial README so Hugo doesn't render it as a page.
+      files = ['! /README.md']
+    [[module.imports.mounts]]
+      source = "tutorials/high-risk-containers"
+      target = "content/drasi-server/tutorials/high-risk-containers"
+      # Exclude the tutorial README so Hugo doesn't render it as a page.
+      files = ['! /README.md']
+    [[module.imports.mounts]]
+      source = "tutorials/curbside-pickup"
+      target = "content/drasi-server/tutorials/curbside-pickup"
+      # Exclude the tutorial README and the standalone web UI app (served
+      # locally during the tutorial); its index.html must be excluded so Hugo
+      # doesn't treat it as page content.
+      files = ['! /README.md', '! webui/**']
 
 [params.search.algolia]
 appId = "Q8GYM4KCMH"

@@ -8,6 +8,8 @@ related:
   howto:
     - title: "Docker Installation"
       url: "/drasi-server/how-to-guides/installation/install-with-docker/"
+    - title: "Install the SSE CLI"
+      url: "/drasi-server/how-to-guides/installation/install-sse-cli/"
     - title: "Configure Drasi Server"
       url: "/drasi-server/how-to-guides/configuration/configure-drasi-server/"
   reference:
@@ -19,7 +21,7 @@ Building {{< term "Drasi Server" >}} from source gives you full control over the
 
 ## Prerequisites
 
-- [Rust](https://www.rust-lang.org/tools/install) 1.88 or later
+- [Rust](https://www.rust-lang.org/tools/install) 1.95 or later
 - Git
 - C compiler (for native dependencies)
 
@@ -34,38 +36,53 @@ rustc --version
 cargo --version
 ```
 
+Drasi Server requires **Rust 1.95 or later**, and building with an older toolchain will fail. Confirm `rustc --version` reports at least `1.95.0`; if it is older, update with `rustup update`.
+
 ### Native Dependencies
 
 {{< read file="/shared-content/installation/drasi-server/build-from-source-prereqs.md" >}}
 
 ## Clone the Drasi Server Repository
 
-```bash
+```bash {#clone-drasi-server}
 git clone https://github.com/drasi-project/drasi-server.git
 cd drasi-server
 ```
 
-## Build Options
+## Build and Install Drasi Server
 
-### Debug Build
+Build Drasi Server and install the compiled binary into a local `./bin` directory:
 
-For development and debugging (faster compile, slower runtime):
-
-```bash
-cargo build
+```bash {#build-drasi-server}
+cargo install --path . --root . --locked
 ```
 
-The binary will be at `target/debug/drasi-server`.
+The first build downloads and compiles all dependencies, so it can take several minutes. Subsequent builds are much faster thanks to Cargo's build cache. The `--root .` flag tells Cargo to place the compiled `drasi-server` binary in the `./bin` directory.
 
-### Release Build
+### Verify the Build
 
-For production use (optimized, faster runtime):
-
-```bash
-cargo build --release
+```bash {#verify-drasi-server}
+./bin/drasi-server --version
 ```
 
-The binary will be at `target/release/drasi-server`.
+You should see output showing the version number, for example:
+
+```text
+drasi-server 0.2.1
+rustc: rustc 1.95.0
+plugin-sdk: 0.9.1
+```
+
+{{% alert title="Iterating on the source code?" color="info" %}}
+If you are actively modifying Drasi Server, use `cargo build` for faster, incremental debug builds and run directly with Cargo instead of reinstalling each time:
+
+```bash
+cargo build                                # debug build at target/debug/drasi-server
+cargo run -- --config config/server.yaml   # build and run in one step
+```
+
+Add `--release` for an optimized build at `target/release/drasi-server`.
+{{% /alert %}}
 
 ## Configuration
 
@@ -78,7 +95,7 @@ Create a configuration yaml file for Drasi Server. See the [Configuration Refere
 Alternatively, use the `init` command to create a starter configuration file:
 
 ```bash
-cargo run --release -- init --output config/server.yaml
+./bin/drasi-server init --output config/server.yaml
 ```
 
 ### Validate Configuration
@@ -86,36 +103,25 @@ cargo run --release -- init --output config/server.yaml
 Check your configuration file without starting the server:
 
 ```bash
-cargo run --release -- validate --config config/server.yaml
+./bin/drasi-server validate --config config/server.yaml
 
 # Show resolved environment variables
-cargo run --release -- validate --config config/server.yaml --show-resolved
+./bin/drasi-server validate --config config/server.yaml --show-resolved
 ```
 
 ### Check System Dependencies
 
 ```bash
-cargo run --release -- doctor
+./bin/drasi-server doctor
 
 # Include optional dependencies
-cargo run --release -- doctor --all
+./bin/drasi-server doctor --all
 ```
 
 ## Run Drasi Server
 
-### Using Cargo
+Run Drasi Server using the installed binary:
 
 ```bash
-# Debug mode
-cargo run -- --config config/server.yaml
-
-# Release mode
-cargo run --release -- --config config/server.yaml
-```
-
-### Using the Binary Directly
-
-```bash
-# After building
-./target/release/drasi-server --config config/server.yaml
+./bin/drasi-server --config config/server.yaml
 ```
