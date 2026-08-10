@@ -71,7 +71,7 @@ description: "Set up actions triggered by data changes"
       <div class="unified-card-icon"><i class="fas fa-database"></i></div>
       <div class="unified-card-content">
         <h3 class="unified-card-title">PostgreSQL Stored Procedure</h3>
-        <p class="unified-card-summary">Invoke Postgres stored procedures on changes</p>
+        <p class="unified-card-summary">Invoke PostgreSQL stored procedures on changes</p>
       </div>
     </div>
   </a>

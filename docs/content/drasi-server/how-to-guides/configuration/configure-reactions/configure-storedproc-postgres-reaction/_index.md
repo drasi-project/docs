@@ -93,7 +93,8 @@ Each template is rendered against a context with these keys:
 | `after` | The post-change row | `added`, `updated` |
 | `before` | The pre-change row | `updated`, `deleted` |
 | `data` | The raw data payload of an update diff | `updated` |
-| `query_id` / `query_name` | The ID of the query that produced the result (aliases holding the same value) | all |
+| `query_id` | The ID of the query that produced the result | all |
+| `query_name` | Alias of `query_id` (same value; provided for symmetry with other reactions) | all |
 | `operation` | `ADD`, `UPDATE`, or `DELETE` | all |
 | `timestamp` | RFC3339 result timestamp | all |
 | `metadata` | Result metadata map | all |
