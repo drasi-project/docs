@@ -115,7 +115,7 @@ drasi-lib is ideal when you are developing a Rust application or service and nee
 <p class="section-intro">drasi-lib is also available for Node.js and Python, each with its own documentation site.</p>
 
 <div class="card-grid card-grid--2">
-  <a href="https://drasi-project.github.io/drasi-nodejs/" target="_blank" rel="noopener">
+  <a href="https://drasi-project.github.io/drasi-nodejs/" target="_blank" rel="noopener noreferrer">
     <div class="unified-card unified-card--tutorials">
       <div class="unified-card-icon"><i class="fab fa-node-js"></i></div>
       <div class="unified-card-content">
@@ -124,7 +124,7 @@ drasi-lib is ideal when you are developing a Rust application or service and nee
       </div>
     </div>
   </a>
-  <a href="https://drasi-project.github.io/drasi-python/" target="_blank" rel="noopener">
+  <a href="https://drasi-project.github.io/drasi-python/" target="_blank" rel="noopener noreferrer">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fab fa-python"></i></div>
       <div class="unified-card-content">
