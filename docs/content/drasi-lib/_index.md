@@ -110,7 +110,7 @@ drasi-lib is ideal when you are developing a Rust application or service and nee
   </a>
 </div>
 
-## Other Languages
+## [Other Languages](other-languages/)
 
 <p class="section-intro">drasi-lib is also available for Node.js and Python, each with its own documentation site.</p>
 
