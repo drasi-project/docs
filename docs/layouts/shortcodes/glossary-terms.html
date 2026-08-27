@@ -5,7 +5,7 @@
   Used on the glossary page to display the complete term list.
 */}}
 
-{{ $glossary := site.Data.glossary }}
+{{ $glossary := hugo.Data.glossary }}
 
 {{ if $glossary.terms }}
   {{ range $glossary.terms }}

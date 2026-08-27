@@ -440,7 +440,7 @@ terms:
     category: infrastructure
     related:
       - title: Drasi Server Getting Started
-        url: /drasi-server/getting-started/
+        url: /drasi-server/tutorials/getting-started/
     see_also:
       - Drasi for Kubernetes
       - drasi-lib

@@ -27,7 +27,7 @@
 {{ end }}
 
 {{/* Look up the term in glossary data */}}
-{{ $glossary := site.Data.glossary }}
+{{ $glossary := hugo.Data.glossary }}
 {{ $termData := false }}
 
 {{ if $glossary.terms }}

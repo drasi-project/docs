@@ -3747,6 +3747,34 @@ pre:hover .copy-code-button {
   }
 
   // ---------------------------------------------------------------------------
+  // Content prose hyperlinks. In dark mode the link colour is the deep-navy
+  // $primary lightened by $lighten-amount-for-dark-color-variant, which is a
+  // muted blue that fails WCAG contrast against the dark canvas. Visited links
+  // are also indistinguishable from unvisited ones. Use a bright cyan for links
+  // (AAA contrast) and a soft purple for visited links so both states read
+  // clearly and are easy to tell apart. `:not([class])` targets plain prose
+  // links only, leaving decorative/card links (which carry their own colours)
+  // untouched.
+  // ---------------------------------------------------------------------------
+  .td-content a:not([class]) {
+    color: $accent-cyan;
+
+    &:hover,
+    &:focus {
+      color: lighten($accent-cyan, 12%);
+    }
+
+    &:visited {
+      color: $accent-purple;
+    }
+
+    &:visited:hover,
+    &:visited:focus {
+      color: lighten($accent-purple, 10%);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // Navigation chrome accents (active/hover) that use color: $primary
   // ---------------------------------------------------------------------------
   .td-sidebar-nav .td-sidebar-link.active,

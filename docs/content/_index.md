@@ -12,7 +12,7 @@ description: >
   <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy to build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
 
   <div class="cta-group">
-    <a href="/drasi-server/getting-started/" class="cta-button cta-button--primary">
+    <a href="/drasi-server/tutorials/getting-started/" class="cta-button cta-button--primary">
       <i class="fas fa-rocket"></i>
       Get Started
     </a>
