@@ -66,6 +66,15 @@ description: "Set up actions triggered by data changes"
       </div>
     </div>
   </a>
+  <a href="configure-storedproc-postgres-reaction/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-database"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">PostgreSQL Stored Procedure</h3>
+        <p class="unified-card-summary">Invoke PostgreSQL stored procedures on changes</p>
+      </div>
+    </div>
+  </a>
   <!-- <a href="configure-platform-reaction/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-stream"></i></div>
