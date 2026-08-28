@@ -19,13 +19,13 @@ jobs:
       HUGO_VERSION: 0.128.0
     steps:
       - name: Checkout docs repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
 
       - name: Get Release ID by Tag
         id: get_release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.DRASI_PLATFORM_PAT }}
           script: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Get Asset ID
         id: get_asset
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.DRASI_PLATFORM_PAT }}
           script: |
@@ -77,15 +77,15 @@ jobs:
           sudo mv ./kubectl /usr/local/bin/kubectl
     
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: '19'
+          node-version: '22'
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3.0.0
+        uses: peaceiris/actions-hugo@v3.2.1
         with:
           hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true 
+          extended: true
 
       - name: Setup Docsy
         run: |
