@@ -19,7 +19,7 @@ related:
       url: "/concepts/continuous-queries/"
 ---
 
-Reactions respond to changes in Continuous Query results and trigger actions, such as sending webhooks, logging, updating databases, or calling back into your application. Each Reaction is a separate crate that you add to your `Cargo.toml` as needed.
+Reactions respond to changes in Continuous Query results and trigger actions, such as sending webhooks, logging, updating databases, or calling back into your application. Each Reaction is a separate crate that you add to your `Cargo.toml` as needed. The full list of Reactions is available on [GitHub](https://github.com/drasi-project/drasi-core/tree/main/components/reactions).
 
 ## Available Reactions
 
@@ -119,15 +119,24 @@ Reactions respond to changes in Continuous Query results and trigger actions, su
 
 ## Building Custom Reactions
 
-If you need to integrate with a system not covered by the available Reactions, you can build your own Reaction by following the Drasi Reaction Developer Guide:
+If you need to integrate with a system not covered by the available Reactions, implement the `Reaction` trait yourself, or have an AI agent do it for you:
 
 <div class="card-grid card-grid--2">
-  <a href="https://github.com/drasi-project/drasi-core/tree/main/components/reactions" target="_blank" rel="noopener">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon"><i class="fas fa-tools"></i></div>
+  <a href="/drasi-lib/how-to-guides/creating-custom-sources-and-reactions/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Reaction Developer Guide</h3>
-        <p class="unified-card-summary">Instructions and best practices for building custom Reactions plugins</p>
+        <h3 class="unified-card-title">Creating Custom Sources and Reactions</h3>
+        <p class="unified-card-summary">The Reaction trait, recovery policies, and a worked example</p>
+      </div>
+    </div>
+  </a>
+  <a href="/reference/source-and-reaction-creation-agents/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-robot"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Source and Reaction Creation Agents</h3>
+        <p class="unified-card-summary">Let a Copilot agent plan, build, test, and document the plugin</p>
       </div>
     </div>
   </a>

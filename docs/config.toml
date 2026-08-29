@@ -30,34 +30,46 @@ defaultContentLanguageInSubdir = false
       
 # Social Links
 [[menu.main]]
-    name = "GitHub"
+    name = "Get Started"
     weight = 10
+    url = "/get-started/"
+    pre = "<i class='fas fa-rocket'></i>"
+[[menu.main]]
+    name = "Build & configure"
+    weight = 20
+    url = "/build-and-configure/"
+    pre = "<i class='fas fa-screwdriver-wrench'></i>"
+[[menu.main]]
+    name = "Blog"
+    weight = 25
+    url = "/blog/"
+    pre = "<i class='fas fa-newspaper'></i>"
+[[menu.main]]
+    name = "GitHub"
+    weight = 30
     url = "https://github.com/drasi-project"
     pre = "<i class='fab fa-github'></i>"
 [[menu.main]]
     name = "Discord"
-    weight = 20
+    weight = 40
     url = "https://aka.ms/drasidiscord"
     pre = "<i class='fab fa-discord'></i>"
-
 [[menu.main]]
     name = "YouTube"
-    weight = 30
+    weight = 50
     url = "https://www.youtube.com/@DrasiProject"
     pre = "<i class='fab fa-youtube'></i>"
-
-    [[menu.main]]
+[[menu.main]]
     name = "Bluesky"
-    weight = 40
+    weight = 60
     url = "https://bsky.app/profile/drasi-project.bsky.social"
     pre = "<i class='fa-brands fa-bluesky'></i>"
-    
 [[menu.main]]
-  name ="X"
-  weight = 50
-  url = "https://x.com/drasi_project"
-  icon = "fa-brands fa-x-twitter"
-  desc = "Follow us on X to get the latest news!"
+    name = "X"
+    weight = 70
+    url = "https://x.com/drasi_project"
+    pre = "<i class='fa-brands fa-x-twitter'></i>"
+    desc = "Follow us on X to get the latest news!"
 
 [module]
   [module.hugoVersion]
@@ -77,7 +89,7 @@ defaultContentLanguageInSubdir = false
     # (Hugo v0.164+).
     [[module.imports.mounts]]
       source = "tutorials/getting-started"
-      target = "content/drasi-server/tutorials/getting-started"
+      target = "content/drasi-server/getting-started"
       files = ['! /README.md', '! **/*.html']
     [[module.imports.mounts]]
       source = "tutorials/building-comfort"
@@ -103,6 +115,8 @@ indexName = "drasi"
   github_repo = "https://github.com/drasi-project/docs"
   github_branch = "main"
   github_subdir = "docs"
+  # Date format for blog post listings and bylines
+  time_format_blog = "January 2, 2006"
 custom_js = ["js/sync-tabs.js", "js/navigation-enhancements.js"]
 # Google Analytics
 googleAnalytics =  "G-MZQ63ZL6GZ"

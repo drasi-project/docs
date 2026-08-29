@@ -12,7 +12,7 @@ description: >
   <p class="hero-subtitle">Drasi is a Data Change Processing platform that makes it easy to build change-driven solutions that detect complex changes across your data sources and react to them instantly.</p>
 
   <div class="cta-group">
-    <a href="/drasi-server/tutorials/getting-started/" class="cta-button cta-button--primary">
+    <a href="/get-started/" class="cta-button cta-button--primary">
       <i class="fas fa-rocket"></i>
       Get Started
     </a>
@@ -61,9 +61,11 @@ description: >
   </div>
 </div>
 
-## Explore Drasi
+{{< video src="video/drasi-explainer-30s.mp4" title="How Drasi works" >}}
 
-<p class="section-intro">Drasi is available in three forms to match your deployment needs and use case.</p>
+## Which Drasi is right for you?
+
+<p class="section-intro">Choose the deployment model that matches your use case, then follow the same Drasi concepts and patterns across the platform.</p>
 
 <div class="product-grid">
   <a href="/drasi-lib/" class="product-card product-card--lib">
@@ -97,31 +99,42 @@ description: >
   </a>
 </div>
 
-## Explore the Documentation
+## Explore the documentation
 
 <div class="card-grid card-grid--3">
+  <a href="/get-started/">
+    <div class="unified-card unified-card--tutorials">
+      <div class="unified-card-icon">
+        <i class="fas fa-rocket"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Get started</h3>
+        <p class="unified-card-summary">Choose a deployment model and follow the right first steps.</p>
+      </div>
+    </div>
+  </a>
+  <a href="/build-and-configure/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon">
+        <i class="fas fa-screwdriver-wrench"></i>
+      </div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Build &amp; configure</h3>
+        <p class="unified-card-summary">Install, wire sources and reactions, write queries, and operate the platform.</p>
+      </div>
+    </div>
+  </a>
   <a href="/concepts/">
     <div class="unified-card unified-card--concepts">
       <div class="unified-card-icon">
         <i class="fas fa-lightbulb"></i>
       </div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Concepts</h3>
-        <p class="unified-card-summary">Understand the architecture and ideas behind Drasi. Learn how components work together to process data changes effectively.</p>
+        <h3 class="unified-card-title">Why Drasi</h3>
+        <p class="unified-card-summary">Understand the architecture and ideas behind Drasi before you build on top of it.</p>
       </div>
     </div>
   </a>
-  <!-- <a href="/learning-paths/">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon">
-        <i class="fas fa-route"></i>
-      </div>
-      <div class="unified-card-content">
-        <h3 class="unified-card-title">Learning Paths</h3>
-        <p class="unified-card-summary">Structured learning paths for different roles: developers, DevOps/SRE, and architects.</p>
-      </div>
-    </div>
-  </a> -->
   <a href="/reference/">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-icon">
@@ -131,6 +144,29 @@ description: >
         <h3 class="unified-card-title">Reference</h3>
         <p class="unified-card-summary">Query language, schemas, glossary, patterns, and sample data.</p>
       </div>
+    </div>
+  </a>
+</div>
+
+## Get involved
+
+<div class="card-grid card-grid--3">
+  <a href="https://aka.ms/drasidiscord" target="_blank" rel="noopener noreferrer">
+    <div class="unified-card unified-card--community">
+      <div class="unified-card-icon"><i class="fab fa-discord"></i></div>
+      <div class="unified-card-content"><h3 class="unified-card-title">Discord</h3><p class="unified-card-summary">Ask questions and talk with the community.</p></div>
+    </div>
+  </a>
+  <a href="https://github.com/drasi-project/docs/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">
+    <div class="unified-card unified-card--community">
+      <div class="unified-card-icon"><i class="fas fa-hands-helping"></i></div>
+      <div class="unified-card-content"><h3 class="unified-card-title">Contribute</h3><p class="unified-card-summary">Open an issue or help improve the docs and platform.</p></div>
+    </div>
+  </a>
+  <a href="https://github.com/drasi-project" target="_blank" rel="noopener noreferrer">
+    <div class="unified-card unified-card--community">
+      <div class="unified-card-icon"><i class="fab fa-github"></i></div>
+      <div class="unified-card-content"><h3 class="unified-card-title">GitHub</h3><p class="unified-card-summary">Browse the source, issues, and docs repositories.</p></div>
     </div>
   </a>
 </div>
