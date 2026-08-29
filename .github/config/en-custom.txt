@@ -398,6 +398,12 @@ publicEndpointOverride
 rp
 Zipkin
 observability
+JSONB
+backoff
+inlined
+inlining
+sqs
+untrusted
 Jaeger
 jaeger
 svc
@@ -1664,3 +1670,6 @@ ECharts
 cp
 cron
 cryptographically
+backoff
+POSTs
+POSTed
