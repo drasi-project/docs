@@ -2,12 +2,13 @@
     (.HasShortcode "blocks/cover")
     (not .Site.Params.ui.navbar_translucent_over_cover_disable)
 -}}
-{{ $baseURL := urls.Parse $.Site.Params.Baseurl -}}
+{{ $baseURL := urls.Parse .Site.BaseURL -}}
 {{ $p := . -}}
 {{ $primary := slice -}}
 {{ $social := slice -}}
 {{ range .Site.Menus.main -}}
-  {{ $isExternal := ne $baseURL.Host (urls.Parse .URL).Host -}}
+  {{ $u := urls.Parse .URL -}}
+  {{ $isExternal := and $u.IsAbs (ne $u.Host $baseURL.Host) -}}
   {{ if $isExternal -}}
     {{ $social = $social | append . -}}
   {{ else -}}
