@@ -9,6 +9,7 @@ aspell
 azurecr
 Analytics
 Async
+Async
 AWSSimpleQueueService
 Azure
 Blazor
@@ -64,6 +65,7 @@ IaC
 InternalServerError
 IoT
 JSON
+JSON
 KeyVault
 Kinesis
 Kubernetes
@@ -73,6 +75,7 @@ lang
 MONGOMODULE
 MQ
 macOS
+MemoryDB
 MemoryDB
 Microservice
 Mongo
@@ -131,11 +134,13 @@ aks
 api
 appID
 appId
+appId
 appPort
 appmodel
 appname
 arn
 async
+auth
 auth
 aws
 az
@@ -166,6 +171,7 @@ daprPubSubBrokers
 daprSecretStores
 daprStateStores
 daprd
+daprstatestores
 daprstatestores
 databaseAccounts
 datastore
@@ -203,6 +209,7 @@ hostName
 hostnames
 hugo
 http
+html
 httpRoutes
 httproute
 https
@@ -239,6 +246,7 @@ managedStore
 md
 memorydb
 microservice
+microservice
 microservices
 microsoft
 mongo
@@ -257,6 +265,7 @@ myenv
 myfile
 myrg
 mysample
+myworkspace
 myworkspace
 namespace
 namespaces
@@ -300,6 +309,7 @@ readinessProbe
 redis
 redisCaches
 redoc
+resourceGroup
 replacePrefix
 repo
 repos
@@ -318,6 +328,7 @@ secretstore
 secretstores
 secretStores
 serverless
+serverless
 servicebus
 serviceName
 sharded
@@ -333,6 +344,7 @@ ss
 sslpassthrough
 sslPassthrough
 statefulset
+statestore
 statestore
 stdout
 stgSuffixes
@@ -382,6 +394,8 @@ Observability
 Grafana
 grafana
 analytics
+publicEndpointOverride
+rp
 Zipkin
 observability
 JSONB
@@ -618,6 +632,7 @@ EMR
 EMPTYCONTAINER
 EMRContainers
 EMRServerless
+ElastiCache
 ElasticBeanstalk
 ElasticLoadBalancingV
 EmailIdentity
@@ -953,6 +968,9 @@ CRD
 composable
 gatewaydemo
 tlsdemo
+ConfigMap
+PodSpec
+composable
 nd
 OSI
 scaffolded
@@ -976,6 +994,7 @@ GitLab
 OSS
 SRE
 SREs
+OSI
 ghcr
 sharding
 png
@@ -1007,6 +1026,7 @@ podspec
 sngm
 nmqpk
 fluentbit
+nmqpk
 interoperate
 ToDo
 dfb
@@ -1137,6 +1157,7 @@ datastores
 localId
 MongoDatabaseListSecretsResult
 radiusManaged
+RedisCache
 AzureKeyVaultVolumeProperties
 createdByType
 SecretStoreListSecretsResultData
@@ -1241,6 +1262,9 @@ cyrilgdn
 secretStore
 postgreSQL
 postgresenvSecrets
+RecipeConfigPropertiesEnvSecrets
+SecretReference
+ProviderConfigPropertiesSecrets
 upstreamed
 irsa
 roleARN
@@ -1249,6 +1273,7 @@ Bicepconfig
 postgres
 ReadOnly
 DeployTimeConstant
+postgres
 DaprResourceAuth
 DaprPubSubBrokerPropertiesMetadata
 MetadataValue
@@ -1289,6 +1314,7 @@ toLower
 toString
 toStringOrNull
 toUpper
+DATETIME
 changeDateTime
 getVersionByTimestamp
 getVersionsByTimeRange
@@ -1394,12 +1420,16 @@ EBS
 stackoverflow
 storageClassname
 volumeClaimTemplates
+EBS
 PersistentVolumeClaim
 ReadWriteMany
 RocksDB
 Storageclass
 csi
 efs
+stackoverflow
+storageClassname
+volumeClaimTemplates
 storageclass
 ebs
 provisioner
@@ -1419,6 +1449,7 @@ Flink
 KSQL
 etcd
 Lua
+Flink
 WebSocket
 changelog
 PortVisibility
@@ -1455,6 +1486,7 @@ DrasiUnderTheHood
 SDK
 BrowserPort
 BackendPort
+SignalR
 MatchedOrders
 binlog
 PollingApproach
@@ -1571,6 +1603,7 @@ RPC
 batcher
 bursty
 sla
+SLA
 pgoutput
 cleartext
 filesystem
@@ -1637,20 +1670,20 @@ ECharts
 cp
 cron
 cryptographically
+backoff
 POSTs
 POSTed
+GPT
+hostable
+READMEs
 replayable
-explainer
-langchain
-LangChain
-Gerlag
-gerlag
-Daniel
-daniel
-witye
-linkedin
-LinkedIn
-www
-ai
 UI's
-UIs
+Gerlag
+ai
+daniel
+gerlag
+linkedin
+witye
+www
+langchain
+explainer
