@@ -1648,8 +1648,5 @@ gerlag
 Daniel
 daniel
 witye
-linkedin
 LinkedIn
-www
-ai
-UI's
+UIs
