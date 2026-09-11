@@ -26,7 +26,7 @@ fi
 
 # 'git lfs ls-files' marks each entry with '*' when the real object is checked
 # out and '-' when only the pointer file is present.
-pointers="$(git lfs ls-files | awk '$2 == "-" { print $3 }')"
+pointers="$(git lfs ls-files | awk '$2 == "-" { sub(/^[^ ]+ [^ ]+ /, ""); print }')"
 
 if [ -n "$pointers" ]; then
   echo "verify-lfs-assets: the following Git LFS assets are still pointer files:" >&2
