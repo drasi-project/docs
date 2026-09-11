@@ -9,7 +9,7 @@ hide_readingtime: true
 description: "Connect Drasi Server to databases, APIs, and data streams"
 ---
 
-{{< term "Source" "Sources" >}} connect {{< term "Drasi Server" >}} to your data systems and stream changes to {{< term "Continuous Query" "queries" >}}.
+{{< term "Source" "Sources" >}} connect {{< term "Drasi Server" >}} to your data systems and stream changes to {{< term "Continuous Query" "queries" >}}. The full list of Sources is available on [GitHub](https://github.com/drasi-project/drasi-core/tree/main/components/sources).
 
 <div class="card-grid">
   <a href="configure-grpc-source/">

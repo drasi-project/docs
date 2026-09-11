@@ -1,0 +1,12 @@
+{{ $src := .Get "src" -}}
+{{ $title := .Get "title" | default "Drasi explainer video" -}}
+{{ with resources.Get $src -}}
+<div class="explainer-video">
+  <video controls loop playsinline preload="metadata" title="{{ $title }}">
+    <source src="{{ .RelPermalink }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+{{ else -}}
+{{ errorf "video shortcode: asset not found: %s" $src -}}
+{{ end -}}
