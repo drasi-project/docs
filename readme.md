@@ -27,10 +27,24 @@ Alternatively, you can follow the instructions below to setup and run a local Hu
 - [Hugo extended](https://gohugo.io/)
 - [Go](https://go.dev/) (required for Hugo modules)
 - [Node.js](https://nodejs.org/en/)
+- [Git LFS](https://git-lfs.com/) (required for media assets such as the homepage explainer video)
 
 ### Setup Hugo and Docsy
 
 1. Clone the [drasi-project/docs](https://github.com/drasi-project/docs) repo
+1. Media assets (`*.mp4`, `*.mov`) are stored with Git LFS. Without Git LFS these files are checked out as small text pointer files and the site will render an unplayable video. From the root of the repo run:
+
+    ```
+    git lfs install
+    git lfs pull
+    ```
+
+    You can confirm the assets are real files (and not pointers) at any time with:
+
+    ```make check-lfs```
+
+    The `make serve`, `make preview-docs` and `make build` targets run `git lfs pull` and this check automatically.
+
 1. The Docsy theme is configured as a submodule which needs to be pulled. From the root of the drasi-project/docs repo (where this readme is located) run: 
 
     ```git submodule update --init --recursive```

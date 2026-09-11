@@ -32,6 +32,8 @@ jobs:
         with:
           submodules: true
           lfs: true
+      - name: Verify Git LFS assets
+        run: ./scripts/verify-lfs-assets.sh
       - name: Setup Node
         uses: actions/setup-node@v5
         with:

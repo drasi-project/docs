@@ -2,7 +2,7 @@
   "name": "Drasi Docs Dev Container",
   "image": "hugomods/hugo:node-git",
   "remoteUser": "root",
-  "postCreateCommand": "cd docs && git submodule update --init --recursive",
+  "postCreateCommand": "git lfs install && git lfs pull && ./scripts/verify-lfs-assets.sh && git submodule update --init --recursive",
   "postStartCommand": "cd docs/themes/docsy && npm install && cd ../../ && hugo server --bind 0.0.0.0 --baseURL=http://localhost:1313",
   "portsAttributes": {
     "1313": {
