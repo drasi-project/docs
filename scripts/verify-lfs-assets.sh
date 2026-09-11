@@ -33,8 +33,9 @@ if [ -n "$pointers" ]; then
   echo "$pointers" | sed 's/^/  - /' >&2
   echo >&2
   echo "Fetch the real content before building the site:" >&2
-  echo "  git lfs install" >&2
-  echo "  git lfs pull" >&2
+  echo "  make lfs" >&2
+  echo "or, without make:" >&2
+  echo "  git lfs install && git lfs pull" >&2
   exit 1
 fi
 

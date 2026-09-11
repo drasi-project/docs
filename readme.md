@@ -39,11 +39,11 @@ Alternatively, you can follow the instructions below to setup and run a local Hu
     git lfs pull
     ```
 
-    You can confirm the assets are real files (and not pointers) at any time with:
+    Or run `make lfs`, which does both and then verifies the result. You can check the assets are real files (and not pointers) at any time, without network access, with:
 
     ```make check-lfs```
 
-    The `make serve`, `make preview-docs` and `make build` targets run `git lfs pull` and this check automatically.
+    The `make serve`, `make preview-tutorials`, `make preview-docs` and `make build` targets run this check first and fail with instructions if an asset is still a pointer file.
 
 1. The Docsy theme is configured as a submodule which needs to be pulled. From the root of the drasi-project/docs repo (where this readme is located) run: 
 

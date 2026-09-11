@@ -39,16 +39,16 @@ lfs: ## Download the Git LFS assets (e.g. the homepage explainer video) into the
 	git lfs pull
 	./scripts/verify-lfs-assets.sh
 
-check-lfs: ## Fail if any Git LFS asset is still a pointer file instead of real content.
+check-lfs: ## Fail (with instructions to run 'make lfs') if any Git LFS asset is still a pointer file.
 	./scripts/verify-lfs-assets.sh
 
-serve: lfs ## Run the local Hugo server against the pinned module version.
+serve: check-lfs ## Run the local Hugo server against the pinned module version.
 	cd $(HUGO_DIR) && hugo server --disableFastRender
 
-preview-tutorials: lfs ## Run the local Hugo server using a local checkout of the tutorials repo (TUTORIALS_LOCAL).
+preview-tutorials: check-lfs ## Run the local Hugo server using a local checkout of the tutorials repo (TUTORIALS_LOCAL).
 	cd $(HUGO_DIR) && HUGO_MODULE_REPLACEMENTS="$(TUTORIALS_MODULE) -> $(abspath $(TUTORIALS_LOCAL))" hugo server --disableFastRender
 
 preview-docs: preview-tutorials ## Alias of preview-tutorials.
 
-build: lfs ## Build the static site into docs/public.
+build: check-lfs ## Build the static site into docs/public.
 	cd $(HUGO_DIR) && hugo
