@@ -20,7 +20,7 @@ VERSION ?= latest
 # render uncommitted/untagged tutorial changes via a Hugo module replacement.
 TUTORIALS_LOCAL ?= ../learning-drasi-server
 
-.PHONY: help update-tutorials tidy serve preview-tutorials preview-docs build
+.PHONY: help update-tutorials tidy serve preview-tutorials preview-docs build lfs check-lfs
 
 help: ## Show this help.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -34,13 +34,21 @@ update-tutorials: ## Pin the tutorials module to VERSION (default: latest tag) a
 tidy: ## Tidy Hugo module requirements (go.mod / go.sum).
 	cd $(HUGO_DIR) && hugo mod tidy
 
-serve: ## Run the local Hugo server against the pinned module version.
+lfs: ## Download the Git LFS assets (e.g. the homepage explainer video) into the working tree.
+	git lfs install --local
+	git lfs pull
+	./scripts/verify-lfs-assets.sh
+
+check-lfs: ## Fail (with instructions to run 'make lfs') if any Git LFS asset is still a pointer file.
+	./scripts/verify-lfs-assets.sh
+
+serve: check-lfs ## Run the local Hugo server against the pinned module version.
 	cd $(HUGO_DIR) && hugo server --disableFastRender
 
-preview-tutorials: ## Run the local Hugo server using a local checkout of the tutorials repo (TUTORIALS_LOCAL).
+preview-tutorials: check-lfs ## Run the local Hugo server using a local checkout of the tutorials repo (TUTORIALS_LOCAL).
 	cd $(HUGO_DIR) && HUGO_MODULE_REPLACEMENTS="$(TUTORIALS_MODULE) -> $(abspath $(TUTORIALS_LOCAL))" hugo server --disableFastRender
 
 preview-docs: preview-tutorials ## Alias of preview-tutorials.
 
-build: ## Build the static site into docs/public.
+build: check-lfs ## Build the static site into docs/public.
 	cd $(HUGO_DIR) && hugo
