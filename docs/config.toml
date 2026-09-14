@@ -70,6 +70,11 @@ defaultContentLanguageInSubdir = false
     path = "github.com/drasi-project/learning-drasi-server"
     ignoreConfig = true
     ignoreImports = true
+    # Each tutorial in the module is mounted as its own content subfolder.
+    # For every mount, exclude the repo README and any HTML files (e.g. the
+    # viewer / webui apps) so Hugo doesn't try to render them as pages. HTML
+    # content is blocked by Hugo's default security.allowContent policy
+    # (Hugo v0.164+).
     [[module.imports.mounts]]
       source = "tutorials/getting-started"
       target = "content/drasi-server/tutorials/getting-started"
