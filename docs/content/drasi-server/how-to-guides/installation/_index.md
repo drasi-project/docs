@@ -37,4 +37,13 @@ description: "Deploy Drasi Server with Docker, or build from source"
       </div>
     </div>
   </a>
+  <a href="install-sse-cli/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-satellite-dish"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">SSE CLI</h3>
+        <p class="unified-card-summary">Install the drasi-sse-cli companion tool for observing Server-Sent Events.</p>
+      </div>
+    </div>
+  </a>
 </div>
