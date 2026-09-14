@@ -144,3 +144,7 @@ googleAnalytics =  "G-MZQ63ZL6GZ"
 # Enable git-based last modified date detection
 [frontmatter]
   lastmod = [":git", "lastmod", "date", "publishDate"]
+
+# Privacy: use YouTube's privacy-enhanced (no-cookie) embed domain
+[privacy.youTube]
+  privacyEnhanced = true

@@ -61,7 +61,7 @@ description: >
   </div>
 </div>
 
-{{< video src="video/drasi-explainer-30s.mp4" title="How Drasi works" >}}
+{{< youtube id="wsJD4wP3aN4" loading="lazy" title="How Drasi works" >}}
 
 ## Which Drasi is right for you?
 
