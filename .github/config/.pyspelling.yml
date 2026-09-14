@@ -3,6 +3,10 @@ matrix:
   aspell:
     lang: en
     d: en_US
+    mode:
+    - markdown
+    - url
+    - email
   dictionary:
     encoding: utf-8
     wordlists:
