@@ -9,7 +9,7 @@ description: >-
 related:
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/tutorials/getting-started/"
+      url: "/drasi-server/getting-started/"
   howto:
     - title: "Installation"
       url: "/drasi-server/how-to-guides/installation/"
@@ -28,13 +28,9 @@ Drasi Server ships with a visual Web UI for building and operating a data pipeli
 
 Open **`http://localhost:8080/ui`** in your browser once Drasi Server is running (adjust the host/port if you've changed them).
 
-The UI is on by default. To turn it off:
+The UI is on by default. To turn it off, set the following top-level option in your server configuration file:
 
-```bash
-# Via command line
-drasi-server --disable-ui
-
-# Via config file
+```yaml
 enableUi: false
 ```
 
@@ -46,7 +42,7 @@ make build-release    # builds server + UI (recommended)
 make build-ui         # build only the UI
 ```
 
-The published Docker image (`ghcr.io/drasi-project/drasi-server`) already includes the compiled UI — nothing extra to do. If `ui/dist` is missing at startup, the server logs a warning and `/ui` returns 404; either build the UI or pass `--disable-ui` to suppress the warning intentionally.
+The published Docker image (`ghcr.io/drasi-project/drasi-server`) already includes the compiled UI — nothing extra to do. If `ui/dist` is missing at startup, the server logs a warning and `/ui` returns 404; either build the UI or disable it with `enableUi: false` in your server configuration file.
 
 ## Layout
 

@@ -9,7 +9,8 @@
 {{ else -}}
   {{ $href = $item.URL | relLangURL -}}
 {{ end -}}
-{{ $isExternal := ne $baseURL.Host (urls.Parse $item.URL).Host -}}
+{{ $u := urls.Parse $item.URL -}}
+{{ $isExternal := and $u.IsAbs (ne $u.Host $baseURL.Host) -}}
 <a {{/**/ -}}
   class="nav-link {{- if $active }} active {{- end }}" {{/**/ -}}
   href="{{ $href }}"

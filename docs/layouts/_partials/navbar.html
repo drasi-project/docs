@@ -7,7 +7,8 @@
 {{ $primary := slice -}}
 {{ $social := slice -}}
 {{ range .Site.Menus.main -}}
-  {{ $isExternal := ne $baseURL.Host (urls.Parse .URL).Host -}}
+  {{ $u := urls.Parse .URL -}}
+  {{ $isExternal := and $u.IsAbs (ne $u.Host $baseURL.Host) -}}
   {{ if $isExternal -}}
     {{ $social = $social | append . -}}
   {{ else -}}

@@ -5,6 +5,27 @@ linkTitle: "Drasi Server"
 weight: 25
 no_list: true
 description: "Standalone Drasi server for process or container deployment"
+cascade:
+  - _target:
+      path: /drasi-server/getting-started
+    aliases:
+      - /drasi-server/tutorials/getting-started/
+  - _target:
+      path: /drasi-server/getting-started/download-binary
+    aliases:
+      - /drasi-server/tutorials/getting-started/download-binary/
+  - _target:
+      path: /drasi-server/getting-started/github-codespace
+    aliases:
+      - /drasi-server/tutorials/getting-started/github-codespace/
+  - _target:
+      path: /drasi-server/getting-started/dev-container
+    aliases:
+      - /drasi-server/tutorials/getting-started/dev-container/
+  - _target:
+      path: /drasi-server/getting-started/build-from-source
+    aliases:
+      - /drasi-server/tutorials/getting-started/build-from-source/
 ---
 
 <div class="hero-section hero-section--compact">

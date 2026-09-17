@@ -26,7 +26,7 @@ related:
 
 drasi-lib ships with plugins for common systems — PostgreSQL, HTTP, gRPC, MSSQL, and more (see [Available Sources](/drasi-lib/reference/sources/) and [Available Reactions](/drasi-lib/reference/reactions/)). When your application needs to watch or react to a system that isn't on that list, you implement two small async traits — `Source` and `Reaction` — and drasi-lib handles query evaluation, dispatch, and recovery for you.
 
-This guide walks through both traits with working examples. If you'd rather have an AI agent generate a production-ready plugin — including tests and docs — see [Source and Reaction Creation Agents](/reference/source-and-reaction-creation-agents/) instead. That workflow uses the same traits described here.
+This guide walks through both traits with illustrative code that does not compile as shown. If you'd rather have an AI agent generate a production-ready plugin — including tests and docs — see [Source and Reaction Creation Agents](/reference/source-and-reaction-creation-agents/) instead. That workflow uses the same traits described here.
 
 ## Before you start
 
@@ -57,7 +57,9 @@ Both `Source` and `Reaction` are plugins in the same sense as these built-ins �
 
 ## Creating a custom Source
 
-A Source connects to a system, models its data as a property graph, and dispatches change events. It implements the `Source` trait:
+A Source connects to a system, models its data as a property graph, and dispatches change events. It implements the `Source` trait.
+
+The following skeleton is non-compilable illustrative code. It omits required imports, an error type alias, and application-specific ingestion logic.
 
 ```rust
 use drasi_lib::{Source, SourceBase, SourceBaseParams, ComponentStatus};
@@ -114,7 +116,9 @@ A few details matter once you go beyond this skeleton:
 
 ## Creating a custom Reaction
 
-A Reaction receives query results and takes action — call a webhook, write to a database, push to a dashboard. It implements the `Reaction` trait:
+A Reaction receives query results and takes action — call a webhook, write to a database, push to a dashboard. It implements the `Reaction` trait.
+
+The following skeleton is non-compilable illustrative code. It omits required imports, an error type alias, and application-specific result processing logic.
 
 ```rust
 use drasi_lib::{Reaction, ReactionBase, ReactionBaseParams, ComponentStatus};
@@ -182,6 +186,8 @@ Reactions can stop and restart without losing results. Each query keeps a bounde
 | `AutoSkipGap` | Skip missing entries, resume from latest | Best-effort delivery (alerts, logs) |
 
 Set a policy per-instance via `ReactionBaseParams::new(...).with_recovery_policy(...)`, or as your plugin's default by implementing a few methods on `Reaction`:
+
+The following recovery snippet is non-compilable illustrative code. It omits imports for `ReactionRecoveryPolicy` and `BootstrapContext`, an error type alias for `Result`, and other required implementation details. These methods belong in your existing `Reaction` implementation, not a second trait implementation.
 
 ```rust
 impl Reaction for MyReaction {
