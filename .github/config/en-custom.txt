@@ -156,6 +156,7 @@ codebase
 codespace
 codespaces
 codetab
+compilable
 componentName
 componentname
 config
