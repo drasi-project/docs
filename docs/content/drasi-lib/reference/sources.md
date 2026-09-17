@@ -19,7 +19,7 @@ related:
       url: "/concepts/continuous-queries/"
 ---
 
-Sources ingest data from external systems or your application and emit graph elements (nodes and relationships) that feed into Continuous Queries. Each Source is a separate crate that you add to your `Cargo.toml` as needed.
+Sources ingest data from external systems or your application and emit graph elements (nodes and relationships) that feed into Continuous Queries. Each Source is a separate crate that you add to your `Cargo.toml` as needed. The full list of Sources is available on [GitHub](https://github.com/drasi-project/drasi-core/tree/main/components/sources).
 
 ## Available Sources
 
@@ -91,15 +91,24 @@ Sources ingest data from external systems or your application and emit graph ele
 
 ## Building Custom Sources
 
-If you need to integrate with a system not covered by the available Sources, you can build your own Source by following the Drasi Source Developer Guide:
+If you need to integrate with a system not covered by the available Sources, implement the `Source` trait yourself, or have an AI agent do it for you:
 
 <div class="card-grid card-grid--2">
-  <a href="https://github.com/drasi-project/drasi-core/tree/main/components/sources" target="_blank" rel="noopener">
-    <div class="unified-card unified-card--tutorials">
-      <div class="unified-card-icon"><i class="fas fa-tools"></i></div>
+  <a href="/drasi-lib/how-to-guides/creating-custom-sources-and-reactions/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
       <div class="unified-card-content">
-        <h3 class="unified-card-title">Source Developer Guide</h3>
-        <p class="unified-card-summary">Instructions and best practices for building custom Source plugins</p>
+        <h3 class="unified-card-title">Creating Custom Sources and Reactions</h3>
+        <p class="unified-card-summary">The Source trait, a worked example, and how to wire it into DrasiLib</p>
+      </div>
+    </div>
+  </a>
+  <a href="/reference/source-and-reaction-creation-agents/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-robot"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Source and Reaction Creation Agents</h3>
+        <p class="unified-card-summary">Let a Copilot agent plan, build, test, and document the plugin</p>
       </div>
     </div>
   </a>

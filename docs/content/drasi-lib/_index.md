@@ -5,12 +5,12 @@ linkTitle: "drasi-lib"
 weight: 20
 no_list: true
 hide_readingtime: true
-description: "Build Change-driven Rust solutions"
+description: "In-process change detection for Rust, Node.js, and Python applications"
 ---
 
 <div class="hero-section hero-section--compact">
-  <h1 class="hero-title">Build Change-driven Rust Solutions</h1>
-  <p class="hero-subtitle">drasi-lib is a Rust crate that brings Drasi's powerful change processing functionality directly into your application. Monitor data changes and react to them in real-time without external infrastructure.</p>
+  <h1 class="hero-title">Change Detection, Built Into Your Application</h1>
+  <p class="hero-subtitle">drasi-lib brings Drasi's change processing engine in-process, so your application can monitor data changes and react to them in real time without deploying separate infrastructure. Available for Rust, Node.js, and Python.</p>
 
   <div class="cta-group">
     <a href="getting-started/" class="cta-button cta-button--primary">
@@ -26,15 +26,15 @@ description: "Build Change-driven Rust solutions"
 
 ## How drasi-lib Works
 
-<p class="section-intro">Add drasi-lib to your Rust project, create Sources, Continuous Queries, and Reactions in code, and handle changes programmatically. Everything runs in-process with no external infrastructure.</p>
+<p class="section-intro">Add drasi-lib to your application, create Sources, Continuous Queries, and Reactions in code, and handle changes programmatically. Everything runs in-process with no external infrastructure.</p>
 
 <div class="flow-diagram">
   <div class="flow-step">
     <div class="flow-step__icon">
       <i class="fas fa-box"></i>
     </div>
-    <div class="flow-step__label">Add Crate</div>
-    <div class="flow-step__description">Include drasi-lib in Cargo.toml</div>
+    <div class="flow-step__label">Add Library</div>
+    <div class="flow-step__description">Add drasi-lib as a dependency</div>
   </div>
 
   <div class="flow-arrow">
@@ -64,11 +64,11 @@ description: "Build Change-driven Rust solutions"
 
 Your application can ingest changes from external sources (like PostgreSQL or gRPC streams), from internal application state via App Sources, or both. Continuous queries process these changes and produce results that flow to Reactions—which can call external systems, update internal state via App Reactions, or both. The API layer gives your application direct access to query results and runtime control.
 
-![drasi-lib architecture showing Sources, Queries, and Reactions running inside a Rust application](drasi-lib-architecture.png)
+![drasi-lib architecture showing Sources, Queries, and Reactions running inside an application](drasi-lib-architecture.png)
 
 ## When to Use drasi-lib
 
-drasi-lib is ideal when you are developing a Rust application or service and need **efficient and precise change detection** without deploying separate infrastructure:
+drasi-lib is ideal when you are developing an application or service and need **efficient and precise change detection** without deploying separate infrastructure:
 
 - **Event-driven microservices** — React to database changes without polling; get before/after states for every change
 - **Real-time monitoring** — Trigger alerts when aggregations cross thresholds or conditions persist
@@ -76,9 +76,23 @@ drasi-lib is ideal when you are developing a Rust application or service and nee
 - **Edge and embedded systems** — Run change detection locally with minimal footprint
 - **Custom data pipelines** — Embed reactive queries in ETL processes or stream processors
 
-## Documentation Resources
+## How-to Guides
 
-<p class="section-intro">The drasi-lib crate is published to crates.io with full API documentation available on docs.rs.</p>
+<div class="card-grid">
+  <a href="how-to-guides/creating-custom-sources-and-reactions/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-puzzle-piece"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Creating Custom Sources and Reactions</h3>
+        <p class="unified-card-summary">Implement the Source and Reaction traits, or have an AI agent do it for you</p>
+      </div>
+    </div>
+  </a>
+</div>
+
+## Rust Package Resources
+
+<p class="section-intro">The drasi-lib crate is published to crates.io with full API documentation available on docs.rs. Using Node.js or Python instead? See the <a href="other-languages/">Other Languages</a> page for docs specific to those packages.</p>
 
 <div class="card-grid card-grid--2">
   <a href="https://github.com/drasi-project/drasi-core/blob/main/lib/README.md" target="_blank" rel="noopener">

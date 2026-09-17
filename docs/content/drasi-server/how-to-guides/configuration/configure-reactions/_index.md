@@ -9,7 +9,7 @@ hide_readingtime: true
 description: "Set up actions triggered by data changes"
 ---
 
-{{< term "Reaction" "Reactions" >}} process query {{< term "Result Change Event" "result changes" >}} and perform actions. {{< term "Drasi Server" >}} supports several reaction types for different output needs.
+{{< term "Reaction" "Reactions" >}} process query {{< term "Result Change Event" "result changes" >}} and perform actions. {{< term "Drasi Server" >}} supports several reaction types for different output needs. The full list of Reactions is available on [GitHub](https://github.com/drasi-project/drasi-core/tree/main/components/reactions).
 
 <div class="card-grid">
   <a href="configure-aws-sqs-reaction/">
