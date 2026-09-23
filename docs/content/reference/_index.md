@@ -72,6 +72,15 @@ These resources apply to drasi-lib, Drasi Server, and Drasi for Kubernetes:
       </div>
     </div>
   </a>
+  <a href="/reference/source-and-reaction-creation-agents/">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-robot"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Source and Reaction Creation Agents</h3>
+        <p class="unified-card-summary">Copilot agents that plan and implement new drasi-lib Source and Reaction plugins</p>
+      </div>
+    </div>
+  </a>
 </div>
 
 ## Product-Specific Reference

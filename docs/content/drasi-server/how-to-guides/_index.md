@@ -19,6 +19,15 @@ description: "Step-by-step instructions for working with Drasi Server"
       </div>
     </div>
   </a>
+  <a href="using-the-web-ui/">
+    <div class="unified-card unified-card--howto">
+      <div class="unified-card-icon"><i class="fas fa-display"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Using the Web UI</h3>
+        <p class="unified-card-summary">Build and operate a pipeline visually with the built-in Web UI</p>
+      </div>
+    </div>
+  </a>
   <a href="configuration/">
     <div class="unified-card unified-card--howto">
       <div class="unified-card-icon"><i class="fas fa-cogs"></i></div>

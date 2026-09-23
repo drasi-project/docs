@@ -156,6 +156,7 @@ codebase
 codespace
 codespaces
 codetab
+compilable
 componentName
 componentname
 config
@@ -1673,3 +1674,17 @@ cryptographically
 backoff
 POSTs
 POSTed
+GPT
+hostable
+READMEs
+replayable
+UI's
+Gerlag
+ai
+daniel
+gerlag
+linkedin
+witye
+www
+langchain
+explainer
