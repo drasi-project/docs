@@ -12,6 +12,7 @@ description: >
 
 | Title | Source | Date |
 |-------|--------|------|
+| [Delete Your Polling Loop: Change-driven programming in Node.js with @drasi/lib](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/delete-your-polling-loop-change-driven-programming-in-node-js-with-drasilib/4559093)) | Microsoft Linux and Open Source Blog | Sept 22, 2026 |
 | [How Netstar Streamlined Fleet Monitoring and Reduced Custom Integrations with Drasi](https://www.cncf.io/case-studies/netstar/) | CNCF Case Study | Feb 16, 2026 |
 | [Event-Driven to Change-Driven: Low-cost dependency inversion](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/event-driven-to-change-driven-low-cost-dependency-inversion/4478948) | Microsoft Linux and Open Source Blog | Dec 17, 2025 |
 | [Beyond the Chat Window: How Change-Driven Architecture Enables Ambient AI Agents](https://techcommunity.microsoft.com/blog/linuxandopensourceblog/beyond-the-chat-window-how-change-driven-architecture-enables-ambient-ai-agents/4475026)| Microsoft Linux and Open Source Blog | Dec 3, 2025 |
