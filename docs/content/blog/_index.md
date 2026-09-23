@@ -7,6 +7,16 @@ description: "News, announcements, and deep dives from the Drasi team"
 Looking for press coverage and articles about Drasi from around the web? See [Media Coverage](/media-coverage/) for the full list of blog posts and articles from CNCF, Microsoft, and other outlets.
 
 <div class="card-grid card-grid--3">
+  <a href="https://techcommunity.microsoft.com/blog/linuxandopensourceblog/delete-your-polling-loop-change-driven-programming-in-node-js-with-drasilib/4559093" target="_blank" rel="noopener noreferrer">
+    <div class="unified-card unified-card--reference">
+      <div class="unified-card-icon"><i class="fas fa-newspaper"></i></div>
+      <div class="unified-card-content">
+        <h3 class="unified-card-title">Delete Your Polling Loop: Change-driven programming in Node.js with @drasi/lib</h3>
+        <p class="td-blog-meta">Microsoft Linux and Open Source Blog · Sep 22, 2026</p>
+        <p class="unified-card-summary">Drasi's new Node.js library is the focus of this latest article, with a walk-through on how to replace a polling loop with a change-driven approach.</p>
+      </div>
+    </div>
+  </a>
   <a href="https://www.cncf.io/case-studies/netstar/" target="_blank" rel="noopener noreferrer">
     <div class="unified-card unified-card--reference">
       <div class="unified-card-image"><img src="https://www.cncf.io/wp-content/uploads/2026/02/netstar-a-subsidiary-of-altron-vector-logo.svg" alt="Netstar logo" loading="lazy"></div>
