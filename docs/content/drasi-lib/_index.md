@@ -5,12 +5,12 @@ linkTitle: "drasi-lib"
 weight: 20
 no_list: true
 hide_readingtime: true
-description: "In-process change detection for Rust, Node.js, and Python applications"
+description: "In-process change detection for Rust, Node.js, .NET, and Python applications"
 ---
 
 <div class="hero-section hero-section--compact">
   <h1 class="hero-title">Change Detection, Built Into Your Application</h1>
-  <p class="hero-subtitle">drasi-lib brings Drasi's change processing engine in-process, so your application can monitor data changes and react to them in real time without deploying separate infrastructure. Available for Rust, Node.js, and Python.</p>
+  <p class="hero-subtitle">drasi-lib brings Drasi's change processing engine in-process, so your application can monitor data changes and react to them in real time without deploying separate infrastructure. Available for Rust, Node.js, .NET, and Python.</p>
 
   <div class="cta-group">
     <a href="getting-started/" class="cta-button cta-button--primary">
