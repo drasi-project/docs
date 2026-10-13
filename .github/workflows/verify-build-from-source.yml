@@ -51,9 +51,6 @@ jobs:
           - os: macos-latest
             platform: macos
             label: macOS (Apple Silicon)
-          - os: macos-26-intel
-            platform: macos
-            label: macOS (Intel)
           - os: windows-latest
             platform: windows
             label: Windows
@@ -194,4 +191,3 @@ jobs:
                 labels: [label],
               });
             }
-
