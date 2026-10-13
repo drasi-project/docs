@@ -12,10 +12,10 @@ related:
       url: "/drasi-server/how-to-guides/installation/build-from-source/"
   tutorials:
     - title: "Getting Started"
-      url: "/drasi-server/tutorials/getting-started/"
+      url: "/drasi-server/getting-started/"
 ---
 
-The `drasi-sse-cli` is a companion command-line tool for {{< term "Drasi Server" >}} that connects to a Server-Sent Events (SSE) endpoint and prints the events it receives. It is useful for observing the output of an SSE Reaction — for example, while working through the [Getting Started tutorial](/drasi-server/tutorials/getting-started/).
+The `drasi-sse-cli` is a companion command-line tool for {{< term "Drasi Server" >}} that connects to a Server-Sent Events (SSE) endpoint and prints the events it receives. It is useful for observing the output of an SSE Reaction — for example, while working through the [Getting Started tutorial](/drasi-server/getting-started/).
 
 You can either download a pre-built binary or build it from source.
 
