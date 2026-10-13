@@ -28,6 +28,208 @@
   --transition-base: #{$transition-base};
 }
 
+// Link-out (external) blog posts
+.td-blog-external-icon {
+  font-size: 0.7em;
+  color: var(--bs-secondary-color);
+  margin-left: 0.25em;
+}
+
+.td-blog-external-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  background: rgba($secondary, 0.08);
+  border: 1px solid rgba($secondary, 0.3);
+  border-radius: $border-radius-lg;
+
+  a {
+    font-weight: 600;
+  }
+}
+
+// Blog list: search box
+.td-blog-search {
+  position: relative;
+  max-width: 420px;
+  margin: 0 0 $spacer-lg;
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--bs-secondary-color);
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    border: 1px solid rgba($primary, 0.15);
+    border-radius: $border-radius-full;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-size: 0.95rem;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary;
+      box-shadow: 0 0 0 3px rgba($secondary, 0.2);
+    }
+  }
+}
+
+.td-blog-card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba($secondary, 0.14) 0%, rgba($primary, 0.05) 100%);
+  color: $secondary;
+  font-size: 2.5rem;
+}
+
+// Featured (most recent) post
+.td-blog-featured {
+  display: flex;
+  gap: $spacer-lg;
+  align-items: stretch;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: $spacer-xl;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  border: 1px solid rgba($primary, 0.1);
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: inherit;
+
+    .td-blog-read-more {
+      text-decoration: underline;
+    }
+  }
+
+  &__image {
+    flex: 0 0 45%;
+    max-width: 45%;
+    object-fit: cover;
+    min-height: 260px;
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    padding: $spacer-lg;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  &__summary {
+    color: var(--bs-secondary-color);
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    &__image {
+      max-width: 100%;
+      min-height: 200px;
+    }
+  }
+}
+
+// Grid of previous posts
+.td-blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: $spacer-lg;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.td-blog-grid-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba($primary, 0.1);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  background: var(--bs-body-bg);
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transition-base, transform $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-4px);
+    text-decoration: none;
+    color: inherit;
+
+    .td-blog-read-more {
+      text-decoration: underline;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+  }
+
+  &__body {
+    padding: $spacer-md;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+}
+
+.td-blog-meta {
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.td-blog-read-more {
+  font-weight: 600;
+  color: $secondary;
+  margin-top: auto;
+}
+
+.td-blog-empty {
+  color: var(--bs-secondary-color);
+  padding: $spacer-lg 0;
+  text-align: center;
+}
+
+
 /* Disable the site name */
 .td-navbar .navbar-brand__name {
     display: none;
@@ -346,17 +548,52 @@ blockquote {
   }
 }
   
-/* Adjust the logo size */
+/* Match the deployed site's navbar logo: 40% of a 192px brand slot. */
 .td-navbar {
     .navbar-brand {
-        // Margin adjustments go here if needed.
         margin-left: $spacer;
+        flex: 0 0 auto;
+        min-width: 192px;
 
         .navbar-brand__logo {
             svg {
+                display: inline-block;
+                margin: 0 10px;
                 width: 40%;
                 height: auto;
             }
+        }
+    }
+
+    .navbar-nav--primary {
+        flex: 0 0 auto;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        margin-left: 2%;
+        margin-right: 0;
+        white-space: nowrap;
+
+        .nav-link i {
+            padding-right: 0.5em;
+        }
+    }
+
+    // Docsy pins the whole menu cluster to the right with margin-left: auto.
+    // Keep Get Started / Build & configure next to the logo even if the
+    // default single-list navbar is used.
+    @include media-breakpoint-up(md) {
+        .td-navbar-nav-scroll {
+            margin-left: 0.35rem !important;
+            flex: 1 1 auto;
+        }
+
+        #main_navbar .navbar-nav {
+            width: 100%;
+        }
+
+        #main_navbar .nav-item:has(a[href*="github.com"]) {
+            margin-left: auto;
         }
     }
 }
@@ -415,9 +652,9 @@ blockquote {
   }
 }
 
-.card-grid a,
-.card-grid--3 a,
-.card-grid-3 a {
+.card-grid > a,
+.card-grid--3 > a,
+.card-grid-3 > a {
   text-decoration: none;
   color: inherit;
 }
@@ -1028,6 +1265,22 @@ blockquote {
 
   @media (max-width: 768px) {
     transform: rotate(90deg);
+  }
+}
+
+.explainer-video {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto $spacer-lg;
+  max-width: 720px;
+
+  video {
+    width: 100%;
+    height: auto;
+    border-radius: $border-radius-lg;
+    border: 1px solid rgba($primary, 0.1);
+    box-shadow: $shadow-sm;
+    background: $primary;
   }
 }
 
@@ -3736,6 +3989,12 @@ pre:hover .copy-code-button {
   // accent colours, which already read well on a dark canvas.
   .unified-card:not([class*="unified-card--"]) .unified-card-icon {
     color: $secondary;
+  }
+
+  // Get involved cards use --community, which still inherits navy $primary.
+  .unified-card--community .unified-card-icon {
+    color: lighten($secondary, 12%);
+    background: linear-gradient(135deg, rgba($secondary, 0.2) 0%, rgba($secondary, 0.06) 100%);
   }
 
   // ---------------------------------------------------------------------------

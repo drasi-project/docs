@@ -2,7 +2,7 @@
 type: "docs"
 title: "Tutorials"
 linkTitle: "Tutorials"
-weight: 30
+weight: 20
 description: "Hands-on, step-by-step guides for building change-driven solutions with Drasi Server"
 ---
 

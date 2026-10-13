@@ -25,7 +25,7 @@ related:
 This section covers operational concerns for running Drasi in production environments. Learn how to monitor, scale, troubleshoot, and maintain your Drasi deployment.
 
 <div class="card-grid">
-  <a href="/how-to-guides/operations/observability/">
+  <a href="/drasi-kubernetes/how-to-guides/operations/observability/">
     <div class="unified-card">
       <div class="unified-card-icon">
         <i class="fas fa-chart-line"></i>
@@ -36,7 +36,7 @@ This section covers operational concerns for running Drasi in production environ
       </div>
     </div>
   </a>
-  <a href="/how-to-guides/operations/monitoring/">
+  <a href="/drasi-kubernetes/how-to-guides/operations/monitoring/">
     <div class="unified-card">
       <div class="unified-card-icon">
         <i class="fas fa-heartbeat"></i>
@@ -47,7 +47,7 @@ This section covers operational concerns for running Drasi in production environ
       </div>
     </div>
   </a>
-  <a href="/how-to-guides/operations/scaling/">
+  <a href="/drasi-kubernetes/how-to-guides/operations/scaling/">
     <div class="unified-card">
       <div class="unified-card-icon">
         <i class="fas fa-expand-arrows-alt"></i>
@@ -58,7 +58,7 @@ This section covers operational concerns for running Drasi in production environ
       </div>
     </div>
   </a>
-  <a href="/how-to-guides/operations/troubleshooting/">
+  <a href="/drasi-kubernetes/how-to-guides/operations/troubleshooting/">
     <div class="unified-card">
       <div class="unified-card-icon">
         <i class="fas fa-bug"></i>
@@ -69,7 +69,7 @@ This section covers operational concerns for running Drasi in production environ
       </div>
     </div>
   </a>
-  <a href="/how-to-guides/operations/maintenance/">
+  <a href="/drasi-kubernetes/how-to-guides/operations/maintenance/">
     <div class="unified-card">
       <div class="unified-card-icon">
         <i class="fas fa-wrench"></i>
