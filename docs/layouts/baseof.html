@@ -3,7 +3,7 @@
     {{- with .Site.Language.LanguageDirection }} dir="{{ . }}" {{- end -}}
     {{ with .Site.Language.Lang }} lang="{{ . }}" {{- end }} {{/**/ -}}
     class="no-js"
-    {{- $darkMode := partialCached "dark-mode-config.html" "dark-mode-global" -}}
+    {{- $darkMode := partialCached "dark-mode-config.html" . "dark-mode-global" -}}
     {{- if $darkMode.enable }} data-theme-init{{ end }}>
   <head>
     {{ partial "head.html" . }}
