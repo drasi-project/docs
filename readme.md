@@ -63,6 +63,17 @@ The Drasi Server tutorials are sourced from
 
 After updating, commit `docs/go.mod` and `docs/go.sum`.
 
+To include an untagged merge, use its commit SHA as `VERSION`.
+
+When adding a new tutorial, also add an explicit mount under
+`module.imports.mounts` in `docs/config.toml`, targeting
+`content/drasi-server/tutorials/<tutorial-name>`. This site ignores the module's
+own configuration, so adding a mount in the tutorials repository does not expose
+it here. Exclude the tutorial README and any standalone HTML apps from the mount.
+
+The website workflow fetches the module's latest `main` before building, but it
+still uses these explicit mounts. Local builds use the version in `docs/go.mod`.
+
 ### Preview docs against a local learning-drasi-server checkout
 
 Use this when testing tutorial changes before creating/tagging a module release.

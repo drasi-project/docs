@@ -108,6 +108,10 @@ defaultContentLanguageInSubdir = false
       # locally during the tutorial); its index.html must be excluded so Hugo
       # doesn't treat it as page content.
       files = ['! /README.md', '! webui/**']
+    [[module.imports.mounts]]
+      source = "tutorials/otel-observability"
+      target = "content/drasi-server/tutorials/otel-observability"
+      files = ['! /README.md', '! **/*.html']
 
 [params.search.algolia]
 appId = "Q8GYM4KCMH"

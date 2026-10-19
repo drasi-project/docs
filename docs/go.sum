@@ -1,6 +1,6 @@
 github.com/FortAwesome/Font-Awesome v4.7.0+incompatible h1:3trjm7NtX5NXlju1AxSWSzedDMq2hsfH78Qtqrc8EgY=
 github.com/FortAwesome/Font-Awesome v4.7.0+incompatible/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
-github.com/drasi-project/learning-drasi-server v0.1.3-0.20260914205549-4d9b2c7f0d55 h1:PQwv1sUKKOkVoM0I2IyL8kr5opz8jLFEIynm4Ax0M7M=
-github.com/drasi-project/learning-drasi-server v0.1.3-0.20260914205549-4d9b2c7f0d55/go.mod h1:PQ7ulgPmkoPEw5T9gCbfSyuYNXRDjaVbMzGJx58/hVw=
+github.com/drasi-project/learning-drasi-server v0.1.3-0.20260924151745-47995e835854 h1:StVF/miEAm+XHCqd4Pk4FPC3ZcwdvS+7l1PCU3HLgwE=
+github.com/drasi-project/learning-drasi-server v0.1.3-0.20260924151745-47995e835854/go.mod h1:PQ7ulgPmkoPEw5T9gCbfSyuYNXRDjaVbMzGJx58/hVw=
 github.com/twbs/bootstrap v5.3.8+incompatible h1:eK1fsXP7R/FWFt+sSNmmvUH9usPocf240nWVw7Dh02o=
 github.com/twbs/bootstrap v5.3.8+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
