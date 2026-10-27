@@ -23,6 +23,7 @@ export LIBRARY_PATH="$(brew --prefix jq)/lib:$(brew --prefix oniguruma)/lib:${LI
 `perl` is pre-installed. Install everything else with:
 
 ```bash {#linux-native-deps}
+sudo apt-get update
 sudo apt-get install -y libssl-dev pkg-config clang libclang-dev libjq-dev libonig-dev protobuf-compiler 
 ```
 
